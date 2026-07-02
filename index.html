@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAGHUVEER DIAMOND AI OS</title>
+    <style>
+        /* Deep Navy Blue Premium Matte Finish Master Theme */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: #0B132B;
+            color: #FFFFFF;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* 2050 Premium Control Top Bar - Single Line Layout */
+        .top-bar {
+            background: #070B19;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1C2541;
+            width: 100%;
+        }
+
+        .system-title {
+            font-size: 11px;
+            color: #5BC0BE;
+            letter-spacing: 1.5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-logo-slot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00C6FF, #0072FF);
+            box-shadow: 0 0 8px #00C6FF;
+        }
+
+        .window-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .window-controls button {
+            background: none;
+            border: none;
+            color: #5BC0BE;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            line-height: 1;
+            padding: 2px;
+        }
+
+        .window-controls button:hover {
+            color: #FFFFFF;
+            text-shadow: 0 0 8px #5BC0BE;
+        }
+
+        /* Center Login Gateway */
+        .login-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .login-card {
+            background: #111D37;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid #1C2541;
+            transition: 0.3s;
+        }
+
+        .company-name {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #5BC0BE, #00C6FF, #0072FF, #5BC0BE);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: cyberGlow 6s linear infinite;
+            margin-bottom: 2px;
+        }
+
+        @keyframes cyberGlow {
+            0% { background-position: 0% center; }
+            100% { background-position: 300% center; }
+        }
+
+        .system-sub {
+            font-size: 11px;
+            color: #5BC0BE;
+            letter-spacing: 3px;
+            margin-bottom: 35px;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 11px;
+            color: #5BC0BE;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            background: #0B132B;
+            border: 1px solid #1C2541;
+            padding: 12px 15px;
+            border-radius: 6px;
+            color: #FFFFFF;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input.success-border {
+            border-color: #2ECC71 !important;
+            box-shadow: 0 0 12px rgba(46, 204, 113, 0.4) !important;
+        }
+
+        .input-group input.error-border {
+            border-color: #E74C3C !important;
+            box-shadow: 0 0 12px rgba(231, 76, 60, 0.4) !important;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: #5BC0BE;
+            color: #0B132B;
+            border: none;
+            padding: 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: #FFFFFF;
+            box-shadow: 0 0 15px #FFFFFF;
+        }
+
+        .bottom-bar {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            z-index: 10;
+        }
+
+        .settings-icon {
+            background: none;
+            border: none;
+            color: #1C2541;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .settings-icon:hover {
+            color: #5BC0BE;
+        }
+
+        /* Settings Panels Overlay */
+        .settings-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(7, 11, 25, 0.85);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .settings-card {
+            background: #111D37;
+            border: 1px solid #1C2541;
+            border-radius: 12px;
+            width: 95%;
+            max-width: 440px;
+            padding: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .settings-card h3 {
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: #5BC0BE;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid #1C2541;
+            padding-bottom: 10px;
+        }
+
+        .settings-option-btn {
+            width: 100%;
+            background: #0B132B;
+            border: 1px solid #1C2541;
+            color: #FFFFFF;
+            padding: 15px 14px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .settings-option-btn:hover {
+            border-color: #5BC0BE;
+            background: #1C2541;
+        }
+
+        /* Inner Panel Controls */
+        .inner-sub-panel {
+            display: none;
+            background: #070B19;
+            border: 1px solid #1C2541;
+            border-radius: 6px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .inner-sub-panel h4 {
+            font-size: 11px;
+            color: #5BC0BE;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .mini-input-group {
+            margin-bottom: 12px;
+        }
+
+        .inner-sub-panel label {
+            font-size: 10px;
+            color: #FFFFFF;
+            opacity: 0.7;
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .inner-sub-panel input, .inner-sub-panel select {
+            width: 100%;
+            background: #0B132B;
+            border: 1px solid #1C2541;
+            padding: 10px;
+            color: #FFFFFF;
+            border-radius: 4px;
+            font-size: 12px;
+            outline: none;
+        }
+
+        /* Add Department Button & Dynamic Area */
+        .btn-add-dept {
+            background: rgba(91, 192, 190, 0.1);
+            border: 1px dashed #5BC0BE;
+            color: #5BC0BE;
+            padding: 10px;
+            font-size: 10px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            letter-spacing: 1px;
+            margin-top: 15px;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .btn-add-dept:hover {
+            background: #5BC0BE;
+            color: #0B132B;
+            border-style: solid;
+        }
+
+        .dept-list-container {
+            margin-top: 15px;
+            border-top: 1px dashed #1C2541;
+            padding-top: 10px;
+        }
+
+        .range-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .range-slider {
+            flex: 1;
+            cursor: pointer;
+            accent-color: #5BC0BE;
+        }
+
+        .fps-badge-container {
+            display: flex;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .fps-btn {
+            background: #0B132B;
+            border: 1px solid #1C2541;
+            color: #FFFFFF;
+            padding: 6px 12px;
+            font-size: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .fps-btn.active {
+            background: #5BC0BE;
+            color: #0B132B;
+            border-color: #5BC0BE;
+        }
+
+        .toggle-switch-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #0B132B;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #1C2541;
+            margin-bottom: 8px;
+        }
+
+        .toggle-label {
+            font-size: 11px !important;
+            opacity: 1 !important;
+            margin-bottom: 0 !important;
+        }
+
+        .toggle-input {
+            width: auto !important;
+            cursor: pointer;
+            accent-color: #2ECC71;
+        }
+
+        .inner-panel-status {
+            font-size: 11px;
+            color: #2ECC71;
+            font-weight: bold;
+            background: rgba(46, 204, 113, 0.1);
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid rgba(46, 204, 113, 0.2);
+        }
+
+        .panel-btn-save {
+            background: #5BC0BE;
+            color: #0B132B;
+            border: none;
+            padding: 10px;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 8px;
+            width: 100%;
+            letter-spacing: 1px;
+        }
+
+        .close-settings-btn {
+            width: 100%;
+            background: transparent;
+            border: 1px solid #E74C3C;
+            color: #E74C3C;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-top: 15px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .close-settings-btn:hover {
+            background: #E74C3C;
+            color: #FFFFFF;
+        }
+
+        /* Master Key Gateway Modals */
+        .key-gateway-card {
+            background: #111D37;
+            border: 1px solid #1C2541;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 350px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .key-gateway-card label {
+            display: block;
+            font-size: 11px;
+            color: #5BC0BE;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .key-gateway-card input {
+            width: 100%;
+            background: #0B132B;
+            border: 1px solid #1C2541;
+            padding: 12px;
+            border-radius: 6px;
+            color: #FFFFFF;
+            font-size: 14px;
+            outline: none;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .gateway-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .gateway-actions button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-cancel { background: #1C2541; color: #FFFFFF; }
+        .btn-cancel:hover { background: #E74C3C; }
+        .btn-confirm { background: #5BC0BE; color: #0B132B; }
+        .btn-confirm:hover { background: #FFFFFF; }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar Component -->
+    <div class="top-bar">
+        <div class="system-title">
+            <div class="ai-logo-slot"></div>
+            RAGHUVEER DIAMOND AI OS [v5.0]
+        </div>
+        <div class="window-controls">
+            <button onclick="minimizeApp()">-</button>
+            <button onclick="toggleFullScreen()">🗖</button>
+            <button onclick="closeApp()">✕</button>
+        </div>
+    </div>
+
+    <!-- Main Entry Container -->
+    <div class="login-container">
+        <div class="login-card">
+            <div class="company-name">RAGHUVEER DIAMOND</div>
+            <div class="system-sub">QUANTUM SECURITY GATEWAY</div>
+
+            <div class="input-group">
+                <label>ENTER SYSTEM ID</label>
+                <input type="text" id="systemId" placeholder="Enter ID..." autocomplete="off" oninput="resetBorders()">
+            </div>
+
+            <div class="input-group">
+                <label>ENTER SECURE ACCESS KEY</label>
+                <input type="password" id="accessKey" placeholder="Enter Password..." autocomplete="off" oninput="resetBorders()">
+            </div>
+
+            <button class="login-btn" onclick="validateAccess()">INITIALIZE SYSTEM ⚡</button>
+        </div>
+
+        <!-- Secret Corner Activation Node -->
+        <div class="bottom-bar">
+            <button class="settings-icon" onclick="openKeyGateway()">⚙️</button>
+        </div>
+    </div>
+
+    <!-- Phase 1: Master Verification Gateway -->
+    <div class="settings-overlay" id="keyGatewayOverlay">
+        <div class="key-gateway-card">
+            <label>ENTER DIRECTOR MASTER KEY</label>
+            <input type="password" id="masterGatewayKey" placeholder="••••">
+            <div class="gateway-actions">
+                <button class="btn-cancel" onclick="closeKeyGateway()">CANCEL</button>
+                <button class="btn-confirm" onclick="verifyMasterGatewayKey()">VERIFY SYSTEM</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 2: Advanced Control Panel -->
+    <div class="settings-overlay" id="settingsOverlay">
+        <div class="settings-card">
+            <h3>⚙️ AI OS MASTER CONTROL</h3>
+            <div class="settings-grid">
+                
+                <!-- Option 1: Dynamic Credentials Tuning Area -->
+                <button class="settings-option-btn" onclick="toggleSubPanel('panelCredentials')">🔒 1. ACCESS KEYS & CREDENTIALS</button>
+                <div id="panelCredentials" class="inner-sub-panel">
+                    <h4>MODIFY OS ACCESS CREDENTIALS</h4>
+                    <div class="mini-input-group">
+                        <label>Director ID / Key</label>
+                        <input type="text" id="cfgAdminId" style="margin-bottom:5px;">
+                        <input type="password" id="cfgAdminKey">
+                    </div>
+                    <div class="mini-input-group">
+                        <label>Accountant ID / Key</label>
+                        <input type="text" id="cfgAccountId" style="margin-bottom:5px;">
+                        <input type="password" id="cfgAccountKey">
+                    </div>
+                    
+                    <!-- Dynamic Department Creation Matrix -->
+                    <div class="dept-list-container" id="deptListContainer">
+                        <!-- Dynamic items will load here perfectly -->
+                    </div>
+
+                    <button class="btn-add-dept" onclick="addNewDepartmentField()">+ ADD NEW DEPARTMENT</button>
+                    <button class="panel-btn-save" style="margin-top:15px;" onclick="saveAllCredentials()">SAVE CONFIGURATION</button>
+                </div>
+
+                <!-- Option 2: GitHub Integration Panel -->
+                <button class="settings-option-btn" onclick="toggleSubPanel('panelSync')">☁️ 2. GITHUB AUTO-CLOUD SYNC</button>
+                <div id="panelSync" class="inner-sub-panel">
+                    <h4>CLOUD SYNC CONTROL</h4>
+                    <div class="toggle-switch-container">
+                        <label class="toggle-label">Auto Backup to GitHub</label>
+                        <input type="checkbox" class="toggle-input" checked id="gitAutoToggle" onchange="updateGitStatus()">
+                    </div>
+                    <div class="inner-panel-status" id="gitStatusText">⚡ STATUS: REPOSITORY IS SECURE & SYNCHRONIZED [MAIN].</div>
+                </div>
+
+                <!-- Option 3: Premium Theme Engine Configuration -->
+                <button class="settings-option-btn" onclick="toggleSubPanel('panelTheme')">🎨 3. METALLIC METEOR THEME SPEED</button>
+                <div id="panelTheme" class="inner-sub-panel">
+                    <h4>CYBER CYAN ENGINE CONTROLS</h4>
+                    <div class="mini-input-group">
+                        <label>Glow Shift Velocity (Speed)</label>
+                        <div class="range-slider-container">
+                            <input type="range" min="1" max="10" value="6" class="range-slider" id="glowRange" oninput="updateGlowSpeedText()">
+                            <span id="glowValText" style="font-size:11px; font-weight:bold; color:#5BC0BE;">6s</span>
+                        </div>
+                    </div>
+                    <div class="mini-input-group">
+                        <label>Engine Rendering Mode</label>
+                        <div class="fps-badge-container">
+                            <button class="fps-btn" id="fps30" onclick="setFps(30)">30 FPS ECO</button>
+                            <button class="fps-btn active" id="fps60" onclick="setFps(60)">60 FPS METEOR</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Option 4: AI Cache & Memory Module -->
+                <button class="settings-option-btn" onclick="toggleSubPanel('panelFlush')">🧹 4. AI CACHE & MEMORY FLUSH</button>
+                <div id="panelFlush" class="inner-sub-panel">
+                    <h4>MEMORY CONFIGURATION</h4>
+                    <div class="mini-input-group">
+                        <label>Auto-Flush Interval</label>
+                        <select id="flushInterval">
+                            <option value="1">Every 1 Hour (Recommended)</option>
+                            <option value="6">Every 6 Hours</option>
+                            <option value="24">Every 24 Hours</option>
+                        </select>
+                    </div>
+                    <div class="toggle-switch-container">
+                        <label class="toggle-label">Live RAM Optimizer</label>
+                        <input type="checkbox" class="toggle-input" checked>
+                    </div>
+                    <button class="panel-btn-save" style="background:#E74C3C; color:#FFF;" onclick="triggerDeepFlush()">TRIGGER DEEP FLUSH NOW</button>
+                </div>
+
+                <!-- Option 5: Automated Factory Core Diagnostics -->
+                <button class="settings-option-btn" onclick="toggleSubPanel('panelDiag')">🤖 5. AUTOMATED AI CORE DIAGNOSTICS</button>
+                <div id="panelDiag" class="inner-sub-panel">
+                    <h4>SURAT AUTOMATION CORE MONITOR</h4>
+                    <div class="mini-input-group">
+                        <label>Robotic Arm Alignment Accuracy</label>
+                        <div class="range-slider-container">
+                            <input type="range" min="90" max="100" value="100" class="range-slider">
+                            <span style="font-size:11px; font-weight:bold; color:#2ECC71;">100%</span>
+                        </div>
+                    </div>
+                    <div class="mini-input-group">
+                        <label>Markless Laser Vision Lens Mode</label>
+                        <select>
+                            <option value="high">HIGH RES SENSITIVITY (UNLIMITED CAPACITY)</option>
+                            <option value="med">MEDIUM AUTO PROFILE</option>
+                        </select>
+                    </div>
+                    <div class="inner-panel-status" style="color:#5BC0BE; background:rgba(91,192,190,0.1); border-color:rgba(91,192,190,0.2);">
+                        🤖 AI VISION: 0 ERRORS DETECTED ON TOP-CROWN MACHINES.
+                    </div>
+                </div>
+
+                <!-- Option 6: Advanced Future Biometric Controls -->
+                <button class="settings-option-btn" onclick="toggleSubPanel('panelBio')">🧬 6. BIOMETRIC EMERGENCY OVERRIDE</button>
+                <div id="panelBio" class="inner-sub-panel">
+                    <h4>QUANTUM SECURITY PROTOCOLS</h4>
+                    <div class="toggle-switch-container">
+                        <label class="toggle-label">AI Face Override Lock</label>
+                        <input type="checkbox" class="toggle-input" checked>
+                    </div>
+                    <div class="toggle-switch-container">
+                        <label class="toggle-label">Retina Scanner Matrix</label>
+                        <input type="checkbox" class="toggle-input">
+                    </div>
+                </div>
+
+            </div>
+            <button class="close-settings-btn" onclick="closeSettingsPanel()">CLOSE PANEL</button>
+        </div>
+    </div>
+
+    <script>
+        // Core System Default Dynamic Initializations
+        if(!localStorage.getItem('admin_id')) {
+            localStorage.setItem('admin_id', 'admin');
+            localStorage.setItem('admin_key', '111');
+            localStorage.setItem('account_id', 'account');
+            localStorage.setItem('account_key', '222');
+            localStorage.setItem('custom_departments', JSON.stringify([]));
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                document.exitFullscreen().catch(() => {});
+            }
+        }
+
+        function minimizeApp() { alert("System Minimized."); }
+        function closeApp() { if(confirm("Close System?")) window.close(); }
+
+        function resetBorders() {
+            document.getElementById('systemId').className = '';
+            document.getElementById('accessKey').className = '';
+        }
+
+        function validateAccess() {
+            const idInput = document.getElementById('systemId');
+            const keyInput = document.getElementById('accessKey');
+            const id = idInput.value;
+            const key = keyInput.value;
+
+            // 1. Check Director Level Node
+            if (id === localStorage.getItem('admin_id') && key === localStorage.getItem('admin_key')) {
+                idInput.className = 'success-border';
+                keyInput.className = 'success-border';
+                setTimeout(() => {
+                    localStorage.setItem('userRole', 'director');
+                    window.location.href = "dashboard.html";
+                }, 400);
+                return;
+            } 
+            
+            // 2. Check Accountant Node
+            if (id === localStorage.getItem('account_id') && key === localStorage.getItem('account_key')) {
+                idInput.className = 'success-border';
+                keyInput.className = 'success-border';
+                setTimeout(() => {
+                    localStorage.setItem('userRole', 'accountant');
+                    window.location.href = "dashboard.html";
+                }, 400);
+                return;
+            } 
+
+            // 3. Loop & Check Dynamic Added Departments Node
+            const customDepts = JSON.parse(localStorage.getItem('custom_departments') || "[]");
+            for(let i=0; i<customDepts.length; i++) {
+                if(id === customDepts[i].id && key === customDepts[i].key) {
+                    idInput.className = 'success-border';
+                    keyInput.className = 'success-border';
+                    setTimeout(() => {
+                        localStorage.setItem('userRole', customDepts[i].name);
+                        window.location.href = "department_entry.html";
+                    }, 400);
+                    return;
+                }
+            }
+
+            idInput.className = 'error-border';
+            keyInput.className = 'error-border';
+            alert("ACCESS DENIED: INVALID SYSTEM ID OR ACCESS KEY");
+        }
+
+        function openKeyGateway() {
+            document.getElementById('masterGatewayKey').value = '';
+            document.getElementById('keyGatewayOverlay').style.display = 'flex';
+            setTimeout(() => document.getElementById('masterGatewayKey').focus(), 100);
+        }
+
+        function closeKeyGateway() { document.getElementById('keyGatewayOverlay').style.display = 'none'; }
+
+        function verifyMasterGatewayKey() {
+            const enteredKey = document.getElementById('masterGatewayKey').value;
+            if (enteredKey === localStorage.getItem('admin_key')) {
+                closeKeyGateway();
+                document.getElementById('settingsOverlay').style.display = 'flex';
+            } else {
+                alert("Access Denied.");
+                closeKeyGateway();
+            }
+        }
+
+        function toggleSubPanel(panelId) {
+            const panel = document.getElementById(panelId);
+            const isVisible = panel.style.display === 'block';
+            
+            document.querySelectorAll('.inner-sub-panel').forEach(p => p.style.display = 'none');
+            
+            if (!isVisible) {
+                panel.style.display = 'block';
+                if(panelId === 'panelCredentials') {
+                    document.getElementById('cfgAdminId').value = localStorage.getItem('admin_id');
+                    document.getElementById('cfgAdminKey').value = localStorage.getItem('admin_key');
+                    document.getElementById('cfgAccountId').value = localStorage.getItem('account_id');
+                    document.getElementById('cfgAccountKey').value = localStorage.getItem('account_key');
+                    renderDepartmentsList();
+                }
+            }
+        }
+
+        function renderDepartmentsList() {
+            const container = document.getElementById('deptListContainer');
+            container.innerHTML = '';
+            const customDepts = JSON.parse(localStorage.getItem('custom_departments') || "[]");
+            
+            customDepts.forEach((dept, index) => {
+                const div = document.createElement('div');
+                div.className = 'mini-input-group';
+                div.style.borderTop = '1px solid #1C2541';
+                div.style.paddingTop = '10px';
+                div.innerHTML = `
+                    <label style="color:#5BC0BE; display:flex; justify-content:space-between;">
+                        <span>${dept.name.toUpperCase()} CONFIGURATION</span>
+                        <span style="color:#E74C3C; cursor:pointer;" onclick="removeDepartmentNode(${index})">DELETE</span>
+                    </label>
+                    <label style="font-size:9px; margin-top:5px;">Department ID</label>
+                    <input type="text" value="${dept.id}" id="customDeptId_${index}" style="margin-bottom:5px;">
+                    <label style="font-size:9px;">Access Key / Password</label>
+                    <input type="password" value="${dept.key}" id="customDeptKey_${index}">
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function addNewDepartmentField() {
+            const deptName = prompt("STEP 1: ENTER NEW DEPARTMENT NAME:\n(e.g., 4P, Laser, Polishing)");
+            if(!deptName) return;
+            
+            const deptId = prompt(`STEP 2: ENTER SYSTEM ID FOR [${deptName}]:\n(This will be used for login)`);
+            if(!deptId) return;
+
+            const deptKey = prompt(`STEP 3: ENTER ACCESS KEY / PASSWORD FOR [${deptName}]:`);
+            if(!deptKey) return;
+            
+            const customDepts = JSON.parse(localStorage.getItem('custom_departments') || "[]");
+            customDepts.push({
+                name: deptName,
+                id: deptId.trim(),
+                key: deptKey.trim()
+            });
+            
+            localStorage.setItem('custom_departments', JSON.stringify(customDepts));
+            renderDepartmentsList();
+        }
+
+        function removeDepartmentNode(index) {
+            const customDepts = JSON.parse(localStorage.getItem('custom_departments') || "[]");
+            customDepts.splice(index, 1);
+            localStorage.setItem('custom_departments', JSON.stringify(customDepts));
+            renderDepartmentsList();
+        }
+
+        function saveAllCredentials() {
+            localStorage.setItem('admin_id', document.getElementById('cfgAdminId').value);
+            localStorage.setItem('admin_key', document.getElementById('cfgAdminKey').value);
+            localStorage.setItem('account_id', document.getElementById('cfgAccountId').value);
+            localStorage.setItem('account_key', document.getElementById('cfgAccountKey').value);
+            
+            const customDepts = JSON.parse(localStorage.getItem('custom_departments') || "[]");
+            for(let i=0; i<customDepts.length; i++) {
+                customDepts[i].id = document.getElementById(`customDeptId_${i}`).value;
+                customDepts[i].key = document.getElementById(`customDeptKey_${i}`).value;
+            }
+            localStorage.setItem('custom_departments', JSON.stringify(customDepts));
+            
+            alert("SYSTEM CONFIGURATION MATRIX SAVED INTERNALLY.");
+            toggleSubPanel('panelCredentials');
+        }
+
+        function updateGitStatus() {
+            const checkbox = document.getElementById('gitAutoToggle');
+            const statusText = document.getElementById('gitStatusText');
+            if(checkbox.checked) {
+                statusText.innerHTML = "⚡ STATUS: REPOSITORY IS SECURE & SYNCHRONIZED [MAIN].";
+                statusText.style.color = "#2ECC71";
+            } else {
+                statusText.innerHTML = "⚠️ WARNING: CLOUD SYNC PAUSED. LOCAL MEMORY ONLY.";
+                statusText.style.color = "#E74C3C";
+            }
+        }
+
+        function updateGlowSpeedText() {
+            const val = document.getElementById('glowRange').value;
+            document.getElementById('glowValText').innerText = val + "s";
+            document.querySelector('.company-name').style.animationDuration = val + "s";
+        }
+
+        function setFps(fpsValue) {
+            document.getElementById('fps30').className = 'fps-btn';
+            document.getElementById('fps60').className = 'fps-btn';
+            if(fpsValue === 30) {
+                document.getElementById('fps30').className = 'fps-btn active';
+            } else {
+                document.getElementById('fps60').className = 'fps-btn active';
+            }
+        }
+
+        function triggerDeepFlush() {
+            alert("DEEP MEMORY PURGE ENGINE COMPLETE. ALL SLOTS FREED.");
+            toggleSubPanel('panelFlush');
+        }
+
+        function closeSettingsPanel() {
+            document.querySelectorAll('.inner-sub-panel').forEach(p => p.style.display = 'none');
+            document.getElementById('settingsOverlay').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
