@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raghuveer Diamond - Master Autonomous Dashboard</title>
+    <style>
+        :root {
+            --bg-primary: #0a0f1d;
+            --bg-secondary: #121b2d;
+            --accent-blue: #00d2ff;
+            --accent-green: #00ff87;
+            --accent-red: #ff3366;
+            --accent-orange: #ff9900;
+            --text-main: #ffffff;
+            --text-muted: #708090;
+            --border-color: rgba(0, 210, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .background-logo-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40%;
+            height: 40%;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Top Bar with Live Glow Styling and Exactly 3 Window Controls */
+        .window-control-bar {
+            height: 45px;
+            background-color: rgba(18, 27, 45, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            position: relative;
+        }
+
+        .brand-title {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+            animation: brandGlow 3s infinite ease-in-out;
+        }
+
+        @keyframes brandGlow {
+            0%, 100% { text-shadow: 0 0 8px rgba(0, 210, 255, 0.3); }
+            50% { text-shadow: 0 0 15px rgba(0, 210, 255, 0.7); color: #ffffff; }
+        }
+
+        .window-actions {
+            display: flex;
+            gap: 10px;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            pointer-events: auto;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            color: #ffffff;
+            background: rgba(0, 210, 255, 0.2);
+            border-color: var(--accent-blue);
+        }
+
+        .action-btn.close-btn:hover {
+            background: rgba(255, 51, 102, 0.3);
+            border-color: var(--accent-red);
+            color: #ffffff;
+        }
+
+        /* Layout Architecture space */
+        .main-container {
+            display: grid;
+            grid-template-rows: 150px 1fr 45px;
+            height: calc(100vh - 45px);
+            padding: 12px;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Full Width fluid Director Control Room Panel Layout Fixed Click Range */
+        .director-master-panel {
+            background: linear-gradient(135deg, rgba(18, 27, 45, 0.95), rgba(5, 8, 16, 0.95));
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            pointer-events: auto;
+            transition: border-color 0.3s ease;
+        }
+
+        .director-master-panel:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.1);
+        }
+
+        .director-meta {
+            position: relative;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .director-meta h2 {
+            font-size: 16px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 4px;
+        }
+
+        .director-meta p {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Full Span Area Chart Layer - Totally Blocked on Interactions */
+        .chart-visual-fullwidth {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none; 
+        }
+
+        .live-chart-svg {
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* 4x4 Grid Architecture for Exactly 16 Ordered Nodes */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .node-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .node-box:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 4px 12px rgba(0, 210, 255, 0.12);
+        }
+
+        /* Delay Tracking Warning Framework Alerts */
+        .node-box.overdue-alert {
+            border-color: var(--accent-orange);
+            animation: pulseWarning 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseWarning {
+            0% { box-shadow: 0 0 4px rgba(255, 153, 0, 0.2); }
+            50% { box-shadow: 0 0 16px rgba(255, 153, 0, 0.5); border-color: var(--accent-orange); }
+            100% { box-shadow: 0 0 4px rgba(255, 153, 0, 0.2); }
+        }
+
+        .node-pipeline {
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            line-height: 1.3;
+        }
+
+        .overdue-text {
+            color: var(--accent-orange) !important;
+            font-weight: 600;
+        }
+
+        .node-identity {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .live-tag {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--accent-green);
+            box-shadow: 0 0 8px var(--accent-green);
+        }
+
+        .node-box.overdue-alert .live-tag {
+            background-color: var(--accent-orange);
+            box-shadow: 0 0 8px var(--accent-orange);
+        }
+
+        /* Future Advanced AI System Engine Box 16 Styling */
+        .future-ai-node {
+            border: 1px solid rgba(0, 255, 135, 0.3);
+            background: linear-gradient(135deg, rgba(18, 27, 45, 0.9), rgba(0, 255, 135, 0.03));
+        }
+
+        .future-ai-node:hover {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 15px rgba(0, 255, 135, 0.2);
+        }
+
+        .future-ai-node .node-identity {
+            color: var(--accent-green);
+        }
+
+        /* Bottom Fixed Space Control Dock */
+        .bottom-dock {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 10;
+        }
+
+        .system-status-string {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .settings-trigger {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            color: var(--accent-blue);
+            border-radius: 8px;
+            padding: 6px 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            pointer-events: auto;
+            transition: all 0.3s ease;
+        }
+
+        .settings-trigger:hover {
+            color: #ffffff;
+            background-color: var(--accent-blue);
+            box-shadow: 0 0 12px rgba(0, 210, 255, 0.4);
+        }
+
+        /* Functional Popup Interfaces Structure */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(5, 8, 16, 0.92);
+            backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 9999;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-window {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 450px;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .modal-close-x {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: none; border: none;
+            color: var(--text-muted);
+            cursor: pointer; font-size: 18px;
+        }
+
+        .modal-close-x:hover { color: var(--accent-red); }
+
+        .modal-title {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            color: var(--accent-blue);
+            border-bottom: 1px solid rgba(0, 210, 255, 0.1);
+            padding-bottom: 8px;
+        }
+
+        .otp-routing-select {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .channel-card {
+            flex: 1;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.02);
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .secure-input {
+            width: 100%;
+            background: rgba(5, 8, 16, 0.6);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 14px;
+            letter-spacing: 1.5px;
+        }
+
+        .secure-input:focus { outline: none; border-color: var(--accent-blue); }
+
+        .action-execution-btn {
+            width: 100%;
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            color: var(--text-main);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 114, 255, 0.3);
+        }
+
+        .settings-control-grid { display: flex; flex-direction: column; gap: 12px; }
+        .control-block { background: rgba(5, 8, 16, 0.4); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; }
+        .control-block h4 { font-size: 11px; text-transform: uppercase; color: var(--text-main); margin-bottom: 8px; letter-spacing: 1px; }
+        .selection-options-row { display: flex; gap: 8px; }
+        
+        .option-selector-btn {
+            flex: 1; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color);
+            color: var(--text-muted); padding: 8px; border-radius: 6px; font-size: 10px;
+            text-transform: uppercase; cursor: pointer; transition: all 0.2s ease;
+        }
+
+        .option-selector-btn.active, .option-selector-btn:hover {
+            background: rgba(0, 210, 255, 0.1); border-color: var(--accent-blue); color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-logo-overlay" id="companyLogoSpace"></div>
+
+    <div class="window-control-bar">
+        <div class="brand-title">Raghuveer Diamond</div>
+        <div class="window-actions">
+            <button class="action-btn" onclick="triggerMinimize(event)">&#9472;</button>
+            <button class="action-btn" onclick="triggerZoom(event)">&#10064;</button>
+            <button class="action-btn close-btn" onclick="triggerClose(event)">&#10005;</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        
+        <div class="director-master-panel" onclick="openDirectorSecureGate()">
+            <div class="director-meta">
+                <h2>Director Control Room</h2>
+                <p>Secure Identity Protocol Synced</p>
+            </div>
+            <div class="chart-visual-fullwidth">
+                <svg class="live-chart-svg" viewBox="0 0 1200 150" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="chartGlowGreen" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#00ff87" stop-opacity="0.25"/>
+                            <stop offset="100%" stop-color="#00ff87" stop-opacity="0.0"/>
+                        </linearGradient>
+                        <linearGradient id="chartGlowRed" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#ff3366" stop-opacity="0.25"/>
+                            <stop offset="100%" stop-color="#ff3366" stop-opacity="0.0"/>
+                        </linearGradient>
+                    </defs>
+                    <path id="masterChartArea" d="M0,150 L0,80 L150,35 L300,100 L450,25 L600,120 L750,45 L900,110 L1050,35 L1200,70 L1200,150 Z" fill="url(#chartGlowGreen)"/>
+                    <path id="masterChartPath" d="M0,80 L150,35 L300,100 L450,25 L600,120 L750,45 L900,110 L1050,35 L1200,70" fill="none" stroke="#00ff87" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            
+            <div class="node-box" onclick="handleClusterLink('Accountant Node')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Accountant Node <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" onclick="handleClusterLink('Data Entry WIP')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Data Entry WIP <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" onclick="handleClusterLink('Galaxy Core Array')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Galaxy <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" onclick="handleClusterLink('Q.C. Center Array')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Q.C. Center <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" onclick="handleClusterLink('Sarine Plan Cluster')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Sarine Plan <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" id="laserNodeTracker" onclick="handleClusterLink('Laser Matrix Terminal')">
+                <div class="node-pipeline" id="laserPipelineString">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Laser <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" onclick="handleClusterLink('4P Machine Hub')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">4P Machine <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" onclick="handleClusterLink('Ready For Bottom Pool')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Ready For Bottom <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" onclick="handleClusterLink('Auto Bottom Array')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Auto Bottom <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" onclick="handleClusterLink('Manual Bottom Hub')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Manual Bottom <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" onclick="handleClusterLink('PEL Terminal Link')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">PEL <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" onclick="handleClusterLink('Mathala Processing Station')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Mathala <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" onclick="handleClusterLink('Sorting Table Array')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Table <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" onclick="handleClusterLink('Police Check Station')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Police Check <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" onclick="handleClusterLink('Machine Tracker System')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Machine Tracker <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box future-ai-node" onclick="handleClusterLink('Global AI Market Anti-Loss Core')">
+                <div class="node-pipeline" style="color: rgba(0, 255, 135, 0.6);">ANTI-LOSS INTERACTION PROTECTION SYSTEM ONLINE<br>[GLOBAL ARBITRAGE ACTIVE]</div>
+                <div class="node-identity">AI Global Market & Anti-Loss <span class="live-tag" style="background-color: var(--accent-green); box-shadow: 0 0 8px var(--accent-green);"></span></div>
+            </div>
+
+        </div>
+
+        <div class="bottom-dock">
+            <div class="system-status-string" id="footerClockLive">SYSTEM ONLINE</div>
+            <button class="settings-trigger" onclick="openMasterConfigurationGrid(event)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <span>SETTINGS</span>
+            </button>
+        </div>
+
+    </div>
+
+    <div class="modal-overlay" id="directorGateOverlay">
+        <div class="modal-window">
+            <button class="modal-close-x" onclick="closeDirectorSecureGate()">&#10005;</button>
+            <div class="modal-title">Director Dual-Channel Verification</div>
+            <div class="input-group">
+                <label>Active Identity Transmission Routing Gateways</label>
+                <div class="otp-routing-select">
+                    <div class="channel-card"><input type="checkbox" checked disabled> <span>Mobile Endpoint</span></div>
+                    <div class="channel-card"><input type="checkbox" checked disabled> <span>Secure Mail Server</span></div>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="secureOtpField">Enter Synchronized 6-Digit Secondary OTP Code</label>
+                <input type="password" maxlength="6" id="secureOtpField" class="secure-input" placeholder="••••••" autocomplete="off">
+            </div>
+            <button class="action-execution-btn" onclick="executeDirectorGateAuthorization()">Verify Identity Metrics & Enter</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="masterSettingsOverlay">
+        <div class="modal-window">
+            <button class="modal-close-x" onclick="closeMasterConfigurationGrid()">&#10005;</button>
+            <div class="modal-title">Master Settings Console</div>
+            
+            <div class="settings-control-grid">
+                
+                <div class="control-block">
+                    <h4>Director Realtime Profit/Loss Mode</h4>
+                    <div class="selection-options-row">
+                        <button class="option-selector-btn active" id="btnModeProfit" onclick="simulateInternationalChart('profit')">Mat Green (Profit)</button>
+                        <button class="option-selector-btn" id="btnModeLoss" onclick="simulateInternationalChart('loss')">Mat Red (Loss)</button>
+                    </div>
+                </div>
+
+                <div class="control-block">
+                    <h4>Administrative Process Lock Authorization</h4>
+                    <div class="input-group" style="margin-bottom:10px; margin-top:5px;">
+                        <input type="password" id="directorOverridePass" class="secure-input" placeholder="Enter Director Master Password" style="font-size:12px; padding:8px;">
+                    </div>
+                    <button class="action-execution-btn" onclick="processDirectorOverrideClearance()" style="padding:8px; font-size:11px;">Authorize Override & Reset Trailing Blocks</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chartPath = document.getElementById('masterChartPath');
+        const chartArea = document.getElementById('masterChartArea');
+
+        const marketStates = {
+            profit: {
+                stroke: "#00ff87", 
+                fill: "url(#chartGlowGreen)",
+                path: "M0,80 L150,35 L300,100 L450,25 L600,120 L750,45 L900,110 L1050,35 L1200,70",
+                area: "M0,80 L150,35 L300,100 L450,25 L600,120 L750,45 L900,110 L1050,35 L1200,70 L1200,150 L0,150 Z"
+            },
+            loss: {
+                stroke: "#ff3366", 
+                fill: "url(#chartGlowRed)",
+                path: "M0,50 L150,100 L300,70 L450,130 L600,60 L750,120 L900,80 L1050,140 L1200,120",
+                area: "M0,50 L150,100 L300,70 L450,130 L600,60 L750,120 L900,80 L1050,140 L1200,120 L1200,150 L0,150 Z"
+            }
+        };
+
+        function simulateInternationalChart(stateKey) {
+            if(stateKey === 'profit') {
+                document.getElementById('btnModeProfit').classList.add('active');
+                document.getElementById('btnModeLoss').classList.remove('active');
+            } else {
+                document.getElementById('btnModeLoss').classList.add('active');
+                document.getElementById('btnModeProfit').classList.remove('active');
+            }
+            chartPath.setAttribute('stroke', marketStates[stateKey].stroke);
+            chartPath.setAttribute('d', marketStates[stateKey].path);
+            chartArea.setAttribute('fill', marketStates[stateKey].fill);
+            chartArea.setAttribute('d', marketStates[stateKey].area);
+        }
+
+        // Live Overdue Sim Component
+        setTimeout(() => {
+            const laserNode = document.getElementById('laserNodeTracker');
+            const laserPipelineText = document.getElementById('laserPipelineString');
+            if(laserNode && laserPipelineText) {
+                laserNode.classList.add('overdue-alert');
+                laserPipelineText.innerHTML = `<span class="overdue-text">OVERDUE TIME THRESHOLD EXCEEDED</span><br>[PROCESS TERMINAL LOCKED - AWAITING DIRECTOR RESET]`;
+            }
+        }, 4000); 
+
+        function processDirectorOverrideClearance() {
+            const passwordInput = document.getElementById('directorOverridePass').value;
+            if(passwordInput === "admin") { 
+                const laserNode = document.getElementById('laserNodeTracker');
+                const laserPipelineText = document.getElementById('laserPipelineString');
+                
+                laserNode.classList.remove('overdue-alert');
+                laserPipelineText.innerHTML = `AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]`;
+                document.getElementById('directorOverridePass').value = "";
+                alert("Master Override Clearance Verified. Downstream Pipeline Unlocked.");
+                closeMasterConfigurationGrid();
+            } else {
+                alert("Authorization Denied. Master Validation Key Invalid.");
+            }
+        }
+
+        // Window Event Triggers Fixed Framework
+        function triggerFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error(`Error enabling fullscreen: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        function triggerMinimize(e) { if(e) e.stopPropagation(); alert("System minimized to background execution matrix."); }
+        function triggerZoom(e) { if(e) e.stopPropagation(); triggerFullScreen(); }
+        function triggerClose(e) { if(e) e.stopPropagation(); if (confirm("Terminate active connection to Raghuveer Diamond Terminal?")) window.close(); }
+
+        // Overlay Toggle Mechanisms
+        function openDirectorSecureGate() {
+            document.getElementById('secureOtpField').value = "";
+            document.getElementById('directorGateOverlay').classList.add('active');
+        }
+        function closeDirectorSecureGate() { document.getElementById('directorGateOverlay').classList.remove('active'); }
+        function executeDirectorGateAuthorization() {
+            const code = document.getElementById('secureOtpField').value;
+            if(code.length === 6) {
+                alert("Authorization Validated. Connecting Secure Channel Room.");
+                closeDirectorSecureGate();
+            } else {
+                alert("Invalid Transmission Metrics.");
+            }
+        }
+
+        function openMasterConfigurationGrid(e) { if(e) e.stopPropagation(); document.getElementById('masterSettingsOverlay').classList.add('active'); }
+        function closeMasterConfigurationGrid() { document.getElementById('masterSettingsOverlay').classList.remove('active'); }
+        function handleClusterLink(nodeLabel) { alert(`Opening Direct Data Stream Routing Tunnel: ${nodeLabel}`); }
+
+        // Clock component
+        function runMasterClock() {
+            const dt = new Date();
+            document.getElementById('footerClockLive').innerText = `SYSTEM GRID STATUS: SECURE OPERATIONAL STATE | TIME: ${dt.toUTCString()}`;
+        }
+        setInterval(runMasterClock, 1000);
+        runMasterClock();
+    </script>
+</body>
+</html>
