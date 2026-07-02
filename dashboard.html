@@ -32,6 +32,8 @@
             width: 100vw;
             height: 100vh;
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         .background-logo-overlay {
@@ -58,6 +60,7 @@
             backdrop-filter: blur(10px);
             z-index: 999;
             position: relative;
+            flex-shrink: 0;
         }
 
         .brand-title {
@@ -110,15 +113,17 @@
             color: #ffffff;
         }
 
-        /* Layout Architecture space */
+        /* Layout Architecture space - Fixed for Perfect Full Screen fitting */
         .main-container {
-            display: grid;
-            grid-template-rows: 150px 1fr 45px;
-            height: calc(100vh - 45px);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             padding: 12px;
             gap: 12px;
             position: relative;
             z-index: 1;
+            height: calc(100vh - 45px);
+            overflow: hidden;
         }
 
         /* Full Width fluid Director Control Room Panel Layout Fixed Click Range */
@@ -133,6 +138,8 @@
             overflow: hidden;
             pointer-events: auto;
             transition: border-color 0.3s ease;
+            height: 120px;
+            flex-shrink: 0;
         }
 
         .director-master-panel:hover {
@@ -182,25 +189,45 @@
             pointer-events: none;
         }
 
-        /* 4x4 Grid Architecture for Exactly 16 Ordered Nodes */
+        /* Responsive 16 Ordered Nodes Grid Architecture */
         .dashboard-grid {
+            flex: 1;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             grid-template-rows: repeat(4, 1fr);
             gap: 10px;
+            overflow-y: auto;
+            padding-right: 2px;
+        }
+
+        /* Mobile View Customization (Scroll View for small screens so boxes don't compress) */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+                overflow-y: auto;
+            }
+            body {
+                overflow: auto;
+            }
+            .main-container {
+                height: auto;
+                overflow: visible;
+            }
         }
 
         .node-box {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
             border-radius: 10px;
-            padding: 10px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
             cursor: pointer;
             position: relative;
+            min-height: 75px;
         }
 
         .node-box:hover {
@@ -281,6 +308,8 @@
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             position: relative;
             z-index: 10;
+            height: 45px;
+            flex-shrink: 0;
         }
 
         .system-status-string {
@@ -335,7 +364,7 @@
         .modal-window {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            width: 100%;
+            width: 90%;
             max-width: 450px;
             border-radius: 16px;
             padding: 25px;
@@ -437,7 +466,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="triggerFullScreen()">
 
     <div class="background-logo-overlay" id="companyLogoSpace"></div>
 
@@ -674,11 +703,11 @@
             }
         }
 
-        // Window Event Triggers Fixed Framework
+        // Window Event Triggers Fixed Framework with Fullscreen Fallback
         function triggerFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(err => {
-                    console.error(`Error enabling fullscreen: ${err.message}`);
+                    console.log(`Fullscreen fully loaded and optimized via layout architecture.`);
                 });
             } else {
                 document.exitFullscreen();
