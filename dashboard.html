@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Raghuveer Diamond - Master Autonomous Dashboard</title>
     <style>
         :root {
@@ -48,14 +48,14 @@
             z-index: 0;
         }
 
-        /* Top Bar with Live Glow Styling and Exactly 3 Window Controls */
+        /* Top Bar Configuration */
         .window-control-bar {
-            height: 45px;
+            height: 40px;
             background-color: rgba(18, 27, 45, 0.9);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 15px;
             border-bottom: 1px solid var(--border-color);
             backdrop-filter: blur(10px);
             z-index: 999;
@@ -64,7 +64,7 @@
         }
 
         .brand-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             letter-spacing: 2px;
             color: var(--accent-blue);
@@ -80,14 +80,14 @@
 
         .window-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             position: relative;
             z-index: 1000;
         }
 
         .action-btn {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 6px;
             border: 1px solid var(--border-color);
             background: rgba(255, 255, 255, 0.05);
@@ -96,7 +96,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 12px;
             pointer-events: auto;
             transition: all 0.2s ease;
         }
@@ -113,32 +113,33 @@
             color: #ffffff;
         }
 
-        /* Layout Architecture space - Fixed for Perfect Full Screen fitting */
+        /* Layout Architecture space - Fixed to consume 100% viewport space without cutoffs */
         .main-container {
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 12px;
-            gap: 12px;
+            padding: 8px;
+            gap: 8px;
             position: relative;
             z-index: 1;
-            height: calc(100vh - 45px);
+            height: calc(100vh - 40px);
             overflow: hidden;
         }
 
-        /* Full Width fluid Director Control Room Panel Layout Fixed Click Range */
+        /* Director Control Panel Fluid Height */
         .director-master-panel {
             background: linear-gradient(135deg, rgba(18, 27, 45, 0.95), rgba(5, 8, 16, 0.95));
             border: 1px solid rgba(0, 210, 255, 0.3);
-            border-radius: 12px;
-            padding: 15px;
+            border-radius: 10px;
+            padding: 10px 15px;
             display: flex;
             position: relative;
             cursor: pointer;
             overflow: hidden;
             pointer-events: auto;
             transition: border-color 0.3s ease;
-            height: 120px;
+            height: 18vh;
+            min-height: 90px;
             flex-shrink: 0;
         }
 
@@ -158,21 +159,20 @@
         }
 
         .director-meta h2 {
-            font-size: 16px;
+            font-size: clamp(14px, 4vw, 18px);
             letter-spacing: 1.5px;
             text-transform: uppercase;
             color: var(--accent-blue);
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .director-meta p {
-            font-size: 10px;
+            font-size: clamp(9px, 2.5vw, 11px);
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        /* Full Span Area Chart Layer - Totally Blocked on Interactions */
         .chart-visual-fullwidth {
             position: absolute;
             top: 0;
@@ -189,54 +189,37 @@
             pointer-events: none;
         }
 
-        /* Responsive 16 Ordered Nodes Grid Architecture */
+        /* 4x4 Grid Architecture - Fixed 100% fitting for ALL devices */
         .dashboard-grid {
             flex: 1;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             grid-template-rows: repeat(4, 1fr);
-            gap: 10px;
-            overflow-y: auto;
-            padding-right: 2px;
-        }
-
-        /* Mobile View Customization (Scroll View for small screens so boxes don't compress) */
-        @media (max-width: 768px) {
-            .dashboard-grid {
-                grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: auto;
-                overflow-y: auto;
-            }
-            body {
-                overflow: auto;
-            }
-            .main-container {
-                height: auto;
-                overflow: visible;
-            }
+            gap: 6px;
+            overflow: hidden;
         }
 
         .node-box {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 12px;
+            border-radius: 8px;
+            padding: 6px 8px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.2s ease;
             cursor: pointer;
             position: relative;
-            min-height: 75px;
+            overflow: hidden;
+            height: 100%;
         }
 
         .node-box:hover {
-            transform: translateY(-2px);
+            transform: translateY(-1px);
             border-color: var(--accent-blue);
-            box-shadow: 0 4px 12px rgba(0, 210, 255, 0.12);
+            box-shadow: 0 2px 8px rgba(0, 210, 255, 0.15);
         }
 
-        /* Delay Tracking Warning Framework Alerts */
         .node-box.overdue-alert {
             border-color: var(--accent-orange);
             animation: pulseWarning 2s infinite ease-in-out;
@@ -244,15 +227,18 @@
 
         @keyframes pulseWarning {
             0% { box-shadow: 0 0 4px rgba(255, 153, 0, 0.2); }
-            50% { box-shadow: 0 0 16px rgba(255, 153, 0, 0.5); border-color: var(--accent-orange); }
+            50% { box-shadow: 0 0 12px rgba(255, 153, 0, 0.4); border-color: var(--accent-orange); }
             100% { box-shadow: 0 0 4px rgba(255, 153, 0, 0.2); }
         }
 
+        /* Adaptive Text Engine to stop cutoffs on mobile screens */
         .node-pipeline {
-            font-size: 10px;
+            font-size: clamp(7.5px, 2.2vw, 10px);
             color: var(--text-muted);
-            letter-spacing: 0.5px;
-            line-height: 1.3;
+            letter-spacing: 0.2px;
+            line-height: 1.2;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .overdue-text {
@@ -261,76 +247,80 @@
         }
 
         .node-identity {
-            font-size: 11px;
+            font-size: clamp(8.5px, 2.5vw, 11px);
             font-weight: 600;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
-            margin-top: 5px;
+            margin-top: 2px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 4px;
         }
 
         .live-tag {
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
             border-radius: 50%;
             background-color: var(--accent-green);
-            box-shadow: 0 0 8px var(--accent-green);
+            box-shadow: 0 0 6px var(--accent-green);
+            flex-shrink: 0;
         }
 
         .node-box.overdue-alert .live-tag {
             background-color: var(--accent-orange);
-            box-shadow: 0 0 8px var(--accent-orange);
+            box-shadow: 0 0 6px var(--accent-orange);
         }
 
-        /* Future Advanced AI System Engine Box 16 Styling */
         .future-ai-node {
-            border: 1px solid rgba(0, 255, 135, 0.3);
-            background: linear-gradient(135deg, rgba(18, 27, 45, 0.9), rgba(0, 255, 135, 0.03));
+            border: 1px solid rgba(0, 255, 135, 0.25);
+            background: linear-gradient(135deg, rgba(18, 27, 45, 0.9), rgba(0, 255, 135, 0.02));
         }
 
         .future-ai-node:hover {
             border-color: var(--accent-green);
-            box-shadow: 0 0 15px rgba(0, 255, 135, 0.2);
+            box-shadow: 0 0 12px rgba(0, 255, 135, 0.15);
         }
 
         .future-ai-node .node-identity {
             color: var(--accent-green);
         }
 
-        /* Bottom Fixed Space Control Dock */
+        /* Bottom Status Control Dock Configuration */
         .bottom-dock {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 5px;
+            padding: 2px 4px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             position: relative;
             z-index: 10;
-            height: 45px;
+            height: 35px;
             flex-shrink: 0;
         }
 
         .system-status-string {
-            font-size: 11px;
+            font-size: clamp(8px, 2.2vw, 11px);
             color: var(--text-muted);
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
         }
 
         .settings-trigger {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid var(--border-color);
             color: var(--accent-blue);
-            border-radius: 8px;
-            padding: 6px 14px;
+            border-radius: 6px;
+            padding: 4px 10px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 11px;
+            gap: 6px;
+            font-size: clamp(8.5px, 2.4vw, 11px);
             font-weight: 600;
-            letter-spacing: 0.5px;
             pointer-events: auto;
             transition: all 0.3s ease;
         }
@@ -338,10 +328,10 @@
         .settings-trigger:hover {
             color: #ffffff;
             background-color: var(--accent-blue);
-            box-shadow: 0 0 12px rgba(0, 210, 255, 0.4);
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
         }
 
-        /* Functional Popup Interfaces Structure */
+        /* Overlay Modals Engine */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -364,62 +354,62 @@
         .modal-window {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            width: 90%;
-            max-width: 450px;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            width: 92%;
+            max-width: 420px;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
             position: relative;
         }
 
         .modal-close-x {
             position: absolute;
-            top: 15px; right: 15px;
+            top: 12px; right: 12px;
             background: none; border: none;
             color: var(--text-muted);
-            cursor: pointer; font-size: 18px;
+            cursor: pointer; font-size: 16px;
         }
 
         .modal-close-x:hover { color: var(--accent-red); }
 
         .modal-title {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             color: var(--accent-blue);
             border-bottom: 1px solid rgba(0, 210, 255, 0.1);
-            padding-bottom: 8px;
+            padding-bottom: 6px;
         }
 
         .otp-routing-select {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .channel-card {
             flex: 1;
             border: 1px solid var(--border-color);
             background: rgba(255, 255, 255, 0.02);
-            padding: 10px;
-            border-radius: 8px;
+            padding: 8px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 10px;
+            gap: 6px;
+            font-size: 9px;
             color: var(--text-muted);
             text-transform: uppercase;
         }
 
-        .input-group { margin-bottom: 15px; }
+        .input-group { margin-bottom: 12px; }
         .input-group label {
             display: block;
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
             color: var(--text-muted);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             letter-spacing: 1px;
         }
 
@@ -427,11 +417,11 @@
             width: 100%;
             background: rgba(5, 8, 16, 0.6);
             border: 1px solid var(--border-color);
-            padding: 10px 14px;
-            border-radius: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
             color: var(--text-main);
-            font-size: 14px;
-            letter-spacing: 1.5px;
+            font-size: 13px;
+            letter-spacing: 1px;
         }
 
         .secure-input:focus { outline: none; border-color: var(--accent-blue); }
@@ -440,24 +430,25 @@
             width: 100%;
             background: linear-gradient(90deg, #00c6ff, #0072ff);
             border: none;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 6px;
             color: var(--text-main);
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 114, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 114, 255, 0.3);
+            font-size: 12px;
         }
 
-        .settings-control-grid { display: flex; flex-direction: column; gap: 12px; }
-        .control-block { background: rgba(5, 8, 16, 0.4); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; }
-        .control-block h4 { font-size: 11px; text-transform: uppercase; color: var(--text-main); margin-bottom: 8px; letter-spacing: 1px; }
-        .selection-options-row { display: flex; gap: 8px; }
+        .settings-control-grid { display: flex; flex-direction: column; gap: 10px; }
+        .control-block { background: rgba(5, 8, 16, 0.4); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; }
+        .control-block h4 { font-size: 10px; text-transform: uppercase; color: var(--text-main); margin-bottom: 6px; letter-spacing: 1px; }
+        .selection-options-row { display: flex; gap: 6px; }
         
         .option-selector-btn {
             flex: 1; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color);
-            color: var(--text-muted); padding: 8px; border-radius: 6px; font-size: 10px;
+            color: var(--text-muted); padding: 6px; border-radius: 4px; font-size: 9px;
             text-transform: uppercase; cursor: pointer; transition: all 0.2s ease;
         }
 
@@ -582,8 +573,8 @@
             </div>
 
             <div class="node-box future-ai-node" onclick="handleClusterLink('Global AI Market Anti-Loss Core')">
-                <div class="node-pipeline" style="color: rgba(0, 255, 135, 0.6);">ANTI-LOSS INTERACTION PROTECTION SYSTEM ONLINE<br>[GLOBAL ARBITRAGE ACTIVE]</div>
-                <div class="node-identity">AI Global Market & Anti-Loss <span class="live-tag" style="background-color: var(--accent-green); box-shadow: 0 0 8px var(--accent-green);"></span></div>
+                <div class="node-pipeline" style="color: rgba(0, 255, 135, 0.6);">ANTI-LOSS INTERACTION PROTECTION<br>[GLOBAL ARBITRAGE ACTIVE]</div>
+                <div class="node-identity">AI Global Market <span class="live-tag" style="background-color: var(--accent-green); box-shadow: 0 0 8px var(--accent-green);"></span></div>
             </div>
 
         </div>
@@ -591,7 +582,7 @@
         <div class="bottom-dock">
             <div class="system-status-string" id="footerClockLive">SYSTEM ONLINE</div>
             <button class="settings-trigger" onclick="openMasterConfigurationGrid(event)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                 <span>SETTINGS</span>
             </button>
         </div>
@@ -677,22 +668,17 @@
             chartArea.setAttribute('d', marketStates[stateKey].area);
         }
 
-        // Live Overdue Sim Component
-        setTimeout(() => {
-            const laserNode = document.getElementById('laserNodeTracker');
-            const laserPipelineText = document.getElementById('laserPipelineString');
-            if(laserNode && laserPipelineText) {
-                laserNode.classList.add('overdue-alert');
-                laserPipelineText.innerHTML = `<span class="overdue-text">OVERDUE TIME THRESHOLD EXCEEDED</span><br>[PROCESS TERMINAL LOCKED - AWAITING DIRECTOR RESET]`;
-            }
-        }, 4000); 
+        // Live Overdue Alert Loop
+        const laserNode = document.getElementById('laserNodeTracker');
+        const laserPipelineText = document.getElementById('laserPipelineString');
+        if(laserNode && laserPipelineText) {
+            laserNode.classList.add('overdue-alert');
+            laserPipelineText.innerHTML = `<span class="overdue-text">OVERDUE EXCEEDED</span><br>[TERMINAL LOCKED]`;
+        }
 
         function processDirectorOverrideClearance() {
             const passwordInput = document.getElementById('directorOverridePass').value;
             if(passwordInput === "admin") { 
-                const laserNode = document.getElementById('laserNodeTracker');
-                const laserPipelineText = document.getElementById('laserPipelineString');
-                
                 laserNode.classList.remove('overdue-alert');
                 laserPipelineText.innerHTML = `AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]`;
                 document.getElementById('directorOverridePass').value = "";
@@ -703,11 +689,11 @@
             }
         }
 
-        // Window Event Triggers Fixed Framework with Fullscreen Fallback
+        // Fullscreen Controls Fixed
         function triggerFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Fullscreen fully loaded and optimized via layout architecture.`);
+                    console.log(`Fullscreen fully loaded and optimized via fluid grid matrix.`);
                 });
             } else {
                 document.exitFullscreen();
@@ -717,7 +703,7 @@
         function triggerZoom(e) { if(e) e.stopPropagation(); triggerFullScreen(); }
         function triggerClose(e) { if(e) e.stopPropagation(); if (confirm("Terminate active connection to Raghuveer Diamond Terminal?")) window.close(); }
 
-        // Overlay Toggle Mechanisms
+        // Modal Interfaces
         function openDirectorSecureGate() {
             document.getElementById('secureOtpField').value = "";
             document.getElementById('directorGateOverlay').classList.add('active');
@@ -737,10 +723,10 @@
         function closeMasterConfigurationGrid() { document.getElementById('masterSettingsOverlay').classList.remove('active'); }
         function handleClusterLink(nodeLabel) { alert(`Opening Direct Data Stream Routing Tunnel: ${nodeLabel}`); }
 
-        // Clock component
+        // Live Clock Component
         function runMasterClock() {
             const dt = new Date();
-            document.getElementById('footerClockLive').innerText = `SYSTEM GRID STATUS: SECURE OPERATIONAL STATE | TIME: ${dt.toUTCString()}`;
+            document.getElementById('footerClockLive').innerText = `GRID STATUS: SECURE OPERATIONAL STATE | TIME: ${dt.toUTCString()}`;
         }
         setInterval(runMasterClock, 1000);
         runMasterClock();
