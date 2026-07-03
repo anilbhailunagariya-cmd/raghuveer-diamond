@@ -185,7 +185,7 @@
             height: 100%;
         }
 
-        /* Smooth Transition for Live Svg Path and Rect Elements */
+        /* Smooth Transition for Live Svg Elements */
         .live-chart-svg path, .live-chart-svg rect, .live-chart-svg circle, .live-chart-svg line {
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -361,6 +361,7 @@
             letter-spacing: 1px;
         }
 
+        /* Radio Group Gate Selection Matrix */
         .otp-routing-select { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
         
         .channel-card {
@@ -369,7 +370,7 @@
             font-size: 10px; color: #5BC0BE; text-transform: uppercase; cursor: pointer;
             transition: 0.2s;
         }
-        .channel-card input[type="checkbox"] {
+        .channel-card input[type="radio"] {
             accent-color: #5BC0BE;
             cursor: pointer;
         }
@@ -390,6 +391,26 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Biometric Layout */
+        .biometric-sub-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 8px;
+        }
+        .sub-bio-label {
+            font-size: 9px;
+            color: #5BC0BE;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+        .sub-bio-label input[type="radio"] {
+            accent-color: #2ECC71;
+        }
+
         .biometric-scanner-box {
             display: flex;
             flex-direction: column;
@@ -398,12 +419,12 @@
             padding: 15px;
             gap: 10px;
         }
+        
+        /* Dynamic SVG Switcher for Face or Fingerprint Scanner Graphic */
         .laser-fingerprint-node {
             width: 50px;
             height: 50px;
             position: relative;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%232ECC71" stroke-width="1" stroke-linecap="round"><path d="M12 2a10 10 0 0 0-4 19.18M12 5a7 7 0 0 0-2 13.71M12 8a4 4 0 0 0 0 8"/></svg>') no-repeat center;
-            background-size: contain;
         }
         .laser-scanning-line {
             position: absolute;
@@ -556,38 +577,50 @@
 
     </div>
 
-    <!-- Modals Configuration Area -->
+    <!-- Modals Configuration Area (Security Gate Integrated) -->
     <div class="modal-overlay" id="directorGateOverlay">
         <div class="modal-window">
             <button class="modal-close-x" onclick="closeDirectorSecureGate()">✕</button>
             <div class="modal-title">MAIN OFFICE SECURITY GATE</div>
             <div class="input-group">
-                <label>Active Identity Verification Channels (Select Any 1)</label>
+                <label>Active Identity Verification Channel (Select 1)</label>
                 <div class="otp-routing-select">
                     
-                    <div class="channel-card" onclick="toggleChannelModule('mobileCheck', 'moduleMobile')">
-                        <input type="checkbox" id="mobileCheck" onclick="event.stopPropagation();"> <span>Mobile Endpoint OTP</span>
+                    <!-- Radio Button Matrix Controls Single Item Selection -->
+                    <div class="channel-card" onclick="triggerChannelSelection('mobileRadio')">
+                        <input type="radio" id="mobileRadio" name="secureChannelGate" onclick="event.stopPropagation(); triggerChannelSelection('mobileRadio')"> <span>Mobile Endpoint OTP</span>
                     </div>
                     <div id="moduleMobile" class="dynamic-sub-module">
                         <label style="font-size: 9px; color: #5BC0BE; display:block; margin-bottom:4px;">ENTER REGISTERED MOBILE NO.</label>
                         <input type="tel" class="secure-input" placeholder="+91 XXXXX XXXXX" style="padding: 6px 10px; font-size:12px;">
                     </div>
 
-                    <div class="channel-card" onclick="toggleChannelModule('mailCheck', 'moduleMail')">
-                        <input type="checkbox" id="mailCheck" onclick="event.stopPropagation();"> <span>Secure Mail Server OTP</span>
+                    <div class="channel-card" onclick="triggerChannelSelection('mailRadio')">
+                        <input type="radio" id="mailRadio" name="secureChannelGate" onclick="event.stopPropagation(); triggerChannelSelection('mailRadio')"> <span>Secure Mail Server OTP</span>
                     </div>
                     <div id="moduleMail" class="dynamic-sub-module">
                         <label style="font-size: 9px; color: #5BC0BE; display:block; margin-bottom:4px;">ENTER SECURE DIRECTOR EMAIL ID</label>
                         <input type="email" class="secure-input" placeholder="director@raghuveerdiamond.com" style="padding: 6px 10px; font-size:12px;">
                     </div>
 
-                    <div class="channel-card" style="border-color: rgba(46, 204, 113, 0.4);" onclick="toggleChannelModule('biometricCheck', 'moduleBiometric')">
-                        <input type="checkbox" id="biometricCheck" onclick="event.stopPropagation();"> <span style="color: #2ECC71;">Biometric Scan (Retina/Finger)</span>
+                    <div class="channel-card" style="border-color: rgba(46, 204, 113, 0.4);" onclick="triggerChannelSelection('biometricRadio')">
+                        <input type="radio" id="biometricRadio" name="secureChannelGate" onclick="event.stopPropagation(); triggerChannelSelection('biometricRadio')"> <span style="color: #2ECC71;">Biometric Scan Matrix</span>
                     </div>
                     <div id="moduleBiometric" class="dynamic-sub-module" style="border-color: rgba(46, 204, 113, 0.3);">
+                        
+                        <!-- Inner Radio Switcher for Face or Fingerprint Selection -->
+                        <div class="biometric-sub-options">
+                            <label class="sub-bio-label" onclick="event.stopPropagation(); selectBiometricMode('finger')">
+                                <input type="radio" id="bioFingerRadio" name="subBioType" checked> Fingerprint Scan
+                            </label>
+                            <label class="sub-bio-label" onclick="event.stopPropagation(); selectBiometricMode('face')">
+                                <input type="radio" id="bioFaceRadio" name="subBioType"> Face Lock Scan
+                            </label>
+                        </div>
+
                         <div class="biometric-scanner-box">
-                            <div class="laser-fingerprint-node">
-                                <div class="laser-scanning-line"></div>
+                            <div class="laser-fingerprint-node" id="biometricIconContainer">
+                                <!-- Vector Loader Target Inside Script -->
                             </div>
                             <span id="biometricStatusText" style="font-size:9px; color:#2ECC71; font-weight:bold; letter-spacing:1px;">PLACE FINGER ON PHONE SCANNER...</span>
                         </div>
@@ -610,7 +643,6 @@
             <div class="modal-title">Master Settings Console</div>
             <div class="settings-control-grid">
 
-                <!-- NEW SECTION: 1 Day, 7 Days, 1 Month, 1 Year Time Metrics Filter Matrix -->
                 <div class="control-block">
                     <h4>Graph Performance Time Filter</h4>
                     <div class="selection-options-row">
@@ -621,7 +653,6 @@
                     </div>
                 </div>
 
-                <!-- 5 Visual Designs Selection Row -->
                 <div class="control-block">
                     <h4>Director Main Office Graph Matrix Design</h4>
                     <div class="selection-options-row" style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
@@ -654,21 +685,24 @@
 
     <script>
         // Global Systems Configurations
-        let liveProfitStatus = true; // Auto calculated from system metrics
-        let activeDesignStyle = "pillars"; // Default design profile
-        let activeTimeDuration = "1d"; // Default time range matrix
+        let liveProfitStatus = true;
+        let activeDesignStyle = "pillars";
+        let activeTimeDuration = "1d";
+        let activeBiometricType = "finger"; // Default sub biometric state
 
-        // Generates fluid, customized vector matrix maps matching selected layout options
+        const svgIcons = {
+            finger: `<div class="laser-scanning-line"></div><svg viewBox="0 0 24 24" fill="none" stroke="%232ECC71" stroke-width="1" stroke-linecap="round" style="width:100%;height:100%"><path d="M12 2a10 10 0 0 0-4 19.18M12 5a7 7 0 0 0-2 13.71M12 8a4 4 0 0 0 0 8"/></svg>`,
+            face: `<div class="laser-scanning-line"></div><svg viewBox="0 0 24 24" fill="none" stroke="%232ECC71" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2 M9 10h.01M15 10h.01M10 15s1 1 2 1 2-1 2-1"/></svg>`
+        };
+
+        // Generates fluid vector graph paths matching runtime parameters
         function generateLiveVectorGraph() {
             const hexColor = liveProfitStatus ? "var(--matte-green)" : "var(--matte-red)";
-            
-            // Scaler modifiers depending on the chosen time horizon
             let rangeMultiplier = 1;
             if (activeTimeDuration === "7d") rangeMultiplier = 0.75;
             if (activeTimeDuration === "1m") rangeMultiplier = 0.5;
             if (activeTimeDuration === "1y") rangeMultiplier = 1.2;
 
-            // Randomized baseline matrix coordinates mimicking streaming factory processing data
             const offsetA = Math.max(5, Math.floor(Math.random() * 35 * rangeMultiplier));
             const offsetB = Math.max(5, Math.floor(Math.random() * 55 * rangeMultiplier));
             const offsetC = Math.max(5, Math.floor(Math.random() * 40 * rangeMultiplier));
@@ -720,48 +754,95 @@
                             <circle cx="260" cy="40" r="7" fill="${hexColor}" />
                           </svg>`
             };
-
             return profiles[activeDesignStyle];
         }
 
-        // Live Re-rendering Engine for Main Office Window
         function updateMainOfficeVisual() {
             const container = document.getElementById('mainOfficeChartContainer');
             container.innerHTML = generateLiveVectorGraph();
         }
 
-        // Action Function: Switch Graph Duration Filter (1d, 7d, 1m, 1y)
+        // Active Mutex Radio Routing Selector Logic
+        function triggerChannelSelection(targetRadioId) {
+            const targetRadio = document.getElementById(targetRadioId);
+            targetRadio.checked = true;
+
+            const modules = {
+                mobileRadio: 'moduleMobile',
+                mailRadio: 'moduleMail',
+                biometricRadio: 'moduleBiometric'
+            };
+
+            Object.keys(modules).forEach(key => {
+                const subBox = document.getElementById(modules[key]);
+                if(key === targetRadioId) {
+                    subBox.style.display = "block";
+                    if(key === 'biometricRadio') executeDynamicBiometricLoop();
+                } else {
+                    subBox.style.display = "none";
+                }
+            });
+        }
+
+        // Sub Biometric Channel Switcher
+        function selectBiometricMode(modeKey) {
+            activeBiometricType = modeKey;
+            if(modeKey === 'finger') {
+                document.getElementById('bioFingerRadio').checked = true;
+                document.getElementById('bioFaceRadio').checked = false;
+            } else {
+                document.getElementById('bioFingerRadio').checked = false;
+                document.getElementById('bioFaceRadio').checked = true;
+            }
+            executeDynamicBiometricLoop();
+        }
+
+        let biometricSuccess = false;
+        let activeScanTimer = null;
+
+        function executeDynamicBiometricLoop() {
+            biometricSuccess = false;
+            if(activeScanTimer) clearInterval(activeScanTimer);
+
+            const iconFrame = document.getElementById('biometricIconContainer');
+            const statusLabel = document.getElementById('biometricStatusText');
+
+            // Render matching background template safely
+            iconFrame.innerHTML = activeBiometricType === 'finger' ? svgIcons.finger : svgIcons.face;
+            
+            const labelStr = activeBiometricType === 'finger' ? "PLACE FINGER ON PHONE SCANNER..." : "POSITION FACE IN FRONT OF CAMERA...";
+            statusLabel.innerText = `${labelStr} [0%]`;
+            statusLabel.style.color = "#00C6FF";
+
+            let progress = 0;
+            activeScanTimer = setInterval(() => {
+                progress += 25;
+                statusLabel.innerText = `${activeBiometricType === 'finger' ? 'SCANNING FINGERPRINT' : 'SCANNING FACE STRUCTURE'}... [${progress}%]`;
+                if(progress >= 100) {
+                    clearInterval(activeScanTimer);
+                    statusLabel.innerText = `🤖 ${activeBiometricType === 'finger' ? 'FINGERPRINT' : 'FACE'} VERIFIED [SUCCESS]`;
+                    statusLabel.style.color = "#2ECC71";
+                    biometricSuccess = true;
+                }
+            }, 500);
+        }
+
         function switchGraphTimeDuration(timeKey) {
             activeTimeDuration = timeKey;
-            
-            const timeframes = ['1d', '7d', '1m', '1y'];
-            timeframes.forEach(item => {
-                document.getElementById(`time-${item}`).classList.remove('active');
-            });
-            
-            document.getElementById(`time-${timeKey}`).classList.add('active');
+            ['1d', '7d', '1m', '1y'].forEach(item => document.getElementById(`time-${item}`).classList.remove('active'));
+            document.getElementById(`time-${timeKey}`).add('active');
             updateMainOfficeVisual();
         }
 
-        // Action Function: Switch 5 Geometric Design Layouts
         function switchGraphDesignMatrix(targetDesign) {
             activeDesignStyle = targetDesign;
-            
-            const designsList = ['pillars', 'heart', 'mnc', 'high-tech', 'ai'];
-            designsList.forEach(item => {
-                document.getElementById(`btn-${item}`).classList.remove('active');
-            });
-            
+            ['pillars', 'heart', 'mnc', 'high-tech', 'ai'].forEach(item => document.getElementById(`btn-${item}`).classList.remove('active'));
             document.getElementById(`btn-${targetDesign}`).classList.add('active');
             updateMainOfficeVisual();
         }
 
-        // AUTO TRANSMISSION REALTIME SIMULATION LOOP (Keeps elements jumping up/down live)
         setInterval(() => {
-            // Alternates the state metric randomly, keeping workflow animations looping fluidly
-            if(Math.random() > 0.8) {
-                liveProfitStatus = !liveProfitStatus;
-            }
+            if(Math.random() > 0.85) liveProfitStatus = !liveProfitStatus;
             updateMainOfficeVisual();
         }, 3000);
 
@@ -775,12 +856,9 @@
         }, 5000);
 
         function processDirectorOverrideClearance() {
-            const passwordInput = document.getElementById('directorOverridePass').value;
-            if(passwordInput === "admin") {
-                const laserNode = document.getElementById('laserNodeTracker');
-                const laserPipelineText = document.getElementById('laserPipelineString');
-                laserNode.classList.remove('overdue-alert');
-                laserPipelineText.innerHTML = `AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]`;
+            if(document.getElementById('directorOverridePass').value === "admin") {
+                document.getElementById('laserNodeTracker').classList.remove('overdue-alert');
+                document.getElementById('laserPipelineString').innerHTML = `AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]`;
                 document.getElementById('directorOverridePass').value = "";
                 alert("Master Override Clearance Verified.");
                 closeMasterConfigurationGrid();
@@ -789,92 +867,55 @@
             }
         }
 
-        function triggerFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => { console.log("Fullscreen loaded."); });
-            } else {
-                document.exitFullscreen();
-            }
-        }
-        function triggerMinimize() { alert("System minimized."); }
-        function triggerClose() { if (confirm("Terminate connection?")) window.close(); }
-        
-        function toggleChannelModule(checkboxId, moduleId) {
-            const checkbox = document.getElementById(checkboxId);
-            const subModule = document.getElementById(moduleId);
-            checkbox.checked = !checkbox.checked;
-            if(checkbox.checked) {
-                subModule.style.display = "block";
-                if(checkboxId === 'biometricCheck') simulateBiometricScan();
-            } else {
-                subModule.style.display = "none";
-            }
-        }
-
-        let biometricSuccess = false;
-        function simulateBiometricScan() {
-            biometricSuccess = false;
-            const statusLabel = document.getElementById('biometricStatusText');
-            statusLabel.innerText = "SCANNING BIOMETRIC DATA... [0%]";
-            statusLabel.style.color = "#00C6FF";
-            let progress = 0;
-            const scanInterval = setInterval(() => {
-                progress += 25;
-                statusLabel.innerText = `SCANNING BIOMETRIC DATA... [${progress}%]`;
-                if(progress >= 100) {
-                    clearInterval(scanInterval);
-                    statusLabel.innerText = "🤖 BIOMETRIC TRANSMISSION VERIFIED [SUCCESS]";
-                    statusLabel.style.color = "#2ECC71";
-                    biometricSuccess = true;
-                }
-            }, 500);
-        }
-
         function openDirectorSecureGate() { 
             document.getElementById('secureOtpField').value = ""; 
             biometricSuccess = false;
-            const checkBoxes = ['mobileCheck', 'mailCheck', 'biometricCheck'];
-            const modules = ['moduleMobile', 'moduleMail', 'moduleBiometric'];
-            checkBoxes.forEach((id, index) => {
-                document.getElementById(id).checked = false;
-                document.getElementById(modules[index]).style.display = "none";
-            });
+            if(activeScanTimer) clearInterval(activeScanTimer);
+            
+            // Set default initial state to Mobile Endpoint on load
+            triggerChannelSelection('mobileRadio');
             document.getElementById('directorGateOverlay').classList.add('active'); 
         }
-        function closeDirectorSecureGate() { document.getElementById('directorGateOverlay').classList.remove('active'); }
         
+        function closeDirectorSecureGate() { 
+            if(activeScanTimer) clearInterval(activeScanTimer);
+            document.getElementById('directorGateOverlay').classList.remove('active'); 
+        }
+
         function executeDirectorGateAuthorization() {
             const code = document.getElementById('secureOtpField').value;
-            if(!document.getElementById('mobileCheck').checked && !document.getElementById('mailCheck').checked && !document.getElementById('biometricCheck').checked) {
-                alert("ACCESS DENIED: Please select at least ONE identity channel to verify.");
+            const mobileActive = document.getElementById('mobileRadio').checked;
+            const mailActive = document.getElementById('mailRadio').checked;
+            const biometricActive = document.getElementById('biometricRadio').checked;
+
+            if(biometricActive && !biometricSuccess) {
+                alert("ACCESS DENIED: Biometric scanning array processing is not yet complete.");
                 return;
             }
-            if(document.getElementById('biometricCheck').checked && !biometricSuccess) {
-                alert("ACCESS DENIED: Biometric fingerprint scan in progress.");
-                return;
-            }
+
             if(code.length === 6) {
-                alert("IDENTITY VERIFIED: Secure tunnel established.");
+                alert("IDENTITY VERIFIED: Secure tunnel established. Opening Main Office Console...");
                 closeDirectorSecureGate();
+                // DIRECT REDIRECT LINK TO YOUR NEWLY CREATED CORE FILE
+                window.location.href = 'main_office.html'; 
             } else {
-                alert("Invalid Transmission Metrics.");
+                alert("Invalid Transmission Metrics. 6-Digit Secure Key code sequence required.");
             }
         }
 
-        document.getElementById('masterSettingsOverlay').addEventListener('click', function(e) { if(e.target === this) closeMasterConfigurationGrid(); });
-        document.getElementById('directorGateOverlay').addEventListener('click', function(e) { if(e.target === this) closeDirectorSecureGate(); });
+        function triggerFullScreen() {
+            if (!document.fullscreenElement) { document.documentElement.requestFullscreen(); } 
+            else { document.exitFullscreen(); }
+        }
+        function triggerMinimize() { alert("System minimized."); }
+        function triggerClose() { if (confirm("Terminate connection?")) window.close(); }
         function openMasterConfigurationGrid() { document.getElementById('masterSettingsOverlay').classList.add('active'); }
         function closeMasterConfigurationGrid() { document.getElementById('masterSettingsOverlay').classList.remove('active'); }
         function handleClusterLink(nodeLabel) { alert(`Opening Route: ${nodeLabel}`); }
-
-        function runMasterClock() {
-            const dt = new Date();
-            document.getElementById('footerClockLive').innerText = `SYSTEM GRID STATUS: SECURE OPERATIONAL STATE | TIME: ${dt.toUTCString()}`;
-        }
+        function runMasterClock() { document.getElementById('footerClockLive').innerText = `SYSTEM GRID STATUS: SECURE OPERATIONAL STATE | TIME: ${new Date().toUTCString()}`; }
+        
         setInterval(runMasterClock, 1000);
         runMasterClock();
-
-        // Bootstrapping default configuration render cycle
         updateMainOfficeVisual();
     </script>
 </body>
