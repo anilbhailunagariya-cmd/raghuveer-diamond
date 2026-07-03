@@ -30,22 +30,10 @@
             color: var(--text-main);
             width: 100vw;
             height: 100vh;
-            position: relative;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-        }
-
-        .background-logo-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 40%;
-            height: 40%;
-            opacity: 0.03;
-            pointer-events: none;
-            z-index: 0;
+            position: relative;
         }
 
         /* Top OS Window Control Bar */
@@ -59,7 +47,6 @@
             border-bottom: 1px solid var(--border-color);
             backdrop-filter: blur(10px);
             z-index: 10;
-            position: relative;
             flex-shrink: 0;
         }
 
@@ -89,7 +76,6 @@
             justify-content: center;
             font-size: 14px;
             transition: all 0.2s ease;
-            font-weight: bold;
         }
 
         .action-btn:hover {
@@ -104,17 +90,15 @@
             color: var(--accent-red);
         }
 
-        /* Layout Architecture */
+        /* Main Container Dynamic Fitting */
         .main-container {
             flex: 1;
             display: flex;
             flex-direction: column;
             padding: 10px;
             gap: 10px;
-            position: relative;
-            z-index: 1;
-            height: calc(100vh - 40px);
             overflow: hidden;
+            height: calc(100vh - 40px);
         }
 
         /* Main Director Panel */
@@ -129,12 +113,6 @@
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .director-master-panel:hover {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.15);
         }
 
         .director-meta h2 {
@@ -151,9 +129,8 @@
             text-transform: uppercase;
         }
 
-        /* SVG Chart Area */
         .chart-visual-wrapper {
-            width: clamp(150px, 35vw, 350px);
+            width: clamp(120px, 32vw, 350px);
             height: 100%;
             display: flex;
             align-items: center;
@@ -167,7 +144,7 @@
             height: 100%;
         }
 
-        /* 4x4 Fluid Grid */
+        /* 4x4 Fluid Grid Engine */
         .dashboard-grid {
             flex: 1;
             display: grid;
@@ -185,15 +162,11 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            position: relative;
             overflow: hidden;
             height: 100%;
         }
 
         .node-box:hover {
-            transform: translateY(-1px);
             border-color: var(--accent-blue);
             box-shadow: 0 4px 12px rgba(0, 210, 255, 0.12);
         }
@@ -252,16 +225,11 @@
             background: linear-gradient(135deg, rgba(18, 27, 45, 0.9), rgba(0, 255, 135, 0.02));
         }
 
-        .future-ai-node:hover {
-            border-color: var(--accent-green);
-            box-shadow: 0 0 12px rgba(0, 255, 135, 0.15);
-        }
-
         .future-ai-node .node-identity {
             color: var(--accent-green);
         }
 
-        /* Bottom Fixed Workspace bar */
+        /* Bottom Status Dock */
         .bottom-dock {
             display: flex;
             justify-content: space-between;
@@ -276,10 +244,6 @@
             font-size: clamp(8px, 2.2vw, 11px);
             color: var(--text-muted);
             letter-spacing: 0.5px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 70%;
         }
 
         .settings-trigger {
@@ -294,16 +258,9 @@
             gap: 6px;
             font-size: clamp(8.5px, 2.4vw, 11px);
             font-weight: 600;
-            transition: all 0.3s ease;
         }
 
-        .settings-trigger:hover {
-            color: #ffffff;
-            background-color: var(--accent-blue);
-            box-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
-        }
-
-        /* Overlay Interface Structures */
+        /* Modals Overlays */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -318,10 +275,7 @@
             z-index: 100;
         }
 
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
         .modal-window {
             background: var(--bg-secondary);
@@ -330,7 +284,6 @@
             max-width: 440px;
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
             position: relative;
         }
 
@@ -342,12 +295,9 @@
             cursor: pointer; font-size: 16px;
         }
 
-        .modal-close-x:hover { color: var(--accent-red); }
-
         .modal-title {
             font-size: 13px;
             font-weight: 600;
-            letter-spacing: 1.5px;
             text-transform: uppercase;
             margin-bottom: 20px;
             color: var(--accent-blue);
@@ -355,87 +305,34 @@
             padding-bottom: 8px;
         }
 
-        .otp-routing-select {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
+        .otp-routing-select { display: flex; gap: 10px; margin-bottom: 15px; }
         .channel-card {
-            flex: 1;
-            border: 1px solid var(--border-color);
-            background: rgba(255, 255, 255, 0.01);
-            padding: 10px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 10px;
-            color: var(--text-muted);
-            text-transform: uppercase;
+            flex: 1; border: 1px solid var(--border-color); background: rgba(255, 255, 255, 0.01);
+            padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 8px;
+            font-size: 10px; color: var(--text-muted); text-transform: uppercase;
         }
 
         .input-group { margin-bottom: 15px; }
-        .input-group label {
-            display: block;
-            font-size: 10px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-            letter-spacing: 1px;
-        }
-
-        .secure-input {
-            width: 100%;
-            background: rgba(5, 8, 16, 0.6);
-            border: 1px solid var(--border-color);
-            padding: 10px 14px;
-            border-radius: 8px;
-            color: var(--text-main);
-            font-size: 13px;
-            letter-spacing: 1px;
-        }
-
-        .action-execution-btn {
-            width: 100%;
-            background: linear-gradient(90deg, #00c6ff, #0072ff);
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            color: var(--text-main);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 114, 255, 0.3);
-        }
-
+        .input-group label { display: block; font-size: 10px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+        .secure-input { width: 100%; background: rgba(5, 8, 16, 0.6); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 8px; color: var(--text-main); font-size: 13px; }
+        .action-execution-btn { width: 100%; background: linear-gradient(90deg, #00c6ff, #0072ff); border: none; padding: 12px; border-radius: 8px; color: var(--text-main); font-weight: 600; text-transform: uppercase; cursor: pointer; }
         .settings-control-grid { display: flex; flex-direction: column; gap: 12px; }
         .control-block { background: rgba(5, 8, 16, 0.4); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; }
-        .control-block h4 { font-size: 11px; text-transform: uppercase; color: var(--text-main); margin-bottom: 8px; letter-spacing: 1px; }
+        .control-block h4 { font-size: 11px; text-transform: uppercase; color: var(--text-main); margin-bottom: 8px; }
         .selection-options-row { display: flex; gap: 8px; }
-        
-        .option-selector-btn {
-            flex: 1; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color);
-            color: var(--text-muted); padding: 6px; border-radius: 4px; font-size: 10px;
-            text-transform: uppercase; cursor: pointer; transition: all 0.2s ease;
-        }
-
-        .option-selector-btn.active, .option-selector-btn:hover {
-            background: rgba(0, 210, 255, 0.1); border-color: var(--accent-blue); color: var(--text-main);
-        }
+        .option-selector-btn { flex: 1; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px; border-radius: 4px; font-size: 10px; text-transform: uppercase; cursor: pointer; }
+        .option-selector-btn.active, .option-selector-btn:hover { background: rgba(0, 210, 255, 0.1); border-color: var(--accent-blue); color: var(--text-main); }
     </style>
 </head>
 <body>
 
-    <div class="background-logo-overlay" id="companyLogoSpace"></div>
-
+    <!-- Header containing exactly 3 buttons -->
     <div class="window-control-bar">
         <div class="brand-title">Raghuveer Diamond</div>
         <div class="window-actions">
-            <button class="action-btn" onclick="triggerMinimize()" title="Minimize">&#9472;</button>
-            <button class="action-btn" onclick="triggerFullScreen()" title="Full Screen Window">&#9583;</button>
-            <button class="action-btn close-btn" onclick="triggerClose()" title="Close System">&#10005;</button>
+            <button class="action-btn" onclick="triggerMinimize()">—</button>
+            <button class="action-btn" onclick="triggerFullScreen()">⛶</button>
+            <button class="action-btn close-btn" onclick="triggerClose()">✕</button>
         </div>
     </div>
 
@@ -549,9 +446,10 @@
 
     </div>
 
+    <!-- Modals -->
     <div class="modal-overlay" id="directorGateOverlay">
         <div class="modal-window">
-            <button class="modal-close-x" onclick="closeDirectorSecureGate()">&#10005;</button>
+            <button class="modal-close-x" onclick="closeDirectorSecureGate()">✕</button>
             <div class="modal-title">Director Dual-Channel Verification</div>
             <div class="input-group">
                 <label>Active Identity Transmission Routing Gateways</label>
@@ -570,11 +468,9 @@
 
     <div class="modal-overlay" id="masterSettingsOverlay">
         <div class="modal-window">
-            <button class="modal-close-x" onclick="closeMasterConfigurationGrid()">&#10005;</button>
+            <button class="modal-close-x" onclick="closeMasterConfigurationGrid()">✕</button>
             <div class="modal-title">Master Settings Console</div>
-            
             <div class="settings-control-grid">
-                
                 <div class="control-block">
                     <h4>Director Area Chart Visualization Profile</h4>
                     <div class="selection-options-row">
@@ -583,7 +479,6 @@
                         <button class="option-selector-btn" onclick="switchChartVisual(this, 'step')">Block Step</button>
                     </div>
                 </div>
-
                 <div class="control-block">
                     <h4>Active Display Unit Parameters (1-16 Nodes)</h4>
                     <div class="selection-options-row">
@@ -591,7 +486,6 @@
                         <button class="option-selector-btn" onclick="alert('Display parameters synced: Carat Weight Distribution Metrics')">Carats Volume</button>
                     </div>
                 </div>
-
                 <div class="control-block">
                     <h4>Administrative Process Lock Authorization</h4>
                     <div class="input-group" style="margin-bottom:10px; margin-top:5px;">
@@ -599,7 +493,6 @@
                     </div>
                     <button class="action-execution-btn" onclick="processDirectorOverrideClearance()" style="padding:8px; font-size:11px;">Authorize Override & Reset Trailing Blocks</button>
                 </div>
-
             </div>
         </div>
     </div>
@@ -607,7 +500,6 @@
     <script>
         const chartPath = document.getElementById('dynamicChartPath');
         const chartArea = document.getElementById('dynamicChartArea');
-        
         const visualProfiles = {
             wave: { path: "M0,50 Q30,20 60,45 T120,15 T180,60 T240,25 T300,10", area: "M0,50 Q30,20 60,45 T120,15 T180,60 T240,25 T300,10 L300,80 L0,80 Z" },
             linear: { path: "M0,60 L40,30 L90,55 L140,20 L200,65 L255,15 L300,40", area: "M0,60 L40,30 L90,55 L140,20 L200,65 L255,15 L300,40 L300,80 L0,80 Z" },
@@ -621,11 +513,9 @@
             chartArea.setAttribute('d', visualProfiles[profileKey].area);
         }
 
-        // Live Overdue Production Block Simulation Component
         setTimeout(() => {
             const laserNode = document.getElementById('laserNodeTracker');
             const laserPipelineText = document.getElementById('laserPipelineString');
-            
             if(laserNode && laserPipelineText) {
                 laserNode.classList.add('overdue-alert');
                 laserPipelineText.innerHTML = `<span class="overdue-text">OVERDUE TIME THRESHOLD EXCEEDED</span><br>[PROCESS TERMINAL LOCKED - AWAITING DIRECTOR RESET]`;
@@ -637,48 +527,30 @@
             if(passwordInput === "admin") {
                 const laserNode = document.getElementById('laserNodeTracker');
                 const laserPipelineText = document.getElementById('laserPipelineString');
-                
                 laserNode.classList.remove('overdue-alert');
                 laserPipelineText.innerHTML = `AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]`;
                 document.getElementById('directorOverridePass').value = "";
-                alert("Master Override Clearance Verified. Downstream Pipeline Unlocked Successfully.");
+                alert("Master Override Clearance Verified.");
                 closeMasterConfigurationGrid();
             } else {
-                alert("Authorization Denied. Master Validation Key Invalid.");
+                alert("Authorization Denied.");
             }
         }
 
-        // Window Event Controls
         function triggerFullScreen() {
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Fullscreen initialized smoothly.`);
-                });
+                document.documentElement.requestFullscreen().catch(err => { console.log("Fullscreen loaded."); });
             } else {
                 document.exitFullscreen();
             }
         }
-        function triggerMinimize() { alert("System minimized to background matrix."); }
-        function triggerClose() { if (confirm("Terminate active connection to terminal infrastructure?")) window.close(); }
-
-        function openDirectorSecureGate() {
-            document.getElementById('secureOtpField').value = "";
-            document.getElementById('directorGateOverlay').classList.add('active');
-        }
+        function triggerMinimize() { alert("System minimized."); }
+        function triggerClose() { if (confirm("Terminate connection?")) window.close(); }
+        function openDirectorSecureGate() { document.getElementById('secureOtpField').value = ""; document.getElementById('directorGateOverlay').classList.add('active'); }
         function closeDirectorSecureGate() { document.getElementById('directorGateOverlay').classList.remove('active'); }
-        function executeDirectorGateAuthorization() {
-            const code = document.getElementById('secureOtpField').value;
-            if(code.length === 6) {
-                alert("Authorization Validated. Connecting Secure Terminal Channel Room.");
-                closeDirectorSecureGate();
-            } else {
-                alert("Invalid Transmission Metrics.");
-            }
-        }
-
         function openMasterConfigurationGrid() { document.getElementById('masterSettingsOverlay').classList.add('active'); }
         function closeMasterConfigurationGrid() { document.getElementById('masterSettingsOverlay').classList.remove('active'); }
-        function handleClusterLink(nodeLabel) { alert(`Opening Direct Data Stream Routing Tunnel: ${nodeLabel}`); }
+        function handleClusterLink(nodeLabel) { alert(`Opening Route: ${nodeLabel}`); }
 
         function runMasterClock() {
             const dt = new Date();
