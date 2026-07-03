@@ -342,14 +342,17 @@
         }
 
         .otp-routing-select { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
+        
+        /* Clickable Area For All Channels */
         .channel-card {
             flex: 1; border: 1px solid #1C2541; background: #0B132B;
-            padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 8px;
-            font-size: 10px; color: #5BC0BE; text-transform: uppercase;
+            padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px;
+            font-size: 10px; color: #5BC0BE; text-transform: uppercase; cursor: pointer;
         }
         .channel-card input[type="checkbox"] {
             accent-color: #5BC0BE;
             cursor: pointer;
+            pointer-events: auto;
         }
 
         .input-group { margin-bottom: 15px; }
@@ -497,9 +500,16 @@
             <div class="input-group">
                 <label>Active Identity Verification Channels</label>
                 <div class="otp-routing-select">
-                    <div class="channel-card"><input type="checkbox" checked disabled> <span>Mobile Endpoint OTP</span></div>
-                    <div class="channel-card"><input type="checkbox" checked disabled> <span>Secure Mail Server OTP</span></div>
-                    <div class="channel-card" style="border-color: rgba(46, 204, 113, 0.4);"><input type="checkbox" checked id="biometricCheck"> <span style="color: #2ECC71;">Biometric Scan (Retina/Finger)</span></div>
+                    <!-- Fully Interactive Clickable Checkbox Blocks -->
+                    <div class="channel-card" onclick="toggleCheckbox('mobileCheck')">
+                        <input type="checkbox" id="mobileCheck"> <span>Mobile Endpoint OTP</span>
+                    </div>
+                    <div class="channel-card" onclick="toggleCheckbox('mailCheck')">
+                        <input type="checkbox" id="mailCheck"> <span>Secure Mail Server OTP</span>
+                    </div>
+                    <div class="channel-card" style="border-color: rgba(46, 204, 113, 0.4);" onclick="toggleCheckbox('biometricCheck')">
+                        <input type="checkbox" id="biometricCheck"> <span style="color: #2ECC71;">Biometric Scan (Retina/Finger)</span>
+                    </div>
                 </div>
             </div>
             <div class="input-group">
@@ -591,8 +601,17 @@
         function triggerMinimize() { alert("System minimized."); }
         function triggerClose() { if (confirm("Terminate connection?")) window.close(); }
         
+        // Function to select/deselect checkboxes perfectly on click
+        function toggleCheckbox(id) {
+            const checkbox = document.getElementById(id);
+            checkbox.checked = !checkbox.checked;
+        }
+
         function openDirectorSecureGate() { 
             document.getElementById('secureOtpField').value = ""; 
+            // All options auto-selected by default
+            document.getElementById('mobileCheck').checked = true; 
+            document.getElementById('mailCheck').checked = true; 
             document.getElementById('biometricCheck').checked = true; 
             document.getElementById('directorGateOverlay').classList.add('active'); 
         }
@@ -600,15 +619,18 @@
         
         function executeDirectorGateAuthorization() {
             const code = document.getElementById('secureOtpField').value;
+            const mobileActive = document.getElementById('mobileCheck').checked;
+            const mailActive = document.getElementById('mailCheck').checked;
             const biometricActive = document.getElementById('biometricCheck').checked;
 
-            if(!biometricActive) {
-                alert("ACCESS DENIED: Biometric verification is mandatory for MAIN OFFICE entrance.");
+            // Security parameters check
+            if(!mobileActive || !mailActive || !biometricActive) {
+                alert("ACCESS DENIED: All identity verification channels must be verified to enter MAIN OFFICE.");
                 return;
             }
 
             if(code.length === 6) {
-                alert("BIOMETRIC SCAN & OTP VERIFIED: Connecting to MAIN OFFICE secure database tunnel.");
+                alert("ALL CHANNELS SYNCHRONIZED: MAIN OFFICE database portal initialized.");
                 closeDirectorSecureGate();
             } else {
                 alert("Invalid Transmission Metrics.");
