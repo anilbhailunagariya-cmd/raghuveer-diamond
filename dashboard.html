@@ -29,7 +29,7 @@
         }
 
         body {
-            background-color: var(--bg-primary);
+            background-color: #0B132B;
             color: var(--text-main);
             width: 100vw;
             height: 100vh;
@@ -41,13 +41,13 @@
 
         /* Top OS Window Control Bar - Styled exactly like index.html */
         .window-control-bar {
-            height: 40px;
-            background-color: var(--top-bar-bg);
+            height: 45px;
+            background-color: #070B19;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0 20px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid #1C2541;
             z-index: 10;
             flex-shrink: 0;
         }
@@ -55,16 +55,17 @@
         .brand-wrapper {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .brand-glow-dot {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             background: linear-gradient(45deg, #00C6FF, #0072FF);
             box-shadow: 0 0 8px #00C6FF;
             animation: pulseGlow 2s infinite ease-in-out;
+            flex-shrink: 0;
         }
 
         @keyframes pulseGlow {
@@ -73,12 +74,12 @@
             100% { transform: scale(0.95); opacity: 0.8; }
         }
 
-        /* લોગ-ઈન પેજનું અસલી એનિમેટેડ સાયબર ગ્લો ટાઈટલ */
+        /* લોગ-ઈન પેજનું અસલી એનિમેટેડ સાયબર ગ્લો અને મોટું ટાઈટલ */
         .brand-title {
-            font-size: 11px;
-            font-weight: bold;
-            letter-spacing: 1.5px;
-            background: linear-gradient(90deg, var(--accent-cyan), #00C6FF, #0072FF, var(--accent-cyan));
+            font-size: clamp(14px, 4vw, 20px);
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #5BC0BE, #00C6FF, #0072FF, #5BC0BE);
             background-size: 300% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -100,7 +101,7 @@
         .action-btn {
             background: none;
             border: none;
-            color: var(--accent-cyan);
+            color: #5BC0BE;
             font-size: 16px;
             cursor: pointer;
             transition: 0.3s;
@@ -110,12 +111,12 @@
 
         .action-btn:hover {
             color: var(--text-main);
-            text-shadow: 0 0 8px var(--accent-cyan);
+            text-shadow: 0 0 8px #5BC0BE;
         }
 
         .action-btn.close-btn:hover {
-            color: var(--accent-red);
-            text-shadow: 0 0 8px var(--accent-red);
+            color: #E74C3C;
+            text-shadow: 0 0 8px #E74C3C;
         }
 
         /* Main Container Dynamic Fitting */
@@ -126,15 +127,15 @@
             padding: 10px;
             gap: 10px;
             overflow: hidden;
-            height: calc(100vh - 40px);
+            height: calc(100vh - 45px);
         }
 
         /* Main Director Panel */
         .director-master-panel {
             flex: 0 0 16vh;
             min-height: 90px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
+            background: #111D37;
+            border: 1px solid #1C2541;
             border-radius: 12px;
             padding: 10px 15px;
             display: flex;
@@ -145,21 +146,21 @@
         }
 
         .director-master-panel:hover {
-            border-color: var(--accent-cyan);
+            border-color: #5BC0BE;
         }
 
         .director-meta h2 {
             font-size: clamp(13px, 3.5vw, 16px);
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            color: var(--accent-cyan);
+            color: #5BC0BE;
             margin-bottom: 2px;
             font-weight: bold;
         }
 
         .director-meta p {
             font-size: clamp(9px, 2.5vw, 11px);
-            color: var(--accent-cyan);
+            color: #5BC0BE;
             opacity: 0.8;
             text-transform: uppercase;
         }
@@ -190,8 +191,8 @@
         }
 
         .node-box {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
+            background: #111D37;
+            border: 1px solid #1C2541;
             border-radius: 8px;
             padding: 6px 8px;
             display: flex;
@@ -204,8 +205,8 @@
         }
 
         .node-box:hover {
-            border-color: var(--accent-cyan);
-            background: var(--border-color);
+            border-color: #5BC0BE;
+            background: #1C2541;
         }
 
         .node-box.overdue-alert {
@@ -221,7 +222,7 @@
 
         .node-pipeline {
             font-size: clamp(7.5px, 2.2vw, 10px);
-            color: var(--accent-cyan);
+            color: #5BC0BE;
             opacity: 0.7;
             letter-spacing: 0.3px;
             line-height: 1.2;
@@ -250,8 +251,8 @@
             width: 5px;
             height: 5px;
             border-radius: 50%;
-            background-color: var(--accent-green);
-            box-shadow: 0 0 6px var(--accent-green);
+            background-color: #2ECC71;
+            box-shadow: 0 0 6px #2ECC71;
             flex-shrink: 0;
         }
 
@@ -262,11 +263,11 @@
 
         .future-ai-node {
             border: 1px solid rgba(91, 192, 190, 0.3);
-            background: linear-gradient(135deg, var(--bg-secondary), rgba(91, 192, 190, 0.05));
+            background: linear-gradient(135deg, #111D37, rgba(91, 192, 190, 0.05));
         }
 
         .future-ai-node .node-identity {
-            color: var(--accent-cyan);
+            color: #5BC0BE;
         }
 
         /* Bottom Status Dock */
@@ -282,7 +283,7 @@
 
         .system-status-string {
             font-size: clamp(8px, 2.2vw, 11px);
-            color: var(--accent-cyan);
+            color: #5BC0BE;
             opacity: 0.6;
             letter-spacing: 0.5px;
         }
@@ -290,7 +291,7 @@
         .settings-trigger {
             background: none;
             border: none;
-            color: var(--border-color);
+            color: #1C2541;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -298,7 +299,7 @@
         }
 
         .settings-trigger:hover {
-            color: var(--accent-cyan);
+            color: #5BC0BE;
         }
 
         /* Modals Overlays */
@@ -319,8 +320,8 @@
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
         .modal-window {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
+            background: #111D37;
+            border: 1px solid #1C2541;
             width: 92%;
             max-width: 440px;
             border-radius: 12px;
@@ -333,7 +334,7 @@
             position: absolute;
             top: 15px; right: 15px;
             background: none; border: none;
-            color: var(--accent-cyan);
+            color: #5BC0BE;
             cursor: pointer; font-size: 16px;
         }
 
@@ -342,32 +343,32 @@
             font-weight: 600;
             text-transform: uppercase;
             margin-bottom: 20px;
-            color: var(--accent-cyan);
-            border-bottom: 1px solid var(--border-color);
+            color: #5BC0BE;
+            border-bottom: 1px solid #1C2541;
             padding-bottom: 8px;
             letter-spacing: 1px;
         }
 
         .otp-routing-select { display: flex; gap: 10px; margin-bottom: 15px; }
         .channel-card {
-            flex: 1; border: 1px solid var(--border-color); background: var(--bg-primary);
+            flex: 1; border: 1px solid #1C2541; background: #0B132B;
             padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 8px;
-            font-size: 10px; color: var(--accent-cyan); text-transform: uppercase;
+            font-size: 10px; color: #5BC0BE; text-transform: uppercase;
         }
 
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 10px; text-transform: uppercase; color: var(--accent-cyan); margin-bottom: 6px; font-weight: bold; }
-        .secure-input { width: 100%; background: var(--bg-primary); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 8px; color: var(--text-main); font-size: 13px; outline: none; }
-        .secure-input:focus { border-color: var(--accent-cyan); }
-        .action-execution-btn { width: 100%; background: var(--accent-cyan); border: none; padding: 12px; border-radius: 8px; color: var(--bg-primary); font-weight: 600; text-transform: uppercase; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
+        .input-group label { display: block; font-size: 10px; text-transform: uppercase; color: #5BC0BE; margin-bottom: 6px; font-weight: bold; }
+        .secure-input { width: 100%; background: #0B132B; border: 1px solid #1C2541; padding: 10px 14px; border-radius: 8px; color: var(--text-main); font-size: 13px; outline: none; }
+        .secure-input:focus { border-color: #5BC0BE; }
+        .action-execution-btn { width: 100%; background: #5BC0BE; border: none; padding: 12px; border-radius: 8px; color: #0B132B; font-weight: 600; text-transform: uppercase; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
         .action-execution-btn:hover { background: var(--text-main); box-shadow: 0 0 15px var(--text-main); }
         
         .settings-control-grid { display: flex; flex-direction: column; gap: 12px; }
-        .control-block { background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; }
-        .control-block h4 { font-size: 11px; text-transform: uppercase; color: var(--accent-cyan); margin-bottom: 8px; font-weight: bold; }
+        .control-block { background: #0B132B; border: 1px solid #1C2541; border-radius: 6px; padding: 12px; }
+        .control-block h4 { font-size: 11px; text-transform: uppercase; color: #5BC0BE; margin-bottom: 8px; font-weight: bold; }
         .selection-options-row { display: flex; gap: 8px; }
-        .option-selector-btn { flex: 1; background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px; border-radius: 4px; font-size: 10px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        .option-selector-btn.active, .option-selector-btn:hover { background: var(--border-color); border-color: var(--accent-cyan); }
+        .option-selector-btn { flex: 1; background: #111D37; border: 1px solid #1C2541; color: var(--text-main); padding: 8px; border-radius: 4px; font-size: 10px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        .option-selector-btn.active, .option-selector-btn:hover { background: #1C2541; border-color: #5BC0BE; }
     </style>
 </head>
 <body>
@@ -376,7 +377,7 @@
     <div class="window-control-bar">
         <div class="brand-wrapper">
             <div class="brand-glow-dot"></div>
-            <div class="brand-title">RAGHUVEER DIAMOND AI OS [v5.0]</div>
+            <div class="brand-title">RAGHUVEER DIAMOND</div>
         </div>
         <div class="window-actions">
             <button class="action-btn" onclick="triggerMinimize()">-</button>
@@ -391,7 +392,7 @@
             <div class="director-meta">
                 <h2>Director Control Room</h2>
                 <p>Secure Dual-Channel Sync Active</p>
-                <p style="margin-top: 5px; color: var(--accent-green); font-size: 10px; font-weight: bold;">Live Realtime Factory Architecture</p>
+                <p style="margin-top: 5px; color: #2ECC71; font-size: 10px; font-weight: bold;">Live Realtime Factory Architecture</p>
             </div>
             <div class="chart-visual-wrapper">
                 <svg class="live-chart-svg" viewBox="0 0 300 80">
@@ -479,7 +480,7 @@
             </div>
 
             <div class="node-box future-ai-node" onclick="handleClusterLink('Global AI Market Anti-Loss Core')">
-                <div class="node-pipeline" style="color: var(--accent-cyan);">ANTI-LOSS PROTECTION ONLINE<br>[GLOBAL ARBITRAGE ACTIVE]</div>
+                <div class="node-pipeline" style="color: #5BC0BE;">ANTI-LOSS PROTECTION ONLINE<br>[GLOBAL ARBITRAGE ACTIVE]</div>
                 <div class="node-identity">AI Global Market <span class="live-tag"></span></div>
             </div>
 
