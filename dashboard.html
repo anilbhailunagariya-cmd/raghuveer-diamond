@@ -18,6 +18,11 @@
             --accent-orange: #ff9900;
             --text-main: #FFFFFF;
             --text-muted: #708090;
+            
+            /* Matte Mode Graph Colors */
+            --matte-green: #27AE60;
+            --matte-red: #C0392B;
+            --graph-live-color: #27AE60; /* Default Profit Matte Green */
         }
 
         * {
@@ -74,7 +79,6 @@
             100% { transform: scale(0.95); opacity: 0.8; }
         }
 
-        /* Animated Cyber Glow Premium System Title */
         .brand-title {
             font-size: clamp(14px, 4vw, 20px);
             font-weight: 900;
@@ -143,6 +147,7 @@
             align-items: center;
             cursor: pointer;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: 0.3s;
         }
 
         .director-master-panel:hover {
@@ -158,13 +163,22 @@
         }
 
         .chart-visual-wrapper {
-            width: clamp(120px, 32vw, 350px);
+            width: clamp(150px, 45vw, 400px);
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             border-left: 1px solid rgba(255, 255, 255, 0.05);
             padding-left: 10px;
+            overflow: hidden;
+        }
+
+        .live-chart-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .live-chart-svg {
@@ -356,7 +370,6 @@
             cursor: pointer;
         }
 
-        /* Dynamic Expandable Interface Modules */
         .dynamic-sub-module {
             display: none;
             background: #070B19;
@@ -373,7 +386,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Biometric Live Scanner Laser Animation */
         .biometric-scanner-box {
             display: flex;
             flex-direction: column;
@@ -413,10 +425,16 @@
         
         .settings-control-grid { display: flex; flex-direction: column; gap: 12px; }
         .control-block { background: #0B132B; border: 1px solid #1C2541; border-radius: 6px; padding: 12px; }
-        .control-block h4 { font-size: 11px; text-transform: uppercase; color: #5BC0BE; margin-bottom: 8px; font-weight: bold; }
-        .selection-options-row { display: flex; gap: 8px; }
-        .option-selector-btn { flex: 1; background: #111D37; border: 1px solid #1C2541; color: var(--text-main); padding: 8px; border-radius: 4px; font-size: 10px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        .control-block h4 { font-size: 11px; text-transform: uppercase; color: #5BC0BE; margin-bottom: 8px; font-weight: bold; letter-spacing: 0.5px;}
+        .selection-options-row { display: flex; flex-wrap: wrap; gap: 6px; }
+        .option-selector-btn { flex: 1; min-width: 100px; background: #111D37; border: 1px solid #1C2541; color: var(--text-main); padding: 8px; border-radius: 4px; font-size: 10px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
         .option-selector-btn.active, .option-selector-btn:hover { background: #1C2541; border-color: #5BC0BE; }
+        
+        /* Matte Color Selectors style */
+        .profit-btn-matte { border-color: var(--matte-green) !important; color: var(--matte-green); }
+        .profit-btn-matte.active { background: var(--matte-green) !important; color: #fff !important; box-shadow: 0 0 10px rgba(39,174,96,0.3); }
+        .loss-btn-matte { border-color: var(--matte-red) !important; color: var(--matte-red); }
+        .loss-btn-matte.active { background: var(--matte-red) !important; color: #fff !important; box-shadow: 0 0 10px rgba(192,57,43,0.3); }
     </style>
 </head>
 <body>
@@ -442,10 +460,12 @@
                 <h2>MAIN OFFICE</h2>
             </div>
             <div class="chart-visual-wrapper">
-                <svg class="live-chart-svg" viewBox="0 0 300 80">
-                    <path id="dynamicChartPath" d="M0,50 Q30,20 60,45 T120,15 T180,60 T240,25 T300,10" fill="none" stroke="#00C6FF" stroke-width="2.5" stroke-linecap="round"/>
-                    <path id="dynamicChartArea" d="M0,50 Q30,20 60,45 T120,15 T180,60 T240,25 T300,10 L300,80 L0,80 Z" fill="rgba(0,198,255,0.04)"/>
-                </svg>
+                <div class="live-chart-container" id="mainOfficeChartContainer">
+                    <!-- Default Initial Chart Engine -->
+                    <svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
+                        <path id="dynamicChartPath" d="M10,70 L40,70 L40,20 L70,20 L70,50 L100,50 L100,10 L130,10 L130,60 L160,60 L160,30 L190,30 L190,70 L220,70 L220,15 L250,15 L250,45 L280,45" fill="none" stroke="var(--graph-live-color)" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
             </div>
         </div>
 
@@ -550,7 +570,6 @@
                 <label>Active Identity Verification Channels (Select Any 1)</label>
                 <div class="otp-routing-select">
                     
-                    <!-- Mobile Control Panel Block -->
                     <div class="channel-card" onclick="toggleChannelModule('mobileCheck', 'moduleMobile')">
                         <input type="checkbox" id="mobileCheck" onclick="event.stopPropagation();"> <span>Mobile Endpoint OTP</span>
                     </div>
@@ -559,7 +578,6 @@
                         <input type="tel" class="secure-input" placeholder="+91 XXXXX XXXXX" style="padding: 6px 10px; font-size:12px;">
                     </div>
 
-                    <!-- Mail Control Panel Block -->
                     <div class="channel-card" onclick="toggleChannelModule('mailCheck', 'moduleMail')">
                         <input type="checkbox" id="mailCheck" onclick="event.stopPropagation();"> <span>Secure Mail Server OTP</span>
                     </div>
@@ -568,7 +586,6 @@
                         <input type="email" class="secure-input" placeholder="director@raghuveerdiamond.com" style="padding: 6px 10px; font-size:12px;">
                     </div>
 
-                    <!-- Biometric Scanning Module Interface -->
                     <div class="channel-card" style="border-color: rgba(46, 204, 113, 0.4);" onclick="toggleChannelModule('biometricCheck', 'moduleBiometric')">
                         <input type="checkbox" id="biometricCheck" onclick="event.stopPropagation();"> <span style="color: #2ECC71;">Biometric Scan (Retina/Finger)</span>
                     </div>
@@ -577,7 +594,7 @@
                             <div class="laser-fingerprint-node">
                                 <div class="laser-scanning-line"></div>
                             </div>
-                            <span id="biometricStatusText" style="font-size:9px; color:#2ECC71; font-weight:bold; letter-spacing:1px; animation: pulseGlow 1s infinite alternate;">PLACE FINGER ON PHONE SCANNER...</span>
+                            <span id="biometricStatusText" style="font-size:9px; color:#2ECC71; font-weight:bold; letter-spacing:1px;">PLACE FINGER ON PHONE SCANNER...</span>
                         </div>
                     </div>
 
@@ -591,19 +608,34 @@
         </div>
     </div>
 
+    <!-- Master Settings Matrix Dashboard -->
     <div class="modal-overlay" id="masterSettingsOverlay">
         <div class="modal-window">
             <button class="modal-close-x" onclick="closeMasterConfigurationGrid()">✕</button>
             <div class="modal-title">Master Settings Console</div>
             <div class="settings-control-grid">
+                
+                <!-- NEW LAYER: Live Profit/Loss Matte Color Matrix Controller -->
                 <div class="control-block">
-                    <h4>Director Area Chart Visualization Profile</h4>
+                    <h4>Realtime Valuation Metrics State (Color Matrix)</h4>
                     <div class="selection-options-row">
-                        <button class="option-selector-btn active" onclick="switchChartVisual(this, 'wave')">Quantum Wave</button>
-                        <button class="option-selector-btn" onclick="switchChartVisual(this, 'linear')">Linear Pulse</button>
-                        <button class="option-selector-btn" onclick="switchChartVisual(this, 'step')">Block Step</button>
+                        <button class="option-selector-btn profit-btn-matte active" id="profitStateBtn" onclick="switchLiveColorMatrix('profit')">PROFIT [MATTE GREEN]</button>
+                        <button class="option-selector-btn loss-btn-matte" id="lossStateBtn" onclick="switchLiveColorMatrix('loss')">LOSS [MATTE RED]</button>
                     </div>
                 </div>
+
+                <!-- NEW LAYER: 5 Advanced Geometric Visual Designs -->
+                <div class="control-block">
+                    <h4>Director Main Office Graph Matrix Design</h4>
+                    <div class="selection-options-row" style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
+                        <button class="option-selector-btn active" id="btn-pillars" onclick="switchGraphDesignMatrix('pillars')">1. Brils Pillars</button>
+                        <button class="option-selector-btn" id="btn-heart" onclick="switchGraphDesignMatrix('heart')">2. Heart Rate</button>
+                        <button class="option-selector-btn" id="btn-mnc" onclick="switchGraphDesignMatrix('mnc')">3. Corporate MNC</button>
+                        <button class="option-selector-btn" id="btn-high-tech" onclick="switchGraphDesignMatrix('high-tech')">4. 2050 High Tech</button>
+                        <button class="option-selector-btn" id="btn-ai" onclick="switchGraphDesignMatrix('ai')" style="grid-column: span 2;">5. AI Neural Technology</button>
+                    </div>
+                </div>
+
                 <div class="control-block">
                     <h4>Active Display Unit Parameters (1-16 Nodes)</h4>
                     <div class="selection-options-row">
@@ -611,6 +643,7 @@
                         <button class="option-selector-btn" onclick="alert('Display parameters synced: Carat Weight Distribution Metrics')">Carats Volume</button>
                     </div>
                 </div>
+
                 <div class="control-block">
                     <h4>Administrative Process Lock Authorization</h4>
                     <div class="input-group" style="margin-bottom:10px; margin-top:5px;">
@@ -623,19 +656,104 @@
     </div>
 
     <script>
-        const chartPath = document.getElementById('dynamicChartPath');
-        const chartArea = document.getElementById('dynamicChartArea');
-        const visualProfiles = {
-            wave: { path: "M0,50 Q30,20 60,45 T120,15 T180,60 T240,25 T300,10", area: "M0,50 Q30,20 60,45 T120,15 T180,60 T240,25 T300,10 L300,80 L0,80 Z" },
-            linear: { path: "M0,60 L40,30 L90,55 L140,20 L200,65 L255,15 L300,40", area: "M0,60 L40,30 L90,55 L140,20 L200,65 L255,15 L300,40 L300,80 L0,80 Z" },
-            step: { path: "M0,70 L50,70 L50,30 L120,30 L120,50 L190,50 L190,15 L260,15 L260,45 L300,45", area: "M0,70 L50,70 L50,30 L120,30 L120,50 L190,50 L190,15 L260,15 L260,45 L300,45 L300,80 L0,80 Z" }
+        // Global Design Parameters
+        let activeColorState = "profit"; // profit or loss
+        let activeDesignStyle = "pillars"; // pillars, heart, mnc, high-tech, ai
+
+        // Holographic Data Matrix Engine for Main Office
+        const graphDatabaseEngine = {
+            pillars: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
+                        <!-- Brils Ubha Pillars Style (Rounded Bar Grid) -->
+                        <rect x="20" y="35" width="14" height="45" rx="3" fill="currentColor" />
+                        <rect x="50" y="15" width="14" height="65" rx="3" fill="currentColor" />
+                        <rect x="80" y="45" width="14" height="35" rx="3" fill="currentColor" />
+                        <rect x="110" y="25" width="14" height="55" rx="3" fill="currentColor" />
+                        <rect x="140" y="5" width="14" height="75" rx="3" fill="currentColor" />
+                        <rect x="170" y="30" width="14" height="50" rx="3" fill="currentColor" />
+                        <rect x="200" y="55" width="14" height="25" rx="3" fill="currentColor" />
+                        <rect x="230" y="20" width="14" height="60" rx="3" fill="currentColor" />
+                        <rect x="260" y="40" width="14" height="40" rx="3" fill="currentColor" />
+                      </svg>`,
+            heart: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
+                        <!-- Medical Heart Rate Zig-Zag Pulse Pattern -->
+                        <path d="M0,45 L40,45 L50,15 L58,70 L66,35 L72,50 L80,45 L130,45 L140,5 L150,75 L160,30 L168,55 L174,45 L220,45 L230,20 L238,65 L246,40 L252,47 L260,45 L300,45" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>`,
+            mnc: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
+                        <!-- Corporate MNC Steady Exponential Growth Line Chart -->
+                        <path d="M10,75 Q40,70 80,55 T160,40 T240,15 T300,5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M10,75 Q40,70 80,55 T160,40 T240,15 T300,5 L300,80 L10,80 Z" fill="currentColor" opacity="0.15"/>
+                      </svg>`,
+            "high-tech": `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
+                        <!-- Year 2050 Sci-Fi Circular Tech Intersect Matrix -->
+                        <circle cx="50" cy="40" r="25" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,4" />
+                        <circle cx="150" cy="40" r="30" fill="none" stroke="currentColor" stroke-width="2" />
+                        <circle cx="150" cy="40" r="15" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2,2" />
+                        <circle cx="250" cy="40" r="25" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,4" />
+                        <path d="M10,40 L120,40 M180,40 L290,40" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                      </svg>`,
+            ai: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
+                        <!-- AI Neural Node Interconnections Network -->
+                        <line x1="30" y1="40" x2="90" y2="20" stroke="currentColor" stroke-width="1" opacity="0.6" />
+                        <line x1="30" y1="40" x2="90" y2="60" stroke="currentColor" stroke-width="1" opacity="0.6" />
+                        <line x1="90" y1="20" x2="170" y2="15" stroke="currentColor" stroke-width="1.5" />
+                        <line x1="90" y1="20" x2="170" y2="45" stroke="currentColor" stroke-width="1" opacity="0.6" />
+                        <line x1="90" y1="60" x2="170" y2="45" stroke="currentColor" stroke-width="1" opacity="0.6" />
+                        <line x1="90" y1="60" x2="170" y2="65" stroke="currentColor" stroke-width="1.5" />
+                        <line x1="170" y1="15" x2="260" y2="40" stroke="currentColor" stroke-width="2" />
+                        <line x1="170" y1="45" x2="260" y2="40" stroke="currentColor" stroke-width="1" opacity="0.6" />
+                        <line x1="170" y1="65" x2="260" y2="40" stroke="currentColor" stroke-width="2" />
+                        <circle cx="30" cy="40" r="5" fill="currentColor" />
+                        <circle cx="90" cy="20" r="5" fill="currentColor" />
+                        <circle cx="90" cy="60" r="5" fill="currentColor" />
+                        <circle cx="170" cy="15" r="5" fill="currentColor" />
+                        <circle cx="170" cy="45" r="5" fill="currentColor" />
+                        <circle cx="170" cy="65" r="5" fill="currentColor" />
+                        <circle cx="260" cy="40" r="7" fill="currentColor" />
+                      </svg>`
         };
 
-        function switchChartVisual(buttonElement, profileKey) {
-            document.querySelectorAll('.control-block:nth-child(1) .option-selector-btn').forEach(btn => btn.classList.remove('active'));
-            buttonElement.classList.add('active');
-            chartPath.setAttribute('d', visualProfiles[profileKey].path);
-            chartArea.setAttribute('d', visualProfiles[profileKey].area);
+        // Live Re-rendering Engine for Main Office Window
+        function updateMainOfficeVisual() {
+            const container = document.getElementById('mainOfficeChartContainer');
+            const hexColor = (activeColorState === "profit") ? "var(--matte-green)" : "var(--matte-red)";
+            
+            // Injecting HTML Structure
+            container.innerHTML = graphDatabaseEngine[activeDesignStyle];
+            
+            // Color Mapping Injection
+            const activeSvg = document.getElementById('masterVisualSvg');
+            if(activeSvg) {
+                activeSvg.style.color = hexColor;
+            }
+        }
+
+        // Action Function: Switch Profit vs Loss Matrix
+        function switchLiveColorMatrix(targetState) {
+            activeColorState = targetState;
+            
+            document.getElementById('profitStateBtn').classList.remove('active');
+            document.getElementById('lossStateBtn').classList.remove('active');
+            
+            if(targetState === 'profit') {
+                document.getElementById('profitStateBtn').classList.add('active');
+            } else {
+                document.getElementById('lossStateBtn').classList.add('active');
+            }
+            
+            updateMainOfficeVisual();
+        }
+
+        // Action Function: Switch 5 Design Formats
+        function switchGraphDesignMatrix(targetDesign) {
+            activeDesignStyle = targetDesign;
+            
+            const designsList = ['pillars', 'heart', 'mnc', 'high-tech', 'ai'];
+            designsList.forEach(item => {
+                document.getElementById(`btn-${item}`).classList.remove('active');
+            });
+            
+            document.getElementById(`btn-${targetDesign}`).classList.add('active');
+            updateMainOfficeVisual();
         }
 
         setTimeout(() => {
@@ -672,7 +790,6 @@
         function triggerMinimize() { alert("System minimized."); }
         function triggerClose() { if (confirm("Terminate connection?")) window.close(); }
         
-        // Dynamic Module expand handler with conditional reset
         function toggleChannelModule(checkboxId, moduleId) {
             const checkbox = document.getElementById(checkboxId);
             const subModule = document.getElementById(moduleId);
@@ -714,7 +831,6 @@
             document.getElementById('secureOtpField').value = ""; 
             biometricSuccess = false;
             
-            // Clean slate: Close all tabs by default so the user selects what they want
             const checkBoxes = ['mobileCheck', 'mailCheck', 'biometricCheck'];
             const modules = ['moduleMobile', 'moduleMail', 'moduleBiometric'];
             
@@ -728,26 +844,22 @@
         
         function closeDirectorSecureGate() { document.getElementById('directorGateOverlay').classList.remove('active'); }
         
-        // NEW LOGIC: Conditional routing allowing ANY single channel pass
         function executeDirectorGateAuthorization() {
             const code = document.getElementById('secureOtpField').value;
             const mobileActive = document.getElementById('mobileCheck').checked;
             const mailActive = document.getElementById('mailCheck').checked;
             const biometricActive = document.getElementById('biometricCheck').checked;
 
-            // 1. Check if at least one checkbox is active
             if(!mobileActive && !mailActive && !biometricActive) {
                 alert("ACCESS DENIED: Please select at least ONE identity channel (Biometric, Mobile, or Mail) to verify.");
                 return;
             }
 
-            // 2. If Biometric is selected, ensure the scan simulation hit 100% success state
             if(biometricActive && !biometricSuccess) {
                 alert("ACCESS DENIED: Biometric fingerprint scan in progress. Please wait for success metric.");
                 return;
             }
 
-            // 3. Final standard security layer validation
             if(code.length === 6) {
                 alert("IDENTITY VERIFIED: Secure tunnel established to MAIN OFFICE.");
                 closeDirectorSecureGate();
@@ -773,6 +885,9 @@
         }
         setInterval(runMasterClock, 1000);
         runMasterClock();
+
+        // Bootstrapping default design render cycle
+        updateMainOfficeVisual();
     </script>
 </body>
 </html>
