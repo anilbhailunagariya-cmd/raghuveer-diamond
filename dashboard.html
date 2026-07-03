@@ -343,7 +343,7 @@
 
         .otp-routing-select { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
         
-        /* Clickable Area For All Channels */
+        /* Fixed Clickable Area Structure */
         .channel-card {
             flex: 1; border: 1px solid #1C2541; background: #0B132B;
             padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px;
@@ -352,7 +352,6 @@
         .channel-card input[type="checkbox"] {
             accent-color: #5BC0BE;
             cursor: pointer;
-            pointer-events: auto;
         }
 
         .input-group { margin-bottom: 15px; }
@@ -500,15 +499,15 @@
             <div class="input-group">
                 <label>Active Identity Verification Channels</label>
                 <div class="otp-routing-select">
-                    <!-- Fully Interactive Clickable Checkbox Blocks -->
-                    <div class="channel-card" onclick="toggleCheckbox('mobileCheck')">
-                        <input type="checkbox" id="mobileCheck"> <span>Mobile Endpoint OTP</span>
+                    <!-- Fixed Click Handlers preventing invert bugs -->
+                    <div class="channel-card" onclick="toggleCheckbox('mobileCheck', event)">
+                        <input type="checkbox" id="mobileCheck" onclick="event.stopPropagation();"> <span>Mobile Endpoint OTP</span>
                     </div>
-                    <div class="channel-card" onclick="toggleCheckbox('mailCheck')">
-                        <input type="checkbox" id="mailCheck"> <span>Secure Mail Server OTP</span>
+                    <div class="channel-card" onclick="toggleCheckbox('mailCheck', event)">
+                        <input type="checkbox" id="mailCheck" onclick="event.stopPropagation();"> <span>Secure Mail Server OTP</span>
                     </div>
-                    <div class="channel-card" style="border-color: rgba(46, 204, 113, 0.4);" onclick="toggleCheckbox('biometricCheck')">
-                        <input type="checkbox" id="biometricCheck"> <span style="color: #2ECC71;">Biometric Scan (Retina/Finger)</span>
+                    <div class="channel-card" style="border-color: rgba(46, 204, 113, 0.4);" onclick="toggleCheckbox('biometricCheck', event)">
+                        <input type="checkbox" id="biometricCheck" onclick="event.stopPropagation();"> <span style="color: #2ECC71;">Biometric Scan (Retina/Finger)</span>
                     </div>
                 </div>
             </div>
@@ -601,15 +600,14 @@
         function triggerMinimize() { alert("System minimized."); }
         function triggerClose() { if (confirm("Terminate connection?")) window.close(); }
         
-        // Function to select/deselect checkboxes perfectly on click
-        function toggleCheckbox(id) {
+        // Robust Toggle Function with propagation prevention
+        function toggleCheckbox(id, event) {
             const checkbox = document.getElementById(id);
             checkbox.checked = !checkbox.checked;
         }
 
         function openDirectorSecureGate() { 
             document.getElementById('secureOtpField').value = ""; 
-            // All options auto-selected by default
             document.getElementById('mobileCheck').checked = true; 
             document.getElementById('mailCheck').checked = true; 
             document.getElementById('biometricCheck').checked = true; 
@@ -623,7 +621,6 @@
             const mailActive = document.getElementById('mailCheck').checked;
             const biometricActive = document.getElementById('biometricCheck').checked;
 
-            // Security parameters check
             if(!mobileActive || !mailActive || !biometricActive) {
                 alert("ACCESS DENIED: All identity verification channels must be verified to enter MAIN OFFICE.");
                 return;
@@ -636,6 +633,13 @@
                 alert("Invalid Transmission Metrics.");
             }
         }
+
+        document.getElementById('masterSettingsOverlay').addEventListener('click', function(e) {
+            if(e.target === this) closeMasterConfigurationGrid();
+        });
+        document.getElementById('directorGateOverlay').addEventListener('click', function(e) {
+            if(e.target === this) closeDirectorSecureGate();
+        });
 
         function openMasterConfigurationGrid() { document.getElementById('masterSettingsOverlay').classList.add('active'); }
         function closeMasterConfigurationGrid() { document.getElementById('masterSettingsOverlay').classList.remove('active'); }
