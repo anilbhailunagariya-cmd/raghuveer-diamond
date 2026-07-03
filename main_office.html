@@ -14,7 +14,7 @@
             --accent-cyan: #5BC0BE;
             --accent-blue: #00C6FF;
             --accent-green: #27AE60;
-            --accent-red: #C0392B;
+            --accent-red: #E74C3C;
             --text-main: #FFFFFF;
             --text-muted: #708090;
         }
@@ -81,27 +81,42 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .actions-wrapper {
+        /* Premium Window Actions Control System */
+        .window-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
         }
 
-        .action-header-btn {
+        .action-btn {
             background: none;
             border: 1px solid var(--border-color);
             color: var(--accent-cyan);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
             padding: 6px 12px;
             border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
             text-transform: uppercase;
-            transition: 0.3s;
         }
 
-        .action-header-btn:hover {
+        .action-btn:hover {
+            color: var(--text-main);
+            border-color: var(--accent-cyan);
             background: var(--border-color);
-            box-shadow: 0 0 10px rgba(0, 198, 255, 0.2);
+            box-shadow: 0 0 8px rgba(91, 192, 190, 0.2);
+        }
+
+        .action-btn.close-btn {
+            color: var(--accent-red);
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+
+        .action-btn.close-btn:hover {
+            background: rgba(231, 76, 60, 0.1);
+            border-color: var(--accent-red);
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
         }
 
         /* Core Layout Grid */
@@ -116,7 +131,7 @@
             margin: 0 auto;
         }
 
-        /* 4 Main Core Cards (Bank, Rough, Sales, Cash) */
+        /* 4 Main Core Cards */
         .core-metrics-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -297,8 +312,12 @@
             <div class="company-logo-frame">RD</div>
             <div class="brand-title">MAIN OFFICE MATRIX</div>
         </div>
-        <div class="actions-wrapper">
-            <button class="action-header-btn" onclick="goToDashboard()" style="color: var(--accent-red); border-color: rgba(231, 76, 60, 0.3);">✕ Close Gate</button>
+        
+        <!-- Premium Action Buttons Console Group -->
+        <div class="window-actions">
+            <button class="action-btn" onclick="triggerMinimize()">-</button>
+            <button class="action-btn" onclick="triggerFullScreen()">🗖 Full Screen</button>
+            <button class="action-btn close-btn" onclick="goToDashboard()">✕ Close</button>
         </div>
     </div>
 
@@ -385,25 +404,25 @@
     <script>
         let selectedLayoutSize = "a4";
 
+        // Returns perfectly back to main security secure dashboard file
         function goToDashboard() {
             window.location.href = 'dashboard.html'; 
         }
 
-        // Automatic Full Screen Trigger Matrix on load
-        function triggerAutoFullScreen() {
+        // Dedicated Full Screen Layout Action Controller
+        function triggerFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(err => { 
-                    console.log("Browser requires user interaction first for automatic fullscreen."); 
+                    alert("Click anywhere on screen first, then press Full Screen button."); 
                 });
+            } else {
+                document.exitFullscreen();
             }
         }
 
-        // Trigger auto fullscreen as soon as user touches or clicks anywhere on the layout
-        window.addEventListener('click', triggerAutoFullScreen);
-        window.addEventListener('touchstart', triggerAutoFullScreen);
-        
-        // Also trigger directly when script loads
-        setTimeout(triggerAutoFullScreen, 500);
+        function triggerMinimize() {
+            alert("Main Office terminal minimized.");
+        }
 
         function executeCyberPrint(documentType) {
             alert(`PRINTER COMMAND SENT:\nPrinting ${documentType} Matrix using [${selectedLayoutSize.toUpperCase()}] configuration profile to connected network hardware.`);
