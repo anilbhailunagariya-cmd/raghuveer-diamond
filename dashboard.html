@@ -499,7 +499,6 @@
                 <div class="otp-routing-select">
                     <div class="channel-card"><input type="checkbox" checked disabled> <span>Mobile Endpoint OTP</span></div>
                     <div class="channel-card"><input type="checkbox" checked disabled> <span>Secure Mail Server OTP</span></div>
-                    <!-- નવું બાયોમેટ્રિક ચેનલ ઓપ્શન -->
                     <div class="channel-card" style="border-color: rgba(46, 204, 113, 0.4);"><input type="checkbox" checked id="biometricCheck"> <span style="color: #2ECC71;">Biometric Scan (Retina/Finger)</span></div>
                 </div>
             </div>
@@ -594,7 +593,7 @@
         
         function openDirectorSecureGate() { 
             document.getElementById('secureOtpField').value = ""; 
-            document.getElementById('biometricCheck').checked = true; // બાયોમેટ્રિક આપોઆપ સિલેક્ટ થઈ જશે
+            document.getElementById('biometricCheck').checked = true; 
             document.getElementById('directorGateOverlay').classList.add('active'); 
         }
         function closeDirectorSecureGate() { document.getElementById('directorGateOverlay').classList.remove('active'); }
