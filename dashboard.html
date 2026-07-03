@@ -18,8 +18,6 @@
             --accent-orange: #ff9900;
             --text-main: #FFFFFF;
             --text-muted: #708090;
-            
-            /* Matte Mode Graph Colors */
             --matte-green: #27AE60;
             --matte-red: #C0392B;
         }
@@ -43,7 +41,6 @@
             position: relative;
         }
 
-        /* Top OS Window Control Bar */
         .window-control-bar {
             height: 45px;
             background-color: #070B19;
@@ -56,20 +53,12 @@
             flex-shrink: 0;
         }
 
-        .brand-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
+        .brand-wrapper { display: flex; align-items: center; gap: 10px; }
         .brand-glow-dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
+            width: 14px; height: 14px; border-radius: 50%;
             background: linear-gradient(45deg, #00C6FF, #0072FF);
             box-shadow: 0 0 8px #00C6FF;
             animation: pulseGlow 2s infinite ease-in-out;
-            flex-shrink: 0;
         }
 
         @keyframes pulseGlow {
@@ -95,134 +84,39 @@
             100% { background-position: 300% center; }
         }
 
-        .window-actions {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
+        .window-actions { display: flex; gap: 15px; align-items: center; }
+        .action-btn { background: none; border: none; color: #5BC0BE; font-size: 16px; cursor: pointer; transition: 0.3s; }
+        .action-btn:hover { color: var(--text-main); text-shadow: 0 0 8px #5BC0BE; }
+        .action-btn.close-btn:hover { color: #E74C3C; text-shadow: 0 0 8px #E74C3C; }
 
-        .action-btn {
-            background: none;
-            border: none;
-            color: #5BC0BE;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-            line-height: 1;
-            padding: 2px;
-        }
-
-        .action-btn:hover {
-            color: var(--text-main);
-            text-shadow: 0 0 8px #5BC0BE;
-        }
-
-        .action-btn.close-btn:hover {
-            color: #E74C3C;
-            text-shadow: 0 0 8px #E74C3C;
-        }
-
-        /* Main Container Dynamic Fitting */
         .main-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-            gap: 10px;
-            overflow: hidden;
+            flex: 1; display: flex; flex-direction: column;
+            padding: 10px; gap: 10px; overflow: hidden;
             height: calc(100vh - 45px);
         }
 
-        /* Main Director Panel */
         .director-master-panel {
-            flex: 0 0 16vh;
-            min-height: 90px;
-            background: #111D37;
-            border: 1px solid #1C2541;
-            border-radius: 12px;
-            padding: 10px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transition: 0.3s;
+            flex: 0 0 16vh; min-height: 90px; background: #111D37;
+            border: 1px solid #1C2541; border-radius: 12px; padding: 10px 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: 0.3s;
         }
-
-        .director-master-panel:hover {
-            border-color: #5BC0BE;
-        }
-
-        .director-meta h2 {
-            font-size: clamp(16px, 4.5vw, 22px);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #5BC0BE;
-            font-weight: bold;
-        }
-
+        .director-master-panel:hover { border-color: #5BC0BE; }
+        .director-meta h2 { font-size: clamp(16px, 4.5vw, 22px); letter-spacing: 2px; text-transform: uppercase; color: #5BC0BE; font-weight: bold; }
+        
         .chart-visual-wrapper {
-            width: clamp(150px, 45vw, 400px);
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-left: 1px solid rgba(255, 255, 255, 0.05);
-            padding-left: 10px;
-            overflow: hidden;
+            width: clamp(150px, 45vw, 400px); height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            border-left: 1px solid rgba(255, 255, 255, 0.05); padding-left: 10px; overflow: hidden;
         }
+        .live-chart-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+        .live-chart-svg { width: 100%; height: 100%; }
+        .live-chart-svg path, .live-chart-svg rect, .live-chart-svg circle, .live-chart-svg line { transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        .live-chart-container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .live-chart-svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Smooth Transition for Live Svg Elements */
-        .live-chart-svg path, .live-chart-svg rect, .live-chart-svg circle, .live-chart-svg line {
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* 4x4 Fluid Grid Engine */
-        .dashboard-grid {
-            flex: 1;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(4, 1fr);
-            gap: 8px;
-            min-height: 0;
-        }
-
-        .node-box {
-            background: #111D37;
-            border: 1px solid #1C2541;
-            border-radius: 8px;
-            padding: 6px 8px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            overflow: hidden;
-            height: 100%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: 0.3s;
-        }
-
-        .node-box:hover {
-            border-color: #5BC0BE;
-            background: #1C2541;
-        }
-
-        .node-box.overdue-alert {
-            border-color: var(--accent-orange);
-            animation: pulseWarning 2s infinite ease-in-out;
-        }
+        .dashboard-grid { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 8px; min-height: 0; }
+        .node-box { background: #111D37; border: 1px solid #1C2541; border-radius: 8px; padding: 6px 8px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; height: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.3s; }
+        .node-box:hover { border-color: #5BC0BE; background: #1C2541; }
+        .node-box.overdue-alert { border-color: var(--accent-orange); animation: pulseWarning 2s infinite ease-in-out; }
 
         @keyframes pulseWarning {
             0% { box-shadow: 0 0 4px rgba(255, 153, 0, 0.2); }
@@ -230,216 +124,41 @@
             100% { box-shadow: 0 0 4px rgba(255, 153, 0, 0.2); }
         }
 
-        .node-pipeline {
-            font-size: clamp(7.5px, 2.2vw, 10px);
-            color: #5BC0BE;
-            opacity: 0.7;
-            letter-spacing: 0.3px;
-            line-height: 1.2;
-            overflow: hidden;
-        }
+        .node-pipeline { font-size: clamp(7.5px, 2.2vw, 10px); color: #5BC0BE; opacity: 0.7; letter-spacing: 0.3px; line-height: 1.2; overflow: hidden; }
+        .overdue-text { color: var(--accent-orange) !important; font-weight: 600; opacity: 1 !important; }
+        .node-identity { font-size: clamp(8.5px, 2.5vw, 12px); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 2px; display: flex; justify-content: space-between; align-items: center; color: var(--text-main); }
+        .live-tag { width: 5px; height: 5px; border-radius: 50%; background-color: #2ECC71; box-shadow: 0 0 6px #2ECC71; flex-shrink: 0; }
+        .node-box.overdue-alert .live-tag { background-color: var(--accent-orange); box-shadow: 0 0 6px var(--accent-orange); }
+        .future-ai-node { border: 1px solid rgba(91, 192, 190, 0.3); background: linear-gradient(135deg, #111D37, rgba(91, 192, 190, 0.05)); }
+        .future-ai-node .node-identity { color: #5BC0BE; }
 
-        .overdue-text {
-            color: var(--accent-orange) !important;
-            font-weight: 600;
-            opacity: 1 !important;
-        }
+        .bottom-dock { display: flex; justify-content: space-between; align-items: center; padding: 4px 5px; border-top: 1px solid rgba(255, 255, 255, 0.03); height: 35px; flex-shrink: 0; }
+        .system-status-string { font-size: clamp(8px, 2.2vw, 11px); color: #5BC0BE; opacity: 0.6; letter-spacing: 0.5px; }
+        .settings-trigger { background: none; border: none; color: #1C2541; cursor: pointer; display: flex; align-items: center; transition: 0.3s; }
+        .settings-trigger:hover { color: #5BC0BE; }
 
-        .node-identity {
-            font-size: clamp(8.5px, 2.5vw, 12px);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            margin-top: 2px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--text-main);
-        }
-
-        .live-tag {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background-color: #2ECC71;
-            box-shadow: 0 0 6px #2ECC71;
-            flex-shrink: 0;
-        }
-
-        .node-box.overdue-alert .live-tag {
-            background-color: var(--accent-orange);
-            box-shadow: 0 0 6px var(--accent-orange);
-        }
-
-        .future-ai-node {
-            border: 1px solid rgba(91, 192, 190, 0.3);
-            background: linear-gradient(135deg, #111D37, rgba(91, 192, 190, 0.05));
-        }
-
-        .future-ai-node .node-identity {
-            color: #5BC0BE;
-        }
-
-        /* Bottom Status Dock */
-        .bottom-dock {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4px 5px;
-            border-top: 1px solid rgba(255, 255, 255, 0.03);
-            height: 35px;
-            flex-shrink: 0;
-        }
-
-        .system-status-string {
-            font-size: clamp(8px, 2.2vw, 11px);
-            color: #5BC0BE;
-            opacity: 0.6;
-            letter-spacing: 0.5px;
-        }
-
-        .settings-trigger {
-            background: none;
-            border: none;
-            color: #1C2541;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            transition: 0.3s;
-        }
-
-        .settings-trigger:hover {
-            color: #5BC0BE;
-        }
-
-        /* Modals Overlays */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(7, 11, 25, 0.85);
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            z-index: 100;
-        }
-
+        /* Modals Matrix */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(7, 11, 25, 0.85); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 100; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-window { background: #111D37; border: 1px solid #1C2541; width: 92%; max-width: 460px; border-radius: 12px; padding: 25px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.6); max-height: 95vh; overflow-y: auto; }
+        .modal-close-x { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #5BC0BE; cursor: pointer; font-size: 16px; }
+        .modal-title { font-size: 13px; font-weight: 600; text-transform: uppercase; margin-bottom: 20px; color: #5BC0BE; border-bottom: 1px solid #1C2541; padding-bottom: 8px; letter-spacing: 1px; }
 
-        .modal-window {
-            background: #111D37;
-            border: 1px solid #1C2541;
-            width: 92%;
-            max-width: 460px;
-            border-radius: 12px;
-            padding: 25px;
-            position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            max-height: 95vh;
-            overflow-y: auto;
-        }
-
-        .modal-close-x {
-            position: absolute;
-            top: 15px; right: 15px;
-            background: none; border: none;
-            color: #5BC0BE;
-            cursor: pointer; font-size: 16px;
-        }
-
-        .modal-title {
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            color: #5BC0BE;
-            border-bottom: 1px solid #1C2541;
-            padding-bottom: 8px;
-            letter-spacing: 1px;
-        }
-
-        /* Radio Group Gate Selection Matrix */
         .otp-routing-select { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
-        
-        .channel-card {
-            flex: 1; border: 1px solid #1C2541; background: #0B132B;
-            padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px;
-            font-size: 10px; color: #5BC0BE; text-transform: uppercase; cursor: pointer;
-            transition: 0.2s;
-        }
-        .channel-card input[type="radio"] {
-            accent-color: #5BC0BE;
-            cursor: pointer;
-        }
+        .channel-card { flex: 1; border: 1px solid #1C2541; background: #0B132B; padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px; font-size: 10px; color: #5BC0BE; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
+        .channel-card input[type="radio"] { accent-color: #5BC0BE; cursor: pointer; }
 
-        .dynamic-sub-module {
-            display: none;
-            background: #070B19;
-            border: 1px dashed #1C2541;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: -4px;
-            margin-bottom: 10px;
-            animation: slideDown 0.3s ease-out forwards;
-        }
+        .dynamic-sub-module { display: none; background: #070B19; border: 1px dashed #1C2541; border-radius: 8px; padding: 12px; margin-top: -4px; margin-bottom: 10px; animation: slideDown 0.3s ease-out forwards; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .biometric-sub-options { display: flex; gap: 10px; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
+        .sub-bio-label { font-size: 9px; color: #5BC0BE; display: flex; align-items: center; gap: 4px; cursor: pointer; }
+        .sub-bio-label input[type="radio"] { accent-color: #2ECC71; }
 
-        /* Biometric Layout */
-        .biometric-sub-options {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding-bottom: 8px;
-        }
-        .sub-bio-label {
-            font-size: 9px;
-            color: #5BC0BE;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-        }
-        .sub-bio-label input[type="radio"] {
-            accent-color: #2ECC71;
-        }
-
-        .biometric-scanner-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            gap: 10px;
-        }
-        
-        /* Dynamic SVG Switcher for Face or Fingerprint Scanner Graphic */
-        .laser-fingerprint-node {
-            width: 50px;
-            height: 50px;
-            position: relative;
-        }
-        .laser-scanning-line {
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background: #2ECC71;
-            box-shadow: 0 0 8px #2ECC71;
-            top: 0;
-            animation: laserScan 2s infinite ease-in-out;
-        }
-        @keyframes laserScan {
-            0% { top: 0%; }
-            50% { top: 100%; }
-            100% { top: 0%; }
-        }
+        .biometric-scanner-box { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; gap: 10px; }
+        .laser-fingerprint-node { width: 50px; height: 50px; position: relative; }
+        .laser-scanning-line { position: absolute; width: 100%; height: 2px; background: #2ECC71; box-shadow: 0 0 8px #2ECC71; top: 0; animation: laserScan 2s infinite ease-in-out; }
+        @keyframes laserScan { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
 
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 10px; text-transform: uppercase; color: #5BC0BE; margin-bottom: 6px; font-weight: bold; }
@@ -458,7 +177,6 @@
 </head>
 <body>
 
-    <!-- Header Grid Core Structure -->
     <div class="window-control-bar">
         <div class="brand-wrapper">
             <div class="brand-glow-dot"></div>
@@ -472,112 +190,37 @@
     </div>
 
     <div class="main-container">
-        
-        <!-- Central Master Node styled as MAIN OFFICE -->
         <div class="director-master-panel" onclick="openDirectorSecureGate()">
-            <div class="director-meta">
-                <h2>MAIN OFFICE</h2>
-            </div>
-            <div class="chart-visual-wrapper">
-                <div class="live-chart-container" id="mainOfficeChartContainer">
-                    <!-- Dynamic SVG Engine Injects Content Here -->
-                </div>
-            </div>
+            <div class="director-meta"><h2>MAIN OFFICE</h2></div>
+            <div class="chart-visual-wrapper"><div class="live-chart-container" id="mainOfficeChartContainer"></div></div>
         </div>
 
         <div class="dashboard-grid">
-            
-            <div class="node-box" onclick="handleClusterLink('Accountant Node')">
-                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
-                <div class="node-identity">Accountant Node <span class="live-tag"></span></div>
-            </div>
-
-            <div class="node-box" onclick="handleClusterLink('Data Entry WIP')">
-                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
-                <div class="node-identity">Data Entry WIP <span class="live-tag"></span></div>
-            </div>
-
-            <div class="node-box" onclick="handleClusterLink('Galaxy Core Array')">
-                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
-                <div class="node-identity">Galaxy <span class="live-tag"></span></div>
-            </div>
-
-            <div class="node-box" onclick="handleClusterLink('Q.C. Center Array')">
-                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
-                <div class="node-identity">Q.C. Center <span class="live-tag"></span></div>
-            </div>
-
-            <div class="node-box" onclick="handleClusterLink('Sarine Plan Cluster')">
-                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
-                <div class="node-identity">Sarine Plan <span class="live-tag"></span></div>
-            </div>
-
-            <div class="node-box" id="laserNodeTracker" onclick="handleClusterLink('Laser Matrix Terminal')">
-                <div class="node-pipeline" id="laserPipelineString">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
-                <div class="node-identity">Laser <span class="live-tag"></span></div>
-            </div>
-
-            <div class="node-box" onclick="handleClusterLink('4P Machine Hub')">
-                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
-                <div class="node-identity">4P Machine <span class="live-tag"></span></div>
-            </div>
-
-            <div class="node-box" onclick="handleClusterLink('Ready For Bottom Pool')">
-                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
-                <div class="node-identity">Ready For Bottom <span class="live-tag"></span></div>
-            </div>
-
-            <div class="node-box" onclick="handleClusterLink('Auto Bottom Array')">
-                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
-                <div class="node-identity">Auto Bottom <span class="live-tag"></span></div>
-            </div>
-
-            <div class="node-box" onclick="handleClusterLink('Manual Bottom Hub')">
-                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
-                <div class="node-identity">Manual Bottom <span class="live-tag"></span></div>
-            </div>
-
-            <div class="node-box" onclick="handleClusterLink('PEL Terminal Link')">
-                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
-                <div class="node-identity">PEL <span class="live-tag"></span></div>
-            </div>
-
-            <div class="node-box" onclick="handleClusterLink('Mathala Processing Station')">
-                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
-                <div class="node-identity">Mathala <span class="live-tag"></span></div>
-            </div>
-
-            <div class="node-box" onclick="handleClusterLink('Sorting Table Array')">
-                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
-                <div class="node-identity">Table <span class="live-tag"></span></div>
-            </div>
-
-            <div class="node-box" onclick="handleClusterLink('Police Check Station')">
-                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
-                <div class="node-identity">Police Check <span class="live-tag"></span></div>
-            </div>
-
-            <div class="node-box" onclick="handleClusterLink('Machine Tracker System')">
-                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
-                <div class="node-identity">Machine Tracker <span class="live-tag"></span></div>
-            </div>
-
-            <div class="node-box future-ai-node" onclick="handleClusterLink('Global AI Market Anti-Loss Core')">
-                <div class="node-pipeline" style="color: #5BC0BE;">ANTI-LOSS PROTECTION ONLINE<br>[GLOBAL ARBITRAGE ACTIVE]</div>
-                <div class="node-identity">AI Global Market <span class="live-tag"></span></div>
-            </div>
-
+            <div class="node-box" onclick="handleClusterLink('Accountant Node')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Accountant Node <span class="live-tag"></span></div></div>
+            <div class="node-box" onclick="handleClusterLink('Data Entry WIP')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Data Entry WIP <span class="live-tag"></span></div></div>
+            <div class="node-box" onclick="handleClusterLink('Galaxy Core Array')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Galaxy <span class="live-tag"></span></div></div>
+            <div class="node-box" onclick="handleClusterLink('Q.C. Center Array')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Q.C. Center <span class="live-tag"></span></div></div>
+            <div class="node-box" onclick="handleClusterLink('Sarine Plan Cluster')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Sarine Plan <span class="live-tag"></span></div></div>
+            <div class="node-box" id="laserNodeTracker" onclick="handleClusterLink('Laser Matrix Terminal')"><div class="node-pipeline" id="laserPipelineString">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Laser <span class="live-tag"></span></div></div>
+            <div class="node-box" onclick="handleClusterLink('4P Machine Hub')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">4P Machine <span class="live-tag"></span></div></div>
+            <div class="node-box" onclick="handleClusterLink('Ready For Bottom Pool')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Ready For Bottom <span class="live-tag"></span></div></div>
+            <div class="node-box" onclick="handleClusterLink('Auto Bottom Array')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Auto Bottom <span class="live-tag"></span></div></div>
+            <div class="node-box" onclick="handleClusterLink('Manual Bottom Hub')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Manual Bottom <span class="live-tag"></span></div></div>
+            <div class="node-box" onclick="handleClusterLink('PEL Terminal Link')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">PEL <span class="live-tag"></span></div></div>
+            <div class="node-box" onclick="handleClusterLink('Mathala Processing Station')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Mathala <span class="live-tag"></span></div></div>
+            <div class="node-box" onclick="handleClusterLink('Sorting Table Array')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Table <span class="live-tag"></span></div></div>
+            <div class="node-box" onclick="handleClusterLink('Police Check Station')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Police Check <span class="live-tag"></span></div></div>
+            <div class="node-box" onclick="handleClusterLink('Machine Tracker System')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Machine Tracker <span class="live-tag"></span></div></div>
+            <div class="node-box future-ai-node" onclick="handleClusterLink('Global AI Market Anti-Loss Core')"><div class="node-pipeline" style="color: #5BC0BE;">ANTI-LOSS PROTECTION ONLINE<br>[GLOBAL ARBITRAGE ACTIVE]</div><div class="node-identity">AI Global Market <span class="live-tag"></span></div></div>
         </div>
 
-        <!-- Master Telemetry Control Node -->
         <div class="bottom-dock">
             <div class="system-status-string" id="footerClockLive">Secure Telemetry Active</div>
             <button class="settings-trigger" onclick="openMasterConfigurationGrid()">⚙️</button>
         </div>
-
     </div>
 
-    <!-- Modals Configuration Area (Security Gate Integrated) -->
+    <!-- Security Gate Area -->
     <div class="modal-overlay" id="directorGateOverlay">
         <div class="modal-window">
             <button class="modal-close-x" onclick="closeDirectorSecureGate()">✕</button>
@@ -586,7 +229,6 @@
                 <label>Active Identity Verification Channel (Select 1)</label>
                 <div class="otp-routing-select">
                     
-                    <!-- Radio Button Matrix Controls Single Item Selection -->
                     <div class="channel-card" onclick="triggerChannelSelection('mobileRadio')">
                         <input type="radio" id="mobileRadio" name="secureChannelGate" onclick="event.stopPropagation(); triggerChannelSelection('mobileRadio')"> <span>Mobile Endpoint OTP</span>
                     </div>
@@ -607,8 +249,6 @@
                         <input type="radio" id="biometricRadio" name="secureChannelGate" onclick="event.stopPropagation(); triggerChannelSelection('biometricRadio')"> <span style="color: #2ECC71;">Biometric Scan Matrix</span>
                     </div>
                     <div id="moduleBiometric" class="dynamic-sub-module" style="border-color: rgba(46, 204, 113, 0.3);">
-                        
-                        <!-- Inner Radio Switcher for Face or Fingerprint Selection -->
                         <div class="biometric-sub-options">
                             <label class="sub-bio-label" onclick="event.stopPropagation(); selectBiometricMode('finger')">
                                 <input type="radio" id="bioFingerRadio" name="subBioType" checked> Fingerprint Scan
@@ -617,32 +257,31 @@
                                 <input type="radio" id="bioFaceRadio" name="subBioType"> Face Lock Scan
                             </label>
                         </div>
-
                         <div class="biometric-scanner-box">
-                            <div class="laser-fingerprint-node" id="biometricIconContainer">
-                                <!-- Vector Loader Target Inside Script -->
-                            </div>
+                            <div class="laser-fingerprint-node" id="biometricIconContainer"></div>
                             <span id="biometricStatusText" style="font-size:9px; color:#2ECC71; font-weight:bold; letter-spacing:1px;">PLACE FINGER ON PHONE SCANNER...</span>
                         </div>
                     </div>
 
                 </div>
             </div>
-            <div class="input-group">
+
+            <!-- This OTP Code Group hides/shows dynamically -->
+            <div class="input-group" id="otpInputGroupContainer">
                 <label for="secureOtpField">Enter Synchronized 6-Digit Secondary OTP Code</label>
-                <input type="password" maxlength="6" id="secureOtpField" class="secure-input" placeholder="•••••" autocomplete="off">
+                <input type="password" maxlength="6" id="secureOtpField" class="secure-input" placeholder="••••••" autocomplete="off">
             </div>
-            <button class="action-execution-btn" onclick="executeDirectorGateAuthorization()">Verify Identity Metrics & Enter</button>
+            
+            <button class="action-execution-btn" id="mainSubmitGateBtn" onclick="executeDirectorGateAuthorization()">Verify Identity Metrics & Enter</button>
         </div>
     </div>
 
-    <!-- Master Settings Matrix Dashboard -->
+    <!-- Master Settings Dashboard -->
     <div class="modal-overlay" id="masterSettingsOverlay">
         <div class="modal-window">
             <button class="modal-close-x" onclick="closeMasterConfigurationGrid()">✕</button>
             <div class="modal-title">Master Settings Console</div>
             <div class="settings-control-grid">
-
                 <div class="control-block">
                     <h4>Graph Performance Time Filter</h4>
                     <div class="selection-options-row">
@@ -652,7 +291,6 @@
                         <button class="option-selector-btn" id="time-1y" onclick="switchGraphTimeDuration('1y')">1 Year</button>
                     </div>
                 </div>
-
                 <div class="control-block">
                     <h4>Director Main Office Graph Matrix Design</h4>
                     <div class="selection-options-row" style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
@@ -663,7 +301,6 @@
                         <button class="option-selector-btn" id="btn-ai" onclick="switchGraphDesignMatrix('ai')" style="grid-column: span 2;">5. AI Neural Technology</button>
                     </div>
                 </div>
-
                 <div class="control-block">
                     <h4>Active Display Unit Parameters (1-16 Nodes)</h4>
                     <div class="selection-options-row">
@@ -671,7 +308,6 @@
                         <button class="option-selector-btn" onclick="alert('Display parameters synced: Carat Weight Distribution Metrics')">Carats Volume</button>
                     </div>
                 </div>
-
                 <div class="control-block">
                     <h4>Administrative Process Lock Authorization</h4>
                     <div class="input-group" style="margin-bottom:10px; margin-top:5px;">
@@ -684,18 +320,16 @@
     </div>
 
     <script>
-        // Global Systems Configurations
         let liveProfitStatus = true;
         let activeDesignStyle = "pillars";
         let activeTimeDuration = "1d";
-        let activeBiometricType = "finger"; // Default sub biometric state
+        let activeBiometricType = "finger";
 
         const svgIcons = {
             finger: `<div class="laser-scanning-line"></div><svg viewBox="0 0 24 24" fill="none" stroke="%232ECC71" stroke-width="1" stroke-linecap="round" style="width:100%;height:100%"><path d="M12 2a10 10 0 0 0-4 19.18M12 5a7 7 0 0 0-2 13.71M12 8a4 4 0 0 0 0 8"/></svg>`,
             face: `<div class="laser-scanning-line"></div><svg viewBox="0 0 24 24" fill="none" stroke="%232ECC71" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2 M9 10h.01M15 10h.01M10 15s1 1 2 1 2-1 2-1"/></svg>`
         };
 
-        // Generates fluid vector graph paths matching runtime parameters
         function generateLiveVectorGraph() {
             const hexColor = liveProfitStatus ? "var(--matte-green)" : "var(--matte-red)";
             let rangeMultiplier = 1;
@@ -758,14 +392,12 @@
         }
 
         function updateMainOfficeVisual() {
-            const container = document.getElementById('mainOfficeChartContainer');
-            container.innerHTML = generateLiveVectorGraph();
+            document.getElementById('mainOfficeChartContainer').innerHTML = generateLiveVectorGraph();
         }
 
-        // Active Mutex Radio Routing Selector Logic
+        // Mutex Channel Selector with Dynamic Auto-Hide Logic for OTP Code Field
         function triggerChannelSelection(targetRadioId) {
-            const targetRadio = document.getElementById(targetRadioId);
-            targetRadio.checked = true;
+            document.getElementById(targetRadioId).checked = true;
 
             const modules = {
                 mobileRadio: 'moduleMobile',
@@ -773,18 +405,29 @@
                 biometricRadio: 'moduleBiometric'
             };
 
+            const otpField = document.getElementById('otpInputGroupContainer');
+            const submitBtn = document.getElementById('mainSubmitGateBtn');
+
             Object.keys(modules).forEach(key => {
                 const subBox = document.getElementById(modules[key]);
                 if(key === targetRadioId) {
                     subBox.style.display = "block";
-                    if(key === 'biometricRadio') executeDynamicBiometricLoop();
+                    if(key === 'biometricRadio') {
+                        // HIDE CODE INPUT AND MAIN BUTTON FOR BIOMETRIC
+                        otpField.style.display = "none";
+                        submitBtn.style.display = "none";
+                        executeDynamicBiometricLoop();
+                    } else {
+                        // SHOW CODE INPUT AND MAIN BUTTON FOR OTP MODES
+                        otpField.style.display = "block";
+                        submitBtn.style.display = "block";
+                    }
                 } else {
                     subBox.style.display = "none";
                 }
             });
         }
 
-        // Sub Biometric Channel Switcher
         function selectBiometricMode(modeKey) {
             activeBiometricType = modeKey;
             if(modeKey === 'finger') {
@@ -807,9 +450,7 @@
             const iconFrame = document.getElementById('biometricIconContainer');
             const statusLabel = document.getElementById('biometricStatusText');
 
-            // Render matching background template safely
             iconFrame.innerHTML = activeBiometricType === 'finger' ? svgIcons.finger : svgIcons.face;
-            
             const labelStr = activeBiometricType === 'finger' ? "PLACE FINGER ON PHONE SCANNER..." : "POSITION FACE IN FRONT OF CAMERA...";
             statusLabel.innerText = `${labelStr} [0%]`;
             statusLabel.style.color = "#00C6FF";
@@ -823,6 +464,12 @@
                     statusLabel.innerText = `🤖 ${activeBiometricType === 'finger' ? 'FINGERPRINT' : 'FACE'} VERIFIED [SUCCESS]`;
                     statusLabel.style.color = "#2ECC71";
                     biometricSuccess = true;
+
+                    // AUTO ROUTING WITHOUT BUTTON TRIGGER AFTER 1.5 SECONDS
+                    setTimeout(() => {
+                        closeDirectorSecureGate();
+                        window.location.href = 'main_office.html';
+                    }, 1500);
                 }
             }, 500);
         }
@@ -830,7 +477,7 @@
         function switchGraphTimeDuration(timeKey) {
             activeTimeDuration = timeKey;
             ['1d', '7d', '1m', '1y'].forEach(item => document.getElementById(`time-${item}`).classList.remove('active'));
-            document.getElementById(`time-${timeKey}`).add('active');
+            document.getElementById(`time-${timeKey}`).classList.add('active');
             updateMainOfficeVisual();
         }
 
@@ -871,8 +518,6 @@
             document.getElementById('secureOtpField').value = ""; 
             biometricSuccess = false;
             if(activeScanTimer) clearInterval(activeScanTimer);
-            
-            // Set default initial state to Mobile Endpoint on load
             triggerChannelSelection('mobileRadio');
             document.getElementById('directorGateOverlay').classList.add('active'); 
         }
@@ -882,31 +527,19 @@
             document.getElementById('directorGateOverlay').classList.remove('active'); 
         }
 
+        // Standard Manual Code validation route for OTP channels only
         function executeDirectorGateAuthorization() {
             const code = document.getElementById('secureOtpField').value;
-            const mobileActive = document.getElementById('mobileRadio').checked;
-            const mailActive = document.getElementById('mailRadio').checked;
-            const biometricActive = document.getElementById('biometricRadio').checked;
-
-            if(biometricActive && !biometricSuccess) {
-                alert("ACCESS DENIED: Biometric scanning array processing is not yet complete.");
-                return;
-            }
-
             if(code.length === 6) {
-                alert("IDENTITY VERIFIED: Secure tunnel established. Opening Main Office Console...");
+                alert("IDENTITY VERIFIED: Secure tunnel established.");
                 closeDirectorSecureGate();
-                // DIRECT REDIRECT LINK TO YOUR NEWLY CREATED CORE FILE
                 window.location.href = 'main_office.html'; 
             } else {
-                alert("Invalid Transmission Metrics. 6-Digit Secure Key code sequence required.");
+                alert("Invalid Transmission Metrics. 6-Digit code sequence required.");
             }
         }
 
-        function triggerFullScreen() {
-            if (!document.fullscreenElement) { document.documentElement.requestFullscreen(); } 
-            else { document.exitFullscreen(); }
-        }
+        function triggerFullScreen() { if (!document.fullscreenElement) { document.documentElement.requestFullscreen(); } else { document.exitFullscreen(); } }
         function triggerMinimize() { alert("System minimized."); }
         function triggerClose() { if (confirm("Terminate connection?")) window.close(); }
         function openMasterConfigurationGrid() { document.getElementById('masterSettingsOverlay').classList.add('active'); }
