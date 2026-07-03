@@ -1,1 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Raghuveer Diamond - Main Office Core</title>
+    <style>
+        /* Shared Core Cyber Theme Matrix */
+        :root {
+            --bg-primary: #0B132B;
+            --bg-secondary: #111D37;
+            --top-bar-bg: #070B19;
+            --border-color: #1C2541;
+            --accent-cyan: #5BC0BE;
+            --accent-blue: #00C6FF;
+            --accent-green: #27AE60;
+            --accent-red: #C0392B;
+            --text-main: #FFFFFF;
+            --text-muted: #708090;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Bar & Logo Matrix */
+        .window-control-bar {
+            height: 60px;
+            background-color: var(--top-bar-bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Holographic Logo Placeholder for future logo.jpg */
+        .company-logo-frame {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 1px dashed var(--accent-cyan);
+            background: url('logo.jpg') no-repeat center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            color: var(--accent-cyan);
+            font-weight: bold;
+            box-shadow: 0 0 8px rgba(91, 192, 190, 0.3);
+        }
+
+        .brand-title {
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--accent-cyan);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--border-color);
+            box-shadow: 0 0 10px rgba(0, 198, 255, 0.2);
+        }
+
+        /* Core Layout Grid */
+        .office-container {
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* 4 Main Core Cards (Bank, Rough, Sales, Cash) */
+        .core-metrics-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .metric-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--accent-blue);
+        }
+
+        .metric-card.green-tag::before { background: var(--accent-green); }
+
+        .card-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .card-value {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .live-status-indicator {
+            font-size: 10px;
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background-color: var(--accent-green);
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0.3; } }
+
+        /* Secondary Grid: 2050 Features & Print Station */
+        .workspace-split-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 900px) {
+            .workspace-split-grid { grid-template-columns: 1fr; }
+        }
+
+        /* 2050 High-Tech Blocks */
+        .tech-features-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .feature-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .block-title {
+            font-size: 13px;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-bottom: 1px dashed rgba(255,255,255,0.05);
+            padding-bottom: 6px;
+        }
+
+        /* Holographic Layout Simulations */
+        .hollow-display {
+            background: #070B19;
+            border: 1px solid rgba(0, 198, 255, 0.1);
+            border-radius: 6px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 11px;
+            color: #5BC0BE;
+            min-height: 50px;
+        }
+
+        /* Universal Cyber Print Station */
+        .print-station-card {
+            background: linear-gradient(145deg, var(--bg-secondary), #162649);
+            border: 1px solid rgba(91, 192, 190, 0.2);
+            border-radius: 12px;
+            padding: 18px;
+            height: max-content;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        .print-btn {
+            width: 100%;
+            background: #0B132B;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .print-btn:hover {
+            border-color: var(--accent-cyan);
+            background: var(--border-color);
+        }
+
+        .print-icon { color: var(--accent-cyan); }
+
+        .size-setting-box {
+            background: #070B19;
+            border: 1px dashed var(--border-color);
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 12px;
+        }
+
+        .size-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .size-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 10px;
+            padding: 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .size-btn.active, .size-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-main);
+            background: #1C2541;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Grid Core Structure -->
+    <div class="window-control-bar">
+        <div class="brand-wrapper">
+            <!-- Space for logo.jpg. Displays 'RD' if image missing -->
+            <div class="company-logo-frame">RD</div>
+            <div class="brand-title">MAIN OFFICE MATRIX</div>
+        </div>
+        <button class="back-btn" onclick="goToDashboard()">✕ Close Gate</button>
+    </div>
+
+    <div class="office-container">
+        
+        <!-- 4 Core Pillars Row -->
+        <div class="core-metrics-row">
+            <div class="metric-card">
+                <div class="card-label">1. Bank Liquidity Matrix</div>
+                <div class="card-value" id="val-bank">₹ 4,82,50,000</div>
+                <div class="live-status-indicator"><span class="status-dot"></span>Live Secure Sync</div>
+            </div>
+            <div class="metric-card">
+                <div class="card-label">2. Rough Purchase Inventory</div>
+                <div class="card-value" id="val-rough">8,450 Carats</div>
+                <div class="live-status-indicator"><span class="status-dot"></span>Live Pipeline Stock</div>
+            </div>
+            <div class="metric-card green-tag">
+                <div class="card-label">3. Global Sales Revenue</div>
+                <div class="card-value" id="val-sales">₹ 12,68,40,000</div>
+                <div class="live-status-indicator"><span class="status-dot"></span>Polished Cleared</div>
+            </div>
+            <div class="metric-card">
+                <div class="card-label">4. Cash Flow Matrix</div>
+                <div class="card-value" id="val-cash">₹ 34,15,500</div>
+                <div class="live-status-indicator"><span class="status-dot"></span>Office Vault Safe</div>
+            </div>
+        </div>
+
+        <!-- 2050 Features & Cyber Print Split View -->
+        <div class="workspace-split-grid">
+            
+            <!-- Left: Year 2050 Multilevel Corporate AI Engines -->
+            <div class="tech-features-panel">
+                
+                <div class="feature-block">
+                    <div class="block-title">AI-Vision Rough Assortment Suite [Year 2050 Model]</div>
+                    <div class="hollow-display" id="ai-vision-terminal">
+                        [SYSTEM SYSTEM ACTIVE] Scanning rough lattice... Optimal yield mapping: 3 EXCELLENT parameters locked. Estimated margin matrix: +14.6%.
+                    </div>
+                </div>
+
+                <div class="feature-block">
+                    <div class="block-title">Autonomous Factory Robotics Link [Manless WIP Tracking]</div>
+                    <div class="hollow-display" id="factory-terminal">
+                        [ROBOTIC MATRIX ONLINE] Active Arms: 24/24 | Target: 400 Diamonds Production | Currently Polished: 284 | Realtime Efficiency: 98.4%
+                    </div>
+                </div>
+
+                <div class="feature-block">
+                    <div class="block-title">Global Diamond Market Arbitrage Matrix</div>
+                    <div class="hollow-display" id="market-terminal">
+                        [LIVE WORLD RATES] Surat Index: Baseline | Antwerp Terminal: +0.4% | New York Exchange: Locked | Global anti-loss firewall: SECURE.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right: Universal Cyber Print Station -->
+            <div class="print-station-card">
+                <div class="block-title" style="border: none; margin-bottom: 15px;">Universal Cyber Print Station</div>
+                
+                <button class="print-btn" onclick="executeCyberPrint('Letter Pad')">
+                    <span>1. Letter Pad Print</span> <span class="print-icon">🖨️</span>
+                </button>
+                <button class="print-btn" onclick="executeCyberPrint('Check')">
+                    <span>2. Check Print</span> <span class="print-icon">🏦</span>
+                </button>
+                <button class="print-btn" onclick="executeCyberPrint('Excel')">
+                    <span>3. Excel Export & Print</span> <span class="print-icon">📊</span>
+                </button>
+
+                <div class="size-setting-box">
+                    <div class="card-label" style="font-size: 9px;">4. Universal Size & Layout Settings</div>
+                    <div class="size-grid">
+                        <button class="size-btn active" id="sz-a4" onclick="setPrinterSize('a4')">A4 Standard</button>
+                        <button class="size-btn" id="sz-a5" onclick="setPrinterSize('a5')">A5 Pad</button>
+                        <button class="size-btn" id="sz-legal" onclick="setPrinterSize('legal')">Legal Document</button>
+                        <button class="size-btn" id="sz-check" onclick="setPrinterSize('check')">Custom Check Size</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let selectedLayoutSize = "a4";
+
+        // Navigation back to index dashboard
+        function goToDashboard() {
+            window.location.href = 'dashboard.html'; 
+        }
+
+        // Universal Printing Execution System
+        function executeCyberPrint(documentType) {
+            alert(`PRINTER COMMAND SENT:\nPrinting ${documentType} Matrix using [${selectedLayoutSize.toUpperCase()}] configuration profile to connected network hardware.`);
+        }
+
+        // Layout Size Configuration Selector
+        function setPrinterSize(sizeKey) {
+            selectedLayoutSize = sizeKey;
+            const sizes = ['a4', 'a5', 'legal', 'check'];
+            sizes.forEach(item => {
+                document.getElementById(`sz-${item}`).classList.remove('active');
+            });
+            document.getElementById(`sz-${sizeKey}`).classList.add('active');
+        }
+
+        // AUTO-STREAM MATRIX SIMULATION (Keeps prices and numbers jumping up/down live)
+        setInterval(() => {
+            // Randomly fluctuates the Cash Matrix live to simulate cash movement
+            const baseCash = 3415500;
+            const fluctuation = Math.floor(Math.random() * 8500) - 4250;
+            document.getElementById('val-cash').innerText = "₹ " + (baseCash + fluctuation).toLocaleString('en-IN');
+
+            // Simulates progress updates on the 2050 Robotics Terminal
+            const currentPolished = 284 + Math.floor(Math.random() * 3);
+            document.getElementById('factory-terminal').innerText = `[ROBOTIC MATRIX ONLINE] Active Arms: 24/24 | Target: 400 Diamonds Production | Currently Polished: ${currentPolished} | Realtime Efficiency: 98.4%`;
+        }, 4000);
+    </script>
+</body>
+</html>
