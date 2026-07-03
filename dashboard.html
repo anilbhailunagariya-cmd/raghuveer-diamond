@@ -22,7 +22,7 @@
             /* Matte Mode Graph Colors */
             --matte-green: #27AE60;
             --matte-red: #C0392B;
-            --graph-live-color: #27AE60; /* Default Profit Matte Green */
+            --graph-live-color: #27AE60; /* Systems default */
         }
 
         * {
@@ -429,12 +429,6 @@
         .selection-options-row { display: flex; flex-wrap: wrap; gap: 6px; }
         .option-selector-btn { flex: 1; min-width: 100px; background: #111D37; border: 1px solid #1C2541; color: var(--text-main); padding: 8px; border-radius: 4px; font-size: 10px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
         .option-selector-btn.active, .option-selector-btn:hover { background: #1C2541; border-color: #5BC0BE; }
-        
-        /* Matte Color Selectors style */
-        .profit-btn-matte { border-color: var(--matte-green) !important; color: var(--matte-green); }
-        .profit-btn-matte.active { background: var(--matte-green) !important; color: #fff !important; box-shadow: 0 0 10px rgba(39,174,96,0.3); }
-        .loss-btn-matte { border-color: var(--matte-red) !important; color: var(--matte-red); }
-        .loss-btn-matte.active { background: var(--matte-red) !important; color: #fff !important; box-shadow: 0 0 10px rgba(192,57,43,0.3); }
     </style>
 </head>
 <body>
@@ -462,9 +456,6 @@
             <div class="chart-visual-wrapper">
                 <div class="live-chart-container" id="mainOfficeChartContainer">
                     <!-- Default Initial Chart Engine -->
-                    <svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                        <path id="dynamicChartPath" d="M10,70 L40,70 L40,20 L70,20 L70,50 L100,50 L100,10 L130,10 L130,60 L160,60 L160,30 L190,30 L190,70 L220,70 L220,15 L250,15 L250,45 L280,45" fill="none" stroke="var(--graph-live-color)" stroke-width="3" stroke-linecap="round"/>
-                    </svg>
                 </div>
             </div>
         </div>
@@ -614,17 +605,8 @@
             <button class="modal-close-x" onclick="closeMasterConfigurationGrid()">✕</button>
             <div class="modal-title">Master Settings Console</div>
             <div class="settings-control-grid">
-                
-                <!-- NEW LAYER: Live Profit/Loss Matte Color Matrix Controller -->
-                <div class="control-block">
-                    <h4>Realtime Valuation Metrics State (Color Matrix)</h4>
-                    <div class="selection-options-row">
-                        <button class="option-selector-btn profit-btn-matte active" id="profitStateBtn" onclick="switchLiveColorMatrix('profit')">PROFIT [MATTE GREEN]</button>
-                        <button class="option-selector-btn loss-btn-matte" id="lossStateBtn" onclick="switchLiveColorMatrix('loss')">LOSS [MATTE RED]</button>
-                    </div>
-                </div>
 
-                <!-- NEW LAYER: 5 Advanced Geometric Visual Designs -->
+                <!-- FIXED SECTION: Removed manual color switch. Keeping 5 Visual Designs -->
                 <div class="control-block">
                     <h4>Director Main Office Graph Matrix Design</h4>
                     <div class="selection-options-row" style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
@@ -656,14 +638,13 @@
     </div>
 
     <script>
-        // Global Design Parameters
-        let activeColorState = "profit"; // profit or loss
-        let activeDesignStyle = "pillars"; // pillars, heart, mnc, high-tech, ai
+        // Global State Parameters
+        let liveProfitStatus = true; // Auto calculated from factory server simulation
+        let activeDesignStyle = "pillars"; // Default
 
         // Holographic Data Matrix Engine for Main Office
         const graphDatabaseEngine = {
             pillars: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                        <!-- Brils Ubha Pillars Style (Rounded Bar Grid) -->
                         <rect x="20" y="35" width="14" height="45" rx="3" fill="currentColor" />
                         <rect x="50" y="15" width="14" height="65" rx="3" fill="currentColor" />
                         <rect x="80" y="45" width="14" height="35" rx="3" fill="currentColor" />
@@ -675,16 +656,13 @@
                         <rect x="260" y="40" width="14" height="40" rx="3" fill="currentColor" />
                       </svg>`,
             heart: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                        <!-- Medical Heart Rate Zig-Zag Pulse Pattern -->
                         <path d="M0,45 L40,45 L50,15 L58,70 L66,35 L72,50 L80,45 L130,45 L140,5 L150,75 L160,30 L168,55 L174,45 L220,45 L230,20 L238,65 L246,40 L252,47 L260,45 L300,45" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>`,
             mnc: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                        <!-- Corporate MNC Steady Exponential Growth Line Chart -->
                         <path d="M10,75 Q40,70 80,55 T160,40 T240,15 T300,5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
                         <path d="M10,75 Q40,70 80,55 T160,40 T240,15 T300,5 L300,80 L10,80 Z" fill="currentColor" opacity="0.15"/>
                       </svg>`,
             "high-tech": `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                        <!-- Year 2050 Sci-Fi Circular Tech Intersect Matrix -->
                         <circle cx="50" cy="40" r="25" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,4" />
                         <circle cx="150" cy="40" r="30" fill="none" stroke="currentColor" stroke-width="2" />
                         <circle cx="150" cy="40" r="15" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2,2" />
@@ -692,7 +670,6 @@
                         <path d="M10,40 L120,40 M180,40 L290,40" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                       </svg>`,
             ai: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                        <!-- AI Neural Node Interconnections Network -->
                         <line x1="30" y1="40" x2="90" y2="20" stroke="currentColor" stroke-width="1" opacity="0.6" />
                         <line x1="30" y1="40" x2="90" y2="60" stroke="currentColor" stroke-width="1" opacity="0.6" />
                         <line x1="90" y1="20" x2="170" y2="15" stroke="currentColor" stroke-width="1.5" />
@@ -715,33 +692,22 @@
         // Live Re-rendering Engine for Main Office Window
         function updateMainOfficeVisual() {
             const container = document.getElementById('mainOfficeChartContainer');
-            const hexColor = (activeColorState === "profit") ? "var(--matte-green)" : "var(--matte-red)";
+            // AUTOMATIC LIVE DETECTION SYSTEM: Matte Green for true, Matte Red for false
+            const hexColor = liveProfitStatus ? "var(--matte-green)" : "var(--matte-red)";
             
-            // Injecting HTML Structure
             container.innerHTML = graphDatabaseEngine[activeDesignStyle];
             
-            // Color Mapping Injection
             const activeSvg = document.getElementById('masterVisualSvg');
             if(activeSvg) {
                 activeSvg.style.color = hexColor;
             }
         }
 
-        // Action Function: Switch Profit vs Loss Matrix
-        function switchLiveColorMatrix(targetState) {
-            activeColorState = targetState;
-            
-            document.getElementById('profitStateBtn').classList.remove('active');
-            document.getElementById('lossStateBtn').classList.remove('active');
-            
-            if(targetState === 'profit') {
-                document.getElementById('profitStateBtn').classList.add('active');
-            } else {
-                document.getElementById('lossStateBtn').classList.add('active');
-            }
-            
+        // AUTO MATRIX ENGINE SIMULATION: Flips profit/loss randomly to mimic actual factory data streams
+        setInterval(() => {
+            liveProfitStatus = (Math.random() > 0.35); // 65% probability of tracking profit state live
             updateMainOfficeVisual();
-        }
+        }, 8000);
 
         // Action Function: Switch 5 Design Formats
         function switchGraphDesignMatrix(targetDesign) {
@@ -886,7 +852,7 @@
         setInterval(runMasterClock, 1000);
         runMasterClock();
 
-        // Bootstrapping default design render cycle
+        // Initialization
         updateMainOfficeVisual();
     </script>
 </body>
