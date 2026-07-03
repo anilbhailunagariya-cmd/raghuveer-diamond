@@ -10,195 +10,686 @@
             --bg-secondary: #121b2d;
             --accent-blue: #00d2ff;
             --accent-green: #00ff87;
+            --accent-red: #ff3366;
             --accent-orange: #ff9900;
             --text-main: #ffffff;
             --text-muted: #708090;
             --border-color: rgba(0, 210, 255, 0.15);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; user-select: none; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            user-select: none;
+        }
 
-        /* આખું પેજ સ્ક્રીન પર ફિટ કરવા માટે */
         body {
             background-color: var(--bg-primary);
             color: var(--text-main);
             width: 100vw;
             height: 100vh;
+            position: relative;
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* કપાય નહીં એટલે સ્ક્રોલિંગ બંધ */
+            overflow: hidden; /* સ્ક્રીન બગડે નહીં એટલે સ્ક્રોલિંગ બંધ */
         }
 
+        .background-logo-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40%;
+            height: 40%;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Top OS Window Control Bar */
         .window-control-bar {
             height: 40px;
-            background: rgba(18, 27, 45, 0.9);
+            background-color: rgba(18, 27, 45, 0.9);
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0 15px;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            position: relative;
             flex-shrink: 0;
         }
 
-        /* મુખ્ય કન્ટેનર જે આખું ફિટ થઈ જશે */
+        .brand-title {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+        }
+
+        .window-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            color: var(--text-main);
+            background: rgba(0, 210, 255, 0.1);
+            border-color: var(--accent-blue);
+        }
+
+        .action-btn.close-btn:hover {
+            background: rgba(255, 51, 102, 0.2);
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        /* Layout Architecture - Fixed for perfect fitting */
         .main-container {
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 8px;
-            gap: 8px;
+            padding: 10px;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+            height: calc(100vh - 40px);
             overflow: hidden;
         }
 
-        /* ડિરેક્ટર પેનલની ઊંચાઈ ફિક્સ કરી દીધી જેથી નીચે જગ્યા વધે */
+        /* Main Director Panel */
         .director-master-panel {
-            flex: 0 0 15vh;
-            background: rgba(18, 27, 45, 0.95);
+            flex: 0 0 16vh;
+            min-height: 90px;
+            background: linear-gradient(135deg, rgba(18, 27, 45, 0.95), rgba(0, 210, 255, 0.03));
             border: 1px solid rgba(0, 210, 255, 0.3);
-            border-radius: 10px;
-            padding: 10px;
+            border-radius: 12px;
+            padding: 10px 15px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            position: relative;
+            transition: all 0.3s ease;
         }
 
-        /* ૧૬ બોક્સની ગ્રીડ જે ફ્લેક્સિબલ રીતે ફિટ થશે */
+        .director-master-panel:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.15);
+        }
+
+        .director-meta h2 {
+            font-size: clamp(13px, 3.5vw, 16px);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 2px;
+        }
+
+        .director-meta p {
+            font-size: clamp(9px, 2.5vw, 11px);
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* SVG Profit/Loss Chart Area */
+        .chart-visual-wrapper {
+            width: clamp(150px, 35vw, 350px);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            padding-left: 10px;
+        }
+
+        .live-chart-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 4x4 Fluid Grid Architecture */
         .dashboard-grid {
             flex: 1;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             grid-template-rows: repeat(4, 1fr);
-            gap: 6px;
-            min-height: 0; /* આ ખાસ જરૂરી છે જેથી બોક્સ નાના થઈ શકે */
+            gap: 8px;
+            min-height: 0; /* આ લાઇન ક્રોપ થતા અટકાવશે */
         }
 
         .node-box {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 4px;
+            padding: 6px 8px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .node-box:hover {
+            transform: translateY(-1px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 4px 12px rgba(0, 210, 255, 0.12);
+        }
+
+        .node-box.overdue-alert {
+            border-color: var(--accent-orange);
+            animation: pulseWarning 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseWarning {
+            0% { box-shadow: 0 0 4px rgba(255, 153, 0, 0.2); }
+            50% { box-shadow: 0 0 12px rgba(255, 153, 0, 0.4); border-color: var(--accent-orange); }
+            100% { box-shadow: 0 0 4px rgba(255, 153, 0, 0.2); }
+        }
+
+        .node-pipeline {
+            font-size: clamp(7.5px, 2.2vw, 10px);
+            color: var(--text-muted);
+            letter-spacing: 0.3px;
+            line-height: 1.2;
             overflow: hidden;
         }
 
-        .node-pipeline { font-size: 7px; color: var(--text-muted); line-height: 1.1; }
-        .node-identity { font-size: 8px; font-weight: 600; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
-        .live-tag { width: 5px; height: 5px; border-radius: 50%; background-color: var(--accent-green); }
+        .overdue-text {
+            color: var(--accent-orange) !important;
+            font-weight: 600;
+        }
 
-        .bottom-dock {
-            height: 30px;
+        .node-identity {
+            font-size: clamp(8.5px, 2.5vw, 12px);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-top: 2px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-shrink: 0;
-            font-size: 9px;
-            color: var(--text-muted);
         }
 
-        /* બાકીના સ્ટાઇલ કોડ સેમ છે */
-        .node-box.overdue-alert { border-color: var(--accent-orange); }
-        .overdue-text { color: var(--accent-orange); font-size: 7px; }
+        .live-tag {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: var(--accent-green);
+            box-shadow: 0 0 6px var(--accent-green);
+            flex-shrink: 0;
+        }
+
+        .node-box.overdue-alert .live-tag {
+            background-color: var(--accent-orange);
+            box-shadow: 0 0 6px var(--accent-orange);
+        }
+
+        .future-ai-node {
+            border: 1px solid rgba(0, 255, 135, 0.25);
+            background: linear-gradient(135deg, rgba(18, 27, 45, 0.9), rgba(0, 255, 135, 0.02));
+        }
+
+        .future-ai-node:hover {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 12px rgba(0, 255, 135, 0.15);
+        }
+
+        .future-ai-node .node-identity {
+            color: var(--accent-green);
+        }
+
+        /* Bottom Fixed workspace bar */
+        .bottom-dock {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            height: 35px;
+            flex-shrink: 0;
+        }
+
+        .system-status-string {
+            font-size: clamp(8px, 2.2vw, 11px);
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+
+        .settings-trigger {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            color: var(--accent-blue);
+            border-radius: 6px;
+            padding: 4px 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: clamp(8.5px, 2.4vw, 11px);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .settings-trigger:hover {
+            color: #ffffff;
+            background-color: var(--accent-blue);
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+        }
+
+        /* Overlay Interface Structures */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(5, 8, 16, 0.88);
+            backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-window {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            width: 92%;
+            max-width: 440px;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .modal-close-x {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: none; border: none;
+            color: var(--text-muted);
+            cursor: pointer; font-size: 16px;
+        }
+
+        .modal-close-x:hover { color: var(--accent-red); }
+
+        .modal-title {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            color: var(--accent-blue);
+            border-bottom: 1px solid rgba(0, 210, 255, 0.1);
+            padding-bottom: 8px;
+        }
+
+        .otp-routing-select {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .channel-card {
+            flex: 1;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.01);
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label {
+            display: block;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .secure-input {
+            width: 100%;
+            background: rgba(5, 8, 16, 0.6);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .action-execution-btn {
+            width: 100%;
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            color: var(--text-main);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 114, 255, 0.3);
+        }
+
+        .settings-control-grid { display: flex; flex-direction: column; gap: 12px; }
+        .control-block { background: rgba(5, 8, 16, 0.4); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; }
+        .control-block h4 { font-size: 11px; text-transform: uppercase; color: var(--text-main); margin-bottom: 8px; letter-spacing: 1px; }
+        .selection-options-row { display: flex; gap: 8px; }
         
-        /* મોબાઈલ માટે ખાસ રિસ્પોન્સિવ ટ્વીક */
-        @media (max-width: 600px) {
-            .node-pipeline { font-size: 6px; }
-            .node-identity { font-size: 7px; }
+        .option-selector-btn {
+            flex: 1; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color);
+            color: var(--text-muted); padding: 6px; border-radius: 4px; font-size: 10px;
+            text-transform: uppercase; cursor: pointer; transition: all 0.2s ease;
+        }
+
+        .option-selector-btn.active, .option-selector-btn:hover {
+            background: rgba(0, 210, 255, 0.1); border-color: var(--accent-blue); color: var(--text-main);
         }
     </style>
 </head>
 <body>
+
+    <div class="background-logo-overlay" id="companyLogoSpace"></div>
+
     <div class="window-control-bar">
-        <div class="brand-title" style="font-size: 12px; color: var(--accent-blue);">Raghuveer Diamond</div>
+        <div class="brand-title">Raghuveer Diamond</div>
         <div class="window-actions">
-            <button class="action-btn" onclick="triggerZoom()">&#10064;</button>
-            <button class="action-btn" onclick="window.close()">&#10005;</button>
+            <button class="action-btn" onclick="triggerMinimize()" title="Minimize">&#9472;</button>
+            <button class="action-btn" onclick="triggerZoom()" title="Zoom Viewport">&#10064;</button>
+            <button class="action-btn" onclick="triggerFullScreen()" title="Full Screen Window">&#10066;</button>
+            <button class="action-btn close-btn" onclick="triggerClose()" title="Close System">&#10005;</button>
         </div>
     </div>
 
     <div class="main-container">
-        <div class="director-master-panel">
+        
+        <div class="director-master-panel" onclick="openDirectorSecureGate()">
             <div class="director-meta">
                 <h2>Director Control Room</h2>
-                <p>Secure Identity Protocol Synced</p>
+                <p>Secure Dual-Channel Sync Active</p>
+                <p style="margin-top: 5px; color: var(--accent-green); font-size: 10px;">Live Realtime Factory Architecture</p>
+            </div>
+            <div class="chart-visual-wrapper">
+                <svg class="live-chart-svg" viewBox="0 0 300 80">
+                    <path id="dynamicChartPath" d="M0,50 Q30,20 60,45 T120,15 T180,60 T240,25 T300,10" fill="none" stroke="#00d2ff" stroke-width="2.5" stroke-linecap="round"/>
+                    <path id="dynamicChartArea" d="M0,50 Q30,20 60,45 T120,15 T180,60 T240,25 T300,10 L300,80 L0,80 Z" fill="rgba(0,210,255,0.04)"/>
+                </svg>
             </div>
         </div>
 
         <div class="dashboard-grid">
-            <!-- ૧૬ બોક્સ -->
-            <div class="node-box">
-                <div class="node-pipeline">AWAITING HARDWARE...</div>
-                <div class="node-identity">Accountant <span class="live-tag"></span></div>
+            
+            <div class="node-box" onclick="handleClusterLink('Accountant Node')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Accountant Node <span class="live-tag"></span></div>
             </div>
-            <div class="node-box">
-                <div class="node-pipeline">AWAITING HARDWARE...</div>
-                <div class="node-identity">Data Entry <span class="live-tag"></span></div>
+
+            <div class="node-box" onclick="handleClusterLink('Data Entry WIP')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Data Entry WIP <span class="live-tag"></span></div>
             </div>
-            <div class="node-box">
-                <div class="node-pipeline">AWAITING HARDWARE...</div>
+
+            <div class="node-box" onclick="handleClusterLink('Galaxy Core Array')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
                 <div class="node-identity">Galaxy <span class="live-tag"></span></div>
             </div>
-            <div class="node-box">
-                <div class="node-pipeline">AWAITING HARDWARE...</div>
+
+            <div class="node-box" onclick="handleClusterLink('Q.C. Center Array')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
                 <div class="node-identity">Q.C. Center <span class="live-tag"></span></div>
             </div>
-            <div class="node-box">
-                <div class="node-pipeline">AWAITING HARDWARE...</div>
-                <div class="node-identity">Sarine <span class="live-tag"></span></div>
+
+            <div class="node-box" onclick="handleClusterLink('Sarine Plan Cluster')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Sarine Plan <span class="live-tag"></span></div>
             </div>
-            <!-- Laser Alert Box -->
-            <div class="node-box overdue-alert">
-                <div class="node-pipeline overdue-text">OVERDUE<br>LOCKED</div>
-                <div class="node-identity">Laser <span class="live-tag" style="background:var(--accent-orange)"></span></div>
+
+            <div class="node-box" id="laserNodeTracker" onclick="handleClusterLink('Laser Matrix Terminal')">
+                <div class="node-pipeline" id="laserPipelineString">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Laser <span class="live-tag"></span></div>
             </div>
-            <div class="node-box">
-                <div class="node-pipeline">AWAITING HARDWARE...</div>
+
+            <div class="node-box" onclick="handleClusterLink('4P Machine Hub')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
                 <div class="node-identity">4P Machine <span class="live-tag"></span></div>
             </div>
-            <div class="node-box">
-                <div class="node-pipeline">AWAITING HARDWARE...</div>
-                <div class="node-identity">Bottom <span class="live-tag"></span></div>
+
+            <div class="node-box" onclick="handleClusterLink('Ready For Bottom Pool')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Ready For Bottom <span class="live-tag"></span></div>
             </div>
-            <div class="node-box">
-                <div class="node-pipeline">AWAITING HARDWARE...</div>
-                <div class="node-identity">Auto-B <span class="live-tag"></span></div>
+
+            <div class="node-box" onclick="handleClusterLink('Auto Bottom Array')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Auto Bottom <span class="live-tag"></span></div>
             </div>
-            <div class="node-box">
-                <div class="node-pipeline">AWAITING HARDWARE...</div>
-                <div class="node-identity">Manual-B <span class="live-tag"></span></div>
+
+            <div class="node-box" onclick="handleClusterLink('Manual Bottom Hub')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Manual Bottom <span class="live-tag"></span></div>
             </div>
-            <div class="node-box">
-                <div class="node-pipeline">AWAITING HARDWARE...</div>
+
+            <div class="node-box" onclick="handleClusterLink('PEL Terminal Link')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
                 <div class="node-identity">PEL <span class="live-tag"></span></div>
             </div>
-            <div class="node-box">
-                <div class="node-pipeline">AWAITING HARDWARE...</div>
+
+            <div class="node-box" onclick="handleClusterLink('Mathala Processing Station')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
                 <div class="node-identity">Mathala <span class="live-tag"></span></div>
             </div>
-            <div class="node-box">
-                <div class="node-pipeline">AWAITING HARDWARE...</div>
+
+            <div class="node-box" onclick="handleClusterLink('Sorting Table Array')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
                 <div class="node-identity">Table <span class="live-tag"></span></div>
             </div>
-            <div class="node-box">
-                <div class="node-pipeline">AWAITING HARDWARE...</div>
-                <div class="node-identity">Police <span class="live-tag"></span></div>
+
+            <div class="node-box" onclick="handleClusterLink('Police Check Station')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Police Check <span class="live-tag"></span></div>
             </div>
-            <div class="node-box">
-                <div class="node-pipeline">AWAITING HARDWARE...</div>
-                <div class="node-identity">Tracker <span class="live-tag"></span></div>
+
+            <div class="node-box" onclick="handleClusterLink('Machine Tracker System')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Machine Tracker <span class="live-tag"></span></div>
             </div>
-            <div class="node-box" style="border-color:var(--accent-green)">
-                <div class="node-pipeline">PROTECTION ONLINE</div>
-                <div class="node-identity">AI Market <span class="live-tag" style="background:var(--accent-green)"></span></div>
+
+            <div class="node-box future-ai-node" onclick="handleClusterLink('Global AI Market Anti-Loss Core')">
+                <div class="node-pipeline" style="color: rgba(0, 255, 135, 0.6);">ANTI-LOSS PROTECTION ONLINE<br>[GLOBAL ARBITRAGE ACTIVE]</div>
+                <div class="node-identity">AI Global Market <span class="live-tag" style="background-color: var(--accent-green); box-shadow: 0 0 8px var(--accent-green);"></span></div>
             </div>
+
         </div>
 
         <div class="bottom-dock">
-            <span>SYSTEM ONLINE</span>
-            <span>2:24 AM</span>
+            <div class="system-status-string" id="footerClockLive">Secure Telemetry Active</div>
+            <button class="settings-trigger" onclick="openMasterConfigurationGrid()">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <span>SETTINGS</span>
+            </button>
+        </div>
+
+    </div>
+
+    <div class="modal-overlay" id="directorGateOverlay">
+        <div class="modal-window">
+            <button class="modal-close-x" onclick="closeDirectorSecureGate()">&#10005;</button>
+            <div class="modal-title">Director Dual-Channel Verification</div>
+            <div class="input-group">
+                <label>Active Identity Transmission Routing Gateways</label>
+                <div class="otp-routing-select">
+                    <div class="channel-card"><input type="checkbox" checked disabled> <span>Mobile Endpoint</span></div>
+                    <div class="channel-card"><input type="checkbox" checked disabled> <span>Secure Mail Server</span></div>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="secureOtpField">Enter Synchronized 6-Digit Secondary OTP Code</label>
+                <input type="password" maxlength="6" id="secureOtpField" class="secure-input" placeholder="••••••" autocomplete="off">
+            </div>
+            <button class="action-execution-btn" onclick="executeDirectorGateAuthorization()">Verify Identity Metrics & Enter</button>
         </div>
     </div>
-    <script>function triggerZoom() { document.documentElement.requestFullscreen(); }</script>
+
+    <div class="modal-overlay" id="masterSettingsOverlay">
+        <div class="modal-window">
+            <button class="modal-close-x" onclick="closeMasterConfigurationGrid()">&#10005;</button>
+            <div class="modal-title">Master Settings Console</div>
+            
+            <div class="settings-control-grid">
+                
+                <div class="control-block">
+                    <h4>Director Area Chart Visualization Profile</h4>
+                    <div class="selection-options-row">
+                        <button class="option-selector-btn active" onclick="switchChartVisual(this, 'wave')">Quantum Wave</button>
+                        <button class="option-selector-btn" onclick="switchChartVisual(this, 'linear')">Linear Pulse</button>
+                        <button class="option-selector-btn" onclick="switchChartVisual(this, 'step')">Block Step</button>
+                    </div>
+                </div>
+
+                <div class="control-block">
+                    <h4>Active Display Unit Parameters (1-16 Nodes)</h4>
+                    <div class="selection-options-row">
+                        <button class="option-selector-btn active" onclick="alert('Display parameters synced: Realtime Operational WIP')">WIP Count</button>
+                        <button class="option-selector-btn" onclick="alert('Display parameters synced: Carat Weight Distribution Metrics')">Carats Volume</button>
+                    </div>
+                </div>
+
+                <div class="control-block">
+                    <h4>Administrative Process Lock Authorization</h4>
+                    <div class="input-group" style="margin-bottom:10px; margin-top:5px;">
+                        <input type="password" id="directorOverridePass" class="secure-input" placeholder="Enter Director Master Password" style="font-size:12px; padding:8px;">
+                    </div>
+                    <button class="action-execution-btn" onclick="processDirectorOverrideClearance()" style="padding:8px; font-size:11px;">Authorize Override & Reset Trailing Blocks</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chartPath = document.getElementById('dynamicChartPath');
+        const chartArea = document.getElementById('dynamicChartArea');
+        
+        const visualProfiles = {
+            wave: { path: "M0,50 Q30,20 60,45 T120,15 T180,60 T240,25 T300,10", area: "M0,50 Q30,20 60,45 T120,15 T180,60 T240,25 T300,10 L300,80 L0,80 Z" },
+            linear: { path: "M0,60 L40,30 L90,55 L140,20 L200,65 L255,15 L300,40", area: "M0,60 L40,30 L90,55 L140,20 L200,65 L255,15 L300,40 L300,80 L0,80 Z" },
+            step: { path: "M0,70 L50,70 L50,30 L120,30 L120,50 L190,50 L190,15 L260,15 L260,45 L300,45", area: "M0,70 L50,70 L50,30 L120,30 L120,50 L190,50 L190,15 L260,15 L260,45 L300,45 L300,80 L0,80 Z" }
+        };
+
+        function switchChartVisual(buttonElement, profileKey) {
+            document.querySelectorAll('.control-block:nth-child(1) .option-selector-btn').forEach(btn => btn.classList.remove('active'));
+            buttonElement.classList.add('active');
+            chartPath.setAttribute('d', visualProfiles[profileKey].path);
+            chartArea.setAttribute('d', visualProfiles[profileKey].area);
+        }
+
+        // Live Overdue Production Block Simulation Component
+        setTimeout(() => {
+            const laserNode = document.getElementById('laserNodeTracker');
+            const laserPipelineText = document.getElementById('laserPipelineString');
+            
+            if(laserNode && laserPipelineText) {
+                laserNode.classList.add('overdue-alert');
+                laserPipelineText.innerHTML = `<span class="overdue-text">OVERDUE TIME THRESHOLD EXCEEDED</span><br>[PROCESS TERMINAL LOCKED - AWAITING DIRECTOR RESET]`;
+            }
+        }, 5000);
+
+        function processDirectorOverrideClearance() {
+            const passwordInput = document.getElementById('directorOverridePass').value;
+            if(passwordInput === "admin") {
+                const laserNode = document.getElementById('laserNodeTracker');
+                const laserPipelineText = document.getElementById('laserPipelineString');
+                
+                laserNode.classList.remove('overdue-alert');
+                laserPipelineText.innerHTML = `AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]`;
+                document.getElementById('directorOverridePass').value = "";
+                alert("Master Override Clearance Verified. Downstream Pipeline Unlocked Successfully.");
+                closeMasterConfigurationGrid();
+            } else {
+                alert("Authorization Denied. Master Validation Key Invalid.");
+            }
+        }
+
+        // Window Event Controls
+        function triggerFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Fullscreen initialized smoothly.`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            // Auto trigger fallback logic for screen fit optimization
+        });
+        function triggerMinimize() { alert("System minimized to background matrix."); }
+        function triggerZoom() { alert("Viewport scaling maximized dynamically."); }
+        function triggerClose() { if (confirm("Terminate active connection to terminal infrastructure?")) window.close(); }
+
+        function openDirectorSecureGate() {
+            document.getElementById('secureOtpField').value = "";
+            document.getElementById('directorGateOverlay').classList.add('active');
+        }
+        function closeDirectorSecureGate() { document.getElementById('directorGateOverlay').classList.remove('active'); }
+        function executeDirectorGateAuthorization() {
+            const code = document.getElementById('secureOtpField').value;
+            if(code.length === 6) {
+                alert("Authorization Validated. Connecting Secure Terminal Channel Room.");
+                closeDirectorSecureGate();
+            } else {
+                alert("Invalid Transmission Metrics.");
+            }
+        }
+
+        function openMasterConfigurationGrid() { document.getElementById('masterSettingsOverlay').classList.add('active'); }
+        function closeMasterConfigurationGrid() { document.getElementById('masterSettingsOverlay').classList.remove('active'); }
+        function handleClusterLink(nodeLabel) { alert(`Opening Direct Data Stream Routing Tunnel: ${nodeLabel}`); }
+
+        function runMasterClock() {
+            const dt = new Date();
+            document.getElementById('footerClockLive').innerText = `SYSTEM GRID STATUS: SECURE OPERATIONAL STATE | TIME: ${dt.toUTCString()}`;
+        }
+        setInterval(runMasterClock, 1000);
+        runMasterClock();
+    </script>
 </body>
 </html>
