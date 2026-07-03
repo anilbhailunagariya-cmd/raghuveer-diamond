@@ -50,11 +50,35 @@
             flex-shrink: 0;
         }
 
+        /* લોગ-ઇન પેજ જેવું લાઈવ ગ્લોઈંગ ટાઈટલ અને ટપકી */
+        .brand-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-glow-dot {
+            width: 12px;
+            height: 12px;
+            background-color: #00C6FF;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #00C6FF, 0 0 20px #0072FF;
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 16px #00C6FF, 0 0 26px #0072FF; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
         .brand-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
-            letter-spacing: 2px;
-            color: var(--accent-blue);
+            letter-spacing: 1.5px;
+            background: linear-gradient(90deg, #00C6FF, #0072FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             text-transform: uppercase;
         }
 
@@ -326,9 +350,12 @@
 </head>
 <body>
 
-    <!-- Header containing exactly 3 buttons -->
+    <!-- Header styled exactly like index gateway -->
     <div class="window-control-bar">
-        <div class="brand-title">Raghuveer Diamond</div>
+        <div class="brand-wrapper">
+            <div class="brand-glow-dot"></div>
+            <div class="brand-title">Raghuveer Diamond AI OS [v5.0]</div>
+        </div>
         <div class="window-actions">
             <button class="action-btn" onclick="triggerMinimize()">—</button>
             <button class="action-btn" onclick="triggerFullScreen()">⛶</button>
