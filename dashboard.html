@@ -320,6 +320,8 @@
             padding: 25px;
             position: relative;
             box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            max-height: 95vh;
+            overflow-y: auto;
         }
 
         .modal-close-x {
@@ -343,15 +345,63 @@
 
         .otp-routing-select { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
         
-        /* Fixed Clickable Area Structure */
         .channel-card {
             flex: 1; border: 1px solid #1C2541; background: #0B132B;
             padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px;
             font-size: 10px; color: #5BC0BE; text-transform: uppercase; cursor: pointer;
+            transition: 0.2s;
         }
         .channel-card input[type="checkbox"] {
             accent-color: #5BC0BE;
             cursor: pointer;
+        }
+
+        /* Dynamic Expandable Interface Modules */
+        .dynamic-sub-module {
+            display: none;
+            background: #070B19;
+            border: 1px dashed #1C2541;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: -4px;
+            margin-bottom: 10px;
+            animation: slideDown 0.3s ease-out forwards;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Biometric Live Scanner Laser Animation */
+        .biometric-scanner-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            gap: 10px;
+        }
+        .laser-fingerprint-node {
+            width: 50px;
+            height: 50px;
+            position: relative;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%232ECC71" stroke-width="1" stroke-linecap="round"><path d="M12 2a10 10 0 0 0-4 19.18M12 5a7 7 0 0 0-2 13.71M12 8a4 4 0 0 0 0 8"/></svg>') no-repeat center;
+            background-size: contain;
+        }
+        .laser-scanning-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: #2ECC71;
+            box-shadow: 0 0 8px #2ECC71;
+            top: 0;
+            animation: laserScan 2s infinite ease-in-out;
+        }
+        @keyframes laserScan {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
         }
 
         .input-group { margin-bottom: 15px; }
@@ -499,16 +549,38 @@
             <div class="input-group">
                 <label>Active Identity Verification Channels</label>
                 <div class="otp-routing-select">
-                    <!-- Fixed Click Handlers preventing invert bugs -->
-                    <div class="channel-card" onclick="toggleCheckbox('mobileCheck', event)">
-                        <input type="checkbox" id="mobileCheck" onclick="event.stopPropagation();"> <span>Mobile Endpoint OTP</span>
+                    
+                    <!-- Mobile Control Panel Block -->
+                    <div class="channel-card" onclick="toggleChannelModule('mobileCheck', 'moduleMobile')">
+                        <input type="checkbox" id="mobileCheck"> <span>Mobile Endpoint OTP</span>
                     </div>
-                    <div class="channel-card" onclick="toggleCheckbox('mailCheck', event)">
-                        <input type="checkbox" id="mailCheck" onclick="event.stopPropagation();"> <span>Secure Mail Server OTP</span>
+                    <div id="moduleMobile" class="dynamic-sub-module">
+                        <label style="font-size: 9px; color: #5BC0BE; display:block; margin-bottom:4px;">ENTER REGISTERED MOBILE NO.</label>
+                        <input type="tel" class="secure-input" placeholder="+91 XXXXX XXXXX" style="padding: 6px 10px; font-size:12px;">
                     </div>
-                    <div class="channel-card" style="border-color: rgba(46, 204, 113, 0.4);" onclick="toggleCheckbox('biometricCheck', event)">
-                        <input type="checkbox" id="biometricCheck" onclick="event.stopPropagation();"> <span style="color: #2ECC71;">Biometric Scan (Retina/Finger)</span>
+
+                    <!-- Mail Control Panel Block -->
+                    <div class="channel-card" onclick="toggleChannelModule('mailCheck', 'moduleMail')">
+                        <input type="checkbox" id="mailCheck"> <span>Secure Mail Server OTP</span>
                     </div>
+                    <div id="moduleMail" class="dynamic-sub-module">
+                        <label style="font-size: 9px; color: #5BC0BE; display:block; margin-bottom:4px;">ENTER SECURE DIRECTOR EMAIL ID</label>
+                        <input type="email" class="secure-input" placeholder="director@raghuveerdiamond.com" style="padding: 6px 10px; font-size:12px;">
+                    </div>
+
+                    <!-- Biometric Scanning Module Interface -->
+                    <div class="channel-card" style="border-color: rgba(46, 204, 113, 0.4);" onclick="toggleChannelModule('biometricCheck', 'moduleBiometric')">
+                        <input type="checkbox" id="biometricCheck"> <span style="color: #2ECC71;">Biometric Scan (Retina/Finger)</span>
+                    </div>
+                    <div id="moduleBiometric" class="dynamic-sub-module" style="border-color: rgba(46, 204, 113, 0.3);">
+                        <div class="biometric-scanner-box">
+                            <div class="laser-fingerprint-node">
+                                <div class="laser-scanning-line"></div>
+                            </div>
+                            <span id="biometricStatusText" style="font-size:9px; color:#2ECC71; font-weight:bold; letter-spacing:1px; animation: pulseGlow 1s infinite alternate;">PLACE FINGER ON PHONE SCANNER...</span>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="input-group">
@@ -600,19 +672,59 @@
         function triggerMinimize() { alert("System minimized."); }
         function triggerClose() { if (confirm("Terminate connection?")) window.close(); }
         
-        // Robust Toggle Function with propagation prevention
-        function toggleCheckbox(id, event) {
-            const checkbox = document.getElementById(id);
+        // Intelligent Multi-Module Routing System
+        function toggleChannelModule(checkboxId, moduleId) {
+            const checkbox = document.getElementById(checkboxId);
+            const subModule = document.getElementById(moduleId);
+            
             checkbox.checked = !checkbox.checked;
+            
+            if(checkbox.checked) {
+                subModule.style.display = "block";
+                // Start a live automatic scanning simulation if it's the biometric node
+                if(checkboxId === 'biometricCheck') {
+                    simulateBiometricScan();
+                }
+            } else {
+                subModule.style.display = "none";
+            }
+        }
+
+        // Live Fingerprint Laser Scanning Simulation Engine
+        function simulateBiometricScan() {
+            const statusLabel = document.getElementById('biometricStatusText');
+            statusLabel.innerText = "SCANNING BIOMETRIC DATA... [0%]";
+            statusLabel.style.color = "#00C6FF";
+            
+            let progress = 0;
+            const scanInterval = setInterval(() => {
+                progress += 25;
+                statusLabel.innerText = `SCANNING BIOMETRIC DATA... [${progress}%]`;
+                if(progress >= 100) {
+                    clearInterval(scanInterval);
+                    statusLabel.innerText = "🤖 BIOMETRIC TRANSMISSION VERIFIED [SUCCESS]";
+                    statusLabel.style.color = "#2ECC71";
+                }
+            }, 500);
         }
 
         function openDirectorSecureGate() { 
             document.getElementById('secureOtpField').value = ""; 
-            document.getElementById('mobileCheck').checked = true; 
-            document.getElementById('mailCheck').checked = true; 
-            document.getElementById('biometricCheck').checked = true; 
+            
+            // Auto-triggering and unfolding everything cleanly by default
+            const checkBoxes = ['mobileCheck', 'mailCheck', 'biometricCheck'];
+            const modules = ['moduleMobile', 'moduleMail', 'moduleBiometric'];
+            
+            checkBoxes.forEach((id, index) => {
+                const cb = document.getElementById(id);
+                cb.checked = true;
+                document.getElementById(modules[index]).style.display = "block";
+            });
+
+            simulateBiometricScan();
             document.getElementById('directorGateOverlay').classList.add('active'); 
         }
+        
         function closeDirectorSecureGate() { document.getElementById('directorGateOverlay').classList.remove('active'); }
         
         function executeDirectorGateAuthorization() {
