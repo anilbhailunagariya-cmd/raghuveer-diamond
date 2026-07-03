@@ -22,7 +22,6 @@
             /* Matte Mode Graph Colors */
             --matte-green: #27AE60;
             --matte-red: #C0392B;
-            --graph-live-color: #27AE60; /* Systems default */
         }
 
         * {
@@ -184,6 +183,11 @@
         .live-chart-svg {
             width: 100%;
             height: 100%;
+        }
+
+        /* Smooth Transition for Live Svg Path and Rect Elements */
+        .live-chart-svg path, .live-chart-svg rect, .live-chart-svg circle, .live-chart-svg line {
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* 4x4 Fluid Grid Engine */
@@ -455,7 +459,7 @@
             </div>
             <div class="chart-visual-wrapper">
                 <div class="live-chart-container" id="mainOfficeChartContainer">
-                    <!-- Default Initial Chart Engine -->
+                    <!-- Dynamic SVG Engine Injects Content Here -->
                 </div>
             </div>
         </div>
@@ -606,7 +610,18 @@
             <div class="modal-title">Master Settings Console</div>
             <div class="settings-control-grid">
 
-                <!-- FIXED SECTION: Removed manual color switch. Keeping 5 Visual Designs -->
+                <!-- NEW SECTION: 1 Day, 7 Days, 1 Month, 1 Year Time Metrics Filter Matrix -->
+                <div class="control-block">
+                    <h4>Graph Performance Time Filter</h4>
+                    <div class="selection-options-row">
+                        <button class="option-selector-btn active" id="time-1d" onclick="switchGraphTimeDuration('1d')">1 Day</button>
+                        <button class="option-selector-btn" id="time-7d" onclick="switchGraphTimeDuration('7d')">7 Days</button>
+                        <button class="option-selector-btn" id="time-1m" onclick="switchGraphTimeDuration('1m')">1 Month</button>
+                        <button class="option-selector-btn" id="time-1y" onclick="switchGraphTimeDuration('1y')">1 Year</button>
+                    </div>
+                </div>
+
+                <!-- 5 Visual Designs Selection Row -->
                 <div class="control-block">
                     <h4>Director Main Office Graph Matrix Design</h4>
                     <div class="selection-options-row" style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
@@ -638,78 +653,97 @@
     </div>
 
     <script>
-        // Global State Parameters
-        let liveProfitStatus = true; // Auto calculated from factory server simulation
-        let activeDesignStyle = "pillars"; // Default
+        // Global Systems Configurations
+        let liveProfitStatus = true; // Auto calculated from system metrics
+        let activeDesignStyle = "pillars"; // Default design profile
+        let activeTimeDuration = "1d"; // Default time range matrix
 
-        // Holographic Data Matrix Engine for Main Office
-        const graphDatabaseEngine = {
-            pillars: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                        <rect x="20" y="35" width="14" height="45" rx="3" fill="currentColor" />
-                        <rect x="50" y="15" width="14" height="65" rx="3" fill="currentColor" />
-                        <rect x="80" y="45" width="14" height="35" rx="3" fill="currentColor" />
-                        <rect x="110" y="25" width="14" height="55" rx="3" fill="currentColor" />
-                        <rect x="140" y="5" width="14" height="75" rx="3" fill="currentColor" />
-                        <rect x="170" y="30" width="14" height="50" rx="3" fill="currentColor" />
-                        <rect x="200" y="55" width="14" height="25" rx="3" fill="currentColor" />
-                        <rect x="230" y="20" width="14" height="60" rx="3" fill="currentColor" />
-                        <rect x="260" y="40" width="14" height="40" rx="3" fill="currentColor" />
-                      </svg>`,
-            heart: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                        <path d="M0,45 L40,45 L50,15 L58,70 L66,35 L72,50 L80,45 L130,45 L140,5 L150,75 L160,30 L168,55 L174,45 L220,45 L230,20 L238,65 L246,40 L252,47 L260,45 L300,45" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>`,
-            mnc: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                        <path d="M10,75 Q40,70 80,55 T160,40 T240,15 T300,5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                        <path d="M10,75 Q40,70 80,55 T160,40 T240,15 T300,5 L300,80 L10,80 Z" fill="currentColor" opacity="0.15"/>
-                      </svg>`,
-            "high-tech": `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                        <circle cx="50" cy="40" r="25" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,4" />
-                        <circle cx="150" cy="40" r="30" fill="none" stroke="currentColor" stroke-width="2" />
-                        <circle cx="150" cy="40" r="15" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2,2" />
-                        <circle cx="250" cy="40" r="25" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,4" />
-                        <path d="M10,40 L120,40 M180,40 L290,40" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                      </svg>`,
-            ai: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                        <line x1="30" y1="40" x2="90" y2="20" stroke="currentColor" stroke-width="1" opacity="0.6" />
-                        <line x1="30" y1="40" x2="90" y2="60" stroke="currentColor" stroke-width="1" opacity="0.6" />
-                        <line x1="90" y1="20" x2="170" y2="15" stroke="currentColor" stroke-width="1.5" />
-                        <line x1="90" y1="20" x2="170" y2="45" stroke="currentColor" stroke-width="1" opacity="0.6" />
-                        <line x1="90" y1="60" x2="170" y2="45" stroke="currentColor" stroke-width="1" opacity="0.6" />
-                        <line x1="90" y1="60" x2="170" y2="65" stroke="currentColor" stroke-width="1.5" />
-                        <line x1="170" y1="15" x2="260" y2="40" stroke="currentColor" stroke-width="2" />
-                        <line x1="170" y1="45" x2="260" y2="40" stroke="currentColor" stroke-width="1" opacity="0.6" />
-                        <line x1="170" y1="65" x2="260" y2="40" stroke="currentColor" stroke-width="2" />
-                        <circle cx="30" cy="40" r="5" fill="currentColor" />
-                        <circle cx="90" cy="20" r="5" fill="currentColor" />
-                        <circle cx="90" cy="60" r="5" fill="currentColor" />
-                        <circle cx="170" cy="15" r="5" fill="currentColor" />
-                        <circle cx="170" cy="45" r="5" fill="currentColor" />
-                        <circle cx="170" cy="65" r="5" fill="currentColor" />
-                        <circle cx="260" cy="40" r="7" fill="currentColor" />
-                      </svg>`
-        };
+        // Generates fluid, customized vector matrix maps matching selected layout options
+        function generateLiveVectorGraph() {
+            const hexColor = liveProfitStatus ? "var(--matte-green)" : "var(--matte-red)";
+            
+            // Scaler modifiers depending on the chosen time horizon
+            let rangeMultiplier = 1;
+            if (activeTimeDuration === "7d") rangeMultiplier = 0.75;
+            if (activeTimeDuration === "1m") rangeMultiplier = 0.5;
+            if (activeTimeDuration === "1y") rangeMultiplier = 1.2;
+
+            // Randomized baseline matrix coordinates mimicking streaming factory processing data
+            const offsetA = Math.max(5, Math.floor(Math.random() * 35 * rangeMultiplier));
+            const offsetB = Math.max(5, Math.floor(Math.random() * 55 * rangeMultiplier));
+            const offsetC = Math.max(5, Math.floor(Math.random() * 40 * rangeMultiplier));
+            const offsetD = Math.max(5, Math.floor(Math.random() * 65 * rangeMultiplier));
+            const offsetE = Math.max(5, Math.floor(Math.random() * 25 * rangeMultiplier));
+
+            const profiles = {
+                pillars: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
+                            <rect x="20" y="${75-offsetA}" width="14" height="${offsetA}" rx="3" fill="${hexColor}" />
+                            <rect x="50" y="${75-offsetB}" width="14" height="${offsetB}" rx="3" fill="${hexColor}" />
+                            <rect x="80" y="${75-offsetC}" width="14" height="${offsetC}" rx="3" fill="${hexColor}" />
+                            <rect x="110" y="${75-offsetD}" width="14" height="${offsetD}" rx="3" fill="${hexColor}" />
+                            <rect x="140" y="${75-offsetE}" width="14" height="${offsetE}" rx="3" fill="${hexColor}" />
+                            <rect x="170" y="${75-offsetB}" width="14" height="${offsetB}" rx="3" fill="${hexColor}" />
+                            <rect x="200" y="${75-offsetA}" width="14" height="${offsetA}" rx="3" fill="${hexColor}" />
+                            <rect x="230" y="${75-offsetC}" width="14" height="${offsetC}" rx="3" fill="${hexColor}" />
+                            <rect x="260" y="${75-offsetD}" width="14" height="${offsetD}" rx="3" fill="${hexColor}" />
+                          </svg>`,
+                heart: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
+                            <path d="M0,45 L30,45 L40,${15+offsetE} L48,${75-offsetA} L56,${35+offsetC} L62,50 L70,45 L110,45 L120,${5+offsetC} L130,${75-offsetE} L140,30 L148,55 L154,45 L200,45 L210,${20+offsetB} L218,${65-offsetD} L226,40 L232,47 L240,45 L300,45" fill="none" stroke="${hexColor}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>`,
+                mnc: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
+                            <path d="M10,75 Q40,${70-offsetE} 80,${55-offsetA} T160,${40-offsetC} T240,${15+offsetE} T300,5" fill="none" stroke="${hexColor}" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M10,75 Q40,${70-offsetE} 80,${55-offsetA} T160,${40-offsetC} T240,${15+offsetE} T300,5 L300,80 L10,80 Z" fill="${hexColor}" opacity="0.15"/>
+                          </svg>`,
+                "high-tech": `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
+                            <circle cx="50" cy="40" r="${15+(offsetA/2)}" fill="none" stroke="${hexColor}" stroke-width="1.5" stroke-dasharray="4,4" />
+                            <circle cx="150" cy="40" r="${20+(offsetB/2)}" fill="none" stroke="${hexColor}" stroke-width="2" />
+                            <circle cx="150" cy="40" r="${5+(offsetE/3)}" fill="none" stroke="${hexColor}" stroke-width="1" stroke-dasharray="2,2" />
+                            <circle cx="250" cy="40" r="${15+(offsetC/2)}" fill="none" stroke="${hexColor}" stroke-width="1.5" stroke-dasharray="4,4" />
+                            <path d="M10,40 L120,40 M180,40 L290,40" stroke="${hexColor}" stroke-width="2" stroke-linecap="round" />
+                          </svg>`,
+                ai: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
+                            <line x1="30" y1="${40-offsetA/4}" x2="90" y2="20" stroke="${hexColor}" stroke-width="1" opacity="0.4" />
+                            <line x1="30" y1="${40+offsetA/4}" x2="90" y2="60" stroke="${hexColor}" stroke-width="1" opacity="0.4" />
+                            <line x1="90" y1="20" x2="170" y2="${15+offsetE/2}" stroke="${hexColor}" stroke-width="1.5" />
+                            <line x1="90" y1="20" x2="170" y2="45" stroke="${hexColor}" stroke-width="1" opacity="0.4" />
+                            <line x1="90" y1="60" x2="170" y2="45" stroke="${hexColor}" stroke-width="1" opacity="0.4" />
+                            <line x1="90" y1="60" x2="170" y2="${65-offsetC/2}" stroke="${hexColor}" stroke-width="1.5" />
+                            <line x1="170" y1="${15+offsetE/2}" x2="260" y2="40" stroke="${hexColor}" stroke-width="2" />
+                            <line x1="170" y1="45" x2="260" y2="40" stroke="${hexColor}" stroke-width="1" opacity="0.4" />
+                            <line x1="170" y1="${65-offsetC/2}" x2="260" y2="40" stroke="${hexColor}" stroke-width="2" />
+                            <circle cx="30" cy="40" r="5" fill="${hexColor}" />
+                            <circle cx="90" cy="20" r="5" fill="${hexColor}" />
+                            <circle cx="90" cy="60" r="5" fill="${hexColor}" />
+                            <circle cx="170" cy="${15+offsetE/2}" r="5" fill="${hexColor}" />
+                            <circle cx="170" cy="45" r="5" fill="${hexColor}" />
+                            <circle cx="170" cy="${65-offsetC/2}" r="5" fill="${hexColor}" />
+                            <circle cx="260" cy="40" r="7" fill="${hexColor}" />
+                          </svg>`
+            };
+
+            return profiles[activeDesignStyle];
+        }
 
         // Live Re-rendering Engine for Main Office Window
         function updateMainOfficeVisual() {
             const container = document.getElementById('mainOfficeChartContainer');
-            // AUTOMATIC LIVE DETECTION SYSTEM: Matte Green for true, Matte Red for false
-            const hexColor = liveProfitStatus ? "var(--matte-green)" : "var(--matte-red)";
-            
-            container.innerHTML = graphDatabaseEngine[activeDesignStyle];
-            
-            const activeSvg = document.getElementById('masterVisualSvg');
-            if(activeSvg) {
-                activeSvg.style.color = hexColor;
-            }
+            container.innerHTML = generateLiveVectorGraph();
         }
 
-        // AUTO MATRIX ENGINE SIMULATION: Flips profit/loss randomly to mimic actual factory data streams
-        setInterval(() => {
-            liveProfitStatus = (Math.random() > 0.35); // 65% probability of tracking profit state live
+        // Action Function: Switch Graph Duration Filter (1d, 7d, 1m, 1y)
+        function switchGraphTimeDuration(timeKey) {
+            activeTimeDuration = timeKey;
+            
+            const timeframes = ['1d', '7d', '1m', '1y'];
+            timeframes.forEach(item => {
+                document.getElementById(`time-${item}`).classList.remove('active');
+            });
+            
+            document.getElementById(`time-${timeKey}`).classList.add('active');
             updateMainOfficeVisual();
-        }, 8000);
+        }
 
-        // Action Function: Switch 5 Design Formats
+        // Action Function: Switch 5 Geometric Design Layouts
         function switchGraphDesignMatrix(targetDesign) {
             activeDesignStyle = targetDesign;
             
@@ -721,6 +755,15 @@
             document.getElementById(`btn-${targetDesign}`).classList.add('active');
             updateMainOfficeVisual();
         }
+
+        // AUTO TRANSMISSION REALTIME SIMULATION LOOP (Keeps elements jumping up/down live)
+        setInterval(() => {
+            // Alternates the state metric randomly, keeping workflow animations looping fluidly
+            if(Math.random() > 0.8) {
+                liveProfitStatus = !liveProfitStatus;
+            }
+            updateMainOfficeVisual();
+        }, 3000);
 
         setTimeout(() => {
             const laserNode = document.getElementById('laserNodeTracker');
@@ -759,27 +802,21 @@
         function toggleChannelModule(checkboxId, moduleId) {
             const checkbox = document.getElementById(checkboxId);
             const subModule = document.getElementById(moduleId);
-            
             checkbox.checked = !checkbox.checked;
-            
             if(checkbox.checked) {
                 subModule.style.display = "block";
-                if(checkboxId === 'biometricCheck') {
-                    simulateBiometricScan();
-                }
+                if(checkboxId === 'biometricCheck') simulateBiometricScan();
             } else {
                 subModule.style.display = "none";
             }
         }
 
         let biometricSuccess = false;
-
         function simulateBiometricScan() {
             biometricSuccess = false;
             const statusLabel = document.getElementById('biometricStatusText');
             statusLabel.innerText = "SCANNING BIOMETRIC DATA... [0%]";
             statusLabel.style.color = "#00C6FF";
-            
             let progress = 0;
             const scanInterval = setInterval(() => {
                 progress += 25;
@@ -796,51 +833,36 @@
         function openDirectorSecureGate() { 
             document.getElementById('secureOtpField').value = ""; 
             biometricSuccess = false;
-            
             const checkBoxes = ['mobileCheck', 'mailCheck', 'biometricCheck'];
             const modules = ['moduleMobile', 'moduleMail', 'moduleBiometric'];
-            
             checkBoxes.forEach((id, index) => {
                 document.getElementById(id).checked = false;
                 document.getElementById(modules[index]).style.display = "none";
             });
-
             document.getElementById('directorGateOverlay').classList.add('active'); 
         }
-        
         function closeDirectorSecureGate() { document.getElementById('directorGateOverlay').classList.remove('active'); }
         
         function executeDirectorGateAuthorization() {
             const code = document.getElementById('secureOtpField').value;
-            const mobileActive = document.getElementById('mobileCheck').checked;
-            const mailActive = document.getElementById('mailCheck').checked;
-            const biometricActive = document.getElementById('biometricCheck').checked;
-
-            if(!mobileActive && !mailActive && !biometricActive) {
-                alert("ACCESS DENIED: Please select at least ONE identity channel (Biometric, Mobile, or Mail) to verify.");
+            if(!document.getElementById('mobileCheck').checked && !document.getElementById('mailCheck').checked && !document.getElementById('biometricCheck').checked) {
+                alert("ACCESS DENIED: Please select at least ONE identity channel to verify.");
                 return;
             }
-
-            if(biometricActive && !biometricSuccess) {
-                alert("ACCESS DENIED: Biometric fingerprint scan in progress. Please wait for success metric.");
+            if(document.getElementById('biometricCheck').checked && !biometricSuccess) {
+                alert("ACCESS DENIED: Biometric fingerprint scan in progress.");
                 return;
             }
-
             if(code.length === 6) {
-                alert("IDENTITY VERIFIED: Secure tunnel established to MAIN OFFICE.");
+                alert("IDENTITY VERIFIED: Secure tunnel established.");
                 closeDirectorSecureGate();
             } else {
-                alert("Invalid Transmission Metrics. 6-Digit Secondary Secure Key required.");
+                alert("Invalid Transmission Metrics.");
             }
         }
 
-        document.getElementById('masterSettingsOverlay').addEventListener('click', function(e) {
-            if(e.target === this) closeMasterConfigurationGrid();
-        });
-        document.getElementById('directorGateOverlay').addEventListener('click', function(e) {
-            if(e.target === this) closeDirectorSecureGate();
-        });
-
+        document.getElementById('masterSettingsOverlay').addEventListener('click', function(e) { if(e.target === this) closeMasterConfigurationGrid(); });
+        document.getElementById('directorGateOverlay').addEventListener('click', function(e) { if(e.target === this) closeDirectorSecureGate(); });
         function openMasterConfigurationGrid() { document.getElementById('masterSettingsOverlay').classList.add('active'); }
         function closeMasterConfigurationGrid() { document.getElementById('masterSettingsOverlay').classList.remove('active'); }
         function handleClusterLink(nodeLabel) { alert(`Opening Route: ${nodeLabel}`); }
@@ -852,7 +874,7 @@
         setInterval(runMasterClock, 1000);
         runMasterClock();
 
-        // Initialization
+        // Bootstrapping default configuration render cycle
         updateMainOfficeVisual();
     </script>
 </body>
