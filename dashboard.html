@@ -547,12 +547,12 @@
             <button class="modal-close-x" onclick="closeDirectorSecureGate()">✕</button>
             <div class="modal-title">MAIN OFFICE SECURITY GATE</div>
             <div class="input-group">
-                <label>Active Identity Verification Channels</label>
+                <label>Active Identity Verification Channels (Select Any 1)</label>
                 <div class="otp-routing-select">
                     
                     <!-- Mobile Control Panel Block -->
                     <div class="channel-card" onclick="toggleChannelModule('mobileCheck', 'moduleMobile')">
-                        <input type="checkbox" id="mobileCheck"> <span>Mobile Endpoint OTP</span>
+                        <input type="checkbox" id="mobileCheck" onclick="event.stopPropagation();"> <span>Mobile Endpoint OTP</span>
                     </div>
                     <div id="moduleMobile" class="dynamic-sub-module">
                         <label style="font-size: 9px; color: #5BC0BE; display:block; margin-bottom:4px;">ENTER REGISTERED MOBILE NO.</label>
@@ -561,7 +561,7 @@
 
                     <!-- Mail Control Panel Block -->
                     <div class="channel-card" onclick="toggleChannelModule('mailCheck', 'moduleMail')">
-                        <input type="checkbox" id="mailCheck"> <span>Secure Mail Server OTP</span>
+                        <input type="checkbox" id="mailCheck" onclick="event.stopPropagation();"> <span>Secure Mail Server OTP</span>
                     </div>
                     <div id="moduleMail" class="dynamic-sub-module">
                         <label style="font-size: 9px; color: #5BC0BE; display:block; margin-bottom:4px;">ENTER SECURE DIRECTOR EMAIL ID</label>
@@ -570,7 +570,7 @@
 
                     <!-- Biometric Scanning Module Interface -->
                     <div class="channel-card" style="border-color: rgba(46, 204, 113, 0.4);" onclick="toggleChannelModule('biometricCheck', 'moduleBiometric')">
-                        <input type="checkbox" id="biometricCheck"> <span style="color: #2ECC71;">Biometric Scan (Retina/Finger)</span>
+                        <input type="checkbox" id="biometricCheck" onclick="event.stopPropagation();"> <span style="color: #2ECC71;">Biometric Scan (Retina/Finger)</span>
                     </div>
                     <div id="moduleBiometric" class="dynamic-sub-module" style="border-color: rgba(46, 204, 113, 0.3);">
                         <div class="biometric-scanner-box">
@@ -672,7 +672,7 @@
         function triggerMinimize() { alert("System minimized."); }
         function triggerClose() { if (confirm("Terminate connection?")) window.close(); }
         
-        // Intelligent Multi-Module Routing System
+        // Dynamic Module expand handler with conditional reset
         function toggleChannelModule(checkboxId, moduleId) {
             const checkbox = document.getElementById(checkboxId);
             const subModule = document.getElementById(moduleId);
@@ -681,7 +681,6 @@
             
             if(checkbox.checked) {
                 subModule.style.display = "block";
-                // Start a live automatic scanning simulation if it's the biometric node
                 if(checkboxId === 'biometricCheck') {
                     simulateBiometricScan();
                 }
@@ -690,8 +689,10 @@
             }
         }
 
-        // Live Fingerprint Laser Scanning Simulation Engine
+        let biometricSuccess = false;
+
         function simulateBiometricScan() {
+            biometricSuccess = false;
             const statusLabel = document.getElementById('biometricStatusText');
             statusLabel.innerText = "SCANNING BIOMETRIC DATA... [0%]";
             statusLabel.style.color = "#00C6FF";
@@ -704,45 +705,54 @@
                     clearInterval(scanInterval);
                     statusLabel.innerText = "🤖 BIOMETRIC TRANSMISSION VERIFIED [SUCCESS]";
                     statusLabel.style.color = "#2ECC71";
+                    biometricSuccess = true;
                 }
             }, 500);
         }
 
         function openDirectorSecureGate() { 
             document.getElementById('secureOtpField').value = ""; 
+            biometricSuccess = false;
             
-            // Auto-triggering and unfolding everything cleanly by default
+            // Clean slate: Close all tabs by default so the user selects what they want
             const checkBoxes = ['mobileCheck', 'mailCheck', 'biometricCheck'];
             const modules = ['moduleMobile', 'moduleMail', 'moduleBiometric'];
             
             checkBoxes.forEach((id, index) => {
-                const cb = document.getElementById(id);
-                cb.checked = true;
-                document.getElementById(modules[index]).style.display = "block";
+                document.getElementById(id).checked = false;
+                document.getElementById(modules[index]).style.display = "none";
             });
 
-            simulateBiometricScan();
             document.getElementById('directorGateOverlay').classList.add('active'); 
         }
         
         function closeDirectorSecureGate() { document.getElementById('directorGateOverlay').classList.remove('active'); }
         
+        // NEW LOGIC: Conditional routing allowing ANY single channel pass
         function executeDirectorGateAuthorization() {
             const code = document.getElementById('secureOtpField').value;
             const mobileActive = document.getElementById('mobileCheck').checked;
             const mailActive = document.getElementById('mailCheck').checked;
             const biometricActive = document.getElementById('biometricCheck').checked;
 
-            if(!mobileActive || !mailActive || !biometricActive) {
-                alert("ACCESS DENIED: All identity verification channels must be verified to enter MAIN OFFICE.");
+            // 1. Check if at least one checkbox is active
+            if(!mobileActive && !mailActive && !biometricActive) {
+                alert("ACCESS DENIED: Please select at least ONE identity channel (Biometric, Mobile, or Mail) to verify.");
                 return;
             }
 
+            // 2. If Biometric is selected, ensure the scan simulation hit 100% success state
+            if(biometricActive && !biometricSuccess) {
+                alert("ACCESS DENIED: Biometric fingerprint scan in progress. Please wait for success metric.");
+                return;
+            }
+
+            // 3. Final standard security layer validation
             if(code.length === 6) {
-                alert("ALL CHANNELS SYNCHRONIZED: MAIN OFFICE database portal initialized.");
+                alert("IDENTITY VERIFIED: Secure tunnel established to MAIN OFFICE.");
                 closeDirectorSecureGate();
             } else {
-                alert("Invalid Transmission Metrics.");
+                alert("Invalid Transmission Metrics. 6-Digit Secondary Secure Key required.");
             }
         }
 
