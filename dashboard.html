@@ -5,23 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Raghuveer Diamond - Master Autonomous Dashboard</title>
     <style>
+        /* લોગ-ઈન પેજના અસલી પ્રીમિયમ કલર કોડ */
         :root {
-            --bg-primary: #0a0f1d;
-            --bg-secondary: #121b2d;
-            --accent-blue: #00d2ff;
-            --accent-green: #00ff87;
-            --accent-red: #ff3366;
+            --bg-primary: #0B132B;
+            --bg-secondary: #111D37;
+            --top-bar-bg: #070B19;
+            --border-color: #1C2541;
+            --accent-cyan: #5BC0BE;
+            --accent-blue: #00C6FF;
+            --accent-green: #2ECC71;
+            --accent-red: #E74C3C;
             --accent-orange: #ff9900;
-            --text-main: #ffffff;
+            --text-main: #FFFFFF;
             --text-muted: #708090;
-            --border-color: rgba(0, 210, 255, 0.15);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             user-select: none;
         }
 
@@ -36,82 +39,83 @@
             position: relative;
         }
 
-        /* Top OS Window Control Bar */
+        /* Top OS Window Control Bar - Styled exactly like index.html */
         .window-control-bar {
             height: 40px;
-            background-color: rgba(18, 27, 45, 0.9);
+            background-color: var(--top-bar-bg);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 15px;
+            padding: 0 20px;
             border-bottom: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
             z-index: 10;
             flex-shrink: 0;
         }
 
-        /* લોગ-ઇન પેજ જેવું લાઈવ ગ્લોઈંગ ટાઈટલ અને ટપકી */
         .brand-wrapper {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .brand-glow-dot {
             width: 12px;
             height: 12px;
-            background-color: #00C6FF;
             border-radius: 50%;
-            box-shadow: 0 0 12px #00C6FF, 0 0 20px #0072FF;
+            background: linear-gradient(45deg, #00C6FF, #0072FF);
+            box-shadow: 0 0 8px #00C6FF;
             animation: pulseGlow 2s infinite ease-in-out;
         }
 
         @keyframes pulseGlow {
             0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 16px #00C6FF, 0 0 26px #0072FF; }
+            50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 14px #00C6FF; }
             100% { transform: scale(0.95); opacity: 0.8; }
         }
 
+        /* લોગ-ઈન પેજનું અસલી એનિમેટેડ સાયબર ગ્લો ટાઈટલ */
         .brand-title {
-            font-size: 13px;
-            font-weight: 700;
+            font-size: 11px;
+            font-weight: bold;
             letter-spacing: 1.5px;
-            background: linear-gradient(90deg, #00C6FF, #0072FF);
+            background: linear-gradient(90deg, var(--accent-cyan), #00C6FF, #0072FF, var(--accent-cyan));
+            background-size: 300% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: cyberGlow 6s linear infinite;
             text-transform: uppercase;
+        }
+
+        @keyframes cyberGlow {
+            0% { background-position: 0% center; }
+            100% { background-position: 300% center; }
         }
 
         .window-actions {
             display: flex;
-            gap: 8px;
+            gap: 15px;
+            align-items: center;
         }
 
         .action-btn {
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--text-muted);
+            background: none;
+            border: none;
+            color: var(--accent-cyan);
+            font-size: 16px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            transition: all 0.2s ease;
+            transition: 0.3s;
+            line-height: 1;
+            padding: 2px;
         }
 
         .action-btn:hover {
             color: var(--text-main);
-            background: rgba(0, 210, 255, 0.1);
-            border-color: var(--accent-blue);
+            text-shadow: 0 0 8px var(--accent-cyan);
         }
 
         .action-btn.close-btn:hover {
-            background: rgba(255, 51, 102, 0.2);
-            border-color: var(--accent-red);
             color: var(--accent-red);
+            text-shadow: 0 0 8px var(--accent-red);
         }
 
         /* Main Container Dynamic Fitting */
@@ -129,27 +133,34 @@
         .director-master-panel {
             flex: 0 0 16vh;
             min-height: 90px;
-            background: linear-gradient(135deg, rgba(18, 27, 45, 0.95), rgba(0, 210, 255, 0.03));
-            border: 1px solid rgba(0, 210, 255, 0.3);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 10px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .director-master-panel:hover {
+            border-color: var(--accent-cyan);
         }
 
         .director-meta h2 {
             font-size: clamp(13px, 3.5vw, 16px);
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            color: var(--accent-blue);
+            color: var(--accent-cyan);
             margin-bottom: 2px;
+            font-weight: bold;
         }
 
         .director-meta p {
             font-size: clamp(9px, 2.5vw, 11px);
-            color: var(--text-muted);
+            color: var(--accent-cyan);
+            opacity: 0.8;
             text-transform: uppercase;
         }
 
@@ -188,11 +199,13 @@
             justify-content: space-between;
             overflow: hidden;
             height: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: 0.3s;
         }
 
         .node-box:hover {
-            border-color: var(--accent-blue);
-            box-shadow: 0 4px 12px rgba(0, 210, 255, 0.12);
+            border-color: var(--accent-cyan);
+            background: var(--border-color);
         }
 
         .node-box.overdue-alert {
@@ -208,7 +221,8 @@
 
         .node-pipeline {
             font-size: clamp(7.5px, 2.2vw, 10px);
-            color: var(--text-muted);
+            color: var(--accent-cyan);
+            opacity: 0.7;
             letter-spacing: 0.3px;
             line-height: 1.2;
             overflow: hidden;
@@ -217,6 +231,7 @@
         .overdue-text {
             color: var(--accent-orange) !important;
             font-weight: 600;
+            opacity: 1 !important;
         }
 
         .node-identity {
@@ -228,6 +243,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            color: var(--text-main);
         }
 
         .live-tag {
@@ -245,12 +261,12 @@
         }
 
         .future-ai-node {
-            border: 1px solid rgba(0, 255, 135, 0.25);
-            background: linear-gradient(135deg, rgba(18, 27, 45, 0.9), rgba(0, 255, 135, 0.02));
+            border: 1px solid rgba(91, 192, 190, 0.3);
+            background: linear-gradient(135deg, var(--bg-secondary), rgba(91, 192, 190, 0.05));
         }
 
         .future-ai-node .node-identity {
-            color: var(--accent-green);
+            color: var(--accent-cyan);
         }
 
         /* Bottom Status Dock */
@@ -266,30 +282,31 @@
 
         .system-status-string {
             font-size: clamp(8px, 2.2vw, 11px);
-            color: var(--text-muted);
+            color: var(--accent-cyan);
+            opacity: 0.6;
             letter-spacing: 0.5px;
         }
 
         .settings-trigger {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-color);
-            color: var(--accent-blue);
-            border-radius: 6px;
-            padding: 4px 10px;
+            background: none;
+            border: none;
+            color: var(--border-color);
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: clamp(8.5px, 2.4vw, 11px);
-            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .settings-trigger:hover {
+            color: var(--accent-cyan);
         }
 
         /* Modals Overlays */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(5, 8, 16, 0.88);
-            backdrop-filter: blur(15px);
+            background: rgba(7, 11, 25, 0.85);
+            backdrop-filter: blur(5px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -307,15 +324,16 @@
             width: 92%;
             max-width: 440px;
             border-radius: 12px;
-            padding: 20px;
+            padding: 25px;
             position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
         }
 
         .modal-close-x {
             position: absolute;
             top: 15px; right: 15px;
             background: none; border: none;
-            color: var(--text-muted);
+            color: var(--accent-cyan);
             cursor: pointer; font-size: 16px;
         }
 
@@ -324,41 +342,45 @@
             font-weight: 600;
             text-transform: uppercase;
             margin-bottom: 20px;
-            color: var(--accent-blue);
-            border-bottom: 1px solid rgba(0, 210, 255, 0.1);
+            color: var(--accent-cyan);
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 8px;
+            letter-spacing: 1px;
         }
 
         .otp-routing-select { display: flex; gap: 10px; margin-bottom: 15px; }
         .channel-card {
-            flex: 1; border: 1px solid var(--border-color); background: rgba(255, 255, 255, 0.01);
+            flex: 1; border: 1px solid var(--border-color); background: var(--bg-primary);
             padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 8px;
-            font-size: 10px; color: var(--text-muted); text-transform: uppercase;
+            font-size: 10px; color: var(--accent-cyan); text-transform: uppercase;
         }
 
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 10px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
-        .secure-input { width: 100%; background: rgba(5, 8, 16, 0.6); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 8px; color: var(--text-main); font-size: 13px; }
-        .action-execution-btn { width: 100%; background: linear-gradient(90deg, #00c6ff, #0072ff); border: none; padding: 12px; border-radius: 8px; color: var(--text-main); font-weight: 600; text-transform: uppercase; cursor: pointer; }
+        .input-group label { display: block; font-size: 10px; text-transform: uppercase; color: var(--accent-cyan); margin-bottom: 6px; font-weight: bold; }
+        .secure-input { width: 100%; background: var(--bg-primary); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 8px; color: var(--text-main); font-size: 13px; outline: none; }
+        .secure-input:focus { border-color: var(--accent-cyan); }
+        .action-execution-btn { width: 100%; background: var(--accent-cyan); border: none; padding: 12px; border-radius: 8px; color: var(--bg-primary); font-weight: 600; text-transform: uppercase; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
+        .action-execution-btn:hover { background: var(--text-main); box-shadow: 0 0 15px var(--text-main); }
+        
         .settings-control-grid { display: flex; flex-direction: column; gap: 12px; }
-        .control-block { background: rgba(5, 8, 16, 0.4); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; }
-        .control-block h4 { font-size: 11px; text-transform: uppercase; color: var(--text-main); margin-bottom: 8px; }
+        .control-block { background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; }
+        .control-block h4 { font-size: 11px; text-transform: uppercase; color: var(--accent-cyan); margin-bottom: 8px; font-weight: bold; }
         .selection-options-row { display: flex; gap: 8px; }
-        .option-selector-btn { flex: 1; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px; border-radius: 4px; font-size: 10px; text-transform: uppercase; cursor: pointer; }
-        .option-selector-btn.active, .option-selector-btn:hover { background: rgba(0, 210, 255, 0.1); border-color: var(--accent-blue); color: var(--text-main); }
+        .option-selector-btn { flex: 1; background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px; border-radius: 4px; font-size: 10px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        .option-selector-btn.active, .option-selector-btn:hover { background: var(--border-color); border-color: var(--accent-cyan); }
     </style>
 </head>
 <body>
 
-    <!-- Header styled exactly like index gateway -->
+    <!-- Header styled EXACTLY like index.html with live flowing glow title -->
     <div class="window-control-bar">
         <div class="brand-wrapper">
             <div class="brand-glow-dot"></div>
-            <div class="brand-title">Raghuveer Diamond AI OS [v5.0]</div>
+            <div class="brand-title">RAGHUVEER DIAMOND AI OS [v5.0]</div>
         </div>
         <div class="window-actions">
-            <button class="action-btn" onclick="triggerMinimize()">—</button>
-            <button class="action-btn" onclick="triggerFullScreen()">⛶</button>
+            <button class="action-btn" onclick="triggerMinimize()">-</button>
+            <button class="action-btn" onclick="triggerFullScreen()">🗖</button>
             <button class="action-btn close-btn" onclick="triggerClose()">✕</button>
         </div>
     </div>
@@ -369,12 +391,12 @@
             <div class="director-meta">
                 <h2>Director Control Room</h2>
                 <p>Secure Dual-Channel Sync Active</p>
-                <p style="margin-top: 5px; color: var(--accent-green); font-size: 10px;">Live Realtime Factory Architecture</p>
+                <p style="margin-top: 5px; color: var(--accent-green); font-size: 10px; font-weight: bold;">Live Realtime Factory Architecture</p>
             </div>
             <div class="chart-visual-wrapper">
                 <svg class="live-chart-svg" viewBox="0 0 300 80">
-                    <path id="dynamicChartPath" d="M0,50 Q30,20 60,45 T120,15 T180,60 T240,25 T300,10" fill="none" stroke="#00d2ff" stroke-width="2.5" stroke-linecap="round"/>
-                    <path id="dynamicChartArea" d="M0,50 Q30,20 60,45 T120,15 T180,60 T240,25 T300,10 L300,80 L0,80 Z" fill="rgba(0,210,255,0.04)"/>
+                    <path id="dynamicChartPath" d="M0,50 Q30,20 60,45 T120,15 T180,60 T240,25 T300,10" fill="none" stroke="#00C6FF" stroke-width="2.5" stroke-linecap="round"/>
+                    <path id="dynamicChartArea" d="M0,50 Q30,20 60,45 T120,15 T180,60 T240,25 T300,10 L300,80 L0,80 Z" fill="rgba(0,198,255,0.04)"/>
                 </svg>
             </div>
         </div>
@@ -457,18 +479,16 @@
             </div>
 
             <div class="node-box future-ai-node" onclick="handleClusterLink('Global AI Market Anti-Loss Core')">
-                <div class="node-pipeline" style="color: rgba(0, 255, 135, 0.6);">ANTI-LOSS PROTECTION ONLINE<br>[GLOBAL ARBITRAGE ACTIVE]</div>
-                <div class="node-identity">AI Global Market <span class="live-tag" style="background-color: var(--accent-green); box-shadow: 0 0 8px var(--accent-green);"></span></div>
+                <div class="node-pipeline" style="color: var(--accent-cyan);">ANTI-LOSS PROTECTION ONLINE<br>[GLOBAL ARBITRAGE ACTIVE]</div>
+                <div class="node-identity">AI Global Market <span class="live-tag"></span></div>
             </div>
 
         </div>
 
+        <!-- Bottom Status Bar containing verbatim same settings icon trigger styling -->
         <div class="bottom-dock">
             <div class="system-status-string" id="footerClockLive">Secure Telemetry Active</div>
-            <button class="settings-trigger" onclick="openMasterConfigurationGrid()">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                <span>SETTINGS</span>
-            </button>
+            <button class="settings-trigger" onclick="openMasterConfigurationGrid()">⚙️</button>
         </div>
 
     </div>
@@ -487,7 +507,7 @@
             </div>
             <div class="input-group">
                 <label for="secureOtpField">Enter Synchronized 6-Digit Secondary OTP Code</label>
-                <input type="password" maxlength="6" id="secureOtpField" class="secure-input" placeholder="••••••" autocomplete="off">
+                <input type="password" maxlength="6" id="secureOtpField" class="secure-input" placeholder="•••••" autocomplete="off">
             </div>
             <button class="action-execution-btn" onclick="executeDirectorGateAuthorization()">Verify Identity Metrics & Enter</button>
         </div>
