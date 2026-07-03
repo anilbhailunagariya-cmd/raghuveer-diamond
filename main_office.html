@@ -56,7 +56,6 @@
             gap: 15px;
         }
 
-        /* Holographic Logo Placeholder for future logo.jpg */
         .company-logo-frame {
             width: 40px;
             height: 40px;
@@ -82,7 +81,13 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .back-btn {
+        .actions-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .action-header-btn {
             background: none;
             border: 1px solid var(--border-color);
             color: var(--accent-cyan);
@@ -94,7 +99,7 @@
             transition: 0.3s;
         }
 
-        .back-btn:hover {
+        .action-header-btn:hover {
             background: var(--border-color);
             box-shadow: 0 0 10px rgba(0, 198, 255, 0.2);
         }
@@ -180,7 +185,6 @@
             .workspace-split-grid { grid-template-columns: 1fr; }
         }
 
-        /* 2050 High-Tech Blocks */
         .tech-features-panel {
             display: flex;
             flex-direction: column;
@@ -205,7 +209,6 @@
             padding-bottom: 6px;
         }
 
-        /* Holographic Layout Simulations */
         .hollow-display {
             background: #070B19;
             border: 1px solid rgba(0, 198, 255, 0.1);
@@ -291,11 +294,12 @@
     <!-- Header Grid Core Structure -->
     <div class="window-control-bar">
         <div class="brand-wrapper">
-            <!-- Space for logo.jpg. Displays 'RD' if image missing -->
             <div class="company-logo-frame">RD</div>
             <div class="brand-title">MAIN OFFICE MATRIX</div>
         </div>
-        <button class="back-btn" onclick="goToDashboard()">✕ Close Gate</button>
+        <div class="actions-wrapper">
+            <button class="action-header-btn" onclick="goToDashboard()" style="color: var(--accent-red); border-color: rgba(231, 76, 60, 0.3);">✕ Close Gate</button>
+        </div>
     </div>
 
     <div class="office-container">
@@ -327,9 +331,7 @@
         <!-- 2050 Features & Cyber Print Split View -->
         <div class="workspace-split-grid">
             
-            <!-- Left: Year 2050 Multilevel Corporate AI Engines -->
             <div class="tech-features-panel">
-                
                 <div class="feature-block">
                     <div class="block-title">AI-Vision Rough Assortment Suite [Year 2050 Model]</div>
                     <div class="hollow-display" id="ai-vision-terminal">
@@ -350,7 +352,6 @@
                         [LIVE WORLD RATES] Surat Index: Baseline | Antwerp Terminal: +0.4% | New York Exchange: Locked | Global anti-loss firewall: SECURE.
                     </div>
                 </div>
-
             </div>
 
             <!-- Right: Universal Cyber Print Station -->
@@ -384,17 +385,30 @@
     <script>
         let selectedLayoutSize = "a4";
 
-        // Navigation back to index dashboard
         function goToDashboard() {
             window.location.href = 'dashboard.html'; 
         }
 
-        // Universal Printing Execution System
+        // Automatic Full Screen Trigger Matrix on load
+        function triggerAutoFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => { 
+                    console.log("Browser requires user interaction first for automatic fullscreen."); 
+                });
+            }
+        }
+
+        // Trigger auto fullscreen as soon as user touches or clicks anywhere on the layout
+        window.addEventListener('click', triggerAutoFullScreen);
+        window.addEventListener('touchstart', triggerAutoFullScreen);
+        
+        // Also trigger directly when script loads
+        setTimeout(triggerAutoFullScreen, 500);
+
         function executeCyberPrint(documentType) {
             alert(`PRINTER COMMAND SENT:\nPrinting ${documentType} Matrix using [${selectedLayoutSize.toUpperCase()}] configuration profile to connected network hardware.`);
         }
 
-        // Layout Size Configuration Selector
         function setPrinterSize(sizeKey) {
             selectedLayoutSize = sizeKey;
             const sizes = ['a4', 'a5', 'legal', 'check'];
@@ -404,14 +418,11 @@
             document.getElementById(`sz-${sizeKey}`).classList.add('active');
         }
 
-        // AUTO-STREAM MATRIX SIMULATION (Keeps prices and numbers jumping up/down live)
         setInterval(() => {
-            // Randomly fluctuates the Cash Matrix live to simulate cash movement
             const baseCash = 3415500;
             const fluctuation = Math.floor(Math.random() * 8500) - 4250;
             document.getElementById('val-cash').innerText = "₹ " + (baseCash + fluctuation).toLocaleString('en-IN');
 
-            // Simulates progress updates on the 2050 Robotics Terminal
             const currentPolished = 284 + Math.floor(Math.random() * 3);
             document.getElementById('factory-terminal').innerText = `[ROBOTIC MATRIX ONLINE] Active Arms: 24/24 | Target: 400 Diamonds Production | Currently Polished: ${currentPolished} | Realtime Efficiency: 98.4%`;
         }, 4000);
