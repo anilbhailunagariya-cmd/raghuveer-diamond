@@ -292,26 +292,32 @@
         
         <!-- 4 Core Pillars Row -->
         <div class="core-metrics-row">
-            <!-- 1. Shorter Bank USD Card Configuration -->
-            <div class="metric-card">
-                <div class="card-label">1. Bank</div>
+            <!-- 1. BANK CARD -->
+            <div class="metric-card" onclick="window.location.href='bank_details.html'" style="cursor: pointer;">
+                <div class="card-label">BANK</div>
                 <div class="card-value" id="val-usd">₹ 83.72</div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
-            <div class="metric-card">
-                <div class="card-label">2. Rough Purchase Inventory</div>
+            
+            <!-- 2. ROUGH PURCHASE CARD -->
+            <div class="metric-card" onclick="window.location.href='rough_details.html'" style="cursor: pointer;">
+                <div class="card-label">ROUGH PURCHASE</div>
                 <div class="card-value" id="val-rough">8,450 Carats</div>
-                <div class="live-status-indicator"><span class="status-dot"></span>Live Pipeline Stock</div>
+                <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
-            <div class="metric-card green-tag">
-                <div class="card-label">3. Global Sales Revenue</div>
+            
+            <!-- 3. GLOBAL SALES CARD -->
+            <div class="metric-card green-tag" onclick="window.location.href='sales_details.html'" style="cursor: pointer;">
+                <div class="card-label">GLOBAL SALES</div>
                 <div class="card-value" id="val-sales">₹ 12,68,40,000</div>
-                <div class="live-status-indicator"><span class="status-dot"></span>Polished Cleared</div>
+                <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
-            <div class="metric-card">
-                <div class="card-label">4. Cash Flow Matrix</div>
+            
+            <!-- 4. CASH FLOW CARD -->
+            <div class="metric-card" onclick="window.location.href='cash_details.html'" style="cursor: pointer;">
+                <div class="card-label">CASH FLOW</div>
                 <div class="card-value" id="val-cash">₹ 34,12,319</div>
-                <div class="live-status-indicator"><span class="status-dot"></span>Office Vault Safe</div>
+                <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
         </div>
 
@@ -380,17 +386,24 @@
             document.getElementById(`sz-${sizeKey}`).classList.add('active');
         }
 
-        // Live Fluctuations Logic
-        setInterval(() => {
-            const baseUsd = 83.72;
-            const usdFlureflection = (Math.random() * 0.06) - 0.03;
-            const dynamicUsd = (baseUsd + usdFlureflection).toFixed(2);
-            document.getElementById('val-usd').innerText = `₹ ${dynamicUsd}`;
+        // લોકલ સ્ટોરેજમાંથી લાઈવ ડેટા ખેંચવાનું લોજિક
+        function loadDashboardData() {
+            // જો લોકલ સ્ટોરેજમાં નવો આંકડો હોય તો એ બતાવો, નહીંતર તમારો ઓરિજિનલ સ્ટેબલ આંકડો ફિક્સ રહેશે
+            const totalRough = localStorage.getItem('total_rough') || "8450";
+            const usdRate = localStorage.getItem('usd_rate') || "83.72";
+            const totalCash = localStorage.getItem('total_cash') || "3412319";
+            const globalSales = localStorage.getItem('global_sales') || "126840000";
 
-            const baseCash = 3412319;
-            const fluctuation = Math.floor(Math.random() * 400) - 200;
-            document.getElementById('val-cash').innerText = "₹ " + (baseCash + fluctuation).toLocaleString('en-IN');
-        }, 3000);
+            document.getElementById('val-rough').innerText = parseInt(totalRough).toLocaleString('en-IN') + " Carats";
+            document.getElementById('val-usd').innerText = "₹ " + usdRate;
+            document.getElementById('val-cash').innerText = "₹ " + parseInt(totalCash).toLocaleString('en-IN');
+            document.getElementById('val-sales').innerText = "₹ " + parseInt(globalSales).toLocaleString('en-IN');
+        }
+
+        // પેજ લોડ થાય ત્યારે ડેટા લાઈવ કરો
+        loadDashboardData();
+        // દર ૨ સેકન્ડે બેકગ્રાઉન્ડ ચેક ચાલુ રાખશે
+        setInterval(loadDashboardData, 2000);
     </script>
 </body>
 </html>
