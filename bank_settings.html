@@ -1,1 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Raghuveer Diamond - Bank Settings Terminal</title>
+    <style>
+        :root {
+            --bg-primary: #0B132B;
+            --bg-secondary: #111D37;
+            --top-bar-bg: #070B19;
+            --border-color: #1C2541;
+            --accent-cyan: #5BC0BE;
+            --accent-blue: #00C6FF;
+            --accent-red: #E74C3C;
+            --text-main: #FFFFFF;
+            --text-muted: #708090;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* No Scroll */
+        }
+
+        /* Top Cyber Header Matrix */
+        .window-control-bar {
+            height: 50px;
+            background-color: var(--top-bar-bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 0 0 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .company-logo-frame {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00C6FF, #0072FF);
+            box-shadow: 0 0 8px #00C6FF;
+        }
+
+        .brand-title {
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), #0072FF, var(--accent-cyan));
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: cyberGlow 6s linear infinite;
+            text-transform: uppercase;
+        }
+
+        @keyframes cyberGlow {
+            0% { background-position: 0% center; }
+            100% { background-position: 300% center; }
+        }
+
+        .window-actions {
+            display: flex;
+            height: 100%;
+        }
+
+        .win-btn {
+            background: none;
+            border: none;
+            color: var(--accent-cyan);
+            width: 45px;
+            height: 100%;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .win-btn:hover { background: var(--border-color); color: #FFFFFF; }
+        .win-btn.close-btn:hover { background: var(--accent-red); color: #FFFFFF; }
+
+        /* Split Workspace - Auto Responsive */
+        .settings-workspace {
+            flex: 1;
+            padding: 15px;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 15px;
+            height: calc(100vh - 50px);
+        }
+
+        @media (max-width: 900px) {
+            .settings-workspace {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1.2fr 1fr;
+                overflow-y: auto;
+            }
+        }
+
+        .panel-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .panel-title {
+            font-size: 13px;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        .form-scroll-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            flex: 1;
+            padding-right: 5px;
+        }
+
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .input-group label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-control {
+            background: #0B132B;
+            border: 1px solid var(--border-color);
+            color: #FFFFFF;
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            outline: none;
+            width: 100%;
+        }
+
+        .input-control:focus { border-color: var(--accent-cyan); }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #00C6FF, #0072FF);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        /* Table Style */
+        .table-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: #070B19;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        th {
+            background: var(--border-color);
+            color: var(--accent-cyan);
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            text-transform: uppercase;
+            font-size: 10px;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: var(--accent-red);
+            cursor: pointer;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body onload="loadMasterBanks()">
+
+    <!-- Header Panel Matrix -->
+    <div class="window-control-bar">
+        <div class="brand-wrapper">
+            <div class="company-logo-frame"></div>
+            <div class="brand-title">RAGHUVEER DIAMOND - SETTINGS</div>
+        </div>
+        
+        <div class="window-actions">
+            <button class="win-btn" onclick="alert('Configuration Module Active')">-</button>
+            <button class="win-btn" onclick="toggleFullScreen()">🗖</button>
+            <button class="win-btn close-btn" onclick="backToTerminal()">✕</button>
+        </div>
+    </div>
+
+    <!-- Workspace Configuration Matrix -->
+    <div class="settings-workspace">
+        
+        <!-- Left Panel: Add Master Bank Form -->
+        <div class="panel-box">
+            <div class="panel-title">Add Master Bank Configuration</div>
+            
+            <div class="form-scroll-container">
+                <div class="form-grid-2">
+                    <div class="input-group">
+                        <label>Bank Name</label>
+                        <input type="text" class="input-control" id="cfg-bank-name" placeholder="e.g. Kotak Mahindra Bank">
+                    </div>
+                    <div class="input-group">
+                        <label>Bank Holder Name</label>
+                        <input type="text" class="input-control" id="cfg-holder-name" placeholder="Company / Individual Name">
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="input-group">
+                        <label>Account Number</label>
+                        <input type="text" class="input-control" id="cfg-acc-number" placeholder="Enter Account No">
+                    </div>
+                    <div class="input-group">
+                        <label>IFSC / SWIFT Code</label>
+                        <input type="text" class="input-control" id="cfg-ifsc" placeholder="Enter Bank Code">
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="input-group">
+                        <label>Account Facility Type</label>
+                        <select class="input-control" id="cfg-acc-type">
+                            <option value="CURRENT">Current Account</option>
+                            <option value="FOREX">Forex Account</option>
+                            <option value="CC">CC (Cash Credit)</option>
+                            <option value="OVERDRAFT">OD (Overdraft)</option>
+                            <option value="SAVINGS">Savings Account</option>
+                            <option value="LOAN">Loan / EMI Account</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Default Mapped Currency</label>
+                        <select class="input-control" id="cfg-currency">
+                            <option value="INR">INR (₹)</option>
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button class="submit-btn" onclick="saveNewBankMaster()">Save Bank Master Configuration</button>
+        </div>
+
+        <!-- Right Panel: Registered Master Banks List -->
+        <div class="panel-box">
+            <div class="panel-title">Configured System Banks</div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bank & Holder</th>
+                            <th>Acc No / Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bank-matrix-rows">
+                        <!-- Banks load live here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {});
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function backToTerminal() {
+            window.location.href = 'bank_details.html';
+        }
+
+        function saveNewBankMaster() {
+            const name = document.getElementById('cfg-bank-name').value;
+            const holder = document.getElementById('cfg-holder-name').value;
+            const accNo = document.getElementById('cfg-acc-number').value;
+            const ifsc = document.getElementById('cfg-ifsc').value;
+            const type = document.getElementById('cfg-acc-type').value;
+            const currency = document.getElementById('cfg-currency').value;
+
+            if(!name || !holder || !accNo || !ifsc) {
+                alert("Configuration Error: All parameters must be filled.");
+                return;
+            }
+
+            const banks = JSON.parse(localStorage.getItem('master_banks')) || [];
+            banks.push({ name, holder, accNo, ifsc, type, currency });
+            localStorage.setItem('master_banks', JSON.stringify(banks));
+
+            // Clear inputs
+            document.getElementById('cfg-bank-name').value = '';
+            document.getElementById('cfg-holder-name').value = '';
+            document.getElementById('cfg-acc-number').value = '';
+            document.getElementById('cfg-ifsc').value = '';
+
+            loadMasterBanks();
+        }
+
+        function loadMasterBanks() {
+            const tbody = document.getElementById('bank-matrix-rows');
+            const banks = JSON.parse(localStorage.getItem('master_banks')) || [];
+
+            if(banks.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">No banks registered.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = banks.map((b, index) => `
+                <tr>
+                    <td><strong>${b.name}</strong><br><small style="color:var(--text-muted);">${b.holder}</small></td>
+                    <td>${b.accNo}<br><small style="color:var(--accent-cyan);">${b.type} (${b.currency})</small></td>
+                    <td style="text-align:center;">
+                        <button class="delete-btn" onclick="deleteBankMaster(${index})">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteBankMaster(index) {
+            if(confirm("Are you sure you want to remove this bank master profile?")) {
+                const banks = JSON.parse(localStorage.getItem('master_banks')) || [];
+                banks.splice(index, 1);
+                localStorage.setItem('master_banks', JSON.stringify(banks));
+                loadMasterBanks();
+            }
+        }
+    </script>
+</body>
+</html>
