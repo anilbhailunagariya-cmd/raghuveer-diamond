@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Raghuveer Diamond - Bank Core</title>
+    <title>Raghuveer Diamond - AI Future Banking Terminal 2050</title>
     <style>
         :root {
             --bg-primary: #0B132B;
@@ -12,6 +12,7 @@
             --border-color: #1C2541;
             --accent-cyan: #5BC0BE;
             --accent-blue: #00C6FF;
+            --accent-green: #27AE60;
             --accent-red: #E74C3C;
             --text-main: #FFFFFF;
             --text-muted: #708090;
@@ -32,10 +33,10 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* કોઈ સ્ક્ર્રોલિંગ નહીં થાય */
+            overflow: hidden; /* No Scrolling Layout */
         }
 
-        /* Top Header Navigation */
+        /* Top Cyber Header Matrix */
         .window-control-bar {
             height: 50px;
             background-color: var(--top-bar-bg);
@@ -93,20 +94,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.2s;
         }
 
         .win-btn:hover { background: var(--border-color); color: #FFFFFF; }
         .win-btn.close-btn:hover { background: var(--accent-red); color: #FFFFFF; }
 
-        /* Main Full Screen Layout Workstation */
+        /* Main Workspace Split Grid - Auto Responsive */
         .bank-workspace {
             flex: 1;
             padding: 15px;
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
+            grid-template-columns: 1.2fr 1fr;
             gap: 15px;
             height: calc(100vh - 90px);
+        }
+
+        @media (max-width: 900px) {
+            .bank-workspace {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr 1fr;
+                overflow-y: auto;
+            }
         }
 
         .panel-box {
@@ -118,65 +126,76 @@
             flex-direction: column;
             justify-content: space-between;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            overflow: hidden;
         }
 
         .panel-title {
             font-size: 13px;
             color: var(--accent-cyan);
             text-transform: uppercase;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             font-weight: 600;
             letter-spacing: 0.5px;
             border-bottom: 1px dashed var(--border-color);
             padding-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* Form Styling */
-        .form-container {
+        /* Futuristic Form Interface */
+        .form-scroll-container {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
+            overflow-y: auto;
             flex: 1;
+            padding-right: 5px;
+        }
+
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
 
         .input-group {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 4px;
         }
 
         .input-group label {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-muted);
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .input-control {
             background: #0B132B;
             border: 1px solid var(--border-color);
             color: #FFFFFF;
-            padding: 10px;
+            padding: 8px 10px;
             border-radius: 6px;
             font-size: 13px;
             outline: none;
+            width: 100%;
         }
 
-        .input-control:focus {
-            border-color: var(--accent-cyan);
-        }
+        .input-control:focus { border-color: var(--accent-cyan); }
 
-        .action-grid {
+        .type-toggle-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-top: 5px;
         }
 
-        .type-btn {
+        .mode-btn {
             background: #0B132B;
             border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 10px;
+            color: #FFFFFF;
+            padding: 8px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
@@ -184,24 +203,35 @@
             text-transform: uppercase;
         }
 
-        .type-btn.credit.active { background: #27AE60; border-color: #2ECC71; }
-        .type-btn.debit.active { background: #C0392B; border-color: #E74C3C; }
+        .mode-btn.credit.active { background: var(--accent-green); border-color: #2ECC71; }
+        .mode-btn.debit.active { background: var(--accent-red); border-color: #E74C3C; }
 
-        .submit-btn {
-            background: linear-gradient(45deg, #00C6FF, #0072FF);
-            color: #FFFFFF;
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        /* Integrated AI Terminal Actions */
+        .ai-terminal-box {
+            background: #070B19;
+            border: 1px solid rgba(0, 198, 255, 0.2);
+            border-radius: 8px;
+            padding: 10px;
             margin-top: 10px;
-            box-shadow: 0 0 10px rgba(0, 198, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
         }
 
-        /* Data Matrix Table view */
+        .ai-btn {
+            background: linear-gradient(45deg, #00C6FF, #0072FF);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        /* Database Logs View Table */
         .table-wrapper {
             flex: 1;
             overflow-y: auto;
@@ -224,31 +254,41 @@
             position: sticky;
             top: 0;
             text-transform: uppercase;
-            font-size: 11px;
+            font-size: 10px;
+            letter-spacing: 0.5px;
         }
 
         td {
             padding: 10px;
             border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
         }
 
-        .text-credit { color: #2ECC71; font-weight: 600; }
-        .text-debit { color: #E74C3C; font-weight: 600; }
+        .tx-cr { color: #2ECC71; font-weight: 600; }
+        .tx-dr { color: #E74C3C; font-weight: 600; }
 
-        /* Footer Settings Panel */
+        .action-icon-btn {
+            background: none;
+            border: none;
+            color: var(--accent-cyan);
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* Bottom Control Panel */
         .footer-control-bar {
             height: 40px;
             background: var(--top-bar-bg);
             border-top: 1px solid var(--border-color);
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 0 15px;
+            justify-content: flex-end;
+            padding: 0 20px;
         }
 
         .settings-launcher {
             color: var(--accent-cyan);
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
             transition: transform 0.3s;
             background: none;
@@ -256,12 +296,10 @@
             outline: none;
         }
 
-        .settings-launcher:hover {
-            transform: rotate(45deg);
-        }
+        .settings-launcher:hover { transform: rotate(45deg); }
     </style>
 </head>
-<body onload="initAutofull()">
+<body onload="initializeTerminal()">
 
     <!-- Header Panel Matrix -->
     <div class="window-control-bar">
@@ -271,64 +309,121 @@
         </div>
         
         <div class="window-actions">
-            <button class="win-btn" onclick="alert('Bank Terminal Active')">-</button>
+            <button class="win-btn" onclick="alert('AI Banking Engine Active')">-</button>
             <button class="win-btn" onclick="toggleFullScreen()">🗖</button>
             <button class="win-btn close-btn" onclick="backToDashboard()">✕</button>
         </div>
     </div>
 
-    <!-- Main Workspace Split Layout -->
+    <!-- Main Responsive Workspace Workspace Split -->
     <div class="bank-workspace">
         
-        <!-- Left Panel: Transaction Input Entry Form -->
+        <!-- Left Workspace: AI Intelligent Transaction Entry -->
         <div class="panel-box">
-            <div style="display: flex; flex-direction: column; gap: 2px;">
-                <div class="panel-title">Transaction Entry Ledger</div>
-                <div class="form-container">
+            <div class="panel-title">AI Transaction Core Engine</div>
+            
+            <div class="form-scroll-container">
+                <div class="form-grid-2">
                     <div class="input-group">
                         <label>Select Master Bank</label>
-                        <select class="input-control" id="bank-select">
-                            <!-- સેટિંગ્સમાંથી બેંકો અહીંયા ઓટોમેટીક લોડ થશે -->
+                        <select class="input-control" id="bank-select" onchange="handleBankChange()">
+                            <!-- Banks automatically loaded via settings -->
                         </select>
                     </div>
-
                     <div class="input-group">
-                        <label>Entry Mode</label>
-                        <div class="action-grid">
-                            <button class="type-btn credit active" id="btn-credit" onclick="setEntryMode('CREDIT')">Credit (જમા)</button>
-                            <button class="type-btn debit" id="btn-debit" onclick="setEntryMode('DEBIT')">Debit (ઉધાર)</button>
-                        </div>
+                        <label>Currency Index</label>
+                        <select class="input-control" id="currency-select">
+                            <option value="INR">INR (₹) - Domestic</option>
+                            <option value="USD">USD ($) - Global Forex</option>
+                            <option value="EUR">EUR (€) - Euro Matrix</option>
+                        </select>
                     </div>
+                </div>
 
-                    <div class="input-group">
-                        <label>Party Name / Particulars</label>
-                        <input type="text" class="input-control" id="party-name" placeholder="Enter Party Name">
+                <div class="input-group">
+                    <label>Accounting Mode</label>
+                    <div class="type-toggle-row">
+                        <button class="mode-btn credit active" id="mode-credit" onclick="setAccountingMode('CREDIT')">Credit (Incoming)</button>
+                        <button class="mode-btn debit" id="mode-debit" onclick="setAccountingMode('DEBIT')">Debit (Outgoing)</button>
                     </div>
+                </div>
 
+                <div class="form-grid-2">
                     <div class="input-group">
-                        <label>Transaction Amount (₹)</label>
+                        <label>Transaction Method</label>
+                        <select class="input-control" id="method-select" onchange="toggleChequeInput()">
+                            <option value="ONLINE">ONLINE / IMPS</option>
+                            <option value="NEFT_RTGS">NEFT / RTGS</option>
+                            <option value="CHEQUE">BANK CHEQUE</option>
+                            <option value="OVERDRAFT">OVERDRAFT (OD)</option>
+                            <option value="UPI">UPI SMART CODE</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Transaction Purpose</label>
+                        <select class="input-control" id="purpose-select">
+                            <!-- Options populate dynamically based on Credit/Debit -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="input-group">
+                        <label>Particular / Party Name</label>
+                        <input type="text" class="input-control" id="party-name" placeholder="Enter Entity Name">
+                    </div>
+                    <div class="input-group">
+                        <label>Value Amount</label>
                         <input type="number" class="input-control" id="tx-amount" placeholder="0.00">
                     </div>
                 </div>
+
+                <div class="form-grid-2">
+                    <div class="input-group" id="cheque-number-group" style="display: none;">
+                        <label>Cheque / Reference Number</label>
+                        <input type="text" class="input-control" id="cheque-no" placeholder="Enter Ref / Cheque No">
+                    </div>
+                    <div class="input-group">
+                        <label>Execution Date</label>
+                        <input type="date" class="input-control" id="tx-date">
+                    </div>
+                </div>
+
+                <!-- 2050 Global AI Terminal Scanning Box -->
+                <div class="ai-terminal-box">
+                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                        <span style="font-size: 11px; font-weight: 700; color: var(--accent-blue);">AI HOLOGRAPHIC TERMINAL 2050</span>
+                        <span style="font-size: 9px; color: var(--text-muted);">Dynamic QR Generation & Intelligent Scanner System</span>
+                    </div>
+                    <div style="display: flex; gap: 5px;">
+                        <button class="ai-btn" onclick="generateSmartQR()">QR Gen</button>
+                        <button class="ai-btn" onclick="triggerAIScanner()">Scan AI</button>
+                    </div>
+                </div>
             </div>
-            <button class="submit-btn" onclick="saveTransactionEntry()">Post Entry Matrix</button>
+
+            <button class="mode-btn credit active" style="width: 100%; margin-top: 10px; padding: 12px; font-size: 13px; letter-spacing: 0.5px;" id="post-btn" onclick="executePostEntry()">Post Transaction Matrix</button>
         </div>
 
-        <!-- Right Panel: Live Ledger Database View -->
+        <!-- Right Workspace: Dynamic Ledger Data Stream -->
         <div class="panel-box">
-            <div class="panel-title" style="margin-bottom: 10px;">Live Account View Logs</div>
+            <div class="panel-title">
+                <span>Live Account Ledger Database</span>
+                <span id="live-clock" style="font-size: 10px; color: var(--text-muted);"></span>
+            </div>
             <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
                             <th>Bank</th>
-                            <th>Party</th>
-                            <th>Type</th>
+                            <th>Party / Purpose</th>
+                            <th>Method</th>
                             <th>Amount</th>
+                            <th>Print</th>
                         </tr>
                     </thead>
                     <tbody id="ledger-rows">
-                        <!-- એન્ટ્રી લાઈવ અહીંયા દેખાશે -->
+                        <!-- Entries load live dynamically -->
                     </tbody>
                 </table>
             </div>
@@ -336,18 +431,27 @@
 
     </div>
 
-    <!-- Bottom Settings Footer Launcher -->
+    <!-- Bottom Control Panel Settings Launcher -->
     <div class="footer-control-bar">
-        <button class="settings-launcher" onclick="openBankSettings()" title="Bank Master Setup">⚙️</button>
+        <button class="settings-launcher" onclick="openBankSettings()" title="Global System Settings">⚙️</button>
     </div>
 
     <script>
         let currentMode = "CREDIT";
 
-        // Auto Full Screen Trigger Logic
-        function initAutofull() {
+        function initializeTerminal() {
+            // Set current date automatically
+            document.getElementById('tx-date').value = new Date().toISOString().split('T')[0];
+            updateClock();
+            setInterval(updateClock, 1000);
             loadBankDropdown();
+            updatePurposeOptions();
             loadLedgerLogs();
+        }
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('live-clock').innerText = now.toLocaleTimeString();
         }
 
         function toggleFullScreen() {
@@ -359,77 +463,126 @@
         }
 
         function backToDashboard() {
-            window.location.href = 'main_office.html'; // પાછા મેઈન ડેશબોર્ડ પર જવા માટે
+            window.location.href = 'main_office.html';
         }
 
         function openBankSettings() {
-            window.location.href = 'bank_settings.html'; // સેટિંગ્સ ફાઈલ પર જવા માટે
+            window.location.href = 'bank_settings.html';
         }
 
-        function setEntryMode(mode) {
+        function setAccountingMode(mode) {
             currentMode = mode;
+            const postBtn = document.getElementById('post-btn');
             if(mode === 'CREDIT') {
-                document.getElementById('btn-credit').classList.add('active');
-                document.getElementById('btn-debit').classList.remove('active');
+                document.getElementById('mode-credit').classList.add('active');
+                document.getElementById('mode-debit').classList.remove('active');
+                postBtn.style.background = 'var(--accent-green)';
+                postBtn.innerText = "Post Transaction Matrix (Credit)";
             } else {
-                document.getElementById('btn-debit').classList.add('active');
-                document.getElementById('btn-credit').classList.remove('active');
+                document.getElementById('mode-debit').classList.add('active');
+                document.getElementById('mode-credit').classList.remove('active');
+                postBtn.style.background = 'var(--accent-red)';
+                postBtn.innerText = "Post Transaction Matrix (Debit)";
+            }
+            updatePurposeOptions();
+        }
+
+        function updatePurposeOptions() {
+            const purposeSelect = document.getElementById('purpose-select');
+            if(currentMode === 'CREDIT') {
+                purposeSelect.innerHTML = `
+                    <option value="SALES_REVENUE">Sales Revenue (હીરા વેચાણ)</option>
+                    <option value="ASSET_LIQUIDATION">Asset Liquidation (અન્ય આવક)</option>
+                `;
+            } else {
+                purposeSelect.innerHTML = `
+                    <option value="ROUGH_PURCHASE">Rough Purchase (રફ ખરીદી)</option>
+                    <option value="BROKERAGE">Brokerage (દલાલી પેમેન્ટ)</option>
+                    <option value="ARTISAN_SALARY">Artisan Salary / Wages (કારીગર પગાર)</option>
+                    <option value="COMPANY_EXPENSE">Company Expenses (ઓફિસ ખર્ચ)</option>
+                `;
             }
         }
 
-        // લોકલ સ્ટોરેજમાંથી બેંકો ડ્રોપડાઉનમાં લોડ કરવાનું લોજિક
+        function toggleChequeInput() {
+            const method = document.getElementById('method-select').value;
+            const chequeGroup = document.getElementById('cheque-number-group');
+            if(method === 'CHEQUE') {
+                chequeGroup.style.display = 'flex';
+            } else {
+                chequeGroup.style.display = 'none';
+            }
+        }
+
+        function generateSmartQR() {
+            const amount = document.getElementById('tx-amount').value || "0";
+            const currency = document.getElementById('currency-select').value;
+            alert(`[AI 2050 ENGINE]: Dynamic Payment QR generated for ${currency} ${amount}`);
+        }
+
+        function triggerAIScanner() {
+            alert("[AI EYE TERMINAL 2050]: Initializing matrix camera system... Scanning Document for Auto-Fill.");
+        }
+
+        function executeCyberPrintStation(party, amount, method, purpose) {
+            alert(`[CYBER PRINT MATRIX ACTIVE]\nDocument Type: ${method}\nPayee: ${party}\nAmount: ${amount}\nPurpose: ${purpose}\nStatus: Universal printer profile mapped successfully.`);
+        }
+
         function loadBankDropdown() {
             const dropdown = document.getElementById('bank-select');
             const banks = JSON.parse(localStorage.getItem('master_banks')) || [];
-            
             if(banks.length === 0) {
-                dropdown.innerHTML = `<option value="">No Bank Added! Go to ⚙️</option>`;
+                dropdown.innerHTML = `<option value="">No Bank Configured! Go to ⚙️</option>`;
                 return;
             }
-
-            dropdown.innerHTML = banks.map(b => 
-                `<option value="${b.name}">${b.name} (${b.type})</option>`
-            ).join('');
+            dropdown.innerHTML = banks.map(b => `<option value="${b.name}">${b.name} [${b.type}]</option>`).join('');
         }
 
-        // એન્ટ્રી સેવ કરવાનું લોજિક
-        function saveTransactionEntry() {
+        function executePostEntry() {
             const bank = document.getElementById('bank-select').value;
+            const currency = document.getElementById('currency-select').value;
+            const method = document.getElementById('method-select').value;
+            const purpose = document.getElementById('purpose-select').value;
             const party = document.getElementById('party-name').value;
             const amount = document.getElementById('tx-amount').value;
+            const date = document.getElementById('tx-date').value;
+            const chequeNo = document.getElementById('cheque-no').value;
 
             if(!bank || !party || !amount) {
-                alert("બધી વિગતો ભરો ભાઈ!");
+                alert("Execution Halted: Core metrics fields are empty.");
                 return;
             }
 
             const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
-            entries.unshift({ bank, party, mode: currentMode, amount: parseFloat(amount) });
+            entries.unshift({ bank, currency, method, purpose, party, amount: parseFloat(amount), date, mode: currentMode, chequeNo });
             localStorage.setItem('bank_ledger_logs', JSON.stringify(entries));
 
-            // ફોર્મ ક્લિયર કરો
+            // Clear inputs
             document.getElementById('party-name').value = '';
             document.getElementById('tx-amount').value = '';
-            
+            document.getElementById('cheque-no').value = '';
+
             loadLedgerLogs();
         }
 
-        // એન્ટ્રી લોગ ટેબલમાં બતાવવાનું લોજિક
         function loadLedgerLogs() {
             const tbody = document.getElementById('ledger-rows');
             const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
 
             if(entries.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">No entries recorded.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Database Empty.</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = entries.map(e => `
+            tbody.innerHTML = entries.map((e, index) => `
                 <tr>
                     <td>${e.bank}</td>
-                    <td>${e.party}</td>
-                    <td class="${e.mode === 'CREDIT' ? 'text-credit' : 'text-debit'}">${e.mode}</td>
-                    <td>₹ ${e.amount.toLocaleString('en-IN')}</td>
+                    <td><strong>${e.party}</strong><br><small style="color:var(--text-muted);">${e.purpose}</small></td>
+                    <td>${e.method} ${e.chequeNo ? `<br><small>#${e.chequeNo}</small>` : ''}</td>
+                    <td class="${e.mode === 'CREDIT' ? 'tx-cr' : 'tx-dr'}">${e.mode === 'CREDIT' ? '+' : '-'} ${e.currency} ${e.amount.toLocaleString('en-IN')}</td>
+                    <td style="text-align:center;">
+                        <button class="action-icon-btn" onclick="executeCyberPrintStation('${e.party}', '${e.currency} ${e.amount}', '${e.method}', '${e.purpose}')">🖨️</button>
+                    </td>
                 </tr>
             `).join('');
         }
