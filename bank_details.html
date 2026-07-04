@@ -1,1 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Raghuveer Diamond - Bank Core</title>
+    <style>
+        :root {
+            --bg-primary: #0B132B;
+            --bg-secondary: #111D37;
+            --top-bar-bg: #070B19;
+            --border-color: #1C2541;
+            --accent-cyan: #5BC0BE;
+            --accent-blue: #00C6FF;
+            --accent-red: #E74C3C;
+            --text-main: #FFFFFF;
+            --text-muted: #708090;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* કોઈ સ્ક્ર્રોલિંગ નહીં થાય */
+        }
+
+        /* Top Header Navigation */
+        .window-control-bar {
+            height: 50px;
+            background-color: var(--top-bar-bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 0 0 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .company-logo-frame {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00C6FF, #0072FF);
+            box-shadow: 0 0 8px #00C6FF;
+        }
+
+        .brand-title {
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), #0072FF, var(--accent-cyan));
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: cyberGlow 6s linear infinite;
+            text-transform: uppercase;
+        }
+
+        @keyframes cyberGlow {
+            0% { background-position: 0% center; }
+            100% { background-position: 300% center; }
+        }
+
+        .window-actions {
+            display: flex;
+            height: 100%;
+        }
+
+        .win-btn {
+            background: none;
+            border: none;
+            color: var(--accent-cyan);
+            width: 45px;
+            height: 100%;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .win-btn:hover { background: var(--border-color); color: #FFFFFF; }
+        .win-btn.close-btn:hover { background: var(--accent-red); color: #FFFFFF; }
+
+        /* Main Full Screen Layout Workstation */
+        .bank-workspace {
+            flex: 1;
+            padding: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 15px;
+            height: calc(100vh - 90px);
+        }
+
+        .panel-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .panel-title {
+            font-size: 13px;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        /* Form Styling */
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .input-group label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .input-control {
+            background: #0B132B;
+            border: 1px solid var(--border-color);
+            color: #FFFFFF;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .input-control:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .type-btn {
+            background: #0B132B;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .type-btn.credit.active { background: #27AE60; border-color: #2ECC71; }
+        .type-btn.debit.active { background: #C0392B; border-color: #E74C3C; }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #00C6FF, #0072FF);
+            color: #FFFFFF;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            box-shadow: 0 0 10px rgba(0, 198, 255, 0.3);
+        }
+
+        /* Data Matrix Table view */
+        .table-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: #070B19;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        th {
+            background: var(--border-color);
+            color: var(--accent-cyan);
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .text-credit { color: #2ECC71; font-weight: 600; }
+        .text-debit { color: #E74C3C; font-weight: 600; }
+
+        /* Footer Settings Panel */
+        .footer-control-bar {
+            height: 40px;
+            background: var(--top-bar-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 15px;
+        }
+
+        .settings-launcher {
+            color: var(--accent-cyan);
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            background: none;
+            border: none;
+            outline: none;
+        }
+
+        .settings-launcher:hover {
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body onload="initAutofull()">
+
+    <!-- Header Panel Matrix -->
+    <div class="window-control-bar">
+        <div class="brand-wrapper">
+            <div class="company-logo-frame"></div>
+            <div class="brand-title">RAGHUVEER DIAMOND</div>
+        </div>
+        
+        <div class="window-actions">
+            <button class="win-btn" onclick="alert('Bank Terminal Active')">-</button>
+            <button class="win-btn" onclick="toggleFullScreen()">🗖</button>
+            <button class="win-btn close-btn" onclick="backToDashboard()">✕</button>
+        </div>
+    </div>
+
+    <!-- Main Workspace Split Layout -->
+    <div class="bank-workspace">
+        
+        <!-- Left Panel: Transaction Input Entry Form -->
+        <div class="panel-box">
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+                <div class="panel-title">Transaction Entry Ledger</div>
+                <div class="form-container">
+                    <div class="input-group">
+                        <label>Select Master Bank</label>
+                        <select class="input-control" id="bank-select">
+                            <!-- સેટિંગ્સમાંથી બેંકો અહીંયા ઓટોમેટીક લોડ થશે -->
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Entry Mode</label>
+                        <div class="action-grid">
+                            <button class="type-btn credit active" id="btn-credit" onclick="setEntryMode('CREDIT')">Credit (જમા)</button>
+                            <button class="type-btn debit" id="btn-debit" onclick="setEntryMode('DEBIT')">Debit (ઉધાર)</button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Party Name / Particulars</label>
+                        <input type="text" class="input-control" id="party-name" placeholder="Enter Party Name">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Transaction Amount (₹)</label>
+                        <input type="number" class="input-control" id="tx-amount" placeholder="0.00">
+                    </div>
+                </div>
+            </div>
+            <button class="submit-btn" onclick="saveTransactionEntry()">Post Entry Matrix</button>
+        </div>
+
+        <!-- Right Panel: Live Ledger Database View -->
+        <div class="panel-box">
+            <div class="panel-title" style="margin-bottom: 10px;">Live Account View Logs</div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bank</th>
+                            <th>Party</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ledger-rows">
+                        <!-- એન્ટ્રી લાઈવ અહીંયા દેખાશે -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Settings Footer Launcher -->
+    <div class="footer-control-bar">
+        <button class="settings-launcher" onclick="openBankSettings()" title="Bank Master Setup">⚙️</button>
+    </div>
+
+    <script>
+        let currentMode = "CREDIT";
+
+        // Auto Full Screen Trigger Logic
+        function initAutofull() {
+            loadBankDropdown();
+            loadLedgerLogs();
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {});
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function backToDashboard() {
+            window.location.href = 'main_office.html'; // પાછા મેઈન ડેશબોર્ડ પર જવા માટે
+        }
+
+        function openBankSettings() {
+            window.location.href = 'bank_settings.html'; // સેટિંગ્સ ફાઈલ પર જવા માટે
+        }
+
+        function setEntryMode(mode) {
+            currentMode = mode;
+            if(mode === 'CREDIT') {
+                document.getElementById('btn-credit').classList.add('active');
+                document.getElementById('btn-debit').classList.remove('active');
+            } else {
+                document.getElementById('btn-debit').classList.add('active');
+                document.getElementById('btn-credit').classList.remove('active');
+            }
+        }
+
+        // લોકલ સ્ટોરેજમાંથી બેંકો ડ્રોપડાઉનમાં લોડ કરવાનું લોજિક
+        function loadBankDropdown() {
+            const dropdown = document.getElementById('bank-select');
+            const banks = JSON.parse(localStorage.getItem('master_banks')) || [];
+            
+            if(banks.length === 0) {
+                dropdown.innerHTML = `<option value="">No Bank Added! Go to ⚙️</option>`;
+                return;
+            }
+
+            dropdown.innerHTML = banks.map(b => 
+                `<option value="${b.name}">${b.name} (${b.type})</option>`
+            ).join('');
+        }
+
+        // એન્ટ્રી સેવ કરવાનું લોજિક
+        function saveTransactionEntry() {
+            const bank = document.getElementById('bank-select').value;
+            const party = document.getElementById('party-name').value;
+            const amount = document.getElementById('tx-amount').value;
+
+            if(!bank || !party || !amount) {
+                alert("બધી વિગતો ભરો ભાઈ!");
+                return;
+            }
+
+            const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
+            entries.unshift({ bank, party, mode: currentMode, amount: parseFloat(amount) });
+            localStorage.setItem('bank_ledger_logs', JSON.stringify(entries));
+
+            // ફોર્મ ક્લિયર કરો
+            document.getElementById('party-name').value = '';
+            document.getElementById('tx-amount').value = '';
+            
+            loadLedgerLogs();
+        }
+
+        // એન્ટ્રી લોગ ટેબલમાં બતાવવાનું લોજિક
+        function loadLedgerLogs() {
+            const tbody = document.getElementById('ledger-rows');
+            const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
+
+            if(entries.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">No entries recorded.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = entries.map(e => `
+                <tr>
+                    <td>${e.bank}</td>
+                    <td>${e.party}</td>
+                    <td class="${e.mode === 'CREDIT' ? 'text-credit' : 'text-debit'}">${e.mode}</td>
+                    <td>₹ ${e.amount.toLocaleString('en-IN')}</td>
+                </tr>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
