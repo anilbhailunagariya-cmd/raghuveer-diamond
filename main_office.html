@@ -292,11 +292,11 @@
         
         <!-- 4 Core Pillars Row -->
         <div class="core-metrics-row">
-            <!-- 1. Bank Liquidity Matrix Replaced with Live USD Rate Matrix -->
+            <!-- 1. Shorter Bank USD Card Configuration -->
             <div class="metric-card">
-                <div class="card-label">1. Live USD Rate Matrix</div>
-                <div class="card-value" id="val-usd">$1 = ₹ 83.74</div>
-                <div class="live-status-indicator"><span class="status-dot"></span>Live Forex Sync</div>
+                <div class="card-label">1. Bank</div>
+                <div class="card-value" id="val-usd">₹ 83.72</div>
+                <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             <div class="metric-card">
                 <div class="card-label">2. Rough Purchase Inventory</div>
@@ -310,7 +310,7 @@
             </div>
             <div class="metric-card">
                 <div class="card-label">4. Cash Flow Matrix</div>
-                <div class="card-value" id="val-cash">₹ 34,12,504</div>
+                <div class="card-value" id="val-cash">₹ 34,12,319</div>
                 <div class="live-status-indicator"><span class="status-dot"></span>Office Vault Safe</div>
             </div>
         </div>
@@ -380,16 +380,14 @@
             document.getElementById(`sz-${sizeKey}`).classList.add('active');
         }
 
-        // Live Fluctuations Logic for Cash Flow and Live USD Rate
+        // Live Fluctuations Logic
         setInterval(() => {
-            // 1. Live USD Rate Fluctuation
-            const baseUsd = 83.74;
-            const usdFlureflection = (Math.random() * 0.06) - 0.03; // Small forex point variations
+            const baseUsd = 83.72;
+            const usdFlureflection = (Math.random() * 0.06) - 0.03;
             const dynamicUsd = (baseUsd + usdFlureflection).toFixed(2);
-            document.getElementById('val-usd').innerText = `$1 = ₹ ${dynamicUsd}`;
+            document.getElementById('val-usd').innerText = `₹ ${dynamicUsd}`;
 
-            // 2. Cash Flow Fluctuation
-            const baseCash = 3412504;
+            const baseCash = 3412319;
             const fluctuation = Math.floor(Math.random() * 400) - 200;
             document.getElementById('val-cash').innerText = "₹ " + (baseCash + fluctuation).toLocaleString('en-IN');
         }, 3000);
