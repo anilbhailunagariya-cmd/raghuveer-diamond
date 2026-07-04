@@ -24,6 +24,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
         }
 
         body {
@@ -53,31 +54,33 @@
         .brand-wrapper {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .company-logo-frame {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            border: 1px dashed var(--accent-cyan);
-            background: url('logo.jpg') no-repeat center;
-            background-size: cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 8px;
-            color: var(--accent-cyan);
-            font-weight: bold;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00C6FF, #0072FF);
+            box-shadow: 0 0 8px #00C6FF;
         }
 
+        /* Live Cyber Glow Animation for RAGHUVEER DIAMOND */
         .brand-title {
             font-size: 16px;
             font-weight: 900;
-            letter-spacing: 1.5px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), #0072FF, var(--accent-cyan));
+            background-size: 300% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: cyberGlow 6s linear infinite;
+            text-transform: uppercase;
+        }
+
+        @keyframes cyberGlow {
+            0% { background-position: 0% center; }
+            100% { background-position: 300% center; }
         }
 
         /* Computer Windows Style Small Control Buttons */
@@ -89,7 +92,7 @@
         .win-btn {
             background: none;
             border: none;
-            color: var(--text-main);
+            color: var(--accent-cyan);
             width: 45px;
             height: 100%;
             font-size: 14px;
@@ -102,6 +105,7 @@
 
         .win-btn:hover {
             background: var(--border-color);
+            color: #FFFFFF;
         }
 
         .win-btn.close-btn:hover {
@@ -179,7 +183,7 @@
 
         @keyframes blink { 50% { opacity: 0.3; } }
 
-        /* Full Width Workspace for Print Station */
+        /* Workspace Grid */
         .workspace-split-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -269,14 +273,15 @@
 </head>
 <body>
 
-    <!-- Header Structure with Windows Style Small Buttons -->
+    <!-- Header Structure with RAGHUVEER DIAMOND Glowing Title -->
     <div class="window-control-bar">
         <div class="brand-wrapper">
-            <div class="company-logo-frame">RD</div>
-            <div class="brand-title">MAIN OFFICE MATRIX</div>
+            <div class="company-logo-frame"></div>
+            <!-- Main Office text removed, added dynamic color gradient name below -->
+            <div class="brand-title">RAGHUVEER DIAMOND</div>
         </div>
         
-        <!-- Small Computer Style Window Control Buttons without text -->
+        <!-- Small Computer Style Window Control Buttons -->
         <div class="window-actions">
             <button class="win-btn" onclick="triggerMinimize()">-</button>
             <button class="win-btn" onclick="triggerFullScreen()">🗖</button>
@@ -305,12 +310,12 @@
             </div>
             <div class="metric-card">
                 <div class="card-label">4. Cash Flow Matrix</div>
-                <div class="card-value" id="val-cash">₹ 34,15,500</div>
+                <div class="card-value" id="val-cash">₹ 34,14,919</div>
                 <div class="live-status-indicator"><span class="status-dot"></span>Office Vault Safe</div>
             </div>
         </div>
 
-        <!-- Cleaned View with only Universal Cyber Print Station -->
+        <!-- Universal Cyber Print Station -->
         <div class="workspace-split-grid">
             <div class="print-station-card">
                 <div class="block-title" style="border: none;">Universal Cyber Print Station</div>
@@ -358,6 +363,10 @@
             }
         }
 
+        document.addEventListener('click', function() {
+            // Internal browser clearance for fullscreen link sync
+        }, { once: true });
+
         function triggerMinimize() {
             alert("Main Office terminal minimized.");
         }
@@ -376,7 +385,7 @@
         }
 
         setInterval(() => {
-            const baseCash = 3415500;
+            const baseCash = 3414919;
             const fluctuation = Math.floor(Math.random() * 8500) - 4250;
             document.getElementById('val-cash').innerText = "₹ " + (baseCash + fluctuation).toLocaleString('en-IN');
         }, 4000);
