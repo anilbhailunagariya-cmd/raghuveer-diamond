@@ -38,12 +38,12 @@
 
         /* Top Bar & Logo Matrix */
         .window-control-bar {
-            height: 60px;
+            height: 50px;
             background-color: var(--top-bar-bg);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 0 0 20px;
             border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
@@ -57,23 +57,22 @@
         }
 
         .company-logo-frame {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
             border: 1px dashed var(--accent-cyan);
             background: url('logo.jpg') no-repeat center;
             background-size: cover;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 9px;
+            font-size: 8px;
             color: var(--accent-cyan);
             font-weight: bold;
-            box-shadow: 0 0 8px rgba(91, 192, 190, 0.3);
         }
 
         .brand-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 900;
             letter-spacing: 1.5px;
             background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
@@ -81,42 +80,33 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Premium Window Actions Control System */
+        /* Computer Windows Style Small Control Buttons */
         .window-actions {
             display: flex;
-            gap: 12px;
-            align-items: center;
+            height: 100%;
         }
 
-        .action-btn {
+        .win-btn {
             background: none;
-            border: 1px solid var(--border-color);
-            color: var(--accent-cyan);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            padding: 6px 12px;
-            border-radius: 6px;
-            text-transform: uppercase;
-        }
-
-        .action-btn:hover {
+            border: none;
             color: var(--text-main);
-            border-color: var(--accent-cyan);
+            width: 45px;
+            height: 100%;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .win-btn:hover {
             background: var(--border-color);
-            box-shadow: 0 0 8px rgba(91, 192, 190, 0.2);
         }
 
-        .action-btn.close-btn {
-            color: var(--accent-red);
-            border-color: rgba(231, 76, 60, 0.3);
-        }
-
-        .action-btn.close-btn:hover {
-            background: rgba(231, 76, 60, 0.1);
-            border-color: var(--accent-red);
-            box-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
+        .win-btn.close-btn:hover {
+            background: var(--accent-red);
+            color: #FFFFFF;
         }
 
         /* Core Layout Grid */
@@ -189,73 +179,47 @@
 
         @keyframes blink { 50% { opacity: 0.3; } }
 
-        /* Secondary Grid: 2050 Features & Print Station */
+        /* Full Width Workspace for Print Station */
         .workspace-split-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 1fr;
             gap: 15px;
-        }
-
-        @media (max-width: 900px) {
-            .workspace-split-grid { grid-template-columns: 1fr; }
-        }
-
-        .tech-features-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .feature-block {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 15px;
         }
 
         .block-title {
             font-size: 13px;
             color: var(--accent-cyan);
             text-transform: uppercase;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             font-weight: 600;
             letter-spacing: 0.5px;
-            border-bottom: 1px dashed rgba(255,255,255,0.05);
-            padding-bottom: 6px;
         }
 
-        .hollow-display {
-            background: #070B19;
-            border: 1px solid rgba(0, 198, 255, 0.1);
-            border-radius: 6px;
-            padding: 10px;
-            font-family: monospace;
-            font-size: 11px;
-            color: #5BC0BE;
-            min-height: 50px;
-        }
-
-        /* Universal Cyber Print Station */
+        /* Universal Cyber Print Station Layout */
         .print-station-card {
             background: linear-gradient(145deg, var(--bg-secondary), #162649);
             border: 1px solid rgba(91, 192, 190, 0.2);
             border-radius: 12px;
-            padding: 18px;
-            height: max-content;
+            padding: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.4);
         }
 
+        .print-btn-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
         .print-btn {
-            width: 100%;
             background: #0B132B;
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 10px;
+            padding: 12px 15px;
             border-radius: 8px;
-            margin-bottom: 8px;
             cursor: pointer;
             text-align: left;
-            font-size: 11px;
+            font-size: 12px;
             text-transform: uppercase;
             font-weight: 600;
             display: flex;
@@ -269,21 +233,20 @@
             background: var(--border-color);
         }
 
-        .print-icon { color: var(--accent-cyan); }
+        .print-icon { color: var(--accent-cyan); font-size: 14px; }
 
         .size-setting-box {
             background: #070B19;
             border: 1px dashed var(--border-color);
             border-radius: 6px;
-            padding: 10px;
-            margin-top: 12px;
+            padding: 12px;
         }
 
         .size-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-top: 6px;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+            margin-top: 8px;
         }
 
         .size-btn {
@@ -291,7 +254,7 @@
             border: 1px solid var(--border-color);
             color: var(--text-muted);
             font-size: 10px;
-            padding: 6px;
+            padding: 8px;
             border-radius: 4px;
             cursor: pointer;
             text-transform: uppercase;
@@ -306,18 +269,18 @@
 </head>
 <body>
 
-    <!-- Header Grid Core Structure -->
+    <!-- Header Structure with Windows Style Small Buttons -->
     <div class="window-control-bar">
         <div class="brand-wrapper">
             <div class="company-logo-frame">RD</div>
             <div class="brand-title">MAIN OFFICE MATRIX</div>
         </div>
         
-        <!-- Premium Action Buttons Console Group -->
+        <!-- Small Computer Style Window Control Buttons without text -->
         <div class="window-actions">
-            <button class="action-btn" onclick="triggerMinimize()">-</button>
-            <button class="action-btn" onclick="triggerFullScreen()">🗖 Full Screen</button>
-            <button class="action-btn close-btn" onclick="goToDashboard()">✕ Close</button>
+            <button class="win-btn" onclick="triggerMinimize()">-</button>
+            <button class="win-btn" onclick="triggerFullScreen()">🗖</button>
+            <button class="win-btn close-btn" onclick="goToDashboard()">✕</button>
         </div>
     </div>
 
@@ -347,45 +310,22 @@
             </div>
         </div>
 
-        <!-- 2050 Features & Cyber Print Split View -->
+        <!-- Cleaned View with only Universal Cyber Print Station -->
         <div class="workspace-split-grid">
-            
-            <div class="tech-features-panel">
-                <div class="feature-block">
-                    <div class="block-title">AI-Vision Rough Assortment Suite [Year 2050 Model]</div>
-                    <div class="hollow-display" id="ai-vision-terminal">
-                        [SYSTEM SYSTEM ACTIVE] Scanning rough lattice... Optimal yield mapping: 3 EXCELLENT parameters locked. Estimated margin matrix: +14.6%.
-                    </div>
-                </div>
-
-                <div class="feature-block">
-                    <div class="block-title">Autonomous Factory Robotics Link [Manless WIP Tracking]</div>
-                    <div class="hollow-display" id="factory-terminal">
-                        [ROBOTIC MATRIX ONLINE] Active Arms: 24/24 | Target: 400 Diamonds Production | Currently Polished: 284 | Realtime Efficiency: 98.4%
-                    </div>
-                </div>
-
-                <div class="feature-block">
-                    <div class="block-title">Global Diamond Market Arbitrage Matrix</div>
-                    <div class="hollow-display" id="market-terminal">
-                        [LIVE WORLD RATES] Surat Index: Baseline | Antwerp Terminal: +0.4% | New York Exchange: Locked | Global anti-loss firewall: SECURE.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right: Universal Cyber Print Station -->
             <div class="print-station-card">
-                <div class="block-title" style="border: none; margin-bottom: 15px;">Universal Cyber Print Station</div>
+                <div class="block-title" style="border: none;">Universal Cyber Print Station</div>
                 
-                <button class="print-btn" onclick="executeCyberPrint('Letter Pad')">
-                    <span>1. Letter Pad Print</span> <span class="print-icon">🖨️</span>
-                </button>
-                <button class="print-btn" onclick="executeCyberPrint('Check')">
-                    <span>2. Check Print</span> <span class="print-icon">🏦</span>
-                </button>
-                <button class="print-btn" onclick="executeCyberPrint('Excel')">
-                    <span>3. Excel Export & Print</span> <span class="print-icon">📊</span>
-                </button>
+                <div class="print-btn-group">
+                    <button class="print-btn" onclick="executeCyberPrint('Letter Pad')">
+                        <span>1. Letter Pad Print</span> <span class="print-icon">🖨️</span>
+                    </button>
+                    <button class="print-btn" onclick="executeCyberPrint('Check')">
+                        <span>2. Check Print</span> <span class="print-icon">🏦</span>
+                    </button>
+                    <button class="print-btn" onclick="executeCyberPrint('Excel')">
+                        <span>3. Excel Export & Print</span> <span class="print-icon">📊</span>
+                    </button>
+                </div>
 
                 <div class="size-setting-box">
                     <div class="card-label" style="font-size: 9px;">4. Universal Size & Layout Settings</div>
@@ -397,23 +337,21 @@
                     </div>
                 </div>
             </div>
-
         </div>
+
     </div>
 
     <script>
         let selectedLayoutSize = "a4";
 
-        // Returns perfectly back to main security secure dashboard file
         function goToDashboard() {
             window.location.href = 'dashboard.html'; 
         }
 
-        // Dedicated Full Screen Layout Action Controller
         function triggerFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(err => { 
-                    alert("Click anywhere on screen first, then press Full Screen button."); 
+                    console.log("Fullscreen request.");
                 });
             } else {
                 document.exitFullscreen();
@@ -425,7 +363,7 @@
         }
 
         function executeCyberPrint(documentType) {
-            alert(`PRINTER COMMAND SENT:\nPrinting ${documentType} Matrix using [${selectedLayoutSize.toUpperCase()}] configuration profile to connected network hardware.`);
+            alert(`PRINTER COMMAND SENT:\nPrinting ${documentType} Matrix using [${selectedLayoutSize.toUpperCase()}] configuration profile.`);
         }
 
         function setPrinterSize(sizeKey) {
@@ -441,9 +379,6 @@
             const baseCash = 3415500;
             const fluctuation = Math.floor(Math.random() * 8500) - 4250;
             document.getElementById('val-cash').innerText = "₹ " + (baseCash + fluctuation).toLocaleString('en-IN');
-
-            const currentPolished = 284 + Math.floor(Math.random() * 3);
-            document.getElementById('factory-terminal').innerText = `[ROBOTIC MATRIX ONLINE] Active Arms: 24/24 | Target: 400 Diamonds Production | Currently Polished: ${currentPolished} | Realtime Efficiency: 98.4%`;
         }, 4000);
     </script>
 </body>
