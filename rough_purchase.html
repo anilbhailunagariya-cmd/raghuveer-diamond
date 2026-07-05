@@ -2,370 +2,143 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raghuveer Diamond - Rough Purchase Intelligence</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rough Purchase - Raghuveer Diamond</title>
     <style>
-        /* Shared Cyber Theme Matrix */
         :root {
-            --bg-color: #060b19;
-            --card-bg: #0b1528;
-            --text-color: #ffffff;
-            --accent-cyan: #5bc0be;
-            --accent-blue: #00c6ff;
-            --accent-green: #27ae60;
-            --border-color: #16253d;
-            --input-bg: #0f1c35;
-            --btn-close: #ff4d4d;
+            --bg-color: #070B19;
+            --card-bg: #0B132B;
+            --accent-cyan: #5BC0BE;
+            --accent-blue: #00C6FF;
+            --accent-red: #E74C3C;
+            --text-main: #FFFFFF;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-color);
-            padding: 20px;
-            user-select: none;
+            color: var(--text-main);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden; /* સ્ક્રોલિંગ બંધ */
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Top Header Matrix */
+        /* 1. Header (Index Style) */
         .header-bar {
-            background-color: var(--card-bg);
-            padding: 12px 20px;
-            border-radius: 8px;
+            height: 50px;
+            background: #070B19;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid var(--accent-cyan);
-            margin-bottom: 20px;
+            padding: 0 15px;
+            border-bottom: 1px solid #1C2541;
         }
 
-        .header-bar h2 {
-            margin: 0; font-size: 20px; letter-spacing: 1.5px;
-            color: var(--accent-cyan); font-weight: 600;
-        }
-
-        .window-controls { display: flex; gap: 10px; }
-
-        .win-btn {
-            background-color: var(--input-bg); border: 1px solid var(--border-color);
-            color: white; width: 35px; height: 35px; border-radius: 5px;
-            cursor: pointer; font-weight: bold; display: flex; align-items: center;
-            justify-content: center; text-decoration: none; transition: 0.2s;
-        }
-
-        .win-btn:hover { border-color: var(--accent-cyan); background-color: var(--border-color); }
-        .win-btn.close-btn { color: var(--btn-close); border-color: rgba(255, 77, 77, 0.3); }
-        .win-btn.close-btn:hover { background-color: var(--btn-close); color: white; }
-
-        /* AI Integration Dock */
-        .ai-cyber-dock {
-            background: linear-gradient(135deg, rgba(0, 198, 255, 0.1), rgba(91, 192, 190, 0.05));
-            border: 1px solid var(--accent-blue); border-radius: 8px;
-            padding: 15px; margin-bottom: 20px; display: flex;
-            align-items: center; justify-content: space-between; gap: 15px;
-        }
-
-        .ai-status-pulse { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--accent-blue); font-weight: bold;}
-        .ai-dot { width: 8px; height: 8px; background-color: var(--accent-blue); border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 50% { opacity: 0.3; } }
-
-        .ai-action-group { display: flex; gap: 10px; }
-        .ai-trigger-btn {
-            background: #070b19; border: 1px solid var(--accent-blue); color: #fff;
-            padding: 8px 15px; border-radius: 5px; font-size: 12px; cursor: pointer;
-            display: flex; align-items: center; gap: 8px; font-weight: 600; text-transform: uppercase;
-        }
-        .ai-trigger-btn:hover { background: var(--accent-blue); color: #000; }
-
-        /* Main Form Core */
-        .entry-form {
-            background-color: var(--card-bg); padding: 25px;
-            border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 25px;
-        }
-
-        .form-title {
-            margin-bottom: 20px; font-size: 18px; color: var(--accent-cyan);
-            border-bottom: 1px solid var(--border-color); padding-bottom: 10px;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-        .form-group { display: flex; flex-direction: column; }
-        .form-group label { font-size: 12px; margin-bottom: 6px; color: #a0aec0; text-transform: uppercase; }
-        
-        .form-group input, .form-group select {
-            background-color: var(--input-bg); border: 1px solid var(--border-color);
-            color: white; padding: 11px; border-radius: 5px; outline: none; font-size: 14px;
-        }
-        .form-group input:focus, .form-group select:focus { border-color: var(--accent-cyan); }
-
-        /* Dynamic Custom Plus Elements */
-        .input-plus-container { display: flex; gap: 8px; }
-        .input-plus-container select, .input-plus-container input { flex: 1; }
-        .plus-add-btn {
-            background-color: var(--input-bg); border: 1px solid var(--border-color);
-            color: var(--accent-cyan); padding: 0 15px; border-radius: 5px;
-            font-weight: bold; cursor: pointer; font-size: 16px;
-        }
-        .plus-add-btn:hover { border-color: var(--accent-cyan); background-color: var(--border-color); }
-
-        #broker-details-section {
-            grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px; background-color: rgba(91, 192, 190, 0.01); padding: 15px;
-            border-radius: 6px; border: 1px dashed var(--border-color);
-        }
-
-        .hidden { display: none !important; }
-
-        .submit-btn {
-            background-color: var(--accent-cyan); color: var(--bg-color); border: none;
-            padding: 14px; border-radius: 5px; font-weight: bold; cursor: pointer;
-            margin-top: 25px; width: 100%; font-size: 16px; letter-spacing: 1px;
+        .brand-title {
+            font-size: 14px; font-weight: 900; letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             text-transform: uppercase;
         }
-        .submit-btn:hover { opacity: 0.9; }
+
+        .window-actions { display: flex; gap: 5px; }
+        .win-btn {
+            background: #111D37; border: 1px solid #1C2541; color: var(--accent-cyan);
+            width: 28px; height: 28px; cursor: pointer; border-radius: 4px; font-size: 12px;
+        }
+        .win-btn:hover { background: var(--accent-cyan); color: #000; }
+        .close-btn:hover { background: var(--accent-red); color: #FFF; }
+
+        /* 2. Main Container (No Scroll) */
+        .main-container {
+            flex: 1;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* 3. AI Dock (Compact) */
+        .ai-dock {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;
+        }
+        .ai-btn {
+            background: #111D37; border: 1px solid #1C2541; color: #FFF;
+            padding: 8px 5px; font-size: 10px; border-radius: 4px; cursor: pointer; text-align: center;
+        }
+
+        /* 4. Form (Compact Fit) */
+        .form-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+        }
+        .form-group { display: flex; flex-direction: column; }
+        label { font-size: 9px; color: #708090; text-transform: uppercase; margin-bottom: 2px; }
+        input, select {
+            background: #0B132B; border: 1px solid #1C2541; color: #FFF;
+            padding: 6px; border-radius: 4px; font-size: 12px;
+        }
+
+        .plus-btn {
+            background: #1C2541; color: var(--accent-cyan); border: none;
+            width: 30px; cursor: pointer; border-radius: 4px; font-weight: bold;
+        }
+
+        .submit-btn {
+            background: var(--accent-cyan); color: #000; padding: 10px;
+            border: none; border-radius: 4px; font-weight: bold; cursor: pointer;
+            margin-top: 5px; font-size: 13px;
+        }
     </style>
 </head>
 <body>
 
     <div class="header-bar">
-        <h2>RAGHUVEER DIAMOND</h2>
-        <div class="window-controls">
-            <button class="win-btn" onclick="alert('App Minimized')">-</button>
-            <button class="win-btn" onclick="toggleFullScreen()">⬜</button>
-            <a href="main_office.html" class="win-btn close-btn">X</a>
+        <div class="brand-title">RAGHUVEER DIAMOND</div>
+        <div class="window-actions">
+            <button class="win-btn" onclick="alert('Minimizing...')">-</button>
+            <button class="win-btn" onclick="toggleFullScreen()">🗖</button>
+            <a href="main_office.html" class="win-btn close-btn" style="text-decoration:none; display:flex; align-items:center; justify-content:center;">✕</a>
         </div>
     </div>
 
-    <div class="ai-cyber-dock">
-        <div class="ai-status-pulse">
-            <div class="ai-dot"></div>
-            <span>RA-AI CORE ACTIVE: READY FOR ROUGH PURCHASE INTELLIGENCE</span>
+    <div class="main-container">
+        <div class="ai-dock">
+            <button class="ai-btn" onclick="alert('Voice Active')">🎤 VOICE</button>
+            <button class="ai-btn" onclick="alert('Scan Active')">📸 SCAN</button>
+            <button class="ai-btn" onclick="alert('Yield Active')">📈 YIELD</button>
         </div>
-        <div class="ai-action-group">
-            <button class="ai-trigger-btn" onclick="triggerAiVoice()"><span style="font-size:14px;">🎤</span> Voice Input</button>
-            <button class="ai-trigger-btn" onclick="triggerAiScan()"><span style="font-size:14px;">📸</span> Scan Bill/Chit</button>
-            <button class="ai-trigger-btn" onclick="triggerAiAnalytics()"><span style="font-size:14px;">📈</span> Yield Predictor</button>
-        </div>
-    </div>
 
-    <div class="entry-form">
-        <h3 class="form-title">Rough Purchase Inventory Intake</h3>
-        
         <div class="form-grid">
-            <div class="form-group">
-                <label>Lot No / Ref No</label>
-                <input type="text" id="lot-number" placeholder="e.g. RF-101">
-            </div>
-            <div class="form-group">
-                <label>Purchase Date</label>
-                <input type="date" id="purchase-date">
-            </div>
-
-            <div class="form-group">
-                <label>Party Name / Vendor</label>
-                <div class="input-plus-container">
-                    <select id="party-name">
-                        <option value="">-- No Test Data / Select Vendor --</option>
-                    </select>
-                    <button class="plus-add-btn" title="Add New Vendor" onclick="addCustomParty()">+</button>
+            <div class="form-group"><label>Lot No</label><input type="text"></div>
+            <div class="form-group"><label>Date</label><input type="date"></div>
+            <div class="form-group" style="grid-column: span 2;">
+                <label>Vendor</label>
+                <div style="display:flex; gap:5px;">
+                    <select style="flex:1;"><option>-- Select --</option></select>
+                    <button class="plus-btn">+</button>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label>Purchase Stream Type</label>
-                <select id="broker-switch" onchange="toggleBrokerSection()">
-                    <option value="direct">Direct Account (No Broker)</option>
-                    <option value="broker">Via Broker (Brokerage Account)</option>
-                </select>
-            </div>
-
-            <div id="broker-details-section" class="hidden">
-                <div class="form-group">
-                    <label>Broker Name</label>
-                    <div class="input-plus-container">
-                        <select id="broker-name">
-                            <option value="">-- Select Broker --</option>
-                        </select>
-                        <button class="plus-add-btn" title="Add New Broker" onclick="addCustomBroker()">+</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Brokerage (%)</label>
-                    <input type="number" step="0.01" id="broker-percentage" placeholder="0.00" oninput="calculateFinancials()">
-                </div>
-                <div class="form-group">
-                    <label>Brokerage Amount (₹)</label>
-                    <input type="number" id="broker-amount-rs" placeholder="0.00" readonly>
+            <div class="form-group"><label>Weight (Cts)</label><input type="number"></div>
+            <div class="form-group"><label>Price/Cts</label><input type="number"></div>
+            <div class="form-group"><label>Tax Class</label>
+                <div style="display:flex; gap:5px;">
+                    <select style="flex:1;"><option>-- No Tax --</option></select>
+                    <button class="plus-btn">+</button>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label>Total Carat Weight</label>
-                <input type="number" step="0.01" id="total-carat" placeholder="0.00" oninput="calculateFinancials()">
-            </div>
-            <div class="form-group">
-                <label>Price Per Carat (₹)</label>
-                <input type="number" step="0.01" id="price-per-carat" placeholder="0.00" oninput="calculateFinancials()">
-            </div>
-
-            <div class="form-group">
-                <label>Taxation Class</label>
-                <div class="input-plus-container">
-                    <select id="tax-type" onchange="calculateFinancials()">
-                        </select>
-                    <button class="plus-add-btn" title="Add Custom Tax Rate" onclick="addCustomTaxRate()">+</button>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label style="color: var(--accent-cyan); font-weight: bold;">Net Payable Amount (₹)</label>
-                <input type="number" id="final-total-amount" placeholder="0.00" readonly style="border-color: var(--accent-cyan); font-weight: bold; color: var(--accent-cyan);">
-            </div>
-            <div class="form-group">
-                <label>Maturity / Due Date</label>
-                <input type="date" id="due-date">
-            </div>
+            <div class="form-group"><label>Net Payable</label><input type="text" readonly style="color:var(--accent-cyan)"></div>
         </div>
-
-        <button class="submit-btn" onclick="commitTransactionToLedger()">Commit Entry To Safe Storage</button>
+        <button class="submit-btn">COMMIT ENTRY</button>
     </div>
 
     <script>
-        document.getElementById('purchase-date').valueAsDate = new Date();
-
-        // --- CORE LOGIC: Dynamic Local Database (Zero Dummy Mode) ---
-        function loadDropdowns() {
-            // Load Parties
-            let parties = JSON.parse(localStorage.getItem('rp_parties')) || [];
-            let pDropdown = document.getElementById('party-name');
-            pDropdown.innerHTML = '<option value="">-- Select Vendor --</option>';
-            parties.forEach(p => { pDropdown.innerHTML += `<option value="${p}">${p}</option>`; });
-
-            // Load Brokers
-            let brokers = JSON.parse(localStorage.getItem('rp_brokers')) || [];
-            let bDropdown = document.getElementById('broker-name');
-            bDropdown.innerHTML = '<option value="">-- Select Broker --</option>';
-            brokers.forEach(b => { bDropdown.innerHTML += `<option value="${b}">${b}</option>`; });
-
-            // Load Taxes (Default setups if empty)
-            let taxes = JSON.parse(localStorage.getItem('rp_taxes')) || [
-                {name: "Exempted / No Tax (0%)", rate: 0},
-                {name: "GST Local (0.25%)", rate: 0.25},
-                {name: "GST Inward (1.5%)", rate: 1.5}
-            ];
-            localStorage.setItem('rp_taxes', JSON.stringify(taxes));
-            let tDropdown = document.getElementById('tax-type');
-            tDropdown.innerHTML = '';
-            taxes.forEach((t, index) => { tDropdown.innerHTML += `<option value="${t.rate}">${t.name}</option>`; });
-        }
-
-        function addCustomParty() {
-            let name = prompt("Enter New Vendor/Party Name:");
-            if (name && name.trim() !== "") {
-                let parties = JSON.parse(localStorage.getItem('rp_parties')) || [];
-                if(!parties.includes(name.trim())) {
-                    parties.push(name.trim());
-                    localStorage.setItem('rp_parties', JSON.stringify(parties));
-                    loadDropdowns();
-                    document.getElementById('party-name').value = name.trim();
-                }
-            }
-        }
-
-        function addCustomBroker() {
-            let name = prompt("Enter New Broker Name:");
-            if (name && name.trim() !== "") {
-                let brokers = JSON.parse(localStorage.getItem('rp_brokers')) || [];
-                if(!brokers.includes(name.trim())) {
-                    brokers.push(name.trim());
-                    localStorage.setItem('rp_brokers', JSON.stringify(brokers));
-                    loadDropdowns();
-                    document.getElementById('broker-name').value = name.trim();
-                }
-            }
-        }
-
-        function addCustomTaxRate() {
-            let label = prompt("Enter Tax Description (e.g. Special GST):");
-            let rate = prompt("Enter Tax Percentage Rate (e.g. 0.5):");
-            if(label && rate) {
-                let taxes = JSON.parse(localStorage.getItem('rp_taxes')) || [];
-                taxes.push({name: `${label} (${rate}%)`, rate: parseFloat(rate)});
-                localStorage.setItem('rp_taxes', JSON.stringify(taxes));
-                loadDropdowns();
-                document.getElementById('tax-type').value = parseFloat(rate);
-                calculateFinancials();
-            }
-        }
-
-        // --- LIVE MATHEMATICAL MATRIX CONFIGURATOR ---
-        function toggleBrokerSection() {
-            let type = document.getElementById('broker-switch').value;
-            let section = document.getElementById('broker-details-section');
-            if(type === 'broker') { section.classList.remove('hidden'); } 
-            else { 
-                section.classList.add('hidden'); 
-                document.getElementById('broker-percentage').value = '';
-                document.getElementById('broker-amount-rs').value = '';
-                calculateFinancials();
-            }
-        }
-
-        function calculateFinancials() {
-            let carat = parseFloat(document.getElementById('total-carat').value) || 0;
-            let price = parseFloat(document.getElementById('price-per-carat').value) || 0;
-            let base = carat * price;
-
-            let brokerage = 0;
-            if(document.getElementById('broker-switch').value === 'broker') {
-                let bPct = parseFloat(document.getElementById('broker-percentage').value) || 0;
-                brokerage = (base * bPct) / 100;
-                document.getElementById('broker-amount-rs').value = brokerage.toFixed(2);
-            }
-
-            let tPct = parseFloat(document.getElementById('tax-type').value) || 0;
-            let tax = (base * tPct) / 100;
-
-            let total = base + brokerage + tax;
-            document.getElementById('final-total-amount').value = total.toFixed(2);
-        }
-
-        // --- SMART STOCK TRACKER & SAVE SYSTEM (LIVE SAFE STOCK LOGIC) ---
-        function commitTransactionToLedger() {
-            let lot = document.getElementById('lot-number').value;
-            let party = document.getElementById('party-name').value;
-            let carat = parseFloat(document.getElementById('total-carat').value) || 0;
-
-            if(!lot || !party || carat <= 0) {
-                alert("Matrix Alert: Fill Lot No, Vendor, and Valid Carat weight!");
-                return;
-            }
-
-            // Get current inventory stock from LocalStorage (Sync across pages)
-            let activeStock = parseFloat(localStorage.getItem('total_rough')) || 0;
-            
-            // Add freshly bought rough directly into the Safe Inventory
-            let updatedStock = activeStock + carat;
-            localStorage.setItem('total_rough', updatedStock);
-
-            alert(`Entry Compiled successfully!\nLot ${lot} containing ${carat} Carats added to Safe Inventory Storage.`);
-            window.location.href = 'main_office.html'; // Live updates redirected to office desk
-        }
-
-        // --- AI COMMAND CENTERS ---
-        function triggerAiVoice() { alert("RA-AI Voice Matrix listening...\nSpeak transaction details naturally (e.g., 'Lot 505 from Shreeji, 250 Carats at 1200 rate via Ramesh Broker')"); }
-        function triggerAiScan() { alert("AI Camera Optical Hub Active.\nPlace purchase note/invoice in front of lens to autofill fields."); }
-        function triggerAiAnalytics() { alert("AI Core running simulation diagnostics...\nPredicted factory yield: 31.4% Top-VVS Grade Polish output on current carat profile."); }
-
         function toggleFullScreen() {
-            if (!document.fullscreenElement) { document.documentElement.requestFullscreen(); } 
-            else { document.exitFullscreen(); }
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
         }
-
-        // Start Up Execution
-        loadDropdowns();
     </script>
 </body>
 </html>
