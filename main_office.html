@@ -280,7 +280,6 @@
             <div class="brand-title">RAGHUVEER DIAMOND</div>
         </div>
         
-        <!-- Small Computer Style Window Control Buttons -->
         <div class="window-actions">
             <button class="win-btn" onclick="triggerMinimize()">-</button>
             <button class="win-btn" onclick="triggerFullScreen()">🗖</button>
@@ -299,24 +298,24 @@
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
-            <!-- 2. ROUGH PURCHASE CARD (CORRECTED ROUTING HERE) -->
+            <!-- 2. ROUGH PURCHASE CARD -->
             <div class="metric-card" onclick="window.location.href='rough_purchase.html'" style="cursor: pointer;">
                 <div class="card-label">ROUGH PURCHASE</div>
-                <div class="card-value" id="val-rough">8,450 Carats</div>
+                <div class="card-value" id="val-rough">0 Carats</div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
             <!-- 3. GLOBAL SALES CARD -->
             <div class="metric-card green-tag" onclick="window.location.href='sales_details.html'" style="cursor: pointer;">
                 <div class="card-label">GLOBAL SALES</div>
-                <div class="card-value" id="val-sales">₹ 12,68,40,000</div>
+                <div class="card-value" id="val-sales">₹ 0</div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
             <!-- 4. CASH FLOW CARD -->
             <div class="metric-card" onclick="window.location.href='cash_details.html'" style="cursor: pointer;">
                 <div class="card-label">CASH FLOW</div>
-                <div class="card-value" id="val-cash">₹ 34,12,319</div>
+                <div class="card-value" id="val-cash">₹ 0</div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
         </div>
@@ -386,22 +385,21 @@
             document.getElementById(`sz-${sizeKey}`).classList.add('active');
         }
 
-        // લોકલ સ્ટોરેજમાંથી લાઈવ ડેટા ખેંચવાનું લોજિક
+        // --- શુદ્ધ લાઈવ સ્ટોર કંટ્રોલર ---
         function loadDashboardData() {
-            const totalRough = localStorage.getItem('total_rough') || "8450";
+            // તમામ ડમી આંકડાઓ કાઢીને 0 કરી દીધા છે. એન્ટ્રી થતાં જ રિયલ ડેટા પકડશે
+            const totalRough = localStorage.getItem('total_rough') || "0";
             const usdRate = localStorage.getItem('usd_rate') || "83.72";
-            const totalCash = localStorage.getItem('total_cash') || "3412319";
-            const globalSales = localStorage.getItem('global_sales') || "126840000";
+            const totalCash = parseFloat(localStorage.getItem('total_cash')) || 0;
+            const globalSales = parseFloat(localStorage.getItem('global_sales')) || 0;
 
-            document.getElementById('val-rough').innerText = parseInt(totalRough).toLocaleString('en-IN') + " Carats";
+            document.getElementById('val-rough').innerText = parseFloat(totalRough).toLocaleString('en-IN') + " Carats";
             document.getElementById('val-usd').innerText = "₹ " + usdRate;
-            document.getElementById('val-cash').innerText = "₹ " + parseInt(totalCash).toLocaleString('en-IN');
-            document.getElementById('val-sales').innerText = "₹ " + parseInt(globalSales).toLocaleString('en-IN');
+            document.getElementById('val-cash').innerText = "₹ " + totalCash.toLocaleString('en-IN');
+            document.getElementById('val-sales').innerText = "₹ " + globalSales.toLocaleString('en-IN');
         }
 
-        // પેજ લોડ થાય ત્યારે ડેટા લાઈવ કરો
         loadDashboardData();
-        // દર ૨ સેકન્ડે બેકગ્રાઉન્ડ ચેક ચાલુ રાખશે
         setInterval(loadDashboardData, 2000);
     </script>
 </body>
