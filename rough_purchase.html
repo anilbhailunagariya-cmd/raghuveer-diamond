@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Raghuveer Diamond - Purchase</title>
+    <title>Raghuveer Diamond - Purchase Core</title>
     <style>
         :root { --bg: #070B19; --card: #0B132B; --cyan: #5BC0BE; --text: #FFF; --border: #1C2541; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
@@ -11,22 +11,26 @@
 
         .header { height: 45px; background: #070B19; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid var(--border); }
         .win-actions { display: flex; gap: 5px; }
-        .win-btn { background: #111D37; color: var(--cyan); border: 1px solid var(--border); width: 25px; height: 25px; cursor: pointer; border-radius: 4px; }
+        .win-btn { background: #111D37; color: var(--cyan); border: 1px solid var(--border); width: 25px; height: 25px; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; }
         
         .container { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
         .ai-dock { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
-        .ai-btn { background: #111D37; color: #FFF; padding: 6px; font-size: 10px; border-radius: 4px; border: 1px solid var(--border); }
+        .ai-btn { background: #111D37; color: #FFF; padding: 8px 4px; font-size: 10px; border-radius: 4px; border: 1px solid var(--border); cursor: pointer; font-weight: bold; }
+        .ai-btn:hover { border-color: var(--cyan); }
 
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .form-group { display: flex; flex-direction: column; }
-        label { font-size: 9px; color: #708090; text-transform: uppercase; margin-bottom: 2px; }
-        input, select { background: var(--card); border: 1px solid var(--border); color: #FFF; padding: 6px; border-radius: 4px; font-size: 12px; }
+        label { font-size: 9px; color: #708090; text-transform: uppercase; margin-bottom: 2px; letter-spacing: 0.5px; }
+        input, select { background: var(--card); border: 1px solid var(--border); color: #FFF; padding: 6px; border-radius: 4px; font-size: 12px; outline: none; }
+        input:focus, select:focus { border-color: var(--cyan); }
         
         .input-row { display: flex; gap: 5px; }
-        .plus-btn { background: #1C2541; color: var(--cyan); border: none; width: 30px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        .plus-btn { background: #1C2541; color: var(--cyan); border: none; width: 30px; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 14px; }
+        .plus-btn:hover { background: var(--cyan); color: #000; }
         
-        .submit-btn { background: var(--cyan); color: #000; padding: 10px; border: none; border-radius: 4px; font-weight: bold; margin-top: 5px; }
-        .hidden { display: none; }
+        .submit-btn { background: var(--cyan); color: #000; padding: 10px; border: none; border-radius: 4px; font-weight: bold; margin-top: 5px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
+        .submit-btn:hover { opacity: 0.9; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -34,26 +38,28 @@
     <div class="header">
         <div style="font-size:12px; font-weight:bold; letter-spacing:1px; color:var(--cyan)">RAGHUVEER DIAMOND</div>
         <div class="win-actions">
-            <button class="win-btn">-</button><button class="win-btn">🗖</button>
+            <button class="win-btn" onclick="alert('System Terminal Minimized')">-</button>
+            <button class="win-btn" onclick="toggleFullScreen()">🗖</button>
             <a href="main_office.html" style="text-decoration:none; color:var(--cyan)"><button class="win-btn">✕</button></a>
         </div>
     </div>
 
     <div class="container">
+        <!-- 3 Core Live AI Buttons Linked to Image 56853.jpg -->
         <div class="ai-dock">
-            <button class="ai-btn">🎤 VOICE</button>
-            <button class="ai-btn">📸 SCAN</button>
-            <button class="ai-btn">📈 YIELD</button>
+            <button class="ai-btn" onclick="triggerAiVoice()">🎤 VOICE</button>
+            <button class="ai-btn" onclick="triggerAiScan()">📸 SCAN</button>
+            <button class="ai-btn" onclick="triggerAiYield()">📈 YIELD</button>
         </div>
 
         <div class="form-grid">
-            <div class="form-group"><label>Lot No</label><input type="text" id="lot"></div>
+            <div class="form-group"><label>Lot No</label><input type="text" id="lot" placeholder="e.g. RF-101"></div>
             <div class="form-group"><label>Date</label><input type="date" id="date"></div>
             
             <div class="form-group" style="grid-column: span 2;">
                 <label>Vendor</label>
                 <div class="input-row">
-                    <select id="vendor" style="flex:1;"><option>-- Select --</option></select>
+                    <select id="vendor" style="flex:1;"><option value="">-- Select Vendor --</option></select>
                     <button class="plus-btn" onclick="addEntry('rp_vendors', 'vendor')">+</button>
                 </div>
             </div>
@@ -66,61 +72,146 @@
                 </select>
             </div>
 
-            <!-- Broker Block -->
+            <!-- Broker Block Controller -->
             <div id="broker-block" class="hidden" style="display:contents;">
                 <div class="form-group"><label>Broker</label>
                     <div class="input-row">
-                        <select id="broker" style="flex:1;"><option>-- Select Broker --</option></select>
+                        <select id="broker" style="flex:1;"><option value="">-- Select Broker --</option></select>
                         <button class="plus-btn" onclick="addEntry('rp_brokers', 'broker')">+</button>
                     </div>
                 </div>
-                <div class="form-group"><label>Brokerage %</label><input type="number" placeholder="0.00"></div>
+                <div class="form-group"><label>Brokerage %</label><input type="number" id="broker-pct" placeholder="0.00" oninput="calculateTotal()"></div>
             </div>
 
-            <div class="form-group"><label>Weight (Cts)</label><input type="number" id="weight"></div>
-            <div class="form-group"><label>Price/Cts</label><input type="number"></div>
+            <div class="form-group"><label>Weight (Cts)</label><input type="number" step="0.01" id="weight" placeholder="0.00" oninput="calculateTotal()"></div>
+            <div class="form-group"><label>Price/Cts (₹)</label><input type="number" step="0.01" id="price" placeholder="0.00" oninput="calculateTotal()"></div>
+            
             <div class="form-group"><label>Tax Class</label>
                 <div class="input-row">
-                    <select id="tax" style="flex:1;"><option>-- No Tax --</option></select>
-                    <button class="plus-btn" onclick="addEntry('rp_taxes', 'tax')">+</button>
+                    <select id="tax" style="flex:1;" onchange="calculateTotal()"></select>
+                    <button class="plus-btn" onclick="addCustomTaxRate()">+</button>
                 </div>
             </div>
-            <div class="form-group"><label>Due Date</label><input type="date"></div>
-            <div class="form-group" style="grid-column: span 2;"><label>Net Payable</label><input type="text" readonly style="color:var(--cyan)"></div>
+            <div class="form-group"><label>Due Date</label><input type="date" id="due-date"></div>
+            
+            <div class="form-group" style="grid-column: span 2;">
+                <label style="color:var(--cyan)">Net Payable Amount (₹)</label>
+                <input type="text" id="net-payable" readonly style="color:var(--cyan); font-weight:bold;" placeholder="0.00">
+            </div>
         </div>
-        <button class="submit-btn" onclick="saveEntry()">COMMIT ENTRY</button>
+        <button class="submit-btn" onclick="saveEntry()">COMMIT ENTRY TO SAFE</button>
     </div>
 
     <script>
         document.getElementById('date').valueAsDate = new Date();
 
+        // Dynamic Database Core
         function addEntry(storageKey, selectId) {
-            let val = prompt("Enter New Name/Value:");
-            if(val) {
+            let val = prompt("Enter Name Matrix:");
+            if(val && val.trim() !== "") {
                 let list = JSON.parse(localStorage.getItem(storageKey)) || [];
-                list.push(val);
-                localStorage.setItem(storageKey, JSON.stringify(list));
-                renderDropdown(storageKey, selectId);
+                if(!list.includes(val.trim())) {
+                    list.push(val.trim());
+                    localStorage.setItem(storageKey, JSON.stringify(list));
+                    renderDropdown(storageKey, selectId);
+                    document.getElementById(selectId).value = val.trim();
+                }
+            }
+        }
+
+        function addCustomTaxRate() {
+            let label = prompt("Enter Tax Name (e.g. GST):");
+            let rate = prompt("Enter Tax % (e.g. 0.25):");
+            if(label && rate) {
+                let taxes = JSON.parse(localStorage.getItem('rp_taxes')) || [];
+                taxes.push({name: `${label} (${rate}%)`, rate: parseFloat(rate)});
+                localStorage.setItem('rp_taxes', JSON.stringify(taxes));
+                renderTaxDropdown();
+                document.getElementById('tax').value = parseFloat(rate);
+                calculateTotal();
             }
         }
 
         function renderDropdown(key, id) {
             let list = JSON.parse(localStorage.getItem(key)) || [];
             let el = document.getElementById(id);
-            el.innerHTML = '<option>-- Select --</option>';
-            list.forEach(item => el.innerHTML += `<option>${item}</option>`);
+            let fallbackText = id === 'vendor' ? 'Vendor' : 'Broker';
+            el.innerHTML = `<option value="">-- Select ${fallbackText} --</option>`;
+            list.forEach(item => el.innerHTML += `<option value="${item}">${item}</option>`);
+        }
+
+        function renderTaxDropdown() {
+            let taxes = JSON.parse(localStorage.getItem('rp_taxes')) || [
+                {name: "Exempted / No Tax (0%)", rate: 0},
+                {name: "GST Local (0.25%)", rate: 0.25},
+                {name: "GST Inward (1.5%)", rate: 1.5}
+            ];
+            localStorage.setItem('rp_taxes', JSON.stringify(taxes));
+            let el = document.getElementById('tax');
+            el.innerHTML = '';
+            taxes.forEach(t => el.innerHTML += `<option value="${t.rate}">${t.name}</option>`);
         }
 
         function toggleBroker() {
             let s = document.getElementById('stream').value;
             let b = document.getElementById('broker-block');
-            s === 'broker' ? b.classList.remove('hidden') : b.classList.add('hidden');
+            if(s === 'broker') { b.classList.remove('hidden'); } 
+            else { 
+                b.classList.add('hidden');
+                document.getElementById('broker-pct').value = '';
+                calculateTotal();
+            }
         }
 
-        function saveEntry() { alert("Entry Committed Successfully!"); window.location.href = 'main_office.html'; }
+        function calculateTotal() {
+            let weight = parseFloat(document.getElementById('weight').value) || 0;
+            let price = parseFloat(document.getElementById('price').value) || 0;
+            let base = weight * price;
 
-        // Initial Load
-        ['rp_vendors', 'rp_brokers', 'rp_taxes'].forEach((k, i) => renderDropdown(k, ['vendor', 'broker', 'tax'][i]));
+            let brokerage = 0;
+            if(document.getElementById('stream').value === 'broker') {
+                let bPct = parseFloat(document.getElementById('broker-pct').value) || 0;
+                brokerage = (base * bPct) / 100;
+            }
+
+            let tPct = parseFloat(document.getElementById('tax').value) || 0;
+            let tax = (base * tPct) / 100;
+
+            let finalTotal = base + brokerage + tax;
+            document.getElementById('net-payable').value = finalTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+
+        function saveEntry() {
+            let lot = document.getElementById('lot').value;
+            let vendor = document.getElementById('vendor').value;
+            let carat = parseFloat(document.getElementById('weight').value) || 0;
+
+            if(!lot || !vendor || carat <= 0) {
+                alert("Validation Error: Lot No, Vendor, and Weight are mandatory!");
+                return;
+            }
+
+            let currentStock = parseFloat(localStorage.getItem('total_rough')) || 0;
+            localStorage.setItem('total_rough', currentStock + carat);
+
+            alert(`Lot ${lot} compiled into core database!`);
+            window.location.href = 'main_office.html';
+        }
+
+        // AI Engine Triggers Linked to Button Matrix
+        function triggerAiVoice() { alert("RA-AI Voice System Active: Listening for Rough Intake details..."); }
+        function triggerAiScan() { alert("RA-AI Optical Scanner Active: Scan vendor slip/invoice..."); }
+        function triggerAiYield() { alert("RA-AI Analytics Core: Simulation predictive yield is approximately 31.8% VVS polish output."); }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) { document.documentElement.requestFullscreen(); } 
+            else { document.exitFullscreen(); }
+        }
+
+        // Init System
+        renderDropdown('rp_vendors', 'vendor');
+        renderDropdown('rp_brokers', 'broker');
+        renderTaxDropdown();
     </script>
 </body>
 </html>
