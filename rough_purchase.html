@@ -3,142 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rough Purchase - Raghuveer Diamond</title>
+    <title>Raghuveer Diamond - Purchase</title>
     <style>
-        :root {
-            --bg-color: #070B19;
-            --card-bg: #0B132B;
-            --accent-cyan: #5BC0BE;
-            --accent-blue: #00C6FF;
-            --accent-red: #E74C3C;
-            --text-main: #FFFFFF;
-        }
+        :root { --bg: #070B19; --card: #0B132B; --cyan: #5BC0BE; --text: #FFF; --border: #1C2541; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background: var(--bg); color: var(--text); height: 100vh; width: 100vw; overflow: hidden; display: flex; flex-direction: column; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        .header { height: 45px; background: #070B19; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid var(--border); }
+        .win-actions { display: flex; gap: 5px; }
+        .win-btn { background: #111D37; color: var(--cyan); border: 1px solid var(--border); width: 25px; height: 25px; cursor: pointer; border-radius: 4px; }
+        
+        .container { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+        .ai-dock { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+        .ai-btn { background: #111D37; color: #FFF; padding: 6px; font-size: 10px; border-radius: 4px; border: 1px solid var(--border); }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden; /* સ્ક્રોલિંગ બંધ */
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* 1. Header (Index Style) */
-        .header-bar {
-            height: 50px;
-            background: #070B19;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 15px;
-            border-bottom: 1px solid #1C2541;
-        }
-
-        .brand-title {
-            font-size: 14px; font-weight: 900; letter-spacing: 2px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-        }
-
-        .window-actions { display: flex; gap: 5px; }
-        .win-btn {
-            background: #111D37; border: 1px solid #1C2541; color: var(--accent-cyan);
-            width: 28px; height: 28px; cursor: pointer; border-radius: 4px; font-size: 12px;
-        }
-        .win-btn:hover { background: var(--accent-cyan); color: #000; }
-        .close-btn:hover { background: var(--accent-red); color: #FFF; }
-
-        /* 2. Main Container (No Scroll) */
-        .main-container {
-            flex: 1;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        /* 3. AI Dock (Compact) */
-        .ai-dock {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;
-        }
-        .ai-btn {
-            background: #111D37; border: 1px solid #1C2541; color: #FFF;
-            padding: 8px 5px; font-size: 10px; border-radius: 4px; cursor: pointer; text-align: center;
-        }
-
-        /* 4. Form (Compact Fit) */
-        .form-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-        }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .form-group { display: flex; flex-direction: column; }
         label { font-size: 9px; color: #708090; text-transform: uppercase; margin-bottom: 2px; }
-        input, select {
-            background: #0B132B; border: 1px solid #1C2541; color: #FFF;
-            padding: 6px; border-radius: 4px; font-size: 12px;
-        }
-
-        .plus-btn {
-            background: #1C2541; color: var(--accent-cyan); border: none;
-            width: 30px; cursor: pointer; border-radius: 4px; font-weight: bold;
-        }
-
-        .submit-btn {
-            background: var(--accent-cyan); color: #000; padding: 10px;
-            border: none; border-radius: 4px; font-weight: bold; cursor: pointer;
-            margin-top: 5px; font-size: 13px;
-        }
+        input, select { background: var(--card); border: 1px solid var(--border); color: #FFF; padding: 6px; border-radius: 4px; font-size: 12px; }
+        
+        .input-row { display: flex; gap: 5px; }
+        .plus-btn { background: #1C2541; color: var(--cyan); border: none; width: 30px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        
+        .submit-btn { background: var(--cyan); color: #000; padding: 10px; border: none; border-radius: 4px; font-weight: bold; margin-top: 5px; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="header-bar">
-        <div class="brand-title">RAGHUVEER DIAMOND</div>
-        <div class="window-actions">
-            <button class="win-btn" onclick="alert('Minimizing...')">-</button>
-            <button class="win-btn" onclick="toggleFullScreen()">🗖</button>
-            <a href="main_office.html" class="win-btn close-btn" style="text-decoration:none; display:flex; align-items:center; justify-content:center;">✕</a>
+    <div class="header">
+        <div style="font-size:12px; font-weight:bold; letter-spacing:1px; color:var(--cyan)">RAGHUVEER DIAMOND</div>
+        <div class="win-actions">
+            <button class="win-btn">-</button><button class="win-btn">🗖</button>
+            <a href="main_office.html" style="text-decoration:none; color:var(--cyan)"><button class="win-btn">✕</button></a>
         </div>
     </div>
 
-    <div class="main-container">
+    <div class="container">
         <div class="ai-dock">
-            <button class="ai-btn" onclick="alert('Voice Active')">🎤 VOICE</button>
-            <button class="ai-btn" onclick="alert('Scan Active')">📸 SCAN</button>
-            <button class="ai-btn" onclick="alert('Yield Active')">📈 YIELD</button>
+            <button class="ai-btn">🎤 VOICE</button>
+            <button class="ai-btn">📸 SCAN</button>
+            <button class="ai-btn">📈 YIELD</button>
         </div>
 
         <div class="form-grid">
-            <div class="form-group"><label>Lot No</label><input type="text"></div>
-            <div class="form-group"><label>Date</label><input type="date"></div>
+            <div class="form-group"><label>Lot No</label><input type="text" id="lot"></div>
+            <div class="form-group"><label>Date</label><input type="date" id="date"></div>
+            
             <div class="form-group" style="grid-column: span 2;">
                 <label>Vendor</label>
-                <div style="display:flex; gap:5px;">
-                    <select style="flex:1;"><option>-- Select --</option></select>
-                    <button class="plus-btn">+</button>
+                <div class="input-row">
+                    <select id="vendor" style="flex:1;"><option>-- Select --</option></select>
+                    <button class="plus-btn" onclick="addEntry('rp_vendors', 'vendor')">+</button>
                 </div>
             </div>
-            <div class="form-group"><label>Weight (Cts)</label><input type="number"></div>
+
+            <div class="form-group" style="grid-column: span 2;">
+                <label>Purchase Stream</label>
+                <select id="stream" onchange="toggleBroker()">
+                    <option value="direct">Direct Account</option>
+                    <option value="broker">Via Broker</option>
+                </select>
+            </div>
+
+            <!-- Broker Block -->
+            <div id="broker-block" class="hidden" style="display:contents;">
+                <div class="form-group"><label>Broker</label>
+                    <div class="input-row">
+                        <select id="broker" style="flex:1;"><option>-- Select Broker --</option></select>
+                        <button class="plus-btn" onclick="addEntry('rp_brokers', 'broker')">+</button>
+                    </div>
+                </div>
+                <div class="form-group"><label>Brokerage %</label><input type="number" placeholder="0.00"></div>
+            </div>
+
+            <div class="form-group"><label>Weight (Cts)</label><input type="number" id="weight"></div>
             <div class="form-group"><label>Price/Cts</label><input type="number"></div>
             <div class="form-group"><label>Tax Class</label>
-                <div style="display:flex; gap:5px;">
-                    <select style="flex:1;"><option>-- No Tax --</option></select>
-                    <button class="plus-btn">+</button>
+                <div class="input-row">
+                    <select id="tax" style="flex:1;"><option>-- No Tax --</option></select>
+                    <button class="plus-btn" onclick="addEntry('rp_taxes', 'tax')">+</button>
                 </div>
             </div>
-            <div class="form-group"><label>Net Payable</label><input type="text" readonly style="color:var(--accent-cyan)"></div>
+            <div class="form-group"><label>Due Date</label><input type="date"></div>
+            <div class="form-group" style="grid-column: span 2;"><label>Net Payable</label><input type="text" readonly style="color:var(--cyan)"></div>
         </div>
-        <button class="submit-btn">COMMIT ENTRY</button>
+        <button class="submit-btn" onclick="saveEntry()">COMMIT ENTRY</button>
     </div>
 
     <script>
-        function toggleFullScreen() {
-            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-            else document.exitFullscreen();
+        document.getElementById('date').valueAsDate = new Date();
+
+        function addEntry(storageKey, selectId) {
+            let val = prompt("Enter New Name/Value:");
+            if(val) {
+                let list = JSON.parse(localStorage.getItem(storageKey)) || [];
+                list.push(val);
+                localStorage.setItem(storageKey, JSON.stringify(list));
+                renderDropdown(storageKey, selectId);
+            }
         }
+
+        function renderDropdown(key, id) {
+            let list = JSON.parse(localStorage.getItem(key)) || [];
+            let el = document.getElementById(id);
+            el.innerHTML = '<option>-- Select --</option>';
+            list.forEach(item => el.innerHTML += `<option>${item}</option>`);
+        }
+
+        function toggleBroker() {
+            let s = document.getElementById('stream').value;
+            let b = document.getElementById('broker-block');
+            s === 'broker' ? b.classList.remove('hidden') : b.classList.add('hidden');
+        }
+
+        function saveEntry() { alert("Entry Committed Successfully!"); window.location.href = 'main_office.html'; }
+
+        // Initial Load
+        ['rp_vendors', 'rp_brokers', 'rp_taxes'].forEach((k, i) => renderDropdown(k, ['vendor', 'broker', 'tax'][i]));
     </script>
 </body>
 </html>
