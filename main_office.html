@@ -1,3 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Raghuveer Diamond - Main Office Core</title>
+    <style>
+        /* Shared Core Cyber Theme Matrix */
+        :root {
+            --bg-primary: #0B132B;
+            --bg-secondary: #111D37;
+            --top-bar-bg: #070B19;
+            --border-color: #1C2541;
+            --accent-cyan: #5BC0BE;
+            --accent-blue: #00C6FF;
+            --accent-green: #27AE60;
+            --accent-red: #E74C3C;
+            --text-main: #FFFFFF;
+            --text-muted: #708090;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Bar & Logo Matrix */
+        .window-control-bar {
+            height: 50px;
+            background-color: var(--top-bar-bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 0 0 20px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .company-logo-frame {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00C6FF, #0072FF);
+            box-shadow: 0 0 8px #00C6FF;
+        }
+
+        /* Live Cyber Glow Animation for RAGHUVEER DIAMOND */
+        .brand-title {
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), #0072FF, var(--accent-cyan));
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: cyberGlow 6s linear infinite;
+            text-transform: uppercase;
+        }
+
+        @keyframes cyberGlow {
+            0% { background-position: 0% center; }
+            100% { background-position: 300% center; }
+        }
+
+        /* Computer Windows Style Small Control Buttons */
+        .window-actions {
+            display: flex;
+            height: 100%;
+        }
+
+        .win-btn {
+            background: none;
+            border: none;
+            color: var(--accent-cyan);
+            width: 45px;
+            height: 100%;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .win-btn:hover {
+            background: var(--border-color);
+            color: #FFFFFF;
+        }
+
+        .win-btn.close-btn:hover {
+            background: var(--accent-red);
+            color: #FFFFFF;
+        }
+
+        /* Core Layout Grid */
+        .office-container {
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* 4 Main Core Cards */
+        .core-metrics-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .metric-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--accent-blue);
+        }
+
+        .metric-card.green-tag::before { background: var(--accent-green); }
+
+        .card-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .card-value {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .live-status-indicator {
+            font-size: 10px;
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background-color: var(--accent-green);
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0.3; } }
+
+        /* Workspace Grid */
+        .workspace-split-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .block-title {
+            font-size: 13px;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Universal Cyber Print Station Layout */
+        .print-station-card {
+            background: linear-gradient(145deg, var(--bg-secondary), #162649);
+            border: 1px solid rgba(91, 192, 190, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        .print-btn-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .print-btn {
+            background: #0B132B;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .print-btn:hover {
+            border-color: var(--accent-cyan);
+            background: var(--border-color);
+        }
+
+        .print-icon { color: var(--accent-cyan); font-size: 14px; }
+
+        .size-setting-box {
+            background: #070B19;
+            border: 1px dashed var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+        }
+
+        .size-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .size-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .size-btn.active, .size-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-main);
+            background: #1C2541;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Structure with RAGHUVEER DIAMOND Glowing Title -->
+    <div class="window-control-bar">
+        <div class="brand-wrapper">
+            <div class="company-logo-frame"></div>
+            <div class="brand-title">RAGHUVEER DIAMOND</div>
+        </div>
+        
+        <!-- Small Computer Style Window Control Buttons -->
+        <div class="window-actions">
+            <button class="win-btn" onclick="triggerMinimize()">-</button>
+            <button class="win-btn" onclick="triggerFullScreen()">🗖</button>
+            <button class="win-btn close-btn" onclick="goToDashboard()">✕</button>
+        </div>
+    </div>
+
+    <div class="office-container">
+        
+        <!-- 4 Core Pillars Row -->
+        <div class="core-metrics-row">
+            <!-- 1. BANK CARD -->
+            <div class="metric-card" onclick="window.location.href='bank_details.html'" style="cursor: pointer;">
+                <div class="card-label">BANK</div>
+                <div class="card-value" id="val-usd">₹ 83.72</div>
+                <div class="live-status-indicator"><span class="status-dot"></span></div>
+            </div>
+            
+            <!-- 2. ROUGH PURCHASE CARD (CORRECTED ROUTING HERE) -->
+            <div class="metric-card" onclick="window.location.href='rough_purchase.html'" style="cursor: pointer;">
+                <div class="card-label">ROUGH PURCHASE</div>
+                <div class="card-value" id="val-rough">8,450 Carats</div>
+                <div class="live-status-indicator"><span class="status-dot"></span></div>
+            </div>
+            
+            <!-- 3. GLOBAL SALES CARD -->
             <div class="metric-card green-tag" onclick="window.location.href='sales_details.html'" style="cursor: pointer;">
                 <div class="card-label">GLOBAL SALES</div>
                 <div class="card-value" id="val-sales">₹ 12,68,40,000</div>
@@ -79,7 +388,6 @@
 
         // લોકલ સ્ટોરેજમાંથી લાઈવ ડેટા ખેંચવાનું લોજિક
         function loadDashboardData() {
-            // જો લોકલ સ્ટોરેજમાં નવો આંકડો હોય તો એ બતાવો, નહીંતર તમારો ઓરિજિનલ સ્ટેબલ આંકડો ફિક્સ રહેશે
             const totalRough = localStorage.getItem('total_rough') || "8450";
             const usdRate = localStorage.getItem('usd_rate') || "83.72";
             const totalCash = localStorage.getItem('total_cash') || "3412319";
