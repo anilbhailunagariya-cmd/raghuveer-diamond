@@ -24,7 +24,7 @@
             padding: 20px;
         }
 
-        /* Top Header & Window Window Controls */
+        /* Top Header & Window Controls */
         .header-bar {
             background-color: var(--card-bg);
             padding: 12px 20px;
@@ -110,6 +110,7 @@
         .form-group {
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         .form-group label {
@@ -133,6 +134,32 @@
 
         .form-group input:focus, .form-group select:focus {
             border-color: var(--accent-cyan);
+        }
+
+        /* Party Inline Creation Style */
+        .party-input-container {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .party-input-container select {
+            flex: 1;
+        }
+
+        .add-party-inline-btn {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--accent-cyan);
+            padding: 0 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .add-party-inline-btn:hover {
+            border-color: var(--accent-cyan);
+            background-color: var(--border-color);
         }
 
         /* Broker Dynamic Section */
@@ -174,6 +201,7 @@
 </head>
 <body>
 
+    <!-- 1. Top Navigation Bar -->
     <div class="header-bar">
         <h2>RAGHUVEER DIAMOND</h2>
         <div class="window-controls">
@@ -183,6 +211,7 @@
         </div>
     </div>
 
+    <!-- 2. Rough Purchase Input Desk -->
     <div class="entry-form">
         <h3 class="form-title">Rough Purchase Inventory Intake</h3>
         
@@ -196,14 +225,16 @@
                 <input type="date" id="purchase-date">
             </div>
 
+            <!-- Dynamic Party Selection with Quick Add Button -->
             <div class="form-group">
                 <label>Party Name / Vendor</label>
-                <select id="party-name">
-                    <option value="">-- Select Vendor --</option>
-                    <option value="vendor1">Shreeji Diamonds Ltd.</option>
-                    <option value="vendor2">K. P. & Sons</option>
-                    <option value="vendor3">Navkar Impex Surat</option>
-                </select>
+                <div class="party-input-container">
+                    <select id="party-name">
+                        <option value="">-- Select Vendor --</option>
+                        <!-- Dynamic vendors will auto-populate here -->
+                    </select>
+                    <button type="button" class="add-party-inline-btn" title="Add New Party" onclick="addNewPartyMaster()">+</button>
+                </div>
             </div>
 
             <div class="form-group">
@@ -214,14 +245,16 @@
                 </select>
             </div>
 
+            <!-- Conditional Broker Integration -->
             <div id="broker-details-section" class="hidden">
                 <div class="form-group">
                     <label>Broker Name</label>
-                    <select id="broker-name">
-                        <option value="">-- Select Broker --</option>
-                        <option value="broker1">Rameshbhai Broker</option>
-                        <option value="broker2">Arvindbhai Surat</option>
-                    </select>
+                    <div class="party-input-container">
+                        <select id="broker-name">
+                            <option value="">-- Select Broker --</option>
+                        </select>
+                        <button type="button" class="add-party-inline-btn" title="Add New Broker" onclick="addNewBrokerMaster()">+</button>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Brokerage (%)</label>
@@ -271,10 +304,83 @@
     </div>
 
     <script>
-        // 1. Initialize Date Matrix to Current Session Time
         document.getElementById('purchase-date').valueAsDate = new Date();
 
-        // 2. Control Broker Section Visibility Toggle
+        // --- Memory Core: Auto Save & Load System ---
+        
+        // Initial defaults if memory is blank
+        const defaultParties = ["Shreeji Diamonds Ltd.", "K. P. & Sons", "Navkar Impex Surat"];
+        const defaultBrokers = ["Rameshbhai Broker", "Arvindbhai Surat"];
+
+        // Function to load parties from permanent memory
+        function loadPartyDropdown() {
+            let savedParties = JSON.parse(localStorage.getItem('party_master_list'));
+            if (!savedParties) {
+                savedParties = defaultParties;
+                localStorage.setItem('party_master_list', JSON.stringify(savedParties));
+            }
+            
+            const dropdown = document.getElementById('party-name');
+            dropdown.innerHTML = '<option value="">-- Select Vendor --</option>';
+            savedParties.forEach(party => {
+                dropdown.innerHTML += `<option value="${party}">${party}</option>`;
+            });
+        }
+
+        // Function to load brokers from permanent memory
+        function loadBrokerDropdown() {
+            let savedBrokers = JSON.parse(localStorage.getItem('broker_master_list'));
+            if (!savedBrokers) {
+                savedBrokers = defaultBrokers;
+                localStorage.setItem('broker_master_list', JSON.stringify(savedBrokers));
+            }
+            
+            const dropdown = document.getElementById('broker-name');
+            dropdown.innerHTML = '<option value="">-- Select Broker --</option>';
+            savedBrokers.forEach(broker => {
+                dropdown.innerHTML += `<option value="${broker}">${broker}</option>`;
+            });
+        }
+
+        // Add & Save New Party Function
+        function addNewPartyMaster() {
+            const newParty = prompt("Enter New Party/Vendor Name:");
+            if (newParty && newParty.trim() !== "") {
+                let savedParties = JSON.parse(localStorage.getItem('party_master_list')) || defaultParties;
+                if(!savedParties.includes(newParty.trim())) {
+                    savedParties.push(newParty.trim());
+                    localStorage.setItem('party_master_list', JSON.stringify(savedParties));
+                    loadPartyDropdown();
+                    document.getElementById('party-name').value = newParty.trim();
+                    alert(`Success: "${newParty}" saved permanently to Vendor Registry.`);
+                } else {
+                    alert("Account Alert: This party name already exists.");
+                }
+            }
+        }
+
+        // Add & Save New Broker Function
+        function addNewBrokerMaster() {
+            const newBroker = prompt("Enter New Broker Name:");
+            if (newBroker && newBroker.trim() !== "") {
+                let savedBrokers = JSON.parse(localStorage.getItem('broker_master_list')) || defaultBrokers;
+                if(!savedBrokers.includes(newBroker.trim())) {
+                    savedBrokers.push(newBroker.trim());
+                    localStorage.setItem('broker_master_list', JSON.stringify(savedBrokers));
+                    loadBrokerDropdown();
+                    document.getElementById('broker-name').value = newBroker.trim();
+                    alert(`Success: "${newBroker}" saved permanently to Broker Registry.`);
+                } else {
+                    alert("Account Alert: This broker name already exists.");
+                }
+            }
+        }
+
+        // Run memory loaders on screen startup
+        loadPartyDropdown();
+        loadBrokerDropdown();
+
+        // --- Standard Flow Controllers ---
         function toggleBrokerSection() {
             const streamType = document.getElementById('broker-switch').value;
             const brokerContainer = document.getElementById('broker-details-section');
@@ -289,32 +395,27 @@
             }
         }
 
-        // 3. Inject Real-time Tax Rate Matrix
         function applyDefaultTaxRate() {
             const taxType = document.getElementById('tax-type').value;
             const taxInput = document.getElementById('tax-percentage');
 
             if (taxType === 'gst_local' || taxType === 'gst_inter') {
-                taxInput.value = 0.25; // Standard Indian GST on Rough Diamonds
+                taxInput.value = 0.25;
             } else if (taxType === 'tds') {
-                taxInput.value = 0.10; // Standard TDS Framework
+                taxInput.value = 0.10;
             } else if (taxType === 'customs') {
-                taxInput.value = 2.50; // Standard Import Protocol
+                taxInput.value = 2.50;
             } else {
                 taxInput.value = 0.00;
             }
             calculateFinancials();
         }
 
-        // 4. Central Real-time Financial Calculations Engine
         function calculateFinancials() {
             const carat = parseFloat(document.getElementById('total-carat').value) || 0;
             const price = parseFloat(document.getElementById('price-per-carat').value) || 0;
-            
-            // Core valuation (Carat * Price)
             const baseValue = carat * price;
 
-            // Compute Brokerage if account condition matches
             let brokerageFees = 0;
             const streamType = document.getElementById('broker-switch').value;
             if (streamType === 'broker') {
@@ -323,16 +424,13 @@
                 document.getElementById('broker-amount-rs').value = brokerageFees.toFixed(2);
             }
 
-            // Compute Taxation parameters
             const taxPct = parseFloat(document.getElementById('tax-percentage').value) || 0;
             const taxationFees = (baseValue * taxPct) / 100;
 
-            // Net consolidated calculation
             const netPayable = baseValue + brokerageFees + taxationFees;
             document.getElementById('final-total-amount').value = netPayable.toFixed(2);
         }
 
-        // 5. Native OS Fullscreen System Integration
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(err => {
@@ -343,7 +441,6 @@
             }
         }
 
-        // 6. Local Storage / Database Pipeline Core Hook
         function commitTransaction() {
             const vendor = document.getElementById('party-name').value;
             const weight = document.getElementById('total-carat').value;
@@ -353,10 +450,6 @@
             }
             alert('Success: Rough Purchase transaction successfully compiled into the data core!');
         }
-
-        /* 🚀 FUTURE 2050 TECH GATEWAYS:
-           Quantum ledgers, Spatial UI, and AI-Vision telemetry plugs will bind right here.
-        */
     </script>
 </body>
 </html>
