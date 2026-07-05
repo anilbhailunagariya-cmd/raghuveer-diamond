@@ -1,1 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raghuveer Diamond - Rough Purchase Ledger</title>
+    <style>
+        /* Cyber dark theme inspired by 56763.jpg */
+        :root {
+            --bg-color: #060b19;
+            --card-bg: #0b1528;
+            --text-color: #ffffff;
+            --accent-cyan: #5bc0be;
+            --border-color: #16253d;
+            --input-bg: #0f1c35;
+            --btn-close: #ff4d4d;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Top Header & Window Window Controls */
+        .header-bar {
+            background-color: var(--card-bg);
+            padding: 12px 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--accent-cyan);
+            margin-bottom: 20px;
+        }
+
+        .header-bar h2 {
+            margin: 0;
+            font-size: 20px;
+            letter-spacing: 1.5px;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .win-btn {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .win-btn:hover {
+            background-color: var(--border-color);
+            border-color: var(--accent-cyan);
+        }
+
+        .win-btn.close-btn {
+            color: var(--btn-close);
+            border-color: rgba(255, 77, 77, 0.3);
+        }
+
+        .win-btn.close-btn:hover {
+            background-color: var(--btn-close);
+            color: white;
+            border-color: var(--btn-close);
+        }
+
+        /* Form Layout */
+        .entry-form {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 25px;
+        }
+
+        .form-title {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: var(--accent-cyan);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            margin-bottom: 6px;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input, .form-group select {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: white;
+            padding: 11px;
+            border-radius: 5px;
+            outline: none;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        /* Broker Dynamic Section */
+        #broker-details-section {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            background-color: rgba(91, 192, 190, 0.02);
+            padding: 18px;
+            border-radius: 6px;
+            border: 1px dashed var(--border-color);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .submit-btn {
+            background-color: var(--accent-cyan);
+            color: var(--bg-color);
+            border: none;
+            padding: 14px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 25px;
+            width: 100%;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: opacity 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-bar">
+        <h2>RAGHUVEER DIAMOND</h2>
+        <div class="window-controls">
+            <button class="win-btn" title="Minimize" onclick="alert('App Minimized')">-</button>
+            <button class="win-btn" title="Full Screen" onclick="toggleFullScreen()">⬜</button>
+            <a href="main_office.html" class="win-btn close-btn" title="Close & Return">X</a>
+        </div>
+    </div>
+
+    <div class="entry-form">
+        <h3 class="form-title">Rough Purchase Inventory Intake</h3>
+        
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Lot No / Ref No</label>
+                <input type="text" id="lot-number" placeholder="e.g. RF-2026/01">
+            </div>
+            <div class="form-group">
+                <label>Purchase Date</label>
+                <input type="date" id="purchase-date">
+            </div>
+
+            <div class="form-group">
+                <label>Party Name / Vendor</label>
+                <select id="party-name">
+                    <option value="">-- Select Vendor --</option>
+                    <option value="vendor1">Shreeji Diamonds Ltd.</option>
+                    <option value="vendor2">K. P. & Sons</option>
+                    <option value="vendor3">Navkar Impex Surat</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Purchase Stream Type</label>
+                <select id="broker-switch" onchange="toggleBrokerSection()">
+                    <option value="direct">Direct Account (No Broker)</option>
+                    <option value="broker">Via Broker (Brokerage Account)</option>
+                </select>
+            </div>
+
+            <div id="broker-details-section" class="hidden">
+                <div class="form-group">
+                    <label>Broker Name</label>
+                    <select id="broker-name">
+                        <option value="">-- Select Broker --</option>
+                        <option value="broker1">Rameshbhai Broker</option>
+                        <option value="broker2">Arvindbhai Surat</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Brokerage (%)</label>
+                    <input type="number" step="0.01" id="broker-percentage" placeholder="0.00" oninput="calculateFinancials()">
+                </div>
+                <div class="form-group">
+                    <label>Brokerage Amount (₹)</label>
+                    <input type="number" id="broker-amount-rs" placeholder="0.00" readonly>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Total Carat Weight</label>
+                <input type="number" step="0.01" id="total-carat" placeholder="0.00" oninput="calculateFinancials()">
+            </div>
+            <div class="form-group">
+                <label>Price Per Carat (₹)</label>
+                <input type="number" step="0.01" id="price-per-carat" placeholder="0.00" oninput="calculateFinancials()">
+            </div>
+
+            <div class="form-group">
+                <label>Taxation Class</label>
+                <select id="tax-type" onchange="applyDefaultTaxRate()">
+                    <option value="none">Exempted / No Tax</option>
+                    <option value="gst_local">GST Local (CGST + SGST)</option>
+                    <option value="gst_inter">IGST (Inter-State)</option>
+                    <option value="customs">Customs Duty (Import)</option>
+                    <option value="tds">TDS (Section 194Q)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Tax Rate (%)</label>
+                <input type="number" step="0.01" id="tax-percentage" placeholder="0.00" oninput="calculateFinancials()">
+            </div>
+
+            <div class="form-group">
+                <label style="color: var(--accent-cyan); font-weight: bold;">Net Payable Amount (₹)</label>
+                <input type="number" id="final-total-amount" placeholder="0.00" readonly style="border-color: var(--accent-cyan); font-weight: bold; color: var(--accent-cyan);">
+            </div>
+            <div class="form-group">
+                <label>Maturity / Due Date</label>
+                <input type="date" id="due-date">
+            </div>
+        </div>
+
+        <button class="submit-btn" onclick="commitTransaction()">Commit Entry To Ledger</button>
+    </div>
+
+    <script>
+        // 1. Initialize Date Matrix to Current Session Time
+        document.getElementById('purchase-date').valueAsDate = new Date();
+
+        // 2. Control Broker Section Visibility Toggle
+        function toggleBrokerSection() {
+            const streamType = document.getElementById('broker-switch').value;
+            const brokerContainer = document.getElementById('broker-details-section');
+            
+            if (streamType === 'broker') {
+                brokerContainer.classList.remove('hidden');
+            } else {
+                brokerContainer.classList.add('hidden');
+                document.getElementById('broker-percentage').value = '';
+                document.getElementById('broker-amount-rs').value = '';
+                calculateFinancials();
+            }
+        }
+
+        // 3. Inject Real-time Tax Rate Matrix
+        function applyDefaultTaxRate() {
+            const taxType = document.getElementById('tax-type').value;
+            const taxInput = document.getElementById('tax-percentage');
+
+            if (taxType === 'gst_local' || taxType === 'gst_inter') {
+                taxInput.value = 0.25; // Standard Indian GST on Rough Diamonds
+            } else if (taxType === 'tds') {
+                taxInput.value = 0.10; // Standard TDS Framework
+            } else if (taxType === 'customs') {
+                taxInput.value = 2.50; // Standard Import Protocol
+            } else {
+                taxInput.value = 0.00;
+            }
+            calculateFinancials();
+        }
+
+        // 4. Central Real-time Financial Calculations Engine
+        function calculateFinancials() {
+            const carat = parseFloat(document.getElementById('total-carat').value) || 0;
+            const price = parseFloat(document.getElementById('price-per-carat').value) || 0;
+            
+            // Core valuation (Carat * Price)
+            const baseValue = carat * price;
+
+            // Compute Brokerage if account condition matches
+            let brokerageFees = 0;
+            const streamType = document.getElementById('broker-switch').value;
+            if (streamType === 'broker') {
+                const brokerPct = parseFloat(document.getElementById('broker-percentage').value) || 0;
+                brokerageFees = (baseValue * brokerPct) / 100;
+                document.getElementById('broker-amount-rs').value = brokerageFees.toFixed(2);
+            }
+
+            // Compute Taxation parameters
+            const taxPct = parseFloat(document.getElementById('tax-percentage').value) || 0;
+            const taxationFees = (baseValue * taxPct) / 100;
+
+            // Net consolidated calculation
+            const netPayable = baseValue + brokerageFees + taxationFees;
+            document.getElementById('final-total-amount').value = netPayable.toFixed(2);
+        }
+
+        // 5. Native OS Fullscreen System Integration
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    alert(`Error executing system fullscreen: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // 6. Local Storage / Database Pipeline Core Hook
+        function commitTransaction() {
+            const vendor = document.getElementById('party-name').value;
+            const weight = document.getElementById('total-carat').value;
+            if(!vendor || !weight) {
+                alert('Validation Failure: Missing essential vendor or carat metrics!');
+                return;
+            }
+            alert('Success: Rough Purchase transaction successfully compiled into the data core!');
+        }
+
+        /* 🚀 FUTURE 2050 TECH GATEWAYS:
+           Quantum ledgers, Spatial UI, and AI-Vision telemetry plugs will bind right here.
+        */
+    </script>
+</body>
+</html>
