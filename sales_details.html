@@ -12,56 +12,85 @@
             --blue: #00C6FF;
             --border: #1C2541;
             --text: #FFFFFF;
+            --accent: #5BC0BE;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: var(--bg); color: var(--text); height: 100vh; width: 100vw; overflow: hidden; display: flex; flex-direction: column; }
+        
+        /* Global Live Themes Matrix Configuration */
+        body.theme-cyber-dark {
+            --bg: #070B19; --card: #0B132B; --border: #1C2541; --accent: #5BC0BE; --cyan: #5BC0BE; --blue: #00C6FF;
+        }
+        body.theme-future-cyan {
+            --bg: #0A192F; --card: #172A45; --border: #303C55; --accent: #64FFDA; --cyan: #64FFDA; --blue: #00B4D8;
+        }
+        body.theme-matrix-green {
+            --bg: #020C02; --card: #0D200D; --border: #1B4D1B; --accent: #00FF41; --cyan: #00FF41; --blue: #39FF14;
+        }
 
-        /* App Terminal Header */
-        .header { height: 45px; background: #070B19; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid var(--border); }
-        .win-actions { display: flex; gap: 5px; }
-        .win-btn { background: #111D37; color: var(--cyan); border: 1px solid var(--border); width: 25px; height: 25px; cursor: pointer; border-radius: 4px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background: var(--bg); color: var(--text); height: 100vh; width: 100vw; overflow: hidden; display: flex; flex-direction: column; transition: all 0.3s ease; }
+
+        /* Window Header Matrix */
+        .header { height: 45px; background: rgba(0,0,0,0.2); display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid var(--border); }
+        .win-actions { display: flex; align-items: center; gap: 8px; }
+        .theme-select { background: var(--card); color: var(--accent); border: 1px solid var(--border); font-size: 10px; padding: 3px 6px; border-radius: 4px; outline: none; cursor: pointer; }
+        .win-btn { background: #111D37; color: var(--accent); border: 1px solid var(--border); width: 25px; height: 25px; cursor: pointer; border-radius: 4px; }
 
         .container { padding: 8px; display: flex; flex-direction: column; gap: 6px; flex: 1; overflow: hidden; }
         
-        /* Input Control Terminal */
+        /* Top Layout Matrix */
         .top-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
         .form-group { display: flex; flex-direction: column; }
         label { font-size: 9px; color: #708090; text-transform: uppercase; margin-bottom: 2px; font-weight: 600; letter-spacing: 0.5px; }
         input, select { background: var(--card); border: 1px solid var(--border); color: #FFF; padding: 5px; border-radius: 4px; font-size: 11px; outline: none; }
-        input:focus, select:focus { border-color: var(--cyan); }
+        input:focus, select:focus { border-color: var(--accent); }
         .input-row { display: flex; gap: 4px; }
-        .plus-btn { background: #1C2541; color: var(--cyan); border: none; width: 26px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        .plus-btn { background: var(--card); color: var(--accent); border: 1px solid var(--border); width: 26px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        .plus-btn:hover { background: var(--border); }
 
-        /* Dynamic Diamond Specifications Grid */
-        .table-container { flex: 1; overflow-y: auto; background: #0b1428; border: 1px solid var(--border); border-radius: 6px; padding: 5px; max-height: 160px; }
-        .table-header { display: grid; grid-template-columns: 1.2fr 0.8fr 1fr 0.8fr 0.8fr 1fr 1fr 1.2fr; gap: 4px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+        /* Scrollable Row Diamond Specifications Table Matrix */
+        .table-container { flex: 1; overflow-y: auto; background: rgba(0,0,0,0.15); border: 1px solid var(--border); border-radius: 6px; padding: 5px; max-height: 160px; }
+        .table-header { display: grid; grid-template-columns: 1.1fr 0.8fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 1fr; gap: 4px; padding-bottom: 4px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 10; }
         .th-text { font-size: 8px; color: #708090; text-transform: uppercase; font-weight: bold; text-align: center; }
-        .diamond-row { display: grid; grid-template-columns: 1.2fr 0.8fr 1fr 0.8fr 0.8fr 1fr 1fr 1.2fr; gap: 4px; padding: 4px 0; border-bottom: 1px dashed var(--border); }
+        .diamond-row { display: grid; grid-template-columns: 1.1fr 0.8fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 1fr; gap: 4px; padding: 4px 0; border-bottom: 1px dashed var(--border); align-items: center; }
         .diamond-row input, .diamond-row select { padding: 4px; font-size: 10px; text-align: center; }
+        .rap-disc-box { font-size: 9px; font-weight: bold; text-align: center; padding: 4px; border-radius: 4px; background: rgba(0,0,0,0.3); color: #888; border: 1px solid var(--border); height: 24px; display: flex; align-items: center; justify-content: center; }
 
-        /* Financial Calculations Block */
-        .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: #080f21; padding: 6px; border-radius: 6px; border: 1px solid var(--border); }
-        .action-block { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-        .submit-btn { background: var(--cyan); color: #000; padding: 10px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; text-align: center; }
-        .print-btn { background: var(--blue); color: #000; padding: 10px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; text-align: center; }
+        /* Lower Calculation Engine UI */
+        .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: rgba(0,0,0,0.2); padding: 6px; border-radius: 6px; border: 1px solid var(--border); }
+        .hybrid-box { display: flex; flex-direction: column; justify-content: center; background: rgba(0,198,255,0.05); border: 1px dashed var(--blue); padding: 4px 8px; border-radius: 4px; }
+        .action-block { display: grid; grid-template-columns: 1fr 1.2fr; gap: 6px; }
+        .print-config-row { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; grid-column: span 2; }
         
+        .submit-btn { background: var(--accent); color: #000; padding: 10px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; text-align: center; }
+        .print-btn { background: var(--blue); color: #000; padding: 10px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; text-align: center; }
         .hidden { display: none !important; }
 
-        /* ================= 2050 CYBER PRINT STATION MATRIX ================= */
+        /* ================= 2050 DUAL LAYER PRINT MATRIX STATION ================= */
         #printable-bill-zone { display: none; background: #FFF; color: #000; padding: 25px; font-family: 'Segoe UI', Arial, sans-serif; }
-        .bill-header { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
-        .bill-title { font-size: 22px; font-weight: bold; color: #070B19; letter-spacing: 1px; }
+        
+        /* Theme 1: Cyber Premium (Default Theme Style Matrix on Color Print) */
+        #printable-bill-zone.print-cyber-premium .bill-header { border-bottom: 3px solid #00C6FF; padding-bottom: 10px; margin-bottom: 15px; }
+        #printable-bill-zone.print-cyber-premium .bill-title { font-size: 24px; font-weight: 800; color: #0B132B; letter-spacing: 1px; }
+        #printable-bill-zone.print-cyber-premium .items-table th { background: #E2E8F0; color: #0F172A; border: 1px solid #CBD5E1; padding: 6px; font-weight: bold; }
+        #printable-bill-zone.print-cyber-premium .items-table td { border: 1px solid #E2E8F0; padding: 6px; }
+        #printable-bill-zone.print-cyber-premium .bank-details-box { border: 1px dashed #00C6FF; background: #F8FAFC; padding: 10px; border-radius: 6px; }
+        #printable-bill-zone.print-cyber-premium .grand-total-row { border-top: 2px solid #00C6FF; border-bottom: 2px solid #00C6FF; background: #F1F5F9; font-weight: bold; padding: 5px; }
+
+        /* Theme 2: Eco Classic (Ink Saver High Contrast Mode Matrix) */
+        #printable-bill-zone.print-eco-classic .bill-header { border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
+        #printable-bill-zone.print-eco-classic .bill-title { font-size: 22px; font-weight: bold; color: #000; }
+        #printable-bill-zone.print-eco-classic .items-table th { background: #FFF; color: #000; border: 1px solid #000; padding: 6px; font-weight: bold; }
+        #printable-bill-zone.print-eco-classic .items-table td { border: 1px solid #000; padding: 6px; }
+        #printable-bill-zone.print-eco-classic .bank-details-box { border: 1px solid #000; padding: 8px; background: #FFF; }
+        #printable-bill-zone.print-eco-classic .grand-total-row { border-top: 2px solid #000; border-bottom: 2px solid #000; font-weight: bold; padding: 5px; }
+
         .party-info-table { width: 100%; margin-bottom: 15px; font-size: 12px; border-collapse: collapse; }
         .party-info-table td { padding: 4px 0; vertical-align: top; }
         .items-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 11px; }
-        .items-table th { background: #f2f2f2; border: 1px solid #000; padding: 6px; font-weight: bold; text-transform: uppercase; font-size: 10px; }
-        .items-table td { border: 1px solid #000; padding: 6px; text-align: center; }
         .summary-wrapper { display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; }
-        .bank-details-box { border: 1px dashed #000; padding: 8px; border-radius: 4px; width: 60%; background: #fafafa; }
-        .calc-box { width: 35%; text-align: right; }
+        .calc-box { width: 38%; text-align: right; }
         .calc-row { display: flex; justify-content: space-between; padding: 3px 0; }
-        .grand-total-row { display: flex; justify-content: space-between; padding: 5px 0; border-top: 1px solid #000; border-bottom: 1px solid #000; font-weight: bold; font-size: 14px; margin-top: 5px; }
-        .qr-placeholder { width: 70px; height: 70px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; font-size: 8px; text-align: center; font-weight: bold; font-family: monospace; background: #fff; }
+        .qr-placeholder { width: 75px; height: 75px; border: 1px solid #000; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 7px; text-align: center; font-weight: bold; background: #fff; margin-left: auto; }
 
         @media print {
             body * { display: none !important; }
@@ -72,18 +101,24 @@
         }
     </style>
 </head>
-<body>
+<body class="theme-cyber-dark">
 
-    <!-- UI Terminal Interface -->
+    <!-- Header Terminal Engine -->
     <div class="header">
-        <div style="font-size:12px; font-weight:bold; letter-spacing:1px; color:var(--cyan)">RAGHUVEER DIAMOND - GLOBAL SALES CORE</div>
+        <div style="font-size:12px; font-weight:bold; letter-spacing:1px; color:var(--accent)">RAGHUVEER DIAMOND - GLOBAL SALES CORE</div>
         <div class="win-actions">
+            <select class="theme-select" id="global-theme-switch" onchange="changeGlobalLiveTheme()">
+                <option value="theme-cyber-dark">Cyber Dark</option>
+                <option value="theme-future-cyan">Future Cyan</option>
+                <option value="theme-matrix-green">Matrix Green</option>
+            </select>
             <button class="win-btn">-</button><button class="win-btn">🗖</button>
             <a href="main_office.html"><button class="win-btn">✕</button></a>
         </div>
     </div>
 
     <div class="container">
+        <!-- Master General Fields -->
         <div class="top-grid">
             <div class="form-group"><label>Invoice No</label><input type="text" id="inv-no" placeholder="INV-2026-001"></div>
             <div class="form-group"><label>Sales Date</label><input type="date" id="sales-date"></div>
@@ -111,7 +146,7 @@
                 </select>
             </div>
 
-            <div id="broker-block" class="hidden">
+            <div id="broker-block" class="hidden" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; grid-column: span 2;">
                 <div class="form-group">
                     <label>Broker Name</label>
                     <div class="input-row">
@@ -119,11 +154,16 @@
                         <button class="plus-btn" onclick="addDropdownItem('sl_brokers', 'broker')">+</button>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label>Brokerage (%)</label>
+                    <input type="number" id="brokerage-pct" value="1.00" step="0.01" oninput="calculateFinancials()">
+                </div>
             </div>
         </div>
 
+        <!-- Diamond Specifications Terminal Container -->
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 2px;">
-            <label style="color:var(--cyan)">Diamond Inventory Specifications Matrix</label>
+            <label style="color:var(--accent)">Diamond Inventory Specifications Matrix</label>
             <button class="plus-btn" style="width:50px; font-size:10px; padding:2px;" onclick="addDiamondRow()">+ Row</button>
         </div>
         
@@ -137,12 +177,14 @@
                 <div class="th-text">Carats</div>
                 <div class="th-text">Rap Ref</div>
                 <div class="th-text">Rate/Ct</div>
+                <div class="th-text">Rap Disc%</div>
             </div>
             <div id="matrix-body">
-                <!-- Rows injected dynamically via engine -->
+                <!-- Data injection here dynamically -->
             </div>
         </div>
 
+        <!-- Mathematical Accounting Block Matrix -->
         <div class="bottom-grid">
             <div class="form-group"><label>Payment Terms Matrix</label>
                 <select id="payment-term" onchange="calculateFinancials()">
@@ -161,28 +203,47 @@
                     <option value="1.5">GST Internal (1.5%)</option>
                 </select>
             </div>
+            
+            <!-- Hybrid Live Display Engine Box -->
+            <div class="hybrid-box" style="grid-column: span 2;">
+                <label id="hybrid-label" style="font-size: 8px; color: var(--blue);">INTELLIGENT DUAL CURRENCY SYNC ACTIVE</label>
+                <span id="hybrid-display-value" style="font-size: 11px; font-weight: bold; color: var(--blue);">INR Equivalent Value: ₹ 0.00</span>
+            </div>
+
             <div class="form-group" style="grid-column: span 2;">
-                <label style="color:var(--cyan)" id="total-label">Net Payable Amount (INR)</label>
-                <input type="text" id="net-payable" readonly style="color:var(--cyan); font-weight:bold; font-size:13px;" value="0.00">
+                <label style="color:var(--accent)" id="total-label">Net Payable Amount (INR)</label>
+                <input type="text" id="net-payable" readonly style="color:var(--accent); font-weight:bold; font-size:13px;" value="₹ 0.00">
             </div>
         </div>
 
+        <!-- Print Strategy Command Module -->
         <div class="action-block">
+            <div class="print-config-row">
+                <div class="form-group">
+                    <select id="print-theme-selector" style="padding: 4px; font-size: 10px;">
+                        <option value="print-cyber-premium">Cyber Premium (Color)</option>
+                        <option value="print-eco-classic">Eco Classic (B&W Ink Saver)</option>
+                    </select>
+                </div>
+                <div class="form-group" style="font-size: 9px; color: #708090; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1;">
+                    Broker Net Profit:<br><span id="net-yield-display" style="color:#FFF; font-weight:bold;">0.00</span>
+                </div>
+            </div>
             <button class="submit-btn" onclick="commitSalesLedger(false)">Commit Data Only</button>
             <button class="print-btn" onclick="commitSalesLedger(true)">⚡ Commit & Print Bill</button>
         </div>
     </div>
 
 
-    <!-- ================= 2050 CYBER PRINT MATRIX ZONE (HIDDEN FROM UI, ALIVE IN PRINT) ================= -->
-    <div id="printable-bill-zone">
+    <!-- ================= 2050 LAYER PRINT GENERATION HARDWARE VAULT ================= -->
+    <div id="printable-bill-zone" class="print-cyber-premium">
         <div class="bill-header">
             <div>
                 <div class="bill-title">RAGHUVEER DIAMOND</div>
-                <div style="font-size:10px; color:#555;">Diamond Manufacturing & Exports Terminal<br>Surat, Gujarat, India</div>
+                <div style="font-size:10px; color:#555;">Diamond Manufacturing & Exports Core Terminal<br>Surat, Gujarat, India</div>
             </div>
             <div style="text-align: right; font-size:11px;">
-                <strong style="font-size: 14px; color:var(--bg)">TAX INVOICE</strong><br>
+                <strong style="font-size: 14px;">TAX INVOICE</strong><br>
                 <strong>Invoice No:</strong> <span id="p-inv-no"></span><br>
                 <strong>Date:</strong> <span id="p-date"></span>
             </div>
@@ -191,13 +252,13 @@
         <table class="party-info-table">
             <tr>
                 <td style="width: 50%;">
-                    <strong>Buyer / Customer Details:</strong><br>
+                    <strong>Buyer / Customer Accounts:</strong><br>
                     <span id="p-customer" style="font-size:14px; font-weight:bold;"></span><br>
-                    <strong>Terms:</strong> <span id="p-terms"></span> (<span id="p-due-date"></span>)
+                    <strong>Maturity Terms:</strong> <span id="p-terms"></span> (<span id="p-due-date"></span>)
                 </td>
                 <td style="width: 50%; text-align: right;">
                     <strong>Brokerage Stream:</strong><br>
-                    <span id="p-broker">Direct Account</span>
+                    <span id="p-broker">Direct Ledger Account</span>
                 </td>
             </tr>
         </table>
@@ -211,21 +272,21 @@
                     <th>MM</th>
                     <th>Pieces</th>
                     <th>Carats</th>
-                    <th>Rap Price</th>
+                    <th>Rap Ref</th>
                     <th>Rate / Carat</th>
                     <th>Total Value</th>
                 </tr>
             </thead>
             <tbody id="p-items-body">
-                <!-- Items injected live during print execution -->
+                <!-- Dynamically mapped entries -->
             </tbody>
         </table>
 
         <div class="summary-wrapper">
-            <!-- Automated Secure Bank Details Block -->
+            <!-- Automated Secure Routing Bank Card -->
             <div class="bank-details-box">
-                <div style="font-size:10px; font-weight:bold; margin-bottom:4px; text-transform:uppercase; border-bottom:1px solid #000;">Bank Settlement Matrix (Auto Routing)</div>
-                <div style="font-size:11px; line-height: 1.4;">
+                <div style="font-size:10px; font-weight:bold; margin-bottom:5px; text-transform:uppercase; border-bottom:1px solid #ddd; padding-bottom: 2px;">Bank Routing Settlement Matrix</div>
+                <div style="font-size:11px; line-height: 1.5; color: #333;">
                     <strong>Bank Name:</strong> STATE BANK OF INDIA<br>
                     <strong>Account Name:</strong> RAGHUVEER DIAMOND OPERATIONAL A/C<br>
                     <strong>Account Number:</strong> 409822314567<br>
@@ -234,30 +295,34 @@
                 </div>
             </div>
 
-            <!-- Financial Aggregations and AI Verification QR -->
+            <!-- Global Calculations Block -->
             <div class="calc-box">
-                <div class="calc-row"><span>Gross Total:</span><span id="p-gross">0.00</span></div>
-                <div class="calc-row"><span>Discount:</span><span id="p-discount">0.00</span></div>
-                <div class="calc-row"><span>Tax (GST):</span><span id="p-tax">0.00</span></div>
-                <div class="grand-total-row"><span>NET TOTAL:</span><span id="p-final">0.00</span></div>
+                <div class="calc-row"><span>Gross Total Value:</span><span id="p-gross">0.00</span></div>
+                <div class="calc-row"><span>Discount Matrix Value:</span><span id="p-discount">0.00</span></div>
+                <div class="calc-row"><span>Tax Class (GST):</span><span id="p-tax">0.00</span></div>
+                <div class="grand-total-row"><span>NET PAYABLE TOTAL:</span><span id="p-final">0.00</span></div>
                 <div style="display:flex; justify-content:flex-end; margin-top:10px;">
                     <div class="qr-placeholder">
-                        <div style="font-size:6px; margin-bottom:2px;">AI PAY MATRIX</div>
-                        <span style="font-size:14px;">🔳</span>
+                        <div style="font-size:5px; margin-bottom:2px; transform: scale(0.9);">AI SECURE PASS</div>
+                        <span style="font-size:16px;">🔳</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div style="margin-top:40px; display:flex; justify-content:space-between; font-size:11px;">
-            <div>Receiver's Signature</div>
-            <div style="text-align:right;">For, <strong>Raghuveer Diamond</strong><br><br><br>Authorized Signatory</div>
+        <div style="margin-top:50px; display:flex; justify-content:space-between; font-size:11px;">
+            <div style="border-top: 1px solid #000; width: 150px; text-align: center; padding-top: 5px;">Receiver's Signature</div>
+            <div style="text-align:right;">For, <strong>Raghuveer Diamond</strong><br><br><br><br>Authorized Signatory</div>
         </div>
     </div>
 
     <script>
-        // System Initial Setup Matrix
         document.getElementById('sales-date').valueAsDate = new Date();
+
+        function changeGlobalLiveTheme() {
+            let t = document.getElementById('global-theme-switch').value;
+            document.body.className = t;
+        }
 
         function toggleSalesType() {
             let type = document.getElementById('sales-type').value;
@@ -277,7 +342,12 @@
         function toggleBrokerBlock() {
             let sw = document.getElementById('broker-switch').value;
             let el = document.getElementById('broker-block');
-            sw === 'broker' ? el.classList.remove('hidden') : el.classList.add('hidden');
+            if(sw === 'broker') {
+                el.style.display = 'grid';
+            } else {
+                el.style.display = 'none';
+            }
+            calculateFinancials();
         }
 
         function addDropdownItem(storageKey, selectId) {
@@ -311,8 +381,9 @@
                 <input type="number" class="diameter" placeholder="MM" step="0.01">
                 <input type="number" class="pcs" placeholder="Pcs" value="0">
                 <input type="number" class="carat" placeholder="Cts" step="0.001" oninput="calculateFinancials()">
-                <input type="number" class="rap" placeholder="Rap ($)" step="1">
+                <input type="number" class="rap" placeholder="Rap ($)" step="1" oninput="calculateFinancials()">
                 <input type="number" class="price" placeholder="Rate" step="0.01" oninput="calculateFinancials()">
+                <div class="rap-disc-box">-0.0%</div>
             `;
             container.appendChild(row);
         }
@@ -324,7 +395,25 @@
             rows.forEach(row => {
                 let cts = parseFloat(row.querySelector('.carat').value) || 0;
                 let prc = parseFloat(row.querySelector('.price').value) || 0;
+                let rap = parseFloat(row.querySelector('.rap').value) || 0;
+                let discBox = row.querySelector('.rap-disc-box');
+                
                 baseAmount += (cts * prc);
+
+                // Real-time AI Gap/Discount Analysis Engine
+                if(rap > 0 && prc > 0) {
+                    let diff = ((rap - prc) / rap) * 100;
+                    if(diff >= 0) {
+                        discBox.innerText = `-${diff.toFixed(1)}%`;
+                        discBox.style.color = '#5BC0BE';
+                    } else {
+                        discBox.innerText = `+${Math.abs(diff).toFixed(1)}%`;
+                        discBox.style.color = '#00C6FF';
+                    }
+                } else {
+                    discBox.innerText = '-0.0%';
+                    discBox.style.color = '#888';
+                }
             });
 
             let term = document.getElementById('payment-term').value;
@@ -354,8 +443,33 @@
             
             let total = postDiscount + taxValue;
 
-            let currencySymbol = document.getElementById('sales-type').value === 'export' ? '$ ' : '₹ ';
+            let type = document.getElementById('sales-type').value;
+            let conversionRate = parseFloat(localStorage.getItem('usd_rate')) || 83.72;
+            let currencySymbol = type === 'export' ? '$ ' : '₹ ';
+            
             document.getElementById('net-payable').value = currencySymbol + total.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+            // Advanced Multi-Currency Hybrid Calculation View
+            let hybridDisplay = document.getElementById('hybrid-display-value');
+            if(type === 'export') {
+                let inrEquiv = total * conversionRate;
+                hybridDisplay.innerText = `INR Equivalency View: ₹ ${inrEquiv.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+            } else {
+                let usdEquiv = total / conversionRate;
+                hybridDisplay.innerText = `USD Equivalency View: $ ${usdEquiv.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+            }
+
+            // Real-Time Net Yield (Broker Deductions Calculator)
+            let brSw = document.getElementById('broker-switch').value;
+            let netYieldDisplay = document.getElementById('net-yield-display');
+            if(brSw === 'broker') {
+                let brPct = parseFloat(document.getElementById('brokerage-pct').value) || 0;
+                let brAmt = postDiscount * brPct / 100;
+                let netYield = postDiscount - brAmt;
+                netYieldDisplay.innerText = currencySymbol + netYield.toLocaleString('en-IN', {maximumFractionDigits:2});
+            } else {
+                netYieldDisplay.innerText = currencySymbol + postDiscount.toLocaleString('en-IN', {maximumFractionDigits:2});
+            }
         }
 
         function commitSalesLedger(shouldPrint) {
@@ -363,7 +477,7 @@
             let customer = document.getElementById('customer').value;
             
             if(!customer) {
-                alert("Core System Alert: Please select a valid Customer Name matrix before committing!");
+                alert("Core Database Error: Please select a valid Customer entry before execution!");
                 return;
             }
 
@@ -374,7 +488,6 @@
                 executePrintStation(finalValue);
             }
 
-            // Global System Database Synchronization Matrix
             if(type === 'export') {
                 let conversionRate = parseFloat(localStorage.getItem('usd_rate')) || 83.72;
                 finalValue = finalValue * conversionRate;
@@ -383,25 +496,29 @@
             let activeSales = parseFloat(localStorage.getItem('global_sales')) || 0;
             localStorage.setItem('global_sales', activeSales + finalValue);
 
-            alert("Sales Transaction Transferred to Master Cloud Vault Ledger!");
+            alert("Sales Transaction Committed & Synchronized with Main Ledger Vault!");
             if(!shouldPrint) window.location.href = 'main_office.html';
         }
 
-        // 2050 Automated Letterhead & Multi-Printer Layout Engine
         function executePrintStation(finalValue) {
-            let currency = document.getElementById('sales-type').value === 'export' ? ' USD' : ' INR';
+            let type = document.getElementById('sales-type').value;
+            let currency = type === 'export' ? ' USD' : ' INR';
+            let curSymbol = type === 'export' ? '$' : '₹';
             
-            // Map Metadata to Hidden Invoice Box
-            document.getElementById('p-inv-no').innerText = document.getElementById('inv-no').value || "REG-2026-TEMP";
+            // Set Print Layout Theme (Cyber vs Eco)
+            let printZone = document.getElementById('printable-bill-zone');
+            printZone.className = document.getElementById('print-theme-selector').value;
+
+            // Map UI Values to Printing Elements
+            document.getElementById('p-inv-no').innerText = document.getElementById('inv-no').value || "REG-2026-T";
             document.getElementById('p-date').innerText = document.getElementById('sales-date').value;
             document.getElementById('p-customer').innerText = document.getElementById('customer').value;
             document.getElementById('p-terms').innerText = document.getElementById('payment-term').options[document.getElementById('payment-term').selectedIndex].text;
-            document.getElementById('p-due-date').innerText = "Due: " + document.getElementById('due-date').value;
+            document.getElementById('p-due-date').innerText = "Due Date: " + document.getElementById('due-date').value;
             
             let brSw = document.getElementById('broker-switch').value;
-            document.getElementById('p-broker').innerText = brSw === 'broker' ? "Via: " + document.getElementById('broker').value : "Direct Client";
+            document.getElementById('p-broker').innerText = brSw === 'broker' ? "Via Broker: " + document.getElementById('broker').value : "Direct Account";
 
-            // Map Rows dynamically
             let printBody = document.getElementById('p-items-body');
             printBody.innerHTML = '';
             
@@ -429,8 +546,8 @@
                         <td>${pcs}</td>
                         <td>${carat.toFixed(3)}</td>
                         <td>${rap !== '-' ? '$'+rap : '-'}</td>
-                        <td>${price.toFixed(2)}</td>
-                        <td>${subTotal.toFixed(2)}</td>
+                        <td>${curSymbol}${price.toFixed(2)}</td>
+                        <td>${curSymbol}${subTotal.toFixed(2)}</td>
                     </tr>
                 `;
             });
@@ -440,12 +557,11 @@
             let taxPct = parseFloat(document.getElementById('tax-rate').value) || 0;
             let taxVal = ((grossTotal - discVal) * taxPct / 100);
 
-            document.getElementById('p-gross').innerText = grossTotal.toFixed(2) + currency;
-            document.getElementById('p-discount').innerText = discVal.toFixed(2) + ` (${discPct}%)`;
-            document.getElementById('p-tax').innerText = taxVal.toFixed(2) + ` (${taxPct}%)`;
-            document.getElementById('p-final').innerText = finalValue.toFixed(2) + currency;
+            document.getElementById('p-gross').innerText = curSymbol + grossTotal.toLocaleString('en-IN', {minimumFractionDigits:2});
+            document.getElementById('p-discount').innerText = curSymbol + discVal.toLocaleString('en-IN', {minimumFractionDigits:2}) + ` (${discPct}%)`;
+            document.getElementById('p-tax').innerText = curSymbol + taxVal.toLocaleString('en-IN', {minimumFractionDigits:2}) + ` (${taxPct}%)`;
+            document.getElementById('p-final').innerText = curSymbol + finalValue.toLocaleString('en-IN', {minimumFractionDigits:2}) + currency;
 
-            // Call Native System Spooler
             window.print();
         }
 
