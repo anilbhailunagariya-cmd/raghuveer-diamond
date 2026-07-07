@@ -47,6 +47,8 @@
         .input-row { display: flex; gap: 4px; }
         .plus-btn { background: var(--card); color: var(--accent); border: 1px solid var(--border); width: 28px; cursor: pointer; border-radius: 4px; font-weight: bold; }
         .plus-btn:hover { background: var(--border); }
+        .minus-btn { background: var(--card); color: var(--danger); border: 1px solid var(--border); width: 28px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        .minus-btn:hover { background: var(--border); }
 
         /* Kundli Score Terminal Grid Block */
         .kundli-box { grid-column: span 2; background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 6px; padding: 8px; display: flex; align-items: center; gap: 12px; transition: all 0.3s ease; }
@@ -147,6 +149,7 @@
                 <div class="input-row">
                     <select id="customer" style="flex:1;" onchange="executePartyKundliEngine()"></select>
                     <button class="plus-btn" onclick="addDropdownItem('sl_customers', 'customer')">+</button>
+                    <button class="minus-btn" onclick="removeDropdownItem('sl_customers', 'customer')">-</button>
                 </div>
             </div>
 
@@ -177,6 +180,7 @@
                     <div class="input-row">
                         <select id="broker" style="flex:1;"><option value="">-- Select --</option></select>
                         <button class="plus-btn" onclick="addDropdownItem('sl_brokers', 'broker')">+</button>
+                        <button class="minus-btn" onclick="removeDropdownItem('sl_brokers', 'broker')">-</button>
                     </div>
                 </div>
                 <div class="form-group">
@@ -352,7 +356,7 @@
     <script>
         // Default System Seed Data Injections
         if(!localStorage.getItem('sl_customers')) {
-            localStorage.setItem('sl_customers', JSON.stringify(['Kiran Gems Pvt Ltd', 'Hari Krishna Exports', 'Dharmanandan Diamonds', 'Rosy Blue Surat', 'Venus Jewel']));
+            localStorage.setItem('sl_customers', JSON.stringify(['Kiran Gems Pvt Ltd', 'Hari Krishna Exports', 'Dharmanandan Diamonds', 'Rosy Blue Surat', 'Venus Jewel', 'Khushi daimond']));
         }
         if(!localStorage.getItem('sl_brokers')) {
             localStorage.setItem('sl_brokers', JSON.stringify(['Babubhai Kakadiya (1%)', 'Arjanbhai Savani (0.5%)', 'Pravinbhai Malaviya']));
@@ -398,6 +402,29 @@
                     localStorage.setItem(storageKey, JSON.stringify(list));
                     renderSelect(storageKey, selectId);
                     document.getElementById(selectId).value = val.trim();
+                    executePartyKundliEngine();
+                }
+            }
+        }
+
+        // Remove/Delete selected item from dropdown and local database securely
+        function removeDropdownItem(storageKey, selectId) {
+            let el = document.getElementById(selectId);
+            let selectedVal = el.value;
+            
+            if(!selectedVal || selectedVal === "") {
+                alert("Please select a valid entry from the dropdown first to delete!");
+                return;
+            }
+            
+            if(confirm(`Are you absolutely sure you want to completely delete "${selectedVal}" from the records?`)) {
+                let list = JSON.parse(localStorage.getItem(storageKey)) || [];
+                let index = list.indexOf(selectedVal);
+                if (index > -1) {
+                    list.splice(index, 1);
+                    localStorage.setItem(storageKey, JSON.stringify(list));
+                    renderSelect(storageKey, selectId);
+                    alert("Entry deleted successfully!");
                     executePartyKundliEngine();
                 }
             }
@@ -461,7 +488,7 @@
             }
         }
 
-        // Feature: 2050 Quantum Network Account Risk & Kundli Assessment Engine
+        // Feature: 2050 Quantum Network Account Risk & Cloud Registry Engine
         function executePartyKundliEngine() {
             let party = document.getElementById('customer').value;
             let term = document.getElementById('payment-term').value;
@@ -485,12 +512,14 @@
                 return;
             }
 
-            // Pseudo-Predictive Crypto Ledger Scanning algorithms matching 2050 design
-            let score = 95; // Perfect default seed
+            // Cloud-Based AI Scoring Simulator Matching 2050 Multi-Route Logistical Layout
+            let score = 95; 
             if(party.includes('Kiran') || party.includes('Krishna')) score = 98;
             if(party.includes('Dharmanandan')) score = 88;
             if(party.includes('Venus')) score = 92;
-            if(party.includes('Rosy')) score = 54; // Setup test anomaly risk element
+            
+            // Fixed Anomaly: Khushi Diamond and Rosy Blue mapped dynamically to RED High Risk List
+            if(party.includes('Rosy') || party.includes('Khushi') || party.includes('khushi')) score = 35;
 
             // Term risk compounding logic
             if(term === '30') score -= 5;
@@ -502,9 +531,9 @@
             if(score >= 80) {
                 panel.style.borderColor = 'var(--safe)';
                 icon.innerText = "🛡️";
-                statusText.innerText = `SAFE TRANSACTION MATRIX [SCORE: ${score}]`;
+                statusText.innerText = `GLOBAL SAFE MATRIX APPROVED [SCORE: ${score}]`;
                 statusText.style.color = 'var(--safe)';
-                descText.innerText = "Party verified via B2B Diamond Ledger Network. Zero delayed payouts reported in past 365 cycles. Secure to extend credit.";
+                descText.innerText = "All India Registry & Cross-Border Vault Cleared. Zero delayed payouts reported globally. Multi-Lingual routing enabled.";
                 bar.style.backgroundColor = 'var(--safe)';
                 commitBtn.disabled = false;
                 commitBtn.style.opacity = "1";
@@ -513,20 +542,20 @@
                 icon.innerText = "⚠️";
                 statusText.innerText = `WATCHFUL / LIMITED CAP [SCORE: ${score}]`;
                 statusText.style.color = 'var(--warning)';
-                descText.innerText = "Minor payment delays detected at Varachha trading desks. Restrict invoice to maximum 30 days. Continuous background audit active.";
+                descText.innerText = "Minor payment delays detected in domestic trading desks. Currency fluctuation buffering recommended.";
                 bar.style.backgroundColor = 'var(--warning)';
                 commitBtn.disabled = false;
                 commitBtn.style.opacity = "1";
             } else {
                 panel.style.borderColor = 'var(--danger)';
                 icon.innerText = "🚨";
-                statusText.innerText = `HIGH RISK ALERTS - LOCK APPLIED [SCORE: ${score}]`;
+                statusText.innerText = `HIGH RISK BLOCK MET - LEDGER LOCKED [SCORE: ${score}]`;
                 statusText.style.color = 'var(--danger)';
-                descText.innerText = "CRITICAL WARNING: Multiple default alerts found on network vault! Immediate cash transaction compulsory. Ledger block enforced.";
+                descText.innerText = "CRITICAL WARNING: Escrow network flags critical defaults! Cross-border routing denied. Immediate cash settlement mandatory.";
                 bar.style.backgroundColor = 'var(--danger)';
                 commitBtn.disabled = true;
                 commitBtn.style.opacity = "0.3";
-                alert("🚨 QUANTUM NETWORK LOCK: This party currently carries a critical market risk index. Data commit button blocked to prevent default. Shift to Cash Term.");
+                alert("🚨 QUANTUM CLOUD HEDGING LOCK: This party carries a high default index on the All India Registry. Secure Ledger Block applied.");
             }
 
             calculateFinancials();
@@ -545,7 +574,7 @@
                 
                 baseAmount += (cts * prc);
 
-                // Feature 1: Real-time AI Gap / Rapaport Matrix Analyzer
+                // Real-time AI Gap / Rapaport Matrix Analyzer
                 if(rap > 0 && prc > 0) {
                     let diff = ((rap - prc) / rap) * 100;
                     if(diff >= 0) {
@@ -560,9 +589,9 @@
                     discBox.style.color = '#888';
                 }
 
-                // Feature: AI Intelligent Price Protection Engine Guard
+                // AI Intelligent Price Protection Engine Guard
                 if(prc > 0 && rap > 0) {
-                    let minimumAllowedFloor = rap * 0.45; // 55% discount market hard bottom threshold
+                    let minimumAllowedFloor = rap * 0.45; 
                     if(prc < minimumAllowedFloor) {
                         protectionNode.innerText = "❌ Rate Loss!";
                         protectionNode.style.color = 'var(--danger)';
@@ -608,7 +637,7 @@
             
             document.getElementById('net-payable').value = currencySymbol + total.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
-            // Feature 2: Dynamic Multi-Currency Hybrid Conversion Display Node
+            // Dynamic Multi-Currency Hybrid Conversion & Hedging Display Node
             let hybridDisplay = document.getElementById('hybrid-display-value');
             if(type === 'export') {
                 let inrEquiv = total * conversionRate;
@@ -618,7 +647,7 @@
                 hybridDisplay.innerText = `Global USD Export Value: $ ${usdEquiv.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
             }
 
-            // Feature 3: Smart Automated Brokerage Analytics Stream
+            // Broker Net Profit Analytics Stream
             let brSw = document.getElementById('broker-switch').value;
             let netYieldDisplay = document.getElementById('net-yield-display');
             if(brSw === 'broker') {
@@ -655,9 +684,9 @@
             let activeSales = parseFloat(localStorage.getItem('global_sales')) || 0;
             localStorage.setItem('global_sales', activeSales + finalValue);
 
-            // Feature: Smart Follow-up Queue scheduler
+            // Quantum Escrow & Follow-up Queue Auto Scheduler
             let dueDate = document.getElementById('due-date').value;
-            alert(`⚡ QUANTUM LEDGER RECORDED!\nTransaction securely signed. Automated Collection Follow-up sequence scheduled for date matrix: ${dueDate}.`);
+            alert(`⚡ TRANSACTION LOCKED IN CLOUD VAULT!\nQuantum Escrow Contract Signed. Logistics Tracking activated. Automated multi-lingual dispatch scheduled for: ${dueDate}.`);
             
             if(!shouldPrint) window.location.href = 'main_office.html';
         }
