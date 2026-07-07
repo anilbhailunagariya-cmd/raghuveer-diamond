@@ -1,1 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Raghuveer Diamond - Cash Flow Ledger</title>
+    <style>
+        :root {
+            --bg: #070B19;
+            --card: #0B132B;
+            --cyan: #5BC0BE;
+            --blue: #00C6FF;
+            --border: #1C2541;
+            --text: #FFFFFF;
+            --accent: #5BC0BE;
+            --safe: #39FF14;
+            --danger: #FF3B30;
+        }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: var(--bg); color: var(--text); height: 100vh; width: 100vw; overflow: hidden; display: flex; flex-direction: column; }
+
+        /* Header Terminal Node */
+        .header { height: 50px; background: rgba(0,0,0,0.4); display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid var(--border); }
+        .logo-text { font-size: 15px; font-weight: 800; letter-spacing: 1px; color: var(--blue); text-transform: uppercase; }
+        .win-btn { background: #111D37; color: var(--accent); border: 1px solid var(--border); width: 25px; height: 25px; cursor: pointer; border-radius: 4px; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 11px; }
+
+        .container { padding: 12px; display: flex; flex-direction: column; gap: 10px; flex: 1; overflow: hidden; }
+
+        /* Live Safe Vault Display */
+        .vault-box { background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--safe); border-radius: 6px; padding: 15px; text-align: center; }
+        .v-label { font-size: 10px; color: #708090; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
+        .v-value { font-size: 24px; font-weight: bold; color: var(--safe); margin-top: 4px; }
+
+        /* Entry Form Core */
+        .entry-box { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+        .form-title { font-size: 10px; font-weight: bold; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .form-group { display: flex; flex-direction: column; gap: 2px; }
+        label { font-size: 9px; color: #708090; text-transform: uppercase; font-weight: 600; }
+        input { background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #FFF; padding: 7px; border-radius: 4px; font-size: 12px; outline: none; width: 100%; }
+        input:focus { border-color: var(--blue); }
+
+        .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+        .action-btn { padding: 10px; border: none; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; text-transform: uppercase; text-align: center; color: #000; }
+        .btn-jama { background: var(--safe); }
+        .btn-javak { background: var(--danger); color: #FFF; }
+
+        /* Transaction History Matrix */
+        .ledger-box { flex: 1; display: flex; flex-direction: column; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; padding: 8px; overflow: hidden; }
+        .ledger-title { font-size: 10px; font-weight: bold; color: #708090; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+        
+        .table-container { flex: 1; overflow-y: auto; margin-top: 5px; }
+        .ledger-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: left; }
+        .ledger-table th { color: #708090; font-weight: bold; padding: 6px 4px; border-bottom: 1px solid var(--border); font-size: 9px; text-transform: uppercase; }
+        .ledger-table td { padding: 8px 4px; border-bottom: 1px dashed rgba(28, 37, 65, 0.5); vertical-align: middle; }
+        
+        .amt-jama { color: var(--safe); font-weight: bold; }
+        .amt-javak { color: var(--danger); font-weight: bold; }
+        .note-text { color: #DDD; }
+        .date-text { color: #708090; font-size: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- Top Identity Header Terminal -->
+    <div class="header">
+        <div class="logo-text">RAGHUVEER DIAMOND - CASH FLOW TERMINAL</div>
+        <a href="main_office.html" class="win-btn">✕ CLOSE</a>
+    </div>
+
+    <div class="container">
+        
+        <!-- Current Vault Cash Balance Display -->
+        <div class="vault-box">
+            <div class="v-label">હાથ પરના કુલ રોકડા રૂપિયા (CASH ON HAND)</div>
+            <div class="v-value" id="live-balance">₹ 0.00</div>
+        </div>
+
+        <!-- Cash Entry Entry Form Core -->
+        <div class="entry-box">
+            <div class="form-title">નવી રોકડી એન્ટ્રી (NEW CASH ENTRY)</div>
+            
+            <div class="form-group">
+                <label>રોકડા રૂપિયા (CASH AMOUNT)</label>
+                <input type="number" id="cash-amount" placeholder="રકમ લખો (₹)" min="1">
+            </div>
+            
+            <div class="form-group">
+                <label>આવક / જાવકની વિગત (TRANSACTION DETAILS)</label>
+                <input type="text" id="cash-note" placeholder="વિગત લખો (દા.ત. કારખાના મજૂરી, પાર્ટીનું નામ)">
+            </div>
+
+            <div class="btn-row">
+                <button class="action-btn btn-jama" onclick="processTransaction('jama')">🟢 જમા (JAMA)</button>
+                <button class="action-btn btn-javak" onclick="processTransaction('javak')">🔴 જાવક / ઉધાર (JAVAK)</button>
+            </div>
+        </div>
+
+        <!-- Transaction History Ledger Sheet View -->
+        <div class="ledger-box">
+            <div class="ledger-title">રોજમેળ પત્રક વિગત (LIVE TRANSACTION HISTORY LOG)</div>
+            <div class="table-container">
+                <table class="ledger-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 22%;">તારીખ</th>
+                            <th style="width: 48%;">આવક / જાવકની વિગત</th>
+                            <th style="width: 15%; text-align: right;">જમા (+)</th>
+                            <th style="width: 15%; text-align: right;">જાવક (-)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ledger-body">
+                        <!-- Data rows injected dynamically via storage engine -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Core Cash Engine Initialization
+        function initCashFlowCore() {
+            if(!localStorage.getItem('cash_on_hand')) {
+                localStorage.setItem('cash_on_hand', '0');
+            }
+            if(!localStorage.getItem('cash_history_log')) {
+                localStorage.setItem('cash_history_log', JSON.stringify([]));
+            }
+            renderCashDashboard();
+        }
+
+        function renderCashDashboard() {
+            let cashVal = parseFloat(localStorage.getItem('cash_on_hand')) || 0;
+            document.getElementById('live-balance').innerText = '₹ ' + cashVal.toLocaleString('en-IN', {minimumFractionDigits: 2});
+
+            let history = JSON.parse(localStorage.getItem('cash_history_log')) || [];
+            let tbody = document.getElementById('ledger-body');
+            tbody.innerHTML = '';
+
+            if(history.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#708090; padding:20px;">હજુ સુધી કોઈ રોકડા વહેવાર નોંધાયા નથી.</td></tr>`;
+                return;
+            }
+
+            // Show latest entries on top
+            history.reverse().forEach(item => {
+                let jamaCol = item.type === 'jama' ? `<span class="amt-jama">+ ₹${item.amount.toLocaleString('en-IN')}</span>` : '-';
+                let javakCol = item.type === 'javak' ? `<span class="amt-javak">- ₹${item.amount.toLocaleString('en-IN')}</span>` : '-';
+                
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="date-text">${item.date}</td>
+                        <td class="note-text">${item.note}</td>
+                        <td style="text-align: right;">${jamaCol}</td>
+                        <td style="text-align: right;">${javakCol}</td>
+                    </tr>
+                `;
+            });
+            // restore history list order back
+            history.reverse();
+        }
+
+        function processTransaction(type) {
+            let amount = parseFloat(document.getElementById('cash-amount').value) || 0;
+            let note = document.getElementById('cash-note').value.trim();
+
+            if(amount <= 0) {
+                alert("ભૂલ: કૃપા કરીને સાચી રકમ લખો!");
+                return;
+            }
+            if(note === "") {
+                alert("ભૂલ: કૃપા કરીને આવક અથવા જાવકની સાચી વિગત લખો!");
+                return;
+            }
+
+            let currentCash = parseFloat(localStorage.getItem('cash_on_hand')) || 0;
+
+            if(type === 'javak' && amount > currentCash) {
+                if(!confirm("⚠️ એલર્ટ: તિજોરીમાં રહેલા રોકડા કરતાં જાવક (ઉધાર) રકમ વધારે છે. શું આગળ વધવું છે?")) {
+                    return;
+                }
+            }
+
+            if(type === 'jama') {
+                currentCash += amount;
+            } else {
+                currentCash -= amount;
+            }
+
+            // Create timestamp layout
+            let today = new Date();
+            let dateStr = today.getDate().toString().padStart(2, '0') + '/' + 
+                          (today.getMonth() + 1).toString().padStart(2, '0') + '/' + 
+                          today.getFullYear();
+
+            let history = JSON.parse(localStorage.getItem('cash_history_log')) || [];
+            history.push({
+                date: dateStr,
+                note: note,
+                amount: amount,
+                type: type
+            });
+
+            // Sync data with local secure memory
+            localStorage.setItem('cash_on_hand', currentCash.toString());
+            localStorage.setItem('cash_history_log', JSON.stringify(history));
+
+            // Clear input fields safely
+            document.getElementById('cash-amount').value = '';
+            document.getElementById('cash-note').value = '';
+
+            alert("⚡ રોજમેળ એન્ટ્રી સફળતાપૂર્વક નોંધી લેવામાં આવી છે!");
+            renderCashDashboard();
+        }
+
+        window.onload = initCashFlowCore;
+    </script>
+</body>
+</html>
