@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Raghuveer Diamond - Main Office Core</title>
     <style>
-        /* Shared Core Cyber Theme Matrix */
+        /* Shared Core Cyber Theme Matrix - Original Premium Dark Theme */
         :root {
             --bg-primary: #0B132B;
             --bg-secondary: #111D37;
@@ -37,7 +37,7 @@
             overflow-x: hidden;
         }
 
-        /* Top Bar & Logo Matrix */
+        /* Top Bar Matrix */
         .window-control-bar {
             height: 50px;
             background-color: var(--top-bar-bg);
@@ -65,7 +65,6 @@
             box-shadow: 0 0 8px #00C6FF;
         }
 
-        /* Live Cyber Glow Animation for RAGHUVEER DIAMOND */
         .brand-title {
             font-size: 16px;
             font-weight: 900;
@@ -83,7 +82,6 @@
             100% { background-position: 300% center; }
         }
 
-        /* Computer Windows Style Small Control Buttons */
         .window-actions {
             display: flex;
             height: 100%;
@@ -113,7 +111,7 @@
             color: #FFFFFF;
         }
 
-        /* Core Layout Grid */
+        /* Core Layout Container */
         .office-container {
             flex: 1;
             padding: 15px;
@@ -123,9 +121,10 @@
             max-width: 1400px;
             width: 100%;
             margin: 0 auto;
+            position: relative;
         }
 
-        /* 5 Main Core Cards Row Grid */
+        /* 5 Main Core Cards Responsive Matrix Grid */
         .core-metrics-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -141,20 +140,25 @@
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             transition: border-color 0.2s;
+            cursor: pointer;
         }
 
         .metric-card:hover {
             border-color: var(--accent-cyan);
         }
 
+        /* Indicator Bars Settings */
         .metric-card::before {
             content: '';
             position: absolute;
             top: 0; left: 0; width: 4px; height: 100%;
             background: var(--accent-blue);
         }
-
-        .metric-card.green-tag::before { background: var(--accent-green); }
+        #card-bank::before { background: var(--accent-blue); }
+        #card-rough::before { background: #F39C12; } /* Orange for Rough Purchase */
+        #card-sales::before { background: var(--accent-green); } /* Green for Sales Only */
+        #card-cash::before { background: #9B59B6; } /* Purple for Cash Flow */
+        #card-broker::before { background: var(--accent-cyan); } /* Cyan for Broker */
 
         .card-label {
             font-size: 11px;
@@ -165,10 +169,11 @@
         }
 
         .card-value {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             letter-spacing: 0.5px;
             margin-bottom: 8px;
+            min-height: 28px;
         }
 
         .live-status-indicator {
@@ -189,6 +194,21 @@
         @keyframes blink { 50% { opacity: 0.3; } }
 
         /* Universal Cyber Print Station Layout */
+        .workspace-split-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .block-title {
+            font-size: 13px;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
         .print-station-card {
             background: linear-gradient(145deg, var(--bg-secondary), #162649);
             border: 1px solid rgba(91, 192, 190, 0.2);
@@ -259,58 +279,129 @@
             background: #1C2541;
         }
 
-        /* 2050 Director Advanced Configuration Control Panel */
-        .director-settings-bar {
-            background: #070B19;
+        /* Bottom-Right Floating Cyber Gear Icon */
+        .floating-settings-trigger {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 45px;
+            height: 45px;
+            background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            padding: 15px;
-            border-radius: 12px;
+            border-radius: 50%;
+            color: var(--accent-cyan);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 198, 255, 0.2);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .floating-settings-trigger:hover {
+            border-color: var(--accent-cyan);
+            color: #FFFFFF;
+            transform: rotate(45deg);
+            box-shadow: 0 0 15px var(--accent-cyan);
+        }
+
+        /* 2050 Advanced Central Modal/Popup Control Panel */
+        .cyber-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(7, 11, 25, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cyber-popup-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            padding: 25px;
+            box-shadow: 0 0 30px rgba(91, 192, 190, 0.3);
+            animation: popupScale 0.3s ease-out;
+        }
+
+        @keyframes popupScale {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .popup-title {
+            font-size: 14px;
+            color: var(--accent-cyan);
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .popup-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .popup-close:hover { color: var(--accent-red); }
+
+        .popup-row {
+            margin-bottom: 15px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
 
-        .settings-top-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .config-input-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .popup-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
         }
 
         .cyber-input {
             background: var(--bg-primary);
             border: 1px solid var(--border-color);
             color: var(--accent-cyan);
-            padding: 6px 10px;
+            padding: 8px 12px;
             border-radius: 6px;
             outline: none;
-            width: 80px;
+            width: 100%;
             font-weight: bold;
             text-align: center;
         }
 
-        .cyber-switch-panel {
+        .cyber-input:focus { border-color: var(--accent-blue); }
+
+        .popup-switch-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
-            width: 100%;
-            border-top: 1px dashed var(--border-color);
-            padding-top: 12px;
+            margin-top: 10px;
         }
 
         .cyber-toggle-btn {
-            background: var(--bg-secondary);
+            background: var(--bg-primary);
             border: 1px solid var(--border-color);
             color: var(--text-muted);
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 10px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 10px;
             font-weight: bold;
@@ -327,8 +418,8 @@
         }
 
         .privacy-blur-effect {
-            filter: blur(8px);
-            pointer-events: none;
+            filter: blur(8px) !important;
+            pointer-events: none !important;
         }
     </style>
 </head>
@@ -350,40 +441,40 @@
 
     <div class="office-container">
         
-        <!-- 5 Core Pillars Row -->
+        <!-- 5 Core Pillars Grid Layout -->
         <div class="core-metrics-row">
             <!-- 1. BANK CARD -->
-            <div class="metric-card" id="card-bank" onclick="window.location.href='bank_details.html'" style="cursor: pointer;">
+            <div class="metric-card" id="card-bank" onclick="window.location.href='bank_details.html'">
                 <div class="card-label" id="lbl-bank">BANK</div>
-                <div class="card-value" id="val-usd">₹ 83.72</div>
+                <div class="card-value" id="val-usd">NO DATA</div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
             <!-- 2. ROUGH PURCHASE CARD -->
-            <div class="metric-card" id="card-rough" onclick="window.location.href='rough_purchase.html'" style="cursor: pointer;">
+            <div class="metric-card" id="card-rough" onclick="window.location.href='rough_purchase.html'">
                 <div class="card-label" id="lbl-rough">ROUGH PURCHASE</div>
                 <div class="card-value" id="val-rough">0 Carats</div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
             <!-- 3. GLOBAL SALES CARD -->
-            <div class="metric-card green-tag" id="card-sales" onclick="window.location.href='sales_details.html'" style="cursor: pointer;">
+            <div class="metric-card" id="card-sales" onclick="window.location.href='sales_details.html'">
                 <div class="card-label" id="lbl-sales">GLOBAL SALES</div>
-                <div class="card-value" id="val-sales">₹ 0</div>
+                <div class="card-value" id="val-sales">0 Carats</div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
             <!-- 4. CASH FLOW CARD -->
-            <div class="metric-card" id="card-cash" onclick="window.location.href='cash_flow.html'" style="cursor: pointer;">
+            <div class="metric-card" id="card-cash" onclick="window.location.href='cash_flow.html'">
                 <div class="card-label" id="lbl-cash">CASH FLOW</div>
                 <div class="card-value" id="val-cash">₹ 0</div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
 
             <!-- 5. BROKER & PARTY DIRECTORY -->
-            <div class="metric-card" id="card-broker" onclick="window.location.href='broker_list.html'" style="cursor: pointer;">
+            <div class="metric-card" id="card-broker" onclick="window.location.href='broker_list.html'">
                 <div class="card-label" id="lbl-broker">BROKER & PARTY</div>
-                <div class="card-value" id="val-broker">Listing...</div>
+                <div class="card-value" id="val-broker">STANDBY</div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
         </div>
@@ -416,29 +507,38 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- ⚙️ 2050 Director Advanced Live Configuration Control Panel -->
-        <div class="director-settings-bar">
-            <div class="settings-top-row">
-                <div class="config-input-group">
-                    <span style="font-size: 12px; color: var(--accent-cyan); font-weight: 600;">⚙️ AI AUTO-PILOT ROTATION TIME:</span>
-                    <input type="number" id="txt-timer" class="cyber-input" value="3" min="1" onchange="updateRotationSpeed()">
-                    <span style="font-size: 11px; color: var(--text-muted);">SEC</span>
-                </div>
-                <div style="font-size: 10px; color: var(--accent-green); font-weight: bold; letter-spacing: 0.5px;" id="txt-sys-status">
-                    MATRIX DATA CONTAINER SYNC: ACTIVE (2050 STANDARD)
+    <!-- ⚙️ Floating Gear Icon (Bottom Right Position) -->
+    <div class="floating-settings-trigger" onclick="openSettingsPopup()">⚙️</div>
+
+    <!-- 🧠 2050 Director Settings Central Popup Modal Page -->
+    <div class="cyber-modal-overlay" id="settings-modal" onclick="closeSettingsPopup(event)">
+        <div class="cyber-popup-card">
+            <div class="popup-header">
+                <div class="popup-title">⚙️ Director Control Center</div>
+                <button class="popup-close" onclick="closeSettingsPopup(null, true)">✕</button>
+            </div>
+            
+            <div class="popup-row">
+                <div class="popup-label">AI Auto-Pilot Rotation Time (Seconds)</div>
+                <input type="number" id="txt-timer" class="cyber-input" value="3" min="1" onchange="updateRotationSpeed()">
+            </div>
+            
+            <div class="popup-row">
+                <div class="popup-label">System Mode Configuration</div>
+                <div class="popup-switch-grid">
+                    <button class="cyber-toggle-btn" id="btn-privacy" onclick="togglePrivacyMode()">🔒 Privacy Mode</button>
+                    <button class="cyber-toggle-btn" id="btn-forecast" onclick="toggleForecastMode()">🧠 AI Forecast</button>
+                    <button class="cyber-toggle-btn" id="btn-currency" onclick="toggleCurrencyConverter()">💵 Currency USD</button>
+                    <button class="cyber-toggle-btn" id="btn-anomaly" onclick="toggleAnomalyDetection()">🚀 Cyber Alert</button>
                 </div>
             </div>
-
-            <!-- 2050 Future Live Switches -->
-            <div class="cyber-switch-panel">
-                <button class="cyber-toggle-btn" id="btn-privacy" onclick="togglePrivacyMode()">🔒 Privacy Mode (Hide)</button>
-                <button class="cyber-toggle-btn" id="btn-forecast" onclick="toggleForecastMode()">🧠 AI Forecast Mode</button>
-                <button class="cyber-toggle-btn" id="btn-currency" onclick="toggleCurrencyConverter()">💵 Currency: INR</button>
-                <button class="cyber-toggle-btn" id="btn-anomaly" onclick="toggleAnomalyDetection()">🚀 Cyber Anomaly Alert</button>
+            
+            <div style="font-size: 9px; color: var(--accent-green); text-align: center; font-weight: bold; margin-top: 15px; letter-spacing: 0.5px;">
+                SECURITY SYNC ACTIVE (2050 ENGINE STANDARD)
             </div>
         </div>
-
     </div>
 
     <script>
@@ -459,11 +559,12 @@
             window.location.href = 'dashboard.html'; 
         }
 
-        window.addEventListener('click', function initiateOfficeFullScreen() {
-            const docEl = document.documentElement;
-            if (docEl.requestFullscreen) docEl.requestFullscreen();
-            else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
-            window.removeEventListener('click', initiateOfficeFullScreen);
+        // --- Live Global Click for Auto Fullscreen Mode Locking ---
+        window.addEventListener('click', function globalFullScreenLock() {
+            const doc = document.documentElement;
+            if (doc.requestFullscreen) doc.requestFullscreen();
+            else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
+            window.removeEventListener('click', globalFullScreenLock);
         });
 
         function triggerFullScreen() {
@@ -475,7 +576,7 @@
         }
 
         function triggerMinimize() {
-            console.log("Main Office terminal minimized.");
+            console.log("Terminal window tracking minimized.");
         }
 
         function executeCyberPrint(documentType) {
@@ -489,45 +590,45 @@
             document.getElementById(`sz-${sizeKey}`).classList.add('active');
         }
 
+        // --- Popup Control Open/Close System ---
+        function openSettingsPopup() {
+            document.getElementById('settings-modal').style.display = 'flex';
+        }
+
+        function closeSettingsPopup(e, forceClose = false) {
+            if (forceClose || (e && e.target.id === 'settings-modal')) {
+                document.getElementById('settings-modal').style.display = 'none';
+            }
+        }
+
+        // --- 2050 Advanced Live Switches Logic ---
         function togglePrivacyMode() {
             isPrivacyActive = !isPrivacyActive;
             const btn = document.getElementById('btn-privacy');
-            const targetCards = [document.getElementById('card-sales'), document.getElementById('card-cash')];
+            const targets = [document.getElementById('card-sales'), document.getElementById('card-cash')];
             
             if(isPrivacyActive) {
                 btn.classList.add('active');
-                targetCards.forEach(c => c.classList.add('privacy-blur-effect'));
+                targets.forEach(c => c.classList.add('privacy-blur-effect'));
             } else {
                 btn.classList.remove('active');
-                targetCards.forEach(c => c.classList.remove('privacy-blur-effect'));
+                targets.forEach(c => c.classList.remove('privacy-blur-effect'));
             }
         }
 
         function toggleForecastMode() {
             isForecastActive = !isForecastActive;
             const btn = document.getElementById('btn-forecast');
-            if(isForecastActive) {
-                btn.classList.add('active');
-                document.getElementById('txt-sys-status').innerText = "AI PREDICTIVE FORECASTING MODE: RUNNING";
-                document.getElementById('txt-sys-status').style.color = "var(--accent-blue)";
-            } else {
-                btn.classList.remove('active');
-                document.getElementById('txt-sys-status').innerText = "MATRIX DATA CONTAINER SYNC: ACTIVE (2050 STANDARD)";
-                document.getElementById('txt-sys-status').style.color = "var(--accent-green)";
-            }
+            if(isForecastActive) btn.classList.add('active');
+            else btn.classList.remove('active');
             loadDashboardData();
         }
 
         function toggleCurrencyConverter() {
             isCurrencyUsd = !isCurrencyUsd;
             const btn = document.getElementById('btn-currency');
-            if(isCurrencyUsd) {
-                btn.classList.add('active');
-                btn.innerText = "💵 Currency: USD";
-            } else {
-                btn.classList.remove('active');
-                btn.innerText = "💵 Currency: INR";
-            }
+            if(isCurrencyUsd) btn.classList.add('active');
+            else btn.classList.remove('active');
             loadDashboardData();
         }
 
@@ -536,87 +637,98 @@
             const btn = document.getElementById('btn-anomaly');
             if(isAnomalyActive) {
                 btn.classList.add('active');
-                console.log("Cyber Anomaly Detection Engine Activated.");
+                console.log("Anomaly scanner operating actively.");
             } else {
                 btn.classList.remove('active');
             }
         }
 
+        // --- Pure Container Real-Time Dashboard Synchronization Logic ---
         function loadDashboardData() {
             const usdRate = parseFloat(localStorage.getItem('usd_rate')) || 83.72;
 
-            // 1. BANK CARD
-            const bankAccounts = JSON.parse(localStorage.getItem('factory_banks')) || [
-                { name: "SBI MAIN A/C", rate: usdRate },
-                { name: "HDFC SURAT", rate: usdRate }
-            ];
-            if(bankAccounts.length > 0) {
+            // 1. BANK CARD (Syncs only when inner database contains entries)
+            const bankAccounts = JSON.parse(localStorage.getItem('factory_banks'));
+            if(bankAccounts && bankAccounts.length > 0) {
                 let currentBank = bankAccounts[bankRotateIdx % bankAccounts.length];
                 document.getElementById('lbl-bank').innerText = `BANK: ${currentBank.name}`;
                 document.getElementById('val-usd').innerText = "₹ " + currentBank.rate;
+                bankRotateIdx++;
+            } else {
+                document.getElementById('lbl-bank').innerText = "BANK";
+                document.getElementById('val-usd').innerText = "NO DATA";
             }
-            bankRotateIdx++;
 
-            // 2. ROUGH PURCHASE CARD
-            const totalRough = parseFloat(localStorage.getItem('total_rough')) || 0;
+            // 2. ROUGH PURCHASE CARD (Safe Stock Tracker Matrix)
+            const totalRough = parseFloat(localStorage.getItem('total_rough'));
             const roughInProcess = parseFloat(localStorage.getItem('rough_in_process')) || 0;
-            let netSafeStock = Math.max(0, totalRough - roughInProcess);
             
-            if(isForecastActive) {
-                netSafeStock = Math.max(0, netSafeStock - 150); 
-                document.getElementById('lbl-rough').innerText = "ROUGH IN SAFE (AI EST.)";
+            if (!isNaN(totalRough)) {
+                let netSafeStock = Math.max(0, totalRough - roughInProcess);
+                if(isForecastActive) {
+                    netSafeStock = Math.max(0, netSafeStock - 150); 
+                    document.getElementById('lbl-rough').innerText = "ROUGH SAFE (AI EST.)";
+                } else {
+                    document.getElementById('lbl-rough').innerText = "ROUGH PURCHASE";
+                }
+                document.getElementById('val-rough').innerText = netSafeStock.toLocaleString('en-IN') + " Carats";
             } else {
                 document.getElementById('lbl-rough').innerText = "ROUGH PURCHASE";
+                document.getElementById('val-rough').innerText = "0 Carats";
             }
-            document.getElementById('val-rough').innerText = netSafeStock.toLocaleString('en-IN') + " Carats";
 
-            // 3. GLOBAL SALES CARD
-            const polishedStock = JSON.parse(localStorage.getItem('polished_safe_stock')) || [
-                { quality: "VVS QUALITY", weight: 0 },
-                { quality: "VS QUALITY", weight: 0 },
-                { quality: "SI QUALITY", weight: 0 },
-                { quality: "DM FLAWLESS", weight: 0 },
-                { quality: "FLORO STOCK", weight: 0 }
-            ];
-            if(polishedStock.length > 0) {
+            // 3. GLOBAL SALES CARD (Full Row Detail Slider Logic)
+            const polishedStock = JSON.parse(localStorage.getItem('polished_safe_stock'));
+            if(polishedStock && polishedStock.length > 0) {
                 let currentPolished = polishedStock[salesRotateIdx % polishedStock.length];
-                document.getElementById('lbl-sales').innerText = `SAFE: ${currentPolished.quality}`;
+                // Displays full configuration row string dynamically generated from inner fields
+                document.getElementById('lbl-sales').innerText = `${currentPolished.purity} - ${currentPolished.color} - ${currentPolished.size} - ${currentPolished.fluorescence}`;
                 document.getElementById('val-sales').innerText = currentPolished.weight.toLocaleString('en-IN') + " Carats";
-            }
-            salesRotateIdx++;
-
-            // 4. CASH FLOW CARD
-            let totalCash = parseFloat(localStorage.getItem('total_cash')) || 0;
-            let todayCashIn = parseFloat(localStorage.getItem('today_cash_incoming')) || 0;
-            let todayCashOut = parseFloat(localStorage.getItem('today_cash_expense')) || 0;
-
-            if(isCurrencyUsd) {
-                totalCash = totalCash / usdRate;
-                todayCashIn = todayCashIn / usdRate;
-                todayCashOut = todayCashOut / usdRate;
+                salesRotateIdx++;
+            } else {
+                document.getElementById('lbl-sales').innerText = "GLOBAL SALES";
+                document.getElementById('val-sales').innerText = "0 Carats";
             }
 
-            const curSym = isCurrencyUsd ? "$ " : "₹ ";
-            const cashStates = [
-                { label: "CURRENT CASH", value: curSym + totalCash.toLocaleString('en-IN', {maximumFractionDigits:2}) },
-                { label: "TODAY INCOMING", value: curSym + todayCashIn.toLocaleString('en-IN', {maximumFractionDigits:2}) },
-                { label: "TODAY EXPENSE", value: curSym + todayCashOut.toLocaleString('en-IN', {maximumFractionDigits:2}) }
-            ];
-            let currentCashState = cashStates[cashRotateIdx % cashStates.length];
-            document.getElementById('lbl-cash').innerText = currentCashState.label;
-            document.getElementById('val-cash').innerText = currentCashState.value;
-            cashRotateIdx++;
+            // 4. CASH FLOW CARD (3-State Cash Drawer Rotation Engine)
+            const cashData = localStorage.getItem('total_cash');
+            if (cashData !== null) {
+                let totalCash = parseFloat(cashData) || 0;
+                let todayCashIn = parseFloat(localStorage.getItem('today_cash_incoming')) || 0;
+                let todayCashOut = parseFloat(localStorage.getItem('today_cash_expense')) || 0;
 
-            // 5. BROKER & PARTY DIRECTORY
-            const brokerList = JSON.parse(localStorage.getItem('broker_directory')) || [
-                { name: "NO ACTIVE DEAL", status: "STANDBY" }
-            ];
-            if(brokerList.length > 0) {
+                if(isCurrencyUsd) {
+                    totalCash = totalCash / usdRate;
+                    todayCashIn = todayCashIn / usdRate;
+                    todayCashOut = todayCashOut / usdRate;
+                }
+
+                const curSym = isCurrencyUsd ? "$ " : "₹ ";
+                const cashStates = [
+                    { label: "CURRENT CASH", value: curSym + totalCash.toLocaleString('en-IN', {maximumFractionDigits:2}) },
+                    { label: "TODAY INCOMING", value: curSym + todayCashIn.toLocaleString('en-IN', {maximumFractionDigits:2}) },
+                    { label: "TODAY EXPENSE", value: curSym + todayCashOut.toLocaleString('en-IN', {maximumFractionDigits:2}) }
+                ];
+                let currentCashState = cashStates[cashRotateIdx % cashStates.length];
+                document.getElementById('lbl-cash').innerText = currentCashState.label;
+                document.getElementById('val-cash').innerText = currentCashState.value;
+                cashRotateIdx++;
+            } else {
+                document.getElementById('lbl-cash').innerText = "CASH FLOW";
+                document.getElementById('val-cash').innerText = "₹ 0";
+            }
+
+            // 5. BROKER & PARTY DIRECTORY (Market Flow Manager Matrix)
+            const brokerList = JSON.parse(localStorage.getItem('broker_directory'));
+            if(brokerList && brokerList.length > 0) {
                 let currentBroker = brokerList[brokerRotateIdx % brokerList.length];
                 document.getElementById('lbl-broker').innerText = `BROKER: ${currentBroker.name}`;
                 document.getElementById('val-broker').innerText = currentBroker.status;
+                brokerRotateIdx++;
+            } else {
+                document.getElementById('lbl-broker').innerText = "BROKER & PARTY";
+                document.getElementById('val-broker').innerText = "STANDBY";
             }
-            brokerRotateIdx++;
         }
 
         function updateRotationSpeed() {
@@ -627,6 +739,7 @@
             localStorage.setItem('user_rotation_speed', seconds);
         }
 
+        // Initial System Boot Controller Execution
         loadDashboardData();
         let savedSpeed = localStorage.getItem('user_rotation_speed') || 3;
         document.getElementById('txt-timer').value = savedSpeed;
