@@ -668,6 +668,15 @@
             localStorage.setItem('custom_departments', JSON.stringify([]));
         }
 
+        // Automatic Full Screen Trigger on First Click anywhere on document
+        document.addEventListener('click', function autoFullScreenInit() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            }
+            // Remove listener after first interaction to avoid redundant executions
+            document.removeEventListener('click', autoFullScreenInit);
+        });
+
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(() => {});
