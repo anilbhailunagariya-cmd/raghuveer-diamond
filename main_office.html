@@ -2,135 +2,385 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Raghuveer Diamond - Main Office Core</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Office - RAGHUVEER DIAMOND</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #070B19;
-            --card: #0B132B;
-            --cyan: #5BC0BE;
-            --blue: #00C6FF;
-            --border: #1C2541;
-            --text: #FFFFFF;
-            --accent: #5BC0BE;
-            --safe: #39FF14;
-            --danger: #FF3B30;
+            --bg-primary: #0a0b10;
+            --bg-secondary: #121420;
+            --card-bg: #181b2c;
+            --accent: #00ffcc;
+            --accent-dim: rgba(0, 255, 204, 0.1);
+            --text-main: #f0f3f8;
+            --text-muted: #8a99ad;
+            --border-color: #262b44;
+            --cyan: #00d2ff;
+            --neon-blue: #0066ff;
+            --safe: #00ff66;
+            --alert: #ff3366;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { background: var(--bg); color: var(--text); height: 100vh; width: 100vw; overflow: hidden; display: flex; flex-direction: column; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
 
-        /* Header Terminal Node with Name Display Only */
-        .header { height: 50px; background: rgba(0,0,0,0.4); display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid var(--border); }
-        .logo-text { font-size: 16px; font-weight: 800; letter-spacing: 1.5px; color: var(--blue); text-transform: uppercase; }
-        .win-actions { display: flex; align-items: center; gap: 8px; }
-        .win-btn { background: #111D37; color: var(--accent); border: 1px solid var(--border); width: 25px; height: 25px; cursor: pointer; border-radius: 4px; }
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            overflow-x: hidden;
+            padding: 20px;
+        }
 
-        .container { padding: 12px; display: flex; flex-direction: column; gap: 10px; flex: 1; overflow-y: auto; }
+        /* Core Layout Grid */
+        .office-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-        /* Metrics Grid Architecture */
-        .metrics-grid { display: flex; flex-direction: column; gap: 10px; }
-        .metric-card { background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--cyan); border-radius: 6px; padding: 12px; position: relative; transition: transform 0.2s, box-shadow 0.2s; text-decoration: none; color: inherit; display: block; }
-        .metric-card.clickable { cursor: pointer; border-left-color: var(--blue); }
-        .metric-card.clickable:hover { transform: scale(1.01); box-shadow: 0 0 10px rgba(0,198,255,0.15); }
-        
-        .m-label { font-size: 9px; color: #708090; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
-        .m-value { font-size: 20px; font-weight: bold; margin-top: 4px; color: #FFF; display: flex; align-items: center; justify-content: space-between; }
-        .m-dot { width: 6px; height: 6px; background: var(--safe); border-radius: 50%; display: inline-block; }
+        /* 4 Main Core Cards */
+        .core-metrics-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
 
-        /* Universal Cyber Print Station Layout */
-        .station-box { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
-        .station-title { font-size: 11px; font-weight: bold; color: var(--cyan); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 2px; }
-        
-        .station-btn { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; color: #FFF; font-size: 11px; font-weight: 600; text-decoration: none; transition: background 0.2s; }
-        .station-btn:hover { background: var(--border); color: var(--accent); }
-        .icon-glyph { font-size: 14px; }
+        .metric-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--neon-blue);
+        }
+
+        .metric-card.cyan::before { background: var(--cyan); }
+        .metric-card.safe::before { background: var(--safe); }
+        .metric-card.accent::before { background: var(--accent); }
+
+        .m-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .m-value {
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 5px;
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Navigation Grid Matrix */
+        .nav-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 5px;
+        }
+
+        .matrix-btn {
+            background: linear-gradient(135deg, #181b2c 0%, #121420 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .matrix-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+        }
+
+        .matrix-btn i {
+            font-size: 24px;
+            color: var(--accent);
+        }
+
+        /* Quick View Frame Terminal */
+        .preview-terminal {
+            background: #07080c;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 5px;
+        }
+
+        .term-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .term-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--cyan);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .term-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .data-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .data-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .data-item span:last-child {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 5px;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #fff 0%, var(--text-muted) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .live-tag {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Header Terminal Module with Name Only -->
-    <div class="header">
-        <div class="logo-text" id="header-title">RAGHUVEER DIAMOND</div>
-        <div class="win-actions">
-            <button class="win-btn">-</button><button class="win-btn">🗖</button><button class="win-btn">✕</button>
-        </div>
-    </div>
-
-    <div class="container">
+    <div class="office-container">
         
-        <!-- Metrics Data Display Grid -->
-        <div class="metrics-grid">
-            
-            <div class="metric-card">
-                <div class="m-label">BANK MATRIX STANDARD REFERENCE</div>
-                <div class="m-value"><span>₹ 83.72</span><span class="m-dot"></span></div>
-            </div>
-
-            <div class="metric-card">
-                <div class="m-label">ROUGH PURCHASE RECORDED</div>
-                <div class="m-value"><span>0 Carats</span><span class="m-dot"></span></div>
-            </div>
-
-            <div class="metric-card">
-                <div class="m-label">GLOBAL SALES REVENUE TRANSACTION</div>
-                <div class="m-value"><span id="display-global-sales">₹ 0</span><span class="m-dot"></span></div>
-            </div>
-
-            <!-- Clickable Cash Flow Module Linking to Separate cash_flow.html Page -->
-            <a href="cash_flow.html" class="metric-card clickable">
-                <div class="m-label">CASH FLOW (HAND CASH IN VAULT)</div>
-                <div class="m-value"><span id="display-cash-on-hand">₹ 0</span><span class="m-dot" style="background:var(--blue);"></span></div>
-            </a>
-
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-text">RAGHUVEER DIAMOND</div>
+            <div class="live-tag">MAIN CONTROL TERMINAL</div>
         </div>
 
-        <!-- Universal Cyber Print Station Hub -->
-        <div class="station-box">
-            <div class="station-title">UNIVERSAL CYBER PRINT STATION</div>
-            
-            <a href="sales_details.html" class="station-btn">
-                <span>1. DIGITAL QUANTUM INVOICE CORE MODULE</span>
-                <span class="icon-glyph">📄</span>
-            </a>
+        <!-- 4 Core Metrics Row -->
+        <div class="core-metrics-row">
+            <div class="metric-card">
+                <div class="m-label">Total Rough Stock</div>
+                <div class="m-value" id="val-rough">0.00 Carats</div>
+            </div>
+            <div class="metric-card cyan">
+                <div class="m-label">Live USD/INR Rate</div>
+                <div class="m-value" id="val-usd">₹83.72</div>
+            </div>
+            <div class="metric-card safe">
+                <div class="m-label">Total Liquid Cash</div>
+                <div class="m-value" id="val-cash">₹0.00</div>
+            </div>
+            <div class="metric-card accent">
+                <div class="m-label">Gross Sales Revenue</div>
+                <div class="m-value" id="val-sales">₹0.00</div>
+            </div>
+        </div>
 
-            <a href="#" class="station-btn" onclick="alert('Letter Pad Print module ready.'); return false;">
-                <span>2. LETTER PAD PRINT HUB</span>
-                <span class="icon-glyph">🖨️</span>
+        <!-- Navigation Matrix Grid -->
+        <div class="nav-matrix">
+            <a href="dashboard.html" class="matrix-btn">
+                <i>📊</i>
+                <span>Live Dashboard</span>
             </a>
-
-            <a href="#" class="station-btn" onclick="alert('Check Print hardware mapping active.'); return false;">
-                <span>3. CHECK PRINT MATRIX MODULE</span>
-                <span class="icon-glyph">🏦</span>
+            <a href="rough_purchase.html" class="matrix-btn">
+                <i>💎</i>
+                <span>Rough Purchase</span>
             </a>
-
-            <a href="#" class="station-btn" onclick="alert('Exporting localized ledger sheets...'); return false;">
-                <span>4. EXCEL EXPORT & DATA STREAM</span>
-                <span class="icon-glyph">📊</span>
+            <a href="sales_details.html" class="matrix-btn">
+                <i>💰</i>
+                <span>Sales Records</span>
+            </a>
+            <a href="bank_details.html" class="matrix-btn">
+                <i>🏦</i>
+                <span>Bank Ledger</span>
+            </a>
+            <a href="cash_flow.html" class="matrix-btn">
+                <i>💸</i>
+                <span>Cash Flow Matrix</span>
+            </a>
+            <a href="bank_settings.html" class="matrix-btn">
+                <i>⚙️</i>
+                <span>Bank Settings</span>
             </a>
         </div>
+
+        <!-- Live Preview Terminal -->
+        <div class="preview-terminal">
+            <div class="term-header">
+                <div class="term-title">
+                    <div class="term-dot"></div>
+                    SYSTEM INTEGRITY PREVIEW (REAL-TIME LOCALSTORAGE)
+                </div>
+            </div>
+            
+            <div class="grid-3">
+                <!-- Rough Section -->
+                <div>
+                    <h3 style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Latest Rough Logs</h3>
+                    <ul class="data-list" id="log-rough">
+                        <li class="data-item" style="color: var(--text-muted)">No transactions recorded</li>
+                    </ul>
+                </div>
+                <!-- Sales Section -->
+                <div>
+                    <h3 style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Recent Invoice Dispatches</h3>
+                    <ul class="data-list" id="log-sales">
+                        <li class="data-item" style="color: var(--text-muted)">No invoices generated</li>
+                    </ul>
+                </div>
+                <!-- Cash flow Section -->
+                <div>
+                    <h3 style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Recent Cash Movements</h3>
+                    <ul class="data-list" id="log-cash">
+                        <li class="data-item" style="color: var(--text-muted)">No manual flows recorded</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        function initializeDashboardCore() {
-            if(!localStorage.getItem('global_sales')) {
-                localStorage.setItem('global_sales', '0');
+        // Real-time Data Synchronization Function
+        function loadDashboardData() {
+            // Retrieve data fields from localStorage safely
+            const totalRough = localStorage.getItem('total_rough') || "0";
+            const usdRate = localStorage.getItem('usd_rate') || "83.72";
+            const totalCash = parseFloat(localStorage.getItem('total_cash')) || 0;
+            const globalSales = parseFloat(localStorage.getItem('global_sales')) || 0;
+
+            // Update DOM Counter Metrics
+            document.getElementById('val-rough').innerText = parseFloat(totalRough).toLocaleString('en-IN') + " Carats";
+            document.getElementById('val-usd').innerText = "₹" + usdRate;
+            document.getElementById('val-cash').innerText = "₹" + totalCash.toLocaleString('en-IN');
+            document.getElementById('val-sales').innerText = "₹" + globalSales.toLocaleString('en-IN');
+
+            // Render Rough Preview Items
+            const roughPurchases = JSON.parse(localStorage.getItem('rough_purchases')) || [];
+            const roughLogContainer = document.getElementById('log-rough');
+            if(roughPurchases.length > 0) {
+                roughLogContainer.innerHTML = roughPurchases.slice(-3).reverse().map(item => `
+                    <li class="data-item">
+                        <span>Lot: ${item.lotNumber || 'N/A'}</span>
+                        <span style="color: var(--cyan)">${parseFloat(item.totalCarats).toFixed(2)} Cts</span>
+                    </li>
+                `).join('');
             }
-            if(!localStorage.getItem('cash_on_hand')) {
-                localStorage.setItem('cash_on_hand', '0');
+
+            // Render Sales Preview Items
+            const salesRecords = JSON.parse(localStorage.getItem('sales_records')) || [];
+            const salesLogContainer = document.getElementById('log-sales');
+            if(salesRecords.length > 0) {
+                salesLogContainer.innerHTML = salesRecords.slice(-3).reverse().map(item => `
+                    <li class="data-item">
+                        <span>Inv: ${item.invoiceNo || 'N/A'}</span>
+                        <span style="color: var(--safe)">₹${parseFloat(item.totalAmount).toLocaleString('en-IN')}</span>
+                    </li>
+                `).join('');
             }
-            refreshLiveDisplayCounters();
+
+            // Render Cash Flow Preview Items
+            const cashTransactions = JSON.parse(localStorage.getItem('cash_transactions')) || [];
+            const cashLogContainer = document.getElementById('log-cash');
+            if(cashTransactions.length > 0) {
+                cashLogContainer.innerHTML = cashTransactions.slice(-3).reverse().map(item => {
+                    const typeColor = item.type === 'Inflow' ? 'var(--safe)' : 'var(--alert)';
+                    const prefix = item.type === 'Inflow' ? '+' : '-';
+                    return `
+                        <li class="data-item">
+                            <span>${item.party || 'Manual'}</span>
+                            <span style="color: ${typeColor}">${prefix}₹${parseFloat(item.amount).toLocaleString('en-IN')}</span>
+                        </li>
+                    `;
+                }).join('');
+            }
         }
 
-        function refreshLiveDisplayCounters() {
-            let salesVal = parseFloat(localStorage.getItem('global_sales')) || 0;
-            let cashVal = parseFloat(localStorage.getItem('cash_on_hand')) || 0;
-            
-            document.getElementById('display-global-sales').innerText = '₹ ' + salesVal.toLocaleString('en-IN', {minimumFractionDigits: 2});
-            document.getElementById('display-cash-on-hand').innerText = '₹ ' + cashVal.toLocaleString('en-IN', {minimumFractionDigits: 2});
-        }
-
-        window.onload = initializeDashboardCore;
+        // Initialize and setup polling mechanism for structural persistence
+        loadDashboardData();
+        setInterval(loadDashboardData, 2000);
     </script>
 </body>
 </html>
