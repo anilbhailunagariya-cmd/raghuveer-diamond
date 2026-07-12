@@ -125,6 +125,7 @@
             justify-content: flex-start;
         }
 
+        /* 3 Columns Matrix - 8 Blocks Configured */
         .core-metrics-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -153,7 +154,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 115px;
+            min-height: 125px;
         }
 
         .metric-card:hover {
@@ -184,6 +185,12 @@
         #card-print::before { background: #E74C3C; }
         #card-print:hover { border-color: #E74C3C; box-shadow: 0 0 15px rgba(231, 76, 60, 0.25); }
 
+        #card-4p-ghat::before { background: #F1C40F; }
+        #card-4p-ghat:hover { border-color: #F1C40F; box-shadow: 0 0 15px rgba(241, 196, 15, 0.25); }
+
+        #card-ready-pur::before { background: #1ABC9C; }
+        #card-ready-pur:hover { border-color: #1ABC9C; box-shadow: 0 0 15px rgba(26, 188, 156, 0.25); }
+
         .card-label {
             font-size: 10px;
             text-transform: uppercase;
@@ -207,6 +214,30 @@
             font-size: 11px;
             color: var(--text-muted);
             font-weight: 600;
+        }
+
+        /* Running Ticker/Strip Animation for Ready Purchase */
+        .marquee-strip-container {
+            width: 100%;
+            overflow: hidden;
+            background: rgba(7, 11, 25, 0.5);
+            border-radius: 4px;
+            padding: 3px 5px;
+            margin-bottom: 4px;
+        }
+
+        .marquee-strip {
+            display: inline-block;
+            white-space: nowrap;
+            font-size: 10px;
+            font-weight: bold;
+            color: var(--accent-cyan);
+            animation: stripMove 10s linear infinite;
+        }
+
+        @keyframes stripMove {
+            0% { transform: translate3d(100%, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
         }
 
         .live-status-indicator {
@@ -388,6 +419,7 @@
     <div class="office-container">
         <div class="core-metrics-grid">
             
+            <!-- 1. BANK CARD -->
             <div class="metric-card" id="card-bank" onclick="window.location.href='bank_details.html'">
                 <div>
                     <div class="card-label" id="lbl-bank">BANK</div>
@@ -396,6 +428,7 @@
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
+            <!-- 2. ROUGH PURCHASE CARD -->
             <div class="metric-card" id="card-rough" onclick="window.location.href='rough_purchase.html'">
                 <div>
                     <div class="card-label" id="lbl-rough">ROUGH PURCHASE</div>
@@ -405,6 +438,7 @@
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
+            <!-- 3. GLOBAL SALES CARD -->
             <div class="metric-card" id="card-sales" onclick="window.location.href='sales_details.html'">
                 <div>
                     <div class="card-label" id="lbl-sales">GLOBAL SALES</div>
@@ -413,6 +447,7 @@
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
+            <!-- 4. CASH FLOW CARD -->
             <div class="metric-card" id="card-cash" onclick="window.location.href='cash_flow.html'">
                 <div>
                     <div class="card-label" id="lbl-cash">CASH FLOW</div>
@@ -421,6 +456,7 @@
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
 
+            <!-- 5. BROKER & PARTY CARD -->
             <div class="metric-card" id="card-broker" onclick="window.location.href='broker_list.html'">
                 <div>
                     <div class="card-label" id="lbl-broker">BROKER & PARTY</div>
@@ -429,6 +465,7 @@
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
 
+            <!-- 6. PRINTER STATION CARD -->
             <div class="metric-card" id="card-print" onclick="window.location.href='printer_station.html'">
                 <div>
                     <div class="card-label">PRINTER STATION</div>
@@ -437,6 +474,29 @@
                 </div>
                 <div class="live-status-indicator"><span class="status-dot" style="background-color: #E74C3C; box-shadow: 0 0 6px #E74C3C;"></span></div>
             </div>
+
+            <!-- 7. NEW BOX: 4P GHAT SALES CARD (4P Outward Linked Rejection) -->
+            <div class="metric-card" id="card-4p-ghat" onclick="window.location.href='ghat_sales.html'">
+                <div>
+                    <div class="card-label" id="lbl-4p-ghat">4P GHAT SALES</div>
+                    <div class="card-value" id="val-4p-ghat">0 Carats</div>
+                    <div class="card-sub-value" id="val-4p-total">Total Stock: 0 Carats</div>
+                </div>
+                <div class="live-status-indicator"><span class="status-dot" style="background-color: #F1C40F; box-shadow: 0 0 6px #F1C40F;"></span></div>
+            </div>
+
+            <!-- 8. NEW BOX: READY PURCHASE CARD (Running Strip + Live Weight Config) -->
+            <div class="metric-card" id="card-ready-pur" onclick="window.location.href='ready_purchase.html'">
+                <div>
+                    <div class="marquee-strip-container">
+                        <div class="marquee-strip" id="strip-ready-goods">LOT: NO DATA | DM: - | PURITY: - | COLOR: - | FLORO: -</div>
+                    </div>
+                    <div class="card-value" id="val-ready-pur">0 Carats</div>
+                    <div class="card-sub-value" id="val-ready-total">Total Ready Safe: 0 Carats</div>
+                </div>
+                <div class="live-status-indicator"><span class="status-dot" style="background-color: #1ABC9C; box-shadow: 0 0 6px #1ABC9C;"></span></div>
+            </div>
+
         </div>
     </div>
 
@@ -476,6 +536,8 @@
         let cashRotateIdx = 0;
         let brokerRotateIdx = 0;
         let roughRotateIdx = 0;
+        let ghatRotateIdx = 0;
+        let readyRotateIdx = 0;
         let rotationTimer = null;
 
         let isPrivacyActive = false;
@@ -521,7 +583,7 @@
         function togglePrivacyMode() {
             isPrivacyActive = !isPrivacyActive;
             const btn = document.getElementById('btn-privacy');
-            const targets = [document.getElementById('card-sales'), document.getElementById('card-cash')];
+            const targets = [document.getElementById('card-sales'), document.getElementById('card-cash'), document.getElementById('card-ready-pur')];
             
             if(isPrivacyActive) {
                 btn.classList.add('active');
@@ -558,6 +620,7 @@
         function loadDashboardData() {
             const usdRate = parseFloat(localStorage.getItem('usd_rate')) || 83.72;
 
+            // 1. BANK CORE
             const bankAccounts = JSON.parse(localStorage.getItem('factory_banks'));
             if(bankAccounts && bankAccounts.length > 0) {
                 let currentBank = bankAccounts[bankRotateIdx % bankAccounts.length];
@@ -569,17 +632,12 @@
                 document.getElementById('val-usd').innerText = "NO DATA";
             }
 
+            // 2. ROUGH PURCHASE 
             const roughLots = JSON.parse(localStorage.getItem('rough_safe_lots'));
             const roughInProcess = parseFloat(localStorage.getItem('rough_in_process')) || 0;
-            
             if(roughLots && roughLots.length > 0) {
                 let totalSafeCalculated = roughLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
                 let netSafeStock = Math.max(0, totalSafeCalculated - roughInProcess);
-
-                if(isForecastActive) {
-                    netSafeStock = Math.max(0, netSafeStock - 100);
-                }
-
                 let currentLot = roughLots[roughRotateIdx % roughLots.length];
                 
                 document.getElementById('lbl-rough').innerText = `LOT NO: ${currentLot.lot_no}`;
@@ -592,6 +650,7 @@
                 document.getElementById('val-rough-total').innerText = "Total Safe: 0 Carats";
             }
 
+            // 3. GLOBAL SALES
             const polishedStock = JSON.parse(localStorage.getItem('polished_safe_stock'));
             if(polishedStock && polishedStock.length > 0) {
                 let currentPolished = polishedStock[salesRotateIdx % polishedStock.length];
@@ -603,6 +662,7 @@
                 document.getElementById('val-sales').innerText = "0 Carats";
             }
 
+            // 4. CASH FLOW
             const cashData = localStorage.getItem('total_cash');
             if (cashData !== null) {
                 let totalCash = parseFloat(cashData) || 0;
@@ -630,6 +690,7 @@
                 document.getElementById('val-cash').innerText = "₹ 0";
             }
 
+            // 5. BROKER & PARTY
             const brokerList = JSON.parse(localStorage.getItem('broker_directory'));
             if(brokerList && brokerList.length > 0) {
                 let currentBroker = brokerList[brokerRotateIdx % brokerList.length];
@@ -639,6 +700,39 @@
             } else {
                 document.getElementById('lbl-broker').innerText = "BROKER & PARTY";
                 document.getElementById('val-broker').innerText = "STANDBY";
+            }
+
+            // 7. NEW: 4P GHAT SALES SYNC (Automatic combination with rough process metrics)
+            const ghatLots = JSON.parse(localStorage.getItem('4p_ghat_lots'));
+            if(ghatLots && ghatLots.length > 0) {
+                let totalGhatStock = ghatLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
+                let currentGhat = ghatLots[ghatRotateIdx % ghatLots.length];
+
+                document.getElementById('lbl-4p-ghat').innerText = `GHAT LOT: ${currentGhat.lot_no}`;
+                document.getElementById('val-4p-ghat').innerText = parseFloat(currentGhat.weight).toLocaleString('en-IN') + " Cts";
+                document.getElementById('val-4p-total').innerText = `Total Stock: ${totalGhatStock.toLocaleString('en-IN')} Cts`;
+                ghatRotateIdx++;
+            } else {
+                document.getElementById('lbl-4p-ghat').innerText = "4P GHAT SALES";
+                document.getElementById('val-4p-ghat').innerText = "0 Carats";
+                document.getElementById('val-4p-total').innerText = "Total Stock: 0 Carats";
+            }
+
+            // 8. NEW: READY PURCHASE SYNC (Pure 5 Parameter Ticker Strip + Zero Demo logic)
+            const readyLots = JSON.parse(localStorage.getItem('ready_purchase_lots'));
+            if(readyLots && readyLots.length > 0) {
+                let totalReadyStock = readyLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
+                let currentReady = readyLots[readyRotateIdx % readyLots.length];
+
+                // Parameter Ticker Strip update without party name for maximum security
+                document.getElementById('strip-ready-goods').innerText = `LOT: ${currentReady.lot_no} | DM: ${currentReady.dm} | PURITY: ${currentReady.purity} | COLOR: ${currentReady.color} | FLORO: ${currentReady.floro}`;
+                document.getElementById('val-ready-pur').innerText = parseFloat(currentReady.weight).toLocaleString('en-IN') + " Cts";
+                document.getElementById('val-ready-total').innerText = `Total Ready Safe: ${totalReadyStock.toLocaleString('en-IN')} Cts`;
+                readyRotateIdx++;
+            } else {
+                document.getElementById('strip-ready-goods').innerText = "LOT: NO DATA | DM: - | PURITY: - | COLOR: - | FLORO: -";
+                document.getElementById('val-ready-pur').innerText = "0 Carats";
+                document.getElementById('val-ready-total').innerText = "Total Ready Safe: 0 Carats";
             }
         }
 
