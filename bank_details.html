@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Raghuveer Diamond - AI Future Banking Terminal 2050</title>
+    <title>Raghuveer Diamond - AI Future Banking Terminal</title>
     <style>
         :root {
-            --bg-primary: #0B132B;
-            --bg-secondary: #111D37;
-            --top-bar-bg: #070B19;
+            --bg-primary: #070B19;
+            --bg-secondary: #0B132B;
+            --top-bar-bg: #050814;
             --border-color: #1C2541;
             --accent-cyan: #5BC0BE;
             --accent-blue: #00C6FF;
@@ -33,7 +33,7 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* No Scrolling Layout */
+            overflow: hidden;
         }
 
         /* Top Cyber Header Matrix */
@@ -43,7 +43,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 0 0 20px;
+            padding: 0 20px;
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -78,43 +78,58 @@
             100% { background-position: 300% center; }
         }
 
-        .window-actions {
-            display: flex;
-            height: 100%;
-        }
-
         .win-btn {
             background: none;
             border: none;
             color: var(--accent-cyan);
-            width: 45px;
-            height: 100%;
+            padding: 5px 15px;
             font-size: 14px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
         }
 
-        .win-btn:hover { background: var(--border-color); color: #FFFFFF; }
-        .win-btn.close-btn:hover { background: var(--accent-red); color: #FFFFFF; }
+        .win-btn:hover { background: var(--accent-red); color: #FFFFFF; }
 
-        /* Main Workspace Split Grid - Auto Responsive */
+        /* Balance Display Grid */
+        .balance-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            padding: 15px 15px 0 15px;
+        }
+
+        .balance-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: var(--accent-blue);
+        }
+
+        .balance-card.total-card::before { background: var(--accent-cyan); }
+
+        .card-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
+        .card-val { font-size: 18px; font-weight: 700; color: #FFFFFF; margin-top: 5px; }
+
+        /* Main Workspace Split Grid */
         .bank-workspace {
             flex: 1;
             padding: 15px;
             display: grid;
-            grid-template-columns: 1.2fr 1fr;
+            grid-template-columns: 1.1fr 1fr;
             gap: 15px;
-            height: calc(100vh - 90px);
-        }
-
-        @media (max-width: 900px) {
-            .bank-workspace {
-                grid-template-columns: 1fr;
-                grid-template-rows: 1fr 1fr;
-                overflow-y: auto;
-            }
+            height: calc(100vh - 150px);
+            overflow: hidden;
         }
 
         .panel-box {
@@ -124,8 +139,7 @@
             padding: 15px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             overflow: hidden;
         }
 
@@ -143,11 +157,10 @@
             align-items: center;
         }
 
-        /* Futuristic Form Interface */
         .form-scroll-container {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             overflow-y: auto;
             flex: 1;
             padding-right: 5px;
@@ -169,75 +182,50 @@
             font-size: 10px;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .input-control {
-            background: #0B132B;
+            background: var(--bg-primary);
             border: 1px solid var(--border-color);
             color: #FFFFFF;
             padding: 8px 10px;
             border-radius: 6px;
             font-size: 13px;
             outline: none;
-            width: 100%;
         }
 
         .input-control:focus { border-color: var(--accent-cyan); }
 
         .type-toggle-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
         }
 
         .mode-btn {
-            background: #0B132B;
+            background: var(--bg-primary);
             border: 1px solid var(--border-color);
             color: #FFFFFF;
             padding: 8px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
+            text-align: center;
         }
 
         .mode-btn.credit.active { background: var(--accent-green); border-color: #2ECC71; }
         .mode-btn.debit.active { background: var(--accent-red); border-color: #E74C3C; }
+        .mode-btn.transfer.active { background: #8E44AD; border-color: #9B59B6; }
 
-        /* Integrated AI Terminal Actions */
-        .ai-terminal-box {
-            background: #070B19;
-            border: 1px solid rgba(0, 198, 255, 0.2);
-            border-radius: 8px;
-            padding: 10px;
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .ai-btn {
-            background: linear-gradient(45deg, #00C6FF, #0072FF);
-            border: none;
-            color: white;
-            padding: 8px 12px;
-            font-size: 11px;
-            font-weight: 700;
-            border-radius: 4px;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-
-        /* Database Logs View Table */
+        /* Table Stream */
         .table-wrapper {
             flex: 1;
             overflow-y: auto;
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            background: #070B19;
+            background: var(--bg-primary);
         }
 
         table {
@@ -255,24 +243,48 @@
             top: 0;
             text-transform: uppercase;
             font-size: 10px;
-            letter-spacing: 0.5px;
         }
 
         td {
             padding: 10px;
             border-bottom: 1px solid var(--border-color);
-            white-space: nowrap;
         }
 
         .tx-cr { color: #2ECC71; font-weight: 600; }
         .tx-dr { color: #E74C3C; font-weight: 600; }
+        .tx-tr { color: #9B59B6; font-weight: 600; }
 
-        .action-icon-btn {
-            background: none;
-            border: none;
-            color: var(--accent-cyan);
+        .status-badge {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: bold;
             cursor: pointer;
-            font-size: 14px;
+        }
+        .status-pending { background: #D35400; color: #fff; }
+        .status-cleared { background: #27AE60; color: #fff; }
+
+        /* Modals for Settings & Verification */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .modal-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 12px;
+            width: 400px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.3);
         }
 
         /* Bottom Control Panel */
@@ -282,7 +294,7 @@
             border-top: 1px solid var(--border-color);
             display: flex;
             align-items: center;
-            justify-content: flex-end;
+            justify-content: space-between;
             padding: 0 20px;
         }
 
@@ -290,16 +302,13 @@
             color: var(--accent-cyan);
             font-size: 18px;
             cursor: pointer;
-            transition: transform 0.3s;
             background: none;
             border: none;
             outline: none;
         }
-
-        .settings-launcher:hover { transform: rotate(45deg); }
     </style>
 </head>
-<body onload="initializeTerminal()">
+<body onload="initializeTerminal()" onclick="enableFullScreenMode(event)">
 
     <!-- Header Panel Matrix -->
     <div class="window-control-bar">
@@ -307,44 +316,41 @@
             <div class="company-logo-frame"></div>
             <div class="brand-title">RAGHUVEER DIAMOND</div>
         </div>
-        
-        <div class="window-actions">
-            <button class="win-btn" onclick="alert('AI Banking Engine Active')">-</button>
-            <button class="win-btn" onclick="toggleFullScreen()">🗖</button>
-            <button class="win-btn close-btn" onclick="backToDashboard()">✕</button>
+        <div>
+            <button class="win-btn" onclick="backToDashboard()">✕ CLOSE TERMINAL</button>
         </div>
     </div>
 
-    <!-- Main Responsive Workspace Workspace Split -->
+    <!-- Live Balance Board Grid -->
+    <div class="balance-board" id="balance-cards-container">
+        <!-- Dyn cards load here -->
+    </div>
+
+    <!-- Main Workspace Setup -->
     <div class="bank-workspace">
         
-        <!-- Left Workspace: AI Intelligent Transaction Entry -->
+        <!-- Left: Form Input -->
         <div class="panel-box">
-            <div class="panel-title">AI Transaction Core Engine</div>
+            <div class="panel-title">Intelligent Transaction Core</div>
             
             <div class="form-scroll-container">
-                <div class="form-grid-2">
-                    <div class="input-group">
-                        <label>Select Master Bank</label>
-                        <select class="input-control" id="bank-select" onchange="handleBankChange()">
-                            <!-- Banks automatically loaded via settings -->
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>Currency Index</label>
-                        <select class="input-control" id="currency-select">
-                            <option value="INR">INR (₹) - Domestic</option>
-                            <option value="USD">USD ($) - Global Forex</option>
-                            <option value="EUR">EUR (€) - Euro Matrix</option>
-                        </select>
-                    </div>
-                </div>
-
                 <div class="input-group">
                     <label>Accounting Mode</label>
                     <div class="type-toggle-row">
-                        <button class="mode-btn credit active" id="mode-credit" onclick="setAccountingMode('CREDIT')">Credit (Incoming)</button>
-                        <button class="mode-btn debit" id="mode-debit" onclick="setAccountingMode('DEBIT')">Debit (Outgoing)</button>
+                        <button class="mode-btn credit active" id="mode-credit" onclick="setAccountingMode('CREDIT')">Credit</button>
+                        <button class="mode-btn debit" id="mode-debit" onclick="setAccountingMode('DEBIT')">Debit</button>
+                        <button class="mode-btn transfer" id="mode-transfer" onclick="setAccountingMode('TRANSFER')">Bank Transfer</button>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="input-group" id="src-bank-group">
+                        <label id="bank-select-label">Select Master Bank</label>
+                        <select class="input-control" id="bank-select"></select>
+                    </div>
+                    <div class="input-group" id="dest-bank-group" style="display: none;">
+                        <label>Destination Bank</label>
+                        <select class="input-control" id="dest-bank-select"></select>
                     </div>
                 </div>
 
@@ -355,20 +361,17 @@
                             <option value="ONLINE">ONLINE / IMPS</option>
                             <option value="NEFT_RTGS">NEFT / RTGS</option>
                             <option value="CHEQUE">BANK CHEQUE</option>
-                            <option value="OVERDRAFT">OVERDRAFT (OD)</option>
                             <option value="UPI">UPI SMART CODE</option>
                         </select>
                     </div>
-                    <div class="input-group">
+                    <div class="input-group" id="purpose-group">
                         <label>Transaction Purpose</label>
-                        <select class="input-control" id="purpose-select">
-                            <!-- Options populate dynamically based on Credit/Debit -->
-                        </select>
+                        <select class="input-control" id="purpose-select"></select>
                     </div>
                 </div>
 
                 <div class="form-grid-2">
-                    <div class="input-group">
+                    <div class="input-group" id="party-group">
                         <label>Particular / Party Name</label>
                         <input type="text" class="input-control" id="party-name" placeholder="Enter Entity Name">
                     </div>
@@ -388,24 +391,12 @@
                         <input type="date" class="input-control" id="tx-date">
                     </div>
                 </div>
-
-                <!-- 2050 Global AI Terminal Scanning Box -->
-                <div class="ai-terminal-box">
-                    <div style="display: flex; flex-direction: column; gap: 2px;">
-                        <span style="font-size: 11px; font-weight: 700; color: var(--accent-blue);">AI HOLOGRAPHIC TERMINAL 2050</span>
-                        <span style="font-size: 9px; color: var(--text-muted);">Dynamic QR Generation & Intelligent Scanner System</span>
-                    </div>
-                    <div style="display: flex; gap: 5px;">
-                        <button class="ai-btn" onclick="generateSmartQR()">QR Gen</button>
-                        <button class="ai-btn" onclick="triggerAIScanner()">Scan AI</button>
-                    </div>
-                </div>
             </div>
 
-            <button class="mode-btn credit active" style="width: 100%; margin-top: 10px; padding: 12px; font-size: 13px; letter-spacing: 0.5px;" id="post-btn" onclick="executePostEntry()">Post Transaction Matrix</button>
+            <button class="mode-btn credit active" style="width: 100%; margin-top: 10px; padding: 12px; font-size: 13px;" id="post-btn" onclick="executePostEntry()">Post Transaction Matrix</button>
         </div>
 
-        <!-- Right Workspace: Dynamic Ledger Data Stream -->
+        <!-- Right: Live Table -->
         <div class="panel-box">
             <div class="panel-title">
                 <span>Live Account Ledger Database</span>
@@ -415,38 +406,78 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Bank</th>
-                            <th>Party / Purpose</th>
-                            <th>Method</th>
+                            <th>Bank Hierarchy</th>
+                            <th>Details</th>
+                            <th>Method / Status</th>
                             <th>Amount</th>
-                            <th>Print</th>
                         </tr>
                     </thead>
-                    <tbody id="ledger-rows">
-                        <!-- Entries load live dynamically -->
-                    </tbody>
+                    <tbody id="ledger-rows"></tbody>
                 </table>
             </div>
         </div>
 
     </div>
 
-    <!-- Bottom Control Panel Settings Launcher -->
+    <!-- Bottom Settings Footer Bar -->
     <div class="footer-control-bar">
-        <button class="settings-launcher" onclick="openBankSettings()" title="Global System Settings">⚙️</button>
+        <span style="font-size: 10px; color: var(--text-muted);">Secure Environment Matrix Active</span>
+        <button class="settings-launcher" onclick="openSettingsModal()" title="Global System Settings">⚙️ Bank Setup</button>
+    </div>
+
+    <!-- ⚙️ SETTINGS MODAL ENGINE -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="modal-box">
+            <div class="panel-title" style="border:none; margin-bottom:15px;">
+                <span>⚙️ Dynamic Bank Configuration</span>
+                <span style="cursor:pointer;" onclick="closeSettingsModal()">✕</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <div class="input-group">
+                    <label>Bank Name</label>
+                    <input type="text" class="input-control" id="new-bank-name" placeholder="e.g. SBI, HDFC">
+                </div>
+                <div class="input-group">
+                    <label>Account Number</label>
+                    <input type="text" class="input-control" id="new-bank-acc" placeholder="Enter A/C Number">
+                </div>
+                <div class="input-group">
+                    <label>IFSC Code</label>
+                    <input type="text" class="input-control" id="new-bank-ifsc" placeholder="Enter IFSC Code">
+                </div>
+                <div class="input-group">
+                    <label>Account Holder Name</label>
+                    <input type="text" class="input-control" id="new-bank-holder" placeholder="Holder Full Name">
+                </div>
+                <button class="mode-btn credit active" style="background:var(--accent-blue); color:white;" onclick="triggerSecureAPIModal()">Secure API Live Link Account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔑 SECURE OTP API MODULE -->
+    <div class="modal-overlay" id="otp-modal" style="z-index: 1001;">
+        <div class="modal-box" style="width:340px; border-color:var(--accent-blue);">
+            <div class="panel-title" style="border:none;">
+                <span>🛡️ RBI Account Aggregator Link</span>
+            </div>
+            <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">Enter secure OTP sent to your bank registered mobile number to automatically sync live balance profile.</p>
+            <div class="input-group" style="margin-bottom:15px;">
+                <label>Secure 6-Digit OTP</label>
+                <input type="text" class="input-control" id="secure-otp" placeholder="******" style="text-align:center; font-size:16px; letter-spacing:4px;">
+            </div>
+            <button class="mode-btn credit active" onclick="verifySecureOTP()">Verify & Fetch Live Balance</button>
+        </div>
     </div>
 
     <script>
         let currentMode = "CREDIT";
 
         function initializeTerminal() {
-            // Set current date automatically
             document.getElementById('tx-date').value = new Date().toISOString().split('T')[0];
             updateClock();
             setInterval(updateClock, 1000);
-            loadBankDropdown();
+            refreshBankData();
             updatePurposeOptions();
-            loadLedgerLogs();
         }
 
         function updateClock() {
@@ -454,35 +485,126 @@
             document.getElementById('live-clock').innerText = now.toLocaleTimeString();
         }
 
-        function toggleFullScreen() {
-            if (!document.fullscreenElement) {
+        function enableFullScreenMode(e) {
+            // Auto full screen lock on body touch/click
+            if (!document.fullscreenElement && e.target.tagName !== 'SELECT' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON') {
                 document.documentElement.requestFullscreen().catch(err => {});
-            } else {
-                document.exitFullscreen();
             }
         }
 
-        function backToDashboard() {
-            window.location.href = 'main_office.html';
+        function backToDashboard() { window.location.href = 'main_office.html'; }
+        function openSettingsModal() { document.getElementById('settings-modal').style.visibility = 'visible'; document.getElementById('settings-modal').style.opacity = 1; }
+        function closeSettingsModal() { document.getElementById('settings-modal').style.visibility = 'hidden'; document.getElementById('settings-modal').style.opacity = 0; }
+
+        function triggerSecureAPIModal() {
+            const name = document.getElementById('new-bank-name').value;
+            const acc = document.getElementById('new-bank-acc').value;
+            const ifsc = document.getElementById('new-bank-ifsc').value;
+            if(!name || !acc || !ifsc) { alert('Please fill account configurations metrics first.'); return; }
+            
+            document.getElementById('otp-modal').style.visibility = 'visible';
+            document.getElementById('otp-modal').style.opacity = 1;
         }
 
-        function openBankSettings() {
-            window.location.href = 'bank_settings.html';
+        function verifySecureOTP() {
+            const otp = document.getElementById('secure-otp').value;
+            if(!otp) { alert('Enter valid security token code.'); return; }
+
+            // Dynamic Live Balance Simulator via official secure pipeline
+            const mockLiveBalances = [785000, 1245000, 432000, 1890000];
+            const chosenBalance = mockLiveBalances[Math.floor(Math.random() * mockLiveBalances.length)];
+
+            const name = document.getElementById('new-bank-name').value;
+            const acc = document.getElementById('new-bank-acc').value;
+            const ifsc = document.getElementById('new-bank-ifsc').value;
+            const holder = document.getElementById('new-bank-holder').value;
+
+            const banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
+            banks.push({ name, acc, ifsc, holder, balance: chosenBalance });
+            localStorage.setItem('factory_banks', JSON.stringify(banks));
+
+            // Reset forms
+            document.getElementById('new-bank-name').value = '';
+            document.getElementById('new-bank-acc').value = '';
+            document.getElementById('new-bank-ifsc').value = '';
+            document.getElementById('new-bank-holder').value = '';
+            document.getElementById('secure-otp').value = '';
+
+            document.getElementById('otp-modal').style.visibility = 'hidden';
+            document.getElementById('otp-modal').style.opacity = 0;
+            closeSettingsModal();
+            refreshBankData();
+        }
+
+        function refreshBankData() {
+            const banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
+            const select = document.getElementById('bank-select');
+            const destSelect = document.getElementById('dest-bank-select');
+            const container = document.getElementById('balance-cards-container');
+
+            if(banks.length === 0) {
+                select.innerHTML = '<option value="">No Active Bank! Setup via ⚙️</option>';
+                destSelect.innerHTML = '<option value="">No Active Bank! Setup via ⚙️</option>';
+                container.innerHTML = `<div class="balance-card total-card"><div class="card-label">GLOBAL BALANCES</div><div class="card-val">₹ 0.00</div></div>`;
+                localStorage.setItem('dashboard_bank_total', "₹ 0");
+                loadLedgerLogs();
+                return;
+            }
+
+            select.innerHTML = banks.map(b => `<option value="${b.name}">${b.name} (${b.acc.slice(-4)})</option>`).join('');
+            destSelect.innerHTML = banks.map(b => `<option value="${b.name}">${b.name} (${b.acc.slice(-4)})</option>`).join('');
+
+            // Calculate current total
+            let globalTotal = 0;
+            let cardsHtml = '';
+            banks.forEach(b => {
+                globalTotal += b.balance;
+                cardsHtml += `<div class="balance-card"><div class="card-label">${b.name} A/C TERMINAL</div><div class="card-val">₹ ${b.balance.toLocaleString('en-IN')}</div></div>`;
+            });
+
+            container.innerHTML = `<div class="balance-card total-card" style="border-color:var(--accent-cyan);"><div class="card-label">GLOBAL TOTAL VAULT</div><div class="card-val" style="color:var(--accent-cyan);">₹ ${globalTotal.toLocaleString('en-IN')}</div></div>` + cardsHtml;
+            
+            // Sync with main office global variable matrix
+            localStorage.setItem('dashboard_bank_total', `₹ ${globalTotal.toLocaleString('en-IN')}`);
+            loadLedgerLogs();
         }
 
         function setAccountingMode(mode) {
             currentMode = mode;
             const postBtn = document.getElementById('post-btn');
+            const destGroup = document.getElementById('dest-bank-group');
+            const purposeGroup = document.getElementById('purpose-group');
+            const partyGroup = document.getElementById('party-group');
+            const bankLabel = document.getElementById('bank-select-label');
+
+            document.getElementById('mode-credit').classList.remove('active');
+            document.getElementById('mode-debit').classList.remove('active');
+            document.getElementById('mode-transfer').classList.remove('active');
+
             if(mode === 'CREDIT') {
                 document.getElementById('mode-credit').classList.add('active');
-                document.getElementById('mode-debit').classList.remove('active');
                 postBtn.style.background = 'var(--accent-green)';
-                postBtn.innerText = "Post Transaction Matrix (Credit)";
-            } else {
+                postBtn.innerText = "Post Matrix Entry (Credit / Incoming)";
+                destGroup.style.display = 'none';
+                purposeGroup.style.display = 'flex';
+                partyGroup.style.display = 'flex';
+                bankLabel.innerText = "Select Master Bank";
+            } else if(mode === 'DEBIT') {
                 document.getElementById('mode-debit').classList.add('active');
-                document.getElementById('mode-credit').classList.remove('active');
                 postBtn.style.background = 'var(--accent-red)';
-                postBtn.innerText = "Post Transaction Matrix (Debit)";
+                postBtn.innerText = "Post Matrix Entry (Debit / Outgoing)";
+                destGroup.style.display = 'none';
+                purposeGroup.style.display = 'flex';
+                partyGroup.style.display = 'flex';
+                bankLabel.innerText = "Select Master Bank";
+            } else {
+                document.getElementById('mode-transfer').classList.add('active');
+                postBtn.style.background = '#8E44AD';
+                postBtn.innerText = "Execute Secure Bank Transfer Protocol";
+                destGroup.style.display = 'flex';
+                purposeGroup.style.display = 'none';
+                partyGroup.style.display = 'none';
+                bankLabel.innerText = "Source Bank (From)";
             }
             updatePurposeOptions();
         }
@@ -506,63 +628,89 @@
 
         function toggleChequeInput() {
             const method = document.getElementById('method-select').value;
-            const chequeGroup = document.getElementById('cheque-number-group');
-            if(method === 'CHEQUE') {
-                chequeGroup.style.display = 'flex';
-            } else {
-                chequeGroup.style.display = 'none';
+            document.getElementById('cheque-number-group').style.display = (method === 'CHEQUE') ? 'flex' : 'none';
+        }
+
+        function toggleChequeStatus(index) {
+            const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
+            if(entries[index] && entries[index].method === 'CHEQUE') {
+                const oldStatus = entries[index].status;
+                const newStatus = oldStatus === 'PENDING' ? 'CLEARED' : 'PENDING';
+                
+                // Recalculate balances safely based on actual clear status changes
+                const banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
+                const amt = entries[index].amount;
+                const bName = entries[index].bank;
+                
+                const bankIdx = banks.findIndex(b => b.name === bName);
+                if(bankIdx !== -1) {
+                    if(entries[index].mode === 'CREDIT') {
+                        banks[bankIdx].balance += (newStatus === 'CLEARED') ? amt : -amt;
+                    } else if(entries[index].mode === 'DEBIT') {
+                        banks[bankIdx].balance += (newStatus === 'CLEARED') ? -amt : amt;
+                    }
+                    localStorage.setItem('factory_banks', JSON.stringify(banks));
+                }
+
+                entries[index].status = newStatus;
+                localStorage.setItem('bank_ledger_logs', JSON.stringify(entries));
+                refreshBankData();
             }
-        }
-
-        function generateSmartQR() {
-            const amount = document.getElementById('tx-amount').value || "0";
-            const currency = document.getElementById('currency-select').value;
-            alert(`[AI 2050 ENGINE]: Dynamic Payment QR generated for ${currency} ${amount}`);
-        }
-
-        function triggerAIScanner() {
-            alert("[AI EYE TERMINAL 2050]: Initializing matrix camera system... Scanning Document for Auto-Fill.");
-        }
-
-        function executeCyberPrintStation(party, amount, method, purpose) {
-            alert(`[CYBER PRINT MATRIX ACTIVE]\nDocument Type: ${method}\nPayee: ${party}\nAmount: ${amount}\nPurpose: ${purpose}\nStatus: Universal printer profile mapped successfully.`);
-        }
-
-        function loadBankDropdown() {
-            const dropdown = document.getElementById('bank-select');
-            const banks = JSON.parse(localStorage.getItem('master_banks')) || [];
-            if(banks.length === 0) {
-                dropdown.innerHTML = `<option value="">No Bank Configured! Go to ⚙️</option>`;
-                return;
-            }
-            dropdown.innerHTML = banks.map(b => `<option value="${b.name}">${b.name} [${b.type}]</option>`).join('');
         }
 
         function executePostEntry() {
-            const bank = document.getElementById('bank-select').value;
-            const currency = document.getElementById('currency-select').value;
-            const method = document.getElementById('method-select').value;
-            const purpose = document.getElementById('purpose-select').value;
-            const party = document.getElementById('party-name').value;
-            const amount = document.getElementById('tx-amount').value;
+            const bankName = document.getElementById('bank-select').value;
+            const amount = parseFloat(document.getElementById('tx-amount').value);
             const date = document.getElementById('tx-date').value;
+            const method = document.getElementById('method-select').value;
             const chequeNo = document.getElementById('cheque-no').value;
 
-            if(!bank || !party || !amount) {
-                alert("Execution Halted: Core metrics fields are empty.");
-                return;
+            if(!bankName || isNaN(amount) || amount <= 0) { alert('Valid bank architecture node and amount metrics required.'); return; }
+
+            const banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
+            const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
+
+            let purpose = document.getElementById('purpose-select').value;
+            let party = document.getElementById('party-name').value;
+            let initialStatus = (method === 'CHEQUE') ? 'PENDING' : 'CLEARED';
+
+            if(currentMode === 'TRANSFER') {
+                const destBankName = document.getElementById('dest-bank-select').value;
+                if(bankName === destBankName) { alert('Source and Destination banks cannot be identical.'); return; }
+                
+                const srcIdx = banks.findIndex(b => b.name === bankName);
+                const destIdx = banks.findIndex(b => b.name === destBankName);
+
+                if(banks[srcIdx].balance < amount) { alert('Execution Halted: Insufficient liquid vault reserves.'); return; }
+
+                banks[srcIdx].balance -= amount;
+                banks[bIdx = destIdx].balance += amount;
+
+                entries.unshift({ bank: bankName, destBank: destBankName, method, purpose: 'INTERNAL_TRANSFER', party: `To ${destBankName}`, amount, date, mode: 'TRANSFER', status: 'CLEARED' });
+            } else {
+                const bIdx = banks.findIndex(b => b.name === bankName);
+                
+                if(currentMode === 'DEBIT') {
+                    if(initialStatus === 'CLEARED') {
+                        if(banks[bIdx].balance < amount) { alert('Execution Halted: Overdraft baseline exceeded.'); return; }
+                        banks[bIdx].balance -= amount;
+                    }
+                } else {
+                    if(initialStatus === 'CLEARED') banks[bIdx].balance += amount;
+                }
+
+                entries.unshift({ bank: bankName, method, purpose, party, amount, date, mode: currentMode, chequeNo, status: initialStatus });
             }
 
-            const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
-            entries.unshift({ bank, currency, method, purpose, party, amount: parseFloat(amount), date, mode: currentMode, chequeNo });
+            localStorage.setItem('factory_banks', JSON.stringify(banks));
             localStorage.setItem('bank_ledger_logs', JSON.stringify(entries));
 
-            // Clear inputs
+            // Flush inputs
             document.getElementById('party-name').value = '';
             document.getElementById('tx-amount').value = '';
             document.getElementById('cheque-no').value = '';
 
-            loadLedgerLogs();
+            refreshBankData();
         }
 
         function loadLedgerLogs() {
@@ -570,21 +718,32 @@
             const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
 
             if(entries.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Database Empty.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:20px;">No operational records found in sandbox ledger.</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = entries.map((e, index) => `
-                <tr>
-                    <td>${e.bank}</td>
-                    <td><strong>${e.party}</strong><br><small style="color:var(--text-muted);">${e.purpose}</small></td>
-                    <td>${e.method} ${e.chequeNo ? `<br><small>#${e.chequeNo}</small>` : ''}</td>
-                    <td class="${e.mode === 'CREDIT' ? 'tx-cr' : 'tx-dr'}">${e.mode === 'CREDIT' ? '+' : '-'} ${e.currency} ${e.amount.toLocaleString('en-IN')}</td>
-                    <td style="text-align:center;">
-                        <button class="action-icon-btn" onclick="executeCyberPrintStation('${e.party}', '${e.currency} ${e.amount}', '${e.method}', '${e.purpose}')">🖨️</button>
-                    </td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = entries.map((e, index) => {
+                let amtClass = 'tx-cr';
+                let sign = '+';
+                if(e.mode === 'DEBIT') { amtClass = 'tx-dr'; sign = '-'; }
+                if(e.mode === 'TRANSFER') { amtClass = 'tx-tr'; sign = '⇄'; }
+
+                let statusHtml = '';
+                if(e.method === 'CHEQUE') {
+                    statusHtml = `<span class="status-badge ${e.status === 'CLEARED' ? 'status-cleared' : 'status-pending'}" onclick="toggleChequeStatus(${index})">${e.status}</span>`;
+                } else {
+                    statusHtml = `<span class="status-badge status-cleared">INSTANT</span>`;
+                }
+
+                return `
+                    <tr>
+                        <td><strong>${e.bank}</strong>${e.destBank ? ` <span style="color:var(--accent-cyan);">→ ${e.destBank}</span>` : ''}</td>
+                        <td><strong>${e.party || 'Internal Vault Transfer'}</strong><br><small style="color:var(--text-muted);">${e.purpose}</small></td>
+                        <td>${e.method} ${e.chequeNo ? `[#${e.chequeNo}]` : ''}<br>${statusHtml}</td>
+                        <td class="${amtClass}">${sign} ₹ ${e.amount.toLocaleString('en-IN')}</td>
+                    </tr>
+                `;
+            }).join('');
         }
     </script>
 </body>
