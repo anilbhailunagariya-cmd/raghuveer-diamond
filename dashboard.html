@@ -1,555 +1,526 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="gu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Raghuveer Diamond - Master Autonomous Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raghuveer Diamond - Master Control Dashboard</title>
+    <!-- Chart.js લાઈબ્રેરી ગ્રાફ ડ્રો કરવા માટે -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Premium Core Master Theme Color Matrix */
         :root {
-            --bg-primary: #0B132B;
-            --bg-secondary: #111D37;
-            --top-bar-bg: #070B19;
-            --border-color: #1C2541;
-            --accent-cyan: #5BC0BE;
-            --accent-blue: #00C6FF;
-            --accent-green: #2ECC71;
-            --accent-red: #E74C3C;
-            --accent-orange: #ff9900;
-            --text-main: #FFFFFF;
-            --text-muted: #708090;
-            --matte-green: #27AE60;
-            --matte-red: #C0392B;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            user-select: none;
+            --bg-dark: #0a0f1d;
+            --panel-bg: #131a30;
+            --accent-blue: #00e5ff;
+            --matte-green: #00e676;
+            --matte-red: #ff1744;
+            --matte-yellow: #ffea00;
+            --text-main: #ffffff;
+            --text-muted: #64748b;
         }
 
         body {
-            background-color: #0B132B;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-dark);
             color: var(--text-main);
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            overflow-x: hidden;
+            user-select: none;
         }
 
-        .window-control-bar {
-            height: 45px;
-            background-color: #070B19;
+        /* હેડર અને લુક સિંક */
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
-            border-bottom: 1px solid #1C2541;
-            z-index: 10;
-            flex-shrink: 0;
+            border-bottom: 2px solid #1e293b;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
         }
 
-        .brand-wrapper { display: flex; align-items: center; gap: 10px; }
-        .brand-glow-dot {
-            width: 14px; height: 14px; border-radius: 50%;
-            background: linear-gradient(45deg, #00C6FF, #0072FF);
-            box-shadow: 0 0 8px #00C6FF;
-            animation: pulseGlow 2s infinite ease-in-out;
-        }
-
-        @keyframes pulseGlow {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 14px #00C6FF; }
-            100% { transform: scale(0.95); opacity: 0.8; }
-        }
-
-        .brand-title {
-            font-size: clamp(14px, 4vw, 20px);
-            font-weight: 900;
+        h1 {
+            color: var(--accent-blue);
+            margin: 0;
+            font-size: 24px;
             letter-spacing: 1px;
-            background: linear-gradient(90deg, #5BC0BE, #00C6FF, #0072FF, #5BC0BE);
-            background-size: 300% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: cyberGlow 6s linear infinite;
-            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
         }
 
-        @keyframes cyberGlow {
-            0% { background-position: 0% center; }
-            100% { background-position: 300% center; }
+        .section-title {
+            font-size: 20px;
+            color: var(--accent-blue);
+            margin-bottom: 20px;
+            font-weight: 600;
         }
 
-        .window-actions { display: flex; gap: 15px; align-items: center; }
-        .action-btn { background: none; border: none; color: #5BC0BE; font-size: 16px; cursor: pointer; transition: 0.3s; }
-        .action-btn:hover { color: var(--text-main); text-shadow: 0 0 8px #5BC0BE; }
-        .action-btn.close-btn:hover { color: #E74C3C; text-shadow: 0 0 8px #E74C3C; }
-
-        .main-container {
-            flex: 1; display: flex; flex-direction: column;
-            padding: 10px; gap: 10px; overflow: hidden;
-            height: calc(100vh - 45px);
+        /* મેઈન કન્ટેનર ગ્રીડ */
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 20px;
         }
 
-        .director-master-panel {
-            flex: 0 0 16vh; min-height: 90px; background: #111D37;
-            border: 1px solid #1C2541; border-radius: 12px; padding: 10px 15px;
-            display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: 0.3s;
-        }
-        .director-master-panel:hover { border-color: #5BC0BE; }
-        .director-meta h2 { font-size: clamp(16px, 4.5vw, 22px); letter-spacing: 2px; text-transform: uppercase; color: #5BC0BE; font-weight: bold; }
-        
-        .chart-visual-wrapper {
-            width: clamp(150px, 45vw, 400px); height: 100%;
-            display: flex; align-items: center; justify-content: center;
-            border-left: 1px solid rgba(255, 255, 255, 0.05); padding-left: 10px; overflow: hidden;
-        }
-        .live-chart-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
-        .live-chart-svg { width: 100%; height: 100%; }
-        .live-chart-svg path, .live-chart-svg rect, .live-chart-svg circle, .live-chart-svg line { transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-
-        .dashboard-grid { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 8px; min-height: 0; }
-        .node-box { background: #111D37; border: 1px solid #1C2541; border-radius: 8px; padding: 6px 8px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; height: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.3s; }
-        .node-box:hover { border-color: #5BC0BE; background: #1C2541; }
-        .node-box.overdue-alert { border-color: var(--accent-orange); animation: pulseWarning 2s infinite ease-in-out; }
-
-        @keyframes pulseWarning {
-            0% { box-shadow: 0 0 4px rgba(255, 153, 0, 0.2); }
-            50% { box-shadow: 0 0 12px rgba(255, 153, 0, 0.4); border-color: var(--accent-orange); }
-            100% { box-shadow: 0 0 4px rgba(255, 153, 0, 0.2); }
+        /* ૧૬ વિભાગો માટેની ગ્રીડ */
+        .departments-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
         }
 
-        .node-pipeline { font-size: clamp(7.5px, 2.2vw, 10px); color: #5BC0BE; opacity: 0.7; letter-spacing: 0.3px; line-height: 1.2; overflow: hidden; }
-        .overdue-text { color: var(--accent-orange) !important; font-weight: 600; opacity: 1 !important; }
-        .node-identity { font-size: clamp(8.5px, 2.5vw, 12px); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 2px; display: flex; justify-content: space-between; align-items: center; color: var(--text-main); }
-        .live-tag { width: 5px; height: 5px; border-radius: 50%; background-color: #2ECC71; box-shadow: 0 0 6px #2ECC71; flex-shrink: 0; }
-        .node-box.overdue-alert .live-tag { background-color: var(--accent-orange); box-shadow: 0 0 6px var(--accent-orange); }
-        .future-ai-node { border: 1px solid rgba(91, 192, 190, 0.3); background: linear-gradient(135deg, #111D37, rgba(91, 192, 190, 0.05)); }
-        .future-ai-node .node-identity { color: #5BC0BE; }
+        .dept-box {
+            background: var(--panel-bg);
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-height: 100px;
+        }
 
-        .bottom-dock { display: flex; justify-content: space-between; align-items: center; padding: 4px 5px; border-top: 1px solid rgba(255, 255, 255, 0.03); height: 35px; flex-shrink: 0; }
-        .system-status-string { font-size: clamp(8px, 2.2vw, 11px); color: #5BC0BE; opacity: 0.6; letter-spacing: 0.5px; }
-        .settings-trigger { background: none; border: none; color: #1C2541; cursor: pointer; display: flex; align-items: center; transition: 0.3s; }
-        .settings-trigger:hover { color: #5BC0BE; }
+        .dept-box:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
+        }
 
-        /* Modals Matrix */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(7, 11, 25, 0.85); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 100; }
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-window { background: #111D37; border: 1px solid #1C2541; width: 92%; max-width: 460px; border-radius: 12px; padding: 25px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.6); max-height: 95vh; overflow-y: auto; }
-        .modal-close-x { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #5BC0BE; cursor: pointer; font-size: 16px; }
-        .modal-title { font-size: 13px; font-weight: 600; text-transform: uppercase; margin-bottom: 20px; color: #5BC0BE; border-bottom: 1px solid #1C2541; padding-bottom: 8px; letter-spacing: 1px; }
+        .dept-name {
+            font-weight: bold;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            margin-bottom: 30px;
+        }
 
-        .otp-routing-select { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
-        .channel-card { flex: 1; border: 1px solid #1C2541; background: #0B132B; padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px; font-size: 10px; color: #5BC0BE; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
-        .channel-card input[type="radio"] { accent-color: #5BC0BE; cursor: pointer; }
+        .dept-status {
+            font-size: 11px;
+            color: var(--text-muted);
+            position: absolute;
+            bottom: 15px;
+        }
 
-        .dynamic-sub-module { display: none; background: #070B19; border: 1px dashed #1C2541; border-radius: 8px; padding: 12px; margin-top: -4px; margin-bottom: 10px; animation: slideDown 0.3s ease-out forwards; }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        /* લૉક થયેલા બોક્સની સ્ટાઈલ */
+        .dept-box.locked {
+            opacity: 0.25;
+            cursor: not-allowed;
+            pointer-events: none;
+            border-color: #1e293b !important;
+            box-shadow: none !important;
+        }
 
-        .biometric-sub-options { display: flex; gap: 10px; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
-        .sub-bio-label { font-size: 9px; color: #5BC0BE; display: flex; align-items: center; gap: 4px; cursor: pointer; }
-        .sub-bio-label input[type="radio"] { accent-color: #2ECC71; }
+        .dept-box.locked::before {
+            content: "🔒 LOCKED";
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 10px;
+            color: var(--matte-red);
+            font-weight: bold;
+            border: 1px solid var(--matte-red);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
 
-        .biometric-scanner-box { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; gap: 10px; }
-        .laser-fingerprint-node { width: 50px; height: 50px; position: relative; }
-        .laser-scanning-line { position: absolute; width: 100%; height: 2px; background: #2ECC71; box-shadow: 0 0 8px #2ECC71; top: 0; animation: laserScan 2s infinite ease-in-out; }
-        @keyframes laserScan { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
+        /* પ્રોફિટ લોસ પેનલ અને ગ્રાફ એરિયા */
+        .right-panel {
+            background: var(--panel-bg);
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
 
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 10px; text-transform: uppercase; color: #5BC0BE; margin-bottom: 6px; font-weight: bold; }
-        .secure-input { width: 100%; background: #0B132B; border: 1px solid #1C2541; padding: 10px 14px; border-radius: 8px; color: var(--text-main); font-size: 13px; outline: none; }
-        .secure-input:focus { border-color: #5BC0BE; }
-        .action-execution-btn { width: 100%; background: #5BC0BE; border: none; padding: 12px; border-radius: 8px; color: #0B132B; font-weight: 600; text-transform: uppercase; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
-        .action-execution-btn:hover { background: var(--text-main); box-shadow: 0 0 15px var(--text-main); }
-        
-        .settings-control-grid { display: flex; flex-direction: column; gap: 12px; }
-        .control-block { background: #0B132B; border: 1px solid #1C2541; border-radius: 6px; padding: 12px; }
-        .control-block h4 { font-size: 11px; text-transform: uppercase; color: #5BC0BE; margin-bottom: 8px; font-weight: bold; letter-spacing: 0.5px;}
-        .selection-options-row { display: flex; flex-wrap: wrap; gap: 6px; }
-        .option-selector-btn { flex: 1; min-width: 100px; background: #111D37; border: 1px solid #1C2541; color: var(--text-main); padding: 8px; border-radius: 4px; font-size: 10px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        .option-selector-btn.active, .option-selector-btn:hover { background: #1C2541; border-color: #5BC0BE; }
+        .graph-container {
+            flex-grow: 1;
+            position: relative;
+            min-height: 250px;
+            margin-top: 20px;
+            background: rgba(10, 15, 29, 0.5);
+            border-radius: 6px;
+            padding: 10px;
+            border: 1px dashed #1e293b;
+        }
+
+        /* માસ્ટર સેટિંગ્સ પેનલ સ્ટાઈલ */
+        .settings-btn {
+            background: none;
+            border: 1px solid var(--accent-blue);
+            color: var(--accent-blue);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .settings-btn:hover {
+            background: var(--accent-blue);
+            color: var(--bg-dark);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 7, 13, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .settings-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--accent-blue);
+            border-radius: 12px;
+            width: 450px;
+            padding: 25px;
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
+        }
+
+        .settings-title {
+            text-align: center;
+            color: var(--accent-blue);
+            font-size: 18px;
+            margin-bottom: 25px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .setting-item {
+            padding: 15px;
+            border: 1px solid #1e293b;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .setting-item:hover {
+            border-color: var(--accent-blue);
+            background: rgba(0, 229, 255, 0.05);
+        }
+
+        .graph-selector {
+            background: var(--bg-dark);
+            color: var(--accent-blue);
+            border: 1px solid #1e293b;
+            padding: 5px;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .close-panel-btn {
+            width: 100%;
+            padding: 12px;
+            background: none;
+            border: 1px solid var(--matte-red);
+            color: var(--matte-red);
+            border-radius: 6px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .close-panel-btn:hover {
+            background: var(--matte-red);
+            color: var(--text-main);
+        }
     </style>
 </head>
 <body>
 
-    <div class="window-control-bar">
-        <div class="brand-wrapper">
-            <div class="brand-glow-dot"></div>
-            <div class="brand-title">RAGHUVEER DIAMOND</div>
+    <header>
+        <h1 id="company-logo">RAGHUVEER DIAMOND</h1>
+        <div>
+            <button class="settings-btn" onclick="toggleSettings(true)">⚙️ AI OS MASTER CONTROL</button>
         </div>
-        <div class="window-actions">
-            <button class="action-btn" onclick="triggerMinimize()">-</button>
-            <button class="action-btn" onclick="triggerFullScreen()">🗖</button>
-            <button class="action-btn close-btn" onclick="triggerClose()">✕</button>
-        </div>
-    </div>
+    </header>
 
-    <div class="main-container">
-        <div class="director-master-panel" onclick="openDirectorSecureGate()">
-            <div class="director-meta"><h2>MAIN OFFICE</h2></div>
-            <div class="chart-visual-wrapper"><div class="live-chart-container" id="mainOfficeChartContainer"></div></div>
-        </div>
-
-        <div class="dashboard-grid">
-            <div class="node-box" onclick="handleClusterLink('Accountant Node')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Accountant Node <span class="live-tag"></span></div></div>
-            <div class="node-box" onclick="handleClusterLink('Data Entry WIP')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Data Entry WIP <span class="live-tag"></span></div></div>
-            <div class="node-box" onclick="handleClusterLink('Galaxy Core Array')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Galaxy <span class="live-tag"></span></div></div>
-            <div class="node-box" onclick="handleClusterLink('Q.C. Center Array')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Q.C. Center <span class="live-tag"></span></div></div>
-            <div class="node-box" onclick="handleClusterLink('Sarine Plan Cluster')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Sarine Plan <span class="live-tag"></span></div></div>
-            <div class="node-box" id="laserNodeTracker" onclick="handleClusterLink('Laser Matrix Terminal')"><div class="node-pipeline" id="laserPipelineString">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Laser <span class="live-tag"></span></div></div>
-            <div class="node-box" onclick="handleClusterLink('4P Machine Hub')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">4P Machine <span class="live-tag"></span></div></div>
-            <div class="node-box" onclick="handleClusterLink('Ready For Bottom Pool')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Ready For Bottom <span class="live-tag"></span></div></div>
-            <div class="node-box" onclick="handleClusterLink('Auto Bottom Array')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Auto Bottom <span class="live-tag"></span></div></div>
-            <div class="node-box" onclick="handleClusterLink('Manual Bottom Hub')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Manual Bottom <span class="live-tag"></span></div></div>
-            <div class="node-box" onclick="handleClusterLink('PEL Terminal Link')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">PEL <span class="live-tag"></span></div></div>
-            <div class="node-box" onclick="handleClusterLink('Mathala Processing Station')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Mathala <span class="live-tag"></span></div></div>
-            <div class="node-box" onclick="handleClusterLink('Sorting Table Array')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Table <span class="live-tag"></span></div></div>
-            <div class="node-box" onclick="handleClusterLink('Police Check Station')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Police Check <span class="live-tag"></span></div></div>
-            <div class="node-box" onclick="handleClusterLink('Machine Tracker System')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Machine Tracker <span class="live-tag"></span></div></div>
-            <div class="node-box future-ai-node" onclick="handleClusterLink('Global AI Market Anti-Loss Core')"><div class="node-pipeline" style="color: #5BC0BE;">ANTI-LOSS PROTECTION ONLINE<br>[GLOBAL ARBITRAGE ACTIVE]</div><div class="node-identity">AI Global Market <span class="live-tag"></span></div></div>
-        </div>
-
-        <div class="bottom-dock">
-            <div class="system-status-string" id="footerClockLive">Secure Telemetry Active</div>
-            <button class="settings-trigger" onclick="openMasterConfigurationGrid()">⚙️</button>
-        </div>
-    </div>
-
-    <!-- Security Gate Area -->
-    <div class="modal-overlay" id="directorGateOverlay">
-        <div class="modal-window">
-            <button class="modal-close-x" onclick="closeDirectorSecureGate()">✕</button>
-            <div class="modal-title">MAIN OFFICE SECURITY GATE</div>
-            <div class="input-group">
-                <label>Active Identity Verification Channel (Select 1)</label>
-                <div class="otp-routing-select">
-                    
-                    <div class="channel-card" onclick="triggerChannelSelection('mobileRadio')">
-                        <input type="radio" id="mobileRadio" name="secureChannelGate" onclick="event.stopPropagation(); triggerChannelSelection('mobileRadio')"> <span>Mobile Endpoint OTP</span>
-                    </div>
-                    <div id="moduleMobile" class="dynamic-sub-module">
-                        <label style="font-size: 9px; color: #5BC0BE; display:block; margin-bottom:4px;">ENTER REGISTERED MOBILE NO.</label>
-                        <input type="tel" class="secure-input" placeholder="+91 XXXXX XXXXX" style="padding: 6px 10px; font-size:12px;">
-                    </div>
-
-                    <div class="channel-card" onclick="triggerChannelSelection('mailRadio')">
-                        <input type="radio" id="mailRadio" name="secureChannelGate" onclick="event.stopPropagation(); triggerChannelSelection('mailRadio')"> <span>Secure Mail Server OTP</span>
-                    </div>
-                    <div id="moduleMail" class="dynamic-sub-module">
-                        <label style="font-size: 9px; color: #5BC0BE; display:block; margin-bottom:4px;">ENTER SECURE DIRECTOR EMAIL ID</label>
-                        <input type="email" class="secure-input" placeholder="director@raghuveerdiamond.com" style="padding: 6px 10px; font-size:12px;">
-                    </div>
-
-                    <div class="channel-card" style="border-color: rgba(46, 204, 113, 0.4);" onclick="triggerChannelSelection('biometricRadio')">
-                        <input type="radio" id="biometricRadio" name="secureChannelGate" onclick="event.stopPropagation(); triggerChannelSelection('biometricRadio')"> <span style="color: #2ECC71;">Biometric Scan Matrix</span>
-                    </div>
-                    <div id="moduleBiometric" class="dynamic-sub-module" style="border-color: rgba(46, 204, 113, 0.3);">
-                        <div class="biometric-sub-options">
-                            <label class="sub-bio-label" onclick="event.stopPropagation(); selectBiometricMode('finger')">
-                                <input type="radio" id="bioFingerRadio" name="subBioType" checked> Fingerprint Scan
-                            </label>
-                            <label class="sub-bio-label" onclick="event.stopPropagation(); selectBiometricMode('face')">
-                                <input type="radio" id="bioFaceRadio" name="subBioType"> Face Lock Scan
-                            </label>
-                        </div>
-                        <div class="biometric-scanner-box">
-                            <div class="laser-fingerprint-node" id="biometricIconContainer"></div>
-                            <span id="biometricStatusText" style="font-size:9px; color:#2ECC71; font-weight:bold; letter-spacing:1px;">PLACE FINGER ON PHONE SCANNER...</span>
-                        </div>
-                    </div>
-
+    <div class="dashboard-container">
+        <!-- ડાબી બાજુ: ૧૬ અલગ-અલગ વિભાગોની ગ્રીડ -->
+        <div class="left-panel">
+            <div class="section-title">MAIN OFFICE CONTROL</div>
+            <div class="departments-grid">
+                <div class="dept-box" id="dept-accountant" data-dept="accountant">
+                    <div class="dept-name">ACCOUNTANT NODE</div>
+                    <div class="dept-status">AWAITING HARDWARE LINK...</div>
+                </div>
+                <div class="dept-box" id="dept-dataentry" data-dept="dataentry">
+                    <div class="dept-name">DATA ENTRY WIP</div>
+                    <div class="dept-status">AWAITING HARDWARE LINK...</div>
+                </div>
+                <div class="dept-box" id="dept-galaxy" data-dept="galaxy">
+                    <div class="dept-name">GALAXY</div>
+                    <div class="dept-status">AWAITING HARDWARE LINK...</div>
+                </div>
+                <div class="dept-box" id="dept-qc" data-dept="qc">
+                    <div class="dept-name">Q.C. CENTER</div>
+                    <div class="dept-status">AWAITING HARDWARE LINK...</div>
+                </div>
+                <div class="dept-box" id="dept-sarine" data-dept="sarine">
+                    <div class="dept-name">SARINE PLAN</div>
+                    <div class="dept-status">AWAITING HARDWARE LINK...</div>
+                </div>
+                <div class="dept-box" id="dept-laser" data-dept="laser">
+                    <div class="dept-name">LASER</div>
+                    <div class="dept-status">AWAITING HARDWARE LINK...</div>
+                </div>
+                <div class="dept-box" id="dept-4p" data-dept="4p">
+                    <div class="dept-name">4P MACHINE</div>
+                    <div class="dept-status">AWAITING HARDWARE LINK...</div>
+                </div>
+                <div class="dept-box" id="dept-bottomready" data-dept="bottomready">
+                    <div class="dept-name">READY FOR BOTTOM</div>
+                    <div class="dept-status">AWAITING HARDWARE LINK...</div>
+                </div>
+                <div class="dept-box" id="dept-autobottom" data-dept="autobottom">
+                    <div class="dept-name">AUTO BOTTOM</div>
+                    <div class="dept-status">AWAITING HARDWARE LINK...</div>
+                </div>
+                <div class="dept-box" id="dept-manualbottom" data-dept="manualbottom">
+                    <div class="dept-name">MANUAL BOTTOM</div>
+                    <div class="dept-status">AWAITING HARDWARE LINK...</div>
+                </div>
+                <div class="dept-box" id="dept-pel" data-dept="pel">
+                    <div class="dept-name">PEL</div>
+                    <div class="dept-status">AWAITING HARDWARE LINK...</div>
+                </div>
+                <div class="dept-box" id="dept-mathala" data-dept="mathala">
+                    <div class="dept-name">MATHALA</div>
+                    <div class="dept-status">AWAITING HARDWARE LINK...</div>
+                </div>
+                <div class="dept-box" id="dept-table" data-dept="table">
+                    <div class="dept-name">TABLE</div>
+                    <div class="dept-status">AWAITING HARDWARE LINK...</div>
+                </div>
+                <div class="dept-box" id="dept-police" data-dept="police">
+                    <div class="dept-name">POLICE CHECK</div>
+                    <div class="dept-status">AWAITING HARDWARE LINK...</div>
+                </div>
+                <div class="dept-box" id="dept-tracker" data-dept="tracker">
+                    <div class="dept-name">MACHINE TRACKER</div>
+                    <div class="dept-status">AWAITING HARDWARE LINK...</div>
+                </div>
+                <div class="dept-box" id="dept-global" data-dept="global">
+                    <div class="dept-name">AI GLOBAL MARKET</div>
+                    <div class="dept-status">AWAITING HARDWARE LINK...</div>
                 </div>
             </div>
+        </div>
 
-            <!-- This OTP Code Group hides/shows dynamically -->
-            <div class="input-group" id="otpInputGroupContainer">
-                <label for="secureOtpField">Enter Synchronized 6-Digit Secondary OTP Code</label>
-                <input type="password" maxlength="6" id="secureOtpField" class="secure-input" placeholder="••••••" autocomplete="off">
+        <!-- જમણી બાજુ: માત્ર પ્યોર પ્રોફિટ લોસ ગ્રાફ એરિયા -->
+        <div class="right-panel">
+            <div class="section-title">COMPANY REAL FINANCIALS</div>
+            <div id="financial-status" style="font-size: 14px; font-weight: bold; color: var(--matte-yellow);">SYSTEM INITIALIZED: ZERO RUN STATE</div>
+            <div class="graph-container">
+                <canvas id="profitLossChart"></canvas>
             </div>
+        </div>
+    </div>
+
+    <!-- માસ્ટર સેટિંગ્સ ઓવરલે પેનલ -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="settings-panel">
+            <div class="settings-title">⚙️ AI OS MASTER CONTROL</div>
             
-            <button class="action-execution-btn" id="mainSubmitGateBtn" onclick="executeDirectorGateAuthorization()">Verify Identity Metrics & Enter</button>
-        </div>
-    </div>
-
-    <!-- Master Settings Dashboard -->
-    <div class="modal-overlay" id="masterSettingsOverlay">
-        <div class="modal-window">
-            <button class="modal-close-x" onclick="closeMasterConfigurationGrid()">✕</button>
-            <div class="modal-title">Master Settings Console</div>
-            <div class="settings-control-grid">
-                <div class="control-block">
-                    <h4>Graph Performance Time Filter</h4>
-                    <div class="selection-options-row">
-                        <button class="option-selector-btn active" id="time-1d" onclick="switchGraphTimeDuration('1d')">1 Day</button>
-                        <button class="option-selector-btn" id="time-7d" onclick="switchGraphTimeDuration('7d')">7 Days</button>
-                        <button class="option-selector-btn" id="time-1m" onclick="switchGraphTimeDuration('1m')">1 Month</button>
-                        <button class="option-selector-btn" id="time-1y" onclick="switchGraphTimeDuration('1y')">1 Year</button>
-                    </div>
-                </div>
-                <div class="control-block">
-                    <h4>Director Main Office Graph Matrix Design</h4>
-                    <div class="selection-options-row" style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
-                        <button class="option-selector-btn active" id="btn-pillars" onclick="switchGraphDesignMatrix('pillars')">1. Brils Pillars</button>
-                        <button class="option-selector-btn" id="btn-heart" onclick="switchGraphDesignMatrix('heart')">2. Heart Rate</button>
-                        <button class="option-selector-btn" id="btn-mnc" onclick="switchGraphDesignMatrix('mnc')">3. Corporate MNC</button>
-                        <button class="option-selector-btn" id="btn-high-tech" onclick="switchGraphDesignMatrix('high-tech')">4. 2050 High Tech</button>
-                        <button class="option-selector-btn" id="btn-ai" onclick="switchGraphDesignMatrix('ai')" style="grid-column: span 2;">5. AI Neural Technology</button>
-                    </div>
-                </div>
-                <div class="control-block">
-                    <h4>Active Display Unit Parameters (1-16 Nodes)</h4>
-                    <div class="selection-options-row">
-                        <button class="option-selector-btn active" onclick="alert('Display parameters synced: Realtime Operational WIP')">WIP Count</button>
-                        <button class="option-selector-btn" onclick="alert('Display parameters synced: Carat Weight Distribution Metrics')">Carats Volume</button>
-                    </div>
-                </div>
-                <div class="control-block">
-                    <h4>Administrative Process Lock Authorization</h4>
-                    <div class="input-group" style="margin-bottom:10px; margin-top:5px;">
-                        <input type="password" id="directorOverridePass" class="secure-input" placeholder="Enter Director Master Password" style="font-size:12px; padding:8px;">
-                    </div>
-                    <button class="action-execution-btn" onclick="processDirectorOverrideClearance()" style="padding:8px; font-size:11px;">Authorize Override & Reset Trailing Blocks</button>
-                </div>
+            <div class="setting-item">
+                <span>🔒 1. ACCESS KEYS & CREDENTIALS</span>
             </div>
+            <div class="setting-item">
+                <span>☁️ 2. GITHUB AUTO-CLOUD SYNC</span>
+            </div>
+            <div class="setting-item">
+                <span>📊 3. GRAPH DESIGN INTERCHANGE</span>
+                <select class="graph-selector" id="designSelector" onchange="changeGraphDesign(this.value)">
+                    <option value="1">디자인 1: 3D Cylinder Bar</option>
+                    <option value="2">디자인 2: Combo Block & Line</option>
+                    <option value="3">디자인 3: Stock Candlestick</option>
+                    <option value="4">디자인 4: Barcode Profit/Loss</option>
+                    <option value="5">디자인 5: Clean Area Index</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <span>🧹 4. AI CACHE & MEMORY FLUSH</span>
+            </div>
+            <div class="setting-item">
+                <span>🤖 5. AUTOMATED AI CORE DIAGNOSTICS</span>
+            </div>
+            <div class="setting-item">
+                <span>🧬 6. BIOMETRIC EMERGENCY OVERRIDE</span>
+            </div>
+
+            <button class="close-panel-btn" onclick="toggleSettings(false)">CLOSE PANEL</button>
         </div>
     </div>
 
     <script>
-        let liveProfitStatus = true;
-        let activeDesignStyle = "pillars";
-        let activeTimeDuration = "1d";
-        let activeBiometricType = "finger";
+        let myChart = null;
 
-        const svgIcons = {
-            finger: `<div class="laser-scanning-line"></div><svg viewBox="0 0 24 24" fill="none" stroke="%232ECC71" stroke-width="1" stroke-linecap="round" style="width:100%;height:100%"><path d="M12 2a10 10 0 0 0-4 19.18M12 5a7 7 0 0 0-2 13.71M12 8a4 4 0 0 0 0 8"/></svg>`,
-            face: `<div class="laser-scanning-line"></div><svg viewBox="0 0 24 24" fill="none" stroke="%232ECC71" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2 M9 10h.01M15 10h.01M10 15s1 1 2 1 2-1 2-1"/></svg>`
-        };
+        // ૧. ઓટો ફૂલ સ્ક્રીન સેટિંગ (પહેલી ક્લિક/ટચ પર બ્રાઉઝર ગાયબ)
+        window.addEventListener('click', function initFullScreen() {
+            const docEl = document.documentElement;
+            if (docEl.requestFullscreen) docEl.requestFullscreen();
+            else if (docEl.mozRequestFullScreen) docEl.mozRequestFullScreen();
+            else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
+            else if (docEl.msRequestFullscreen) docEl.msRequestFullscreen();
+            
+            // એકવાર લોક થયા પછી ઇવેન્ટ રિમૂવ કરી દેવી
+            window.removeEventListener('click', initFullScreen);
+        });
 
-        function generateLiveVectorGraph() {
-            const hexColor = liveProfitStatus ? "var(--matte-green)" : "var(--matte-red)";
-            let rangeMultiplier = 1;
-            if (activeTimeDuration === "7d") rangeMultiplier = 0.75;
-            if (activeTimeDuration === "1m") rangeMultiplier = 0.5;
-            if (activeTimeDuration === "1y") rangeMultiplier = 1.2;
+        // ૨. યુઝર રોલ મેનેજમેન્ટ (લોગિન આઈડી પ્રમાણે વિભાગો લૉક/અનલૉક કરવા)
+        document.addEventListener("DOMContentLoaded", () => {
+            const currentRole = localStorage.getItem('userRole') || 'director';
+            const allBoxes = document.querySelectorAll('.dept-box');
 
-            const offsetA = Math.max(5, Math.floor(Math.random() * 35 * rangeMultiplier));
-            const offsetB = Math.max(5, Math.floor(Math.random() * 55 * rangeMultiplier));
-            const offsetC = Math.max(5, Math.floor(Math.random() * 40 * rangeMultiplier));
-            const offsetD = Math.max(5, Math.floor(Math.random() * 65 * rangeMultiplier));
-            const offsetE = Math.max(5, Math.floor(Math.random() * 25 * rangeMultiplier));
-
-            const profiles = {
-                pillars: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                            <rect x="20" y="${75-offsetA}" width="14" height="${offsetA}" rx="3" fill="${hexColor}" />
-                            <rect x="50" y="${75-offsetB}" width="14" height="${offsetB}" rx="3" fill="${hexColor}" />
-                            <rect x="80" y="${75-offsetC}" width="14" height="${offsetC}" rx="3" fill="${hexColor}" />
-                            <rect x="110" y="${75-offsetD}" width="14" height="${offsetD}" rx="3" fill="${hexColor}" />
-                            <rect x="140" y="${75-offsetE}" width="14" height="${offsetE}" rx="3" fill="${hexColor}" />
-                            <rect x="170" y="${75-offsetB}" width="14" height="${offsetB}" rx="3" fill="${hexColor}" />
-                            <rect x="200" y="${75-offsetA}" width="14" height="${offsetA}" rx="3" fill="${hexColor}" />
-                            <rect x="230" y="${75-offsetC}" width="14" height="${offsetC}" rx="3" fill="${hexColor}" />
-                            <rect x="260" y="${75-offsetD}" width="14" height="${offsetD}" rx="3" fill="${hexColor}" />
-                          </svg>`,
-                heart: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                            <path d="M0,45 L30,45 L40,${15+offsetE} L48,${75-offsetA} L56,${35+offsetC} L62,50 L70,45 L110,45 L120,${5+offsetC} L130,${75-offsetE} L140,30 L148,55 L154,45 L200,45 L210,${20+offsetB} L218,${65-offsetD} L226,40 L232,47 L240,45 L300,45" fill="none" stroke="${hexColor}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                          </svg>`,
-                mnc: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                            <path d="M10,75 Q40,${70-offsetE} 80,${55-offsetA} T160,${40-offsetC} T240,${15+offsetE} T300,5" fill="none" stroke="${hexColor}" stroke-width="3" stroke-linecap="round"/>
-                            <path d="M10,75 Q40,${70-offsetE} 80,${55-offsetA} T160,${40-offsetC} T240,${15+offsetE} T300,5 L300,80 L10,80 Z" fill="${hexColor}" opacity="0.15"/>
-                          </svg>`,
-                "high-tech": `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                            <circle cx="50" cy="40" r="${15+(offsetA/2)}" fill="none" stroke="${hexColor}" stroke-width="1.5" stroke-dasharray="4,4" />
-                            <circle cx="150" cy="40" r="${20+(offsetB/2)}" fill="none" stroke="${hexColor}" stroke-width="2" />
-                            <circle cx="150" cy="40" r="${5+(offsetE/3)}" fill="none" stroke="${hexColor}" stroke-width="1" stroke-dasharray="2,2" />
-                            <circle cx="250" cy="40" r="${15+(offsetC/2)}" fill="none" stroke="${hexColor}" stroke-width="1.5" stroke-dasharray="4,4" />
-                            <path d="M10,40 L120,40 M180,40 L290,40" stroke="${hexColor}" stroke-width="2" stroke-linecap="round" />
-                          </svg>`,
-                ai: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                            <line x1="30" y1="${40-offsetA/4}" x2="90" y2="20" stroke="${hexColor}" stroke-width="1" opacity="0.4" />
-                            <line x1="30" y1="${40+offsetA/4}" x2="90" y2="60" stroke="${hexColor}" stroke-width="1" opacity="0.4" />
-                            <line x1="90" y1="20" x2="170" y2="${15+offsetE/2}" stroke="${hexColor}" stroke-width="1.5" />
-                            <line x1="90" y1="20" x2="170" y2="45" stroke="${hexColor}" stroke-width="1" opacity="0.4" />
-                            <line x1="90" y1="60" x2="170" y2="45" stroke="${hexColor}" stroke-width="1" opacity="0.4" />
-                            <line x1="90" y1="60" x2="170" y2="${65-offsetC/2}" stroke="${hexColor}" stroke-width="1.5" />
-                            <line x1="170" y1="${15+offsetE/2}" x2="260" y2="40" stroke="${hexColor}" stroke-width="2" />
-                            <line x1="170" y1="45" x2="260" y2="40" stroke="${hexColor}" stroke-width="1" opacity="0.4" />
-                            <line x1="170" y1="${65-offsetC/2}" x2="260" y2="40" stroke="${hexColor}" stroke-width="2" />
-                            <circle cx="30" cy="40" r="5" fill="${hexColor}" />
-                            <circle cx="90" cy="20" r="5" fill="${hexColor}" />
-                            <circle cx="90" cy="60" r="5" fill="${hexColor}" />
-                            <circle cx="170" cy="${15+offsetE/2}" r="5" fill="${hexColor}" />
-                            <circle cx="170" cy="45" r="5" fill="${hexColor}" />
-                            <circle cx="170" cy="${65-offsetC/2}" r="5" fill="${hexColor}" />
-                            <circle cx="260" cy="40" r="7" fill="${hexColor}" />
-                          </svg>`
-            };
-            return profiles[activeDesignStyle];
-        }
-
-        function updateMainOfficeVisual() {
-            document.getElementById('mainOfficeChartContainer').innerHTML = generateLiveVectorGraph();
-        }
-
-        // Mutex Channel Selector with Dynamic Auto-Hide Logic for OTP Code Field
-        function triggerChannelSelection(targetRadioId) {
-            document.getElementById(targetRadioId).checked = true;
-
-            const modules = {
-                mobileRadio: 'moduleMobile',
-                mailRadio: 'moduleMail',
-                biometricRadio: 'moduleBiometric'
-            };
-
-            const otpField = document.getElementById('otpInputGroupContainer');
-            const submitBtn = document.getElementById('mainSubmitGateBtn');
-
-            Object.keys(modules).forEach(key => {
-                const subBox = document.getElementById(modules[key]);
-                if(key === targetRadioId) {
-                    subBox.style.display = "block";
-                    if(key === 'biometricRadio') {
-                        // HIDE CODE INPUT AND MAIN BUTTON FOR BIOMETRIC
-                        otpField.style.display = "none";
-                        submitBtn.style.display = "none";
-                        executeDynamicBiometricLoop();
-                    } else {
-                        // SHOW CODE INPUT AND MAIN BUTTON FOR OTP MODES
-                        otpField.style.display = "block";
-                        submitBtn.style.display = "block";
-                    }
+            allBoxes.forEach(box => {
+                const boxDept = box.getAttribute('data-dept');
+                
+                if (currentRole === 'director') {
+                    // ડાયરેક્ટર માટે બધા જ ૧૬ બોક્સ ખુલ્લા રહેશે
+                    box.classList.remove('locked');
                 } else {
-                    subBox.style.display = "none";
+                    // જો ચોક્કસ રોલ હોય (દા.ત. laser), તો માત્ર એ જ બોક્સ ખુલશે, બાકીના લોક
+                    if (boxDept === currentRole) {
+                        box.classList.remove('locked');
+                    } else {
+                        box.classList.add('locked');
+                    }
                 }
             });
+
+            // ગ્રાફ ઇનિશિયલાઇઝ કરો (ઝીરો ડેટા સ્ટેટ)
+            initChart('1');
+        });
+
+        // સેટિંગ્સ પેનલ ઓપન-ક્લોઝ કંટ્રોલ
+        function toggleSettings(show) {
+            document.getElementById('settingsModal').style.display = show ? 'flex' : 'none';
         }
 
-        function selectBiometricMode(modeKey) {
-            activeBiometricType = modeKey;
-            if(modeKey === 'finger') {
-                document.getElementById('bioFingerRadio').checked = true;
-                document.getElementById('bioFaceRadio').checked = false;
-            } else {
-                document.getElementById('bioFingerRadio').checked = false;
-                document.getElementById('bioFaceRadio').checked = true;
+        // ૩. ઝીરો ડેમો ડેટા પ્રોફિટ-લોસ ગ્રાફ એન્જિન (૫ અલગ-અલગ ડિઝાઇન માટેનું લોજિક)
+        function initChart(designType) {
+            const ctx = document.getElementById('profitLossChart').getContext('2d');
+            
+            if (myChart) {
+                myChart.destroy();
             }
-            executeDynamicBiometricLoop();
-        }
 
-        let biometricSuccess = false;
-        let activeScanTimer = null;
+            // સવારે સોફ્ટવેર શરૂ થાય ત્યારે કોઈ જ ડેટા નહીં હોય (એકદમ સાફ/ઝીરો સ્ટેટ)
+            const emptyLabels = ['08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00'];
+            const zeroData = [0, 0, 0, 0, 0, 0, 0]; 
 
-        function executeDynamicBiometricLoop() {
-            biometricSuccess = false;
-            if(activeScanTimer) clearInterval(activeScanTimer);
-
-            const iconFrame = document.getElementById('biometricIconContainer');
-            const statusLabel = document.getElementById('biometricStatusText');
-
-            iconFrame.innerHTML = activeBiometricType === 'finger' ? svgIcons.finger : svgIcons.face;
-            const labelStr = activeBiometricType === 'finger' ? "PLACE FINGER ON PHONE SCANNER..." : "POSITION FACE IN FRONT OF CAMERA...";
-            statusLabel.innerText = `${labelStr} [0%]`;
-            statusLabel.style.color = "#00C6FF";
-
-            let progress = 0;
-            activeScanTimer = setInterval(() => {
-                progress += 25;
-                statusLabel.innerText = `${activeBiometricType === 'finger' ? 'SCANNING FINGERPRINT' : 'SCANNING FACE STRUCTURE'}... [${progress}%]`;
-                if(progress >= 100) {
-                    clearInterval(activeScanTimer);
-                    statusLabel.innerText = `🤖 ${activeBiometricType === 'finger' ? 'FINGERPRINT' : 'FACE'} VERIFIED [SUCCESS]`;
-                    statusLabel.style.color = "#2ECC71";
-                    biometricSuccess = true;
-
-                    // AUTO ROUTING WITHOUT BUTTON TRIGGER AFTER 1.5 SECONDS
-                    setTimeout(() => {
-                        closeDirectorSecureGate();
-                        window.location.href = 'main_office.html';
-                    }, 1500);
+            let chartConfig = {
+                type: 'bar',
+                data: {
+                    labels: emptyLabels,
+                    datasets: [{
+                        label: 'Pure Profit/Loss State',
+                        data: zeroData,
+                        backgroundColor: '#1e293b',
+                        borderColor: '#334155',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            grid: { color: '#1e293b' },
+                            ticks: { color: '#64748b' },
+                            min: -100,
+                            max: 100
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#64748b' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
                 }
-            }, 500);
-        }
+            };
 
-        function switchGraphTimeDuration(timeKey) {
-            activeTimeDuration = timeKey;
-            ['1d', '7d', '1m', '1y'].forEach(item => document.getElementById(`time-${item}`).classList.remove('active'));
-            document.getElementById(`time-${timeKey}`).classList.add('active');
-            updateMainOfficeVisual();
-        }
-
-        function switchGraphDesignMatrix(targetDesign) {
-            activeDesignStyle = targetDesign;
-            ['pillars', 'heart', 'mnc', 'high-tech', 'ai'].forEach(item => document.getElementById(`btn-${item}`).classList.remove('active'));
-            document.getElementById(`btn-${targetDesign}`).classList.add('active');
-            updateMainOfficeVisual();
-        }
-
-        setInterval(() => {
-            if(Math.random() > 0.85) liveProfitStatus = !liveProfitStatus;
-            updateMainOfficeVisual();
-        }, 3000);
-
-        setTimeout(() => {
-            const laserNode = document.getElementById('laserNodeTracker');
-            const laserPipelineText = document.getElementById('laserPipelineString');
-            if(laserNode && laserPipelineText) {
-                laserNode.classList.add('overdue-alert');
-                laserPipelineText.innerHTML = `<span class="overdue-text">OVERDUE TIME THRESHOLD EXCEEDED</span><br>[PROCESS TERMINAL LOCKED - AWAITING DIRECTOR RESET]`;
+            // ૫ ગ્રાફ ડિઝાઇન સ્ટાઇલ્સ કન્ફિગ્યુરેશન (ડિઝાઇન ટાઇપ મુજબ માત્ર લેઆઉટ બદલાશે)
+            if (designType === '1') {
+                // ડિઝાઇન ૧: 3D સિલિન્ડર જેવો થ્રી-ડી બાર લુક
+                chartConfig.type = 'bar';
+                chartConfig.data.datasets[0].borderRadius = 20; 
+            } else if (designType === '2') {
+                // ડિઝાઇન ૨: કમ્બો બ્લોક અને લાઇન ટ્રેન્ડ મોડ
+                chartConfig.type = 'bar';
+                chartConfig.data.datasets.push({
+                    type: 'line',
+                    label: 'Trend',
+                    data: zeroData,
+                    borderColor: '#00e5ff',
+                    borderDash: [5, 5],
+                    fill: false
+                });
+            } else if (designType === '3') {
+                // ડિઝાઇન ૩: શેરબજાર જેવો કેન્ડલસ્ટિક ટ્રેડિંગ લુક
+                chartConfig.type = 'bar';
+                chartConfig.data.datasets[0].barPercentage = 0.3;
+            } else if (designType === '4') {
+                // ડિઝાઇન ૪: બારકોડ સ્ટાઇલ પ્રોફિટ-લોસ
+                chartConfig.type = 'bar';
+                chartConfig.data.datasets[0].barPercentage = 0.9;
+                chartConfig.data.datasets[0].categoryPercentage = 0.9;
+            } else if (designType === '5') {
+                // ડિઝાઇન ૫: ક્લીન એરિયા ઇન્ડેક્સ વેવ
+                chartConfig.type = 'line';
+                chartConfig.data.datasets[0].fill = true;
+                chartConfig.data.datasets[0].backgroundColor = 'rgba(0, 229, 255, 0.05)';
+                chartConfig.data.datasets[0].borderColor = '#00e5ff';
             }
-        }, 5000);
 
-        function processDirectorOverrideClearance() {
-            if(document.getElementById('directorOverridePass').value === "admin") {
-                document.getElementById('laserNodeTracker').classList.remove('overdue-alert');
-                document.getElementById('laserPipelineString').innerHTML = `AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]`;
-                document.getElementById('directorOverridePass').value = "";
-                alert("Master Override Clearance Verified.");
-                closeMasterConfigurationGrid();
+            myChart = new Chart(ctx, chartConfig);
+        }
+
+        // સેટિંગ્સમાંથી ગ્રાફની ડિઝાઇન ચેન્જ કરવાનું ફંક્શન
+        function changeGraphDesign(val) {
+            initChart(val);
+        }
+
+        /* 
+           નોંધ: ભવિષ્યમાં જ્યારે સાચો રફ ખરીદી અને પ્રોડક્શનનો ડેટા કનેક્ટ થશે, 
+           ત્યારે આ ફંક્શન (updateLiveFinancials) દ્વારા નફો/નુકસાન ગણીને ગ્રાફ લાઈવ દોડશે 
+           અને પ્રોફિટ થતાં જ મેટ ગ્રીન કે લોસ થતાં જ મેટ રેડ કલર આપોઆપ પકડશે.
+        */
+        function updateLiveFinancials(realDataArray) {
+            if(!myChart) return;
+            
+            // રિયલ ડેટાના આધારે ડાયનેમિક કલર કંટ્રોલ
+            const backgroundColors = realDataArray.map(value => {
+                if (value > 0) return '#00e676';      // મેટ ગ્રીન (નફો)
+                if (value < 0) return '#ff1744';      // મેટ રેડ (નુકસાન)
+                return '#ffea00';                      // મેટ યલો (મધ્યમ સ્થિતિ)
+            });
+
+            myChart.data.datasets[0].data = realDataArray;
+            myChart.data.datasets[0].backgroundColor = backgroundColors;
+            
+            const currentTotal = realDataArray.reduce((a, b) => a + b, 0);
+            const statusEl = document.getElementById('financial-status');
+            
+            if(currentTotal > 0) {
+                statusEl.innerText = "COMPANY STATE: NET PROFIT IN RUN";
+                statusEl.style.color = "var(--matte-green)";
+            } else if(currentTotal < 0) {
+                statusEl.innerText = "COMPANY STATE: NET LOSS DETECTED";
+                statusEl.style.color = "var(--matte-red)";
             } else {
-                alert("Authorization Denied.");
+                statusEl.innerText = "COMPANY STATE: BREAK EVEN";
+                statusEl.style.color = "var(--matte-yellow)";
             }
+            
+            myChart.update();
         }
-
-        function openDirectorSecureGate() { 
-            document.getElementById('secureOtpField').value = ""; 
-            biometricSuccess = false;
-            if(activeScanTimer) clearInterval(activeScanTimer);
-            triggerChannelSelection('mobileRadio');
-            document.getElementById('directorGateOverlay').classList.add('active'); 
-        }
-        
-        function closeDirectorSecureGate() { 
-            if(activeScanTimer) clearInterval(activeScanTimer);
-            document.getElementById('directorGateOverlay').classList.remove('active'); 
-        }
-
-        // Standard Manual Code validation route for OTP channels only
-        function executeDirectorGateAuthorization() {
-            const code = document.getElementById('secureOtpField').value;
-            if(code.length === 6) {
-                alert("IDENTITY VERIFIED: Secure tunnel established.");
-                closeDirectorSecureGate();
-                window.location.href = 'main_office.html'; 
-            } else {
-                alert("Invalid Transmission Metrics. 6-Digit code sequence required.");
-            }
-        }
-
-        function triggerFullScreen() { if (!document.fullscreenElement) { document.documentElement.requestFullscreen(); } else { document.exitFullscreen(); } }
-        function triggerMinimize() { alert("System minimized."); }
-        function triggerClose() { if (confirm("Terminate connection?")) window.close(); }
-        function openMasterConfigurationGrid() { document.getElementById('masterSettingsOverlay').classList.add('active'); }
-        function closeMasterConfigurationGrid() { document.getElementById('masterSettingsOverlay').classList.remove('active'); }
-        function handleClusterLink(nodeLabel) { alert(`Opening Route: ${nodeLabel}`); }
-        function runMasterClock() { document.getElementById('footerClockLive').innerText = `SYSTEM GRID STATUS: SECURE OPERATIONAL STATE | TIME: ${new Date().toUTCString()}`; }
-        
-        setInterval(runMasterClock, 1000);
-        runMasterClock();
-        updateMainOfficeVisual();
     </script>
 </body>
 </html>
