@@ -1,24 +1,281 @@
-        /* 2050 Advanced Central Modal/Popup Control Panel */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Raghuveer Diamond - Main Office Core</title>
+    <style>
+        :root {
+            --bg-primary: #070B19;
+            --bg-secondary: rgba(17, 29, 55, 0.7);
+            --top-bar-bg: #030611;
+            --border-color: rgba(28, 37, 65, 0.9);
+            --accent-cyan: #5BC0BE;
+            --accent-blue: #00C6FF;
+            --accent-green: #27AE60;
+            --accent-red: #E74C3C;
+            --accent-purple: #9B59B6;
+            --accent-orange: #F39C12;
+            --text-main: #FFFFFF;
+            --text-muted: #708090;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            background-image: 
+                radial-gradient(circle at 5% 5%, rgba(0, 198, 255, 0.05) 0%, transparent 35%),
+                radial-gradient(circle at 95% 95%, rgba(91, 192, 190, 0.05) 0%, transparent 35%);
+            color: var(--text-main);
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .window-control-bar {
+            height: 50px;
+            background-color: var(--top-bar-bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px 0 20px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .company-logo-frame {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00C6FF, #0072FF);
+            box-shadow: 0 0 8px #00C6FF;
+        }
+
+        .brand-title {
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), #0072FF, var(--accent-cyan));
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: cyberGlow 6s linear infinite;
+            text-transform: uppercase;
+        }
+
+        @keyframes cyberGlow {
+            0% { background-position: 0% center; }
+            100% { background-position: 300% center; }
+        }
+
+        .window-actions {
+            display: flex;
+            height: 100%;
+        }
+
+        .win-btn {
+            background: none;
+            border: none;
+            color: var(--accent-cyan);
+            width: 45px;
+            height: 100%;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .win-btn:hover {
+            background: var(--border-color);
+            color: #FFFFFF;
+        }
+
+        .win-btn.close-btn:hover {
+            background: var(--accent-red);
+            color: #FFFFFF;
+        }
+
+        .office-container {
+            flex: 1;
+            padding: 20px 15px;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .core-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .core-metrics-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .metric-card {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 15px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 115px;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+        }
+
+        #card-bank::before { background: var(--accent-blue); }
+        #card-bank:hover { border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(0, 198, 255, 0.25); }
+
+        #card-rough::before { background: var(--accent-orange); }
+        #card-rough:hover { border-color: var(--accent-orange); box-shadow: 0 0 15px rgba(243, 156, 18, 0.25); }
+
+        #card-sales::before { background: var(--accent-green); }
+        #card-sales:hover { border-color: var(--accent-green); box-shadow: 0 0 15px rgba(39, 174, 96, 0.25); }
+
+        #card-cash::before { background: var(--accent-purple); }
+        #card-cash:hover { border-color: var(--accent-purple); box-shadow: 0 0 15px rgba(155, 89, 182, 0.25); }
+
+        #card-broker::before { background: var(--accent-cyan); }
+        #card-broker:hover { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(91, 192, 190, 0.25); }
+
+        #card-print::before { background: #E74C3C; }
+        #card-print:hover { border-color: #E74C3C; box-shadow: 0 0 15px rgba(231, 76, 60, 0.25); }
+
+        .card-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            letter-spacing: 1.2px;
+            font-weight: 700;
+        }
+
+        .card-value {
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #FFFFFF;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            word-break: break-word;
+            line-height: 1.3;
+            margin: 6px 0;
+        }
+
+        .card-sub-value {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .live-status-indicator {
+            font-size: 9px;
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .status-dot {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background-color: var(--accent-green);
+            box-shadow: 0 0 6px var(--accent-green);
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0.2; } }
+
+        .floating-settings-trigger {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            background: #0B132B;
+            border: 1px solid var(--accent-cyan);
+            border-radius: 50%;
+            color: var(--accent-cyan);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 12px rgba(91, 192, 190, 0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 999;
+        }
+
+        .floating-settings-trigger:hover {
+            color: #FFFFFF;
+            transform: rotate(90deg) scale(1.05);
+            box-shadow: 0 0 20px var(--accent-cyan);
+        }
+
         .cyber-modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(7, 11, 25, 0.85);
-            backdrop-filter: blur(5px);
+            background: rgba(3, 6, 17, 0.85);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             z-index: 2000;
             align-items: center;
             justify-content: center;
         }
 
         .cyber-popup-card {
-            background: var(--bg-secondary);
+            background: #0B132B;
             border: 1px solid var(--accent-cyan);
             border-radius: 16px;
             width: 90%;
-            max-width: 450px;
-            padding: 25px;
-            box-shadow: 0 0 30px rgba(91, 192, 190, 0.3);
-            animation: popupScale 0.3s ease-out;
+            max-width: 420px;
+            padding: 22px;
+            box-shadow: 0 0 35px rgba(91, 192, 190, 0.4);
+            animation: popupScale 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         @keyframes popupScale {
@@ -32,14 +289,14 @@
             align-items: center;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .popup-title {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--accent-cyan);
             font-weight: bold;
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
             text-transform: uppercase;
         }
 
@@ -47,27 +304,28 @@
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
         }
         .popup-close:hover { color: var(--accent-red); }
 
         .popup-row {
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .popup-label {
             font-size: 11px;
             color: var(--text-muted);
             text-transform: uppercase;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .cyber-input {
-            background: var(--bg-primary);
+            background: rgba(7, 11, 25, 0.8);
             border: 1px solid var(--border-color);
             color: var(--accent-cyan);
             padding: 8px 12px;
@@ -78,21 +336,19 @@
             text-align: center;
         }
 
-        .cyber-input:focus { border-color: var(--accent-blue); }
-
         .popup-switch-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         .cyber-toggle-btn {
-            background: var(--bg-primary);
+            background: rgba(7, 11, 25, 0.6);
             border: 1px solid var(--border-color);
             color: var(--text-muted);
             padding: 10px;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 10px;
             font-weight: bold;
@@ -103,20 +359,19 @@
 
         .cyber-toggle-btn.active {
             border-color: var(--accent-cyan);
-            color: var(--bg-primary);
+            color: #030611;
             background: var(--accent-cyan);
             box-shadow: 0 0 10px var(--accent-cyan);
         }
 
         .privacy-blur-effect {
-            filter: blur(8px) !important;
+            filter: blur(10px) !important;
             pointer-events: none !important;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Structure -->
     <div class="window-control-bar">
         <div class="brand-wrapper">
             <div class="company-logo-frame"></div>
@@ -131,79 +386,62 @@
     </div>
 
     <div class="office-container">
-        
-        <!-- 5 Core Pillars Grid Layout -->
-        <div class="core-metrics-row">
-            <!-- 1. BANK CARD -->
+        <div class="core-metrics-grid">
+            
             <div class="metric-card" id="card-bank" onclick="window.location.href='bank_details.html'">
-                <div class="card-label" id="lbl-bank">BANK</div>
-                <div class="card-value" id="val-usd">NO DATA</div>
+                <div>
+                    <div class="card-label" id="lbl-bank">BANK</div>
+                    <div class="card-value" id="val-usd">NO DATA</div>
+                </div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
-            <!-- 2. ROUGH PURCHASE CARD -->
             <div class="metric-card" id="card-rough" onclick="window.location.href='rough_purchase.html'">
-                <div class="card-label" id="lbl-rough">ROUGH PURCHASE</div>
-                <div class="card-value" id="val-rough">0 Carats</div>
+                <div>
+                    <div class="card-label" id="lbl-rough">ROUGH PURCHASE</div>
+                    <div class="card-value" id="val-rough">0 Carats</div>
+                    <div class="card-sub-value" id="val-rough-total">Total Safe: 0 Carats</div>
+                </div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
-            <!-- 3. GLOBAL SALES CARD -->
             <div class="metric-card" id="card-sales" onclick="window.location.href='sales_details.html'">
-                <div class="card-label" id="lbl-sales">GLOBAL SALES</div>
-                <div class="card-value" id="val-sales">0 Carats</div>
+                <div>
+                    <div class="card-label" id="lbl-sales">GLOBAL SALES</div>
+                    <div class="card-value" id="val-sales">0 Carats</div>
+                </div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
-            <!-- 4. CASH FLOW CARD -->
             <div class="metric-card" id="card-cash" onclick="window.location.href='cash_flow.html'">
-                <div class="card-label" id="lbl-cash">CASH FLOW</div>
-                <div class="card-value" id="val-cash">₹ 0</div>
+                <div>
+                    <div class="card-label" id="lbl-cash">CASH FLOW</div>
+                    <div class="card-value" id="val-cash">₹ 0</div>
+                </div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
 
-            <!-- 5. BROKER & PARTY DIRECTORY -->
             <div class="metric-card" id="card-broker" onclick="window.location.href='broker_list.html'">
-                <div class="card-label" id="lbl-broker">BROKER & PARTY</div>
-                <div class="card-value" id="val-broker">STANDBY</div>
+                <div>
+                    <div class="card-label" id="lbl-broker">BROKER & PARTY</div>
+                    <div class="card-value" id="val-broker">STANDBY</div>
+                </div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
-        </div>
 
-        <!-- Universal Cyber Print Station -->
-        <div class="workspace-split-grid">
-            <div class="print-station-card">
-                <div class="block-title" style="border: none;">Universal Cyber Print Station</div>
-                
-                <div class="print-btn-group">
-                    <button class="print-btn" onclick="executeCyberPrint('Letter Pad')">
-                        <span>1. Letter Pad Print</span> <span class="print-icon">𖤖</span>
-                    </button>
-                    <button class="print-btn" onclick="executeCyberPrint('Check')">
-                        <span>2. Check Print</span> <span class="print-icon">🏦</span>
-                    </button>
-                    <button class="print-btn" onclick="executeCyberPrint('Excel')">
-                        <span>3. Excel Export & Print</span> <span class="print-icon">📊</span>
-                    </button>
+            <div class="metric-card" id="card-print" onclick="window.location.href='printer_station.html'">
+                <div>
+                    <div class="card-label">PRINTER STATION</div>
+                    <div class="card-value" style="color: var(--accent-cyan); font-size: 17px;">OPEN TERMINAL</div>
+                    <div class="card-sub-value">Letter Pad / Check / Excel</div>
                 </div>
-
-                <div class="size-setting-box">
-                    <div class="card-label" style="font-size: 9px;">4. Universal Size & Layout Settings</div>
-                    <div class="size-grid">
-                        <button class="size-btn active" id="sz-a4" onclick="setPrinterSize('a4')">A4 Standard</button>
-                        <button class="size-btn" id="sz-a5" onclick="setPrinterSize('a5')">A5 Pad</button>
-                        <button class="size-btn" id="sz-legal" onclick="setPrinterSize('legal')">Legal Document</button>
-                        <button class="size-btn" id="sz-check" onclick="setPrinterSize('check')">Custom Check Size</button>
-                    </div>
-                </div>
+                <div class="live-status-indicator"><span class="status-dot" style="background-color: #E74C3C; box-shadow: 0 0 6px #E74C3C;"></span></div>
             </div>
         </div>
     </div>
 
-    <!-- ⚙️ Floating Gear Icon (Bottom Right Position) -->
-    <div class="floating-settings-trigger" onclick="openSettingsPopup()">⚙️</div>
+    <div class="floating-settings-trigger" onclick="openSettingsPopup(event)">⚙️</div>
 
-    <!-- 🧠 2050 Director Settings Central Popup Modal Page -->
     <div class="cyber-modal-overlay" id="settings-modal" onclick="closeSettingsPopup(event)">
         <div class="cyber-popup-card">
             <div class="popup-header">
@@ -212,7 +450,7 @@
             </div>
             
             <div class="popup-row">
-                <div class="popup-label">AI Auto-Pilot Rotation Time (Seconds)</div>
+                <div class="popup-label">AI Auto-Pilot Rotation Speed (Seconds)</div>
                 <input type="number" id="txt-timer" class="cyber-input" value="3" min="1" onchange="updateRotationSpeed()">
             </div>
             
@@ -227,18 +465,17 @@
             </div>
             
             <div style="font-size: 9px; color: var(--accent-green); text-align: center; font-weight: bold; margin-top: 15px; letter-spacing: 0.5px;">
-                SECURITY SYNC ACTIVE (2050 ENGINE STANDARD)
+                SECURITY MATRIX ACTIVE (2050 STANDARD)
             </div>
         </div>
     </div>
 
     <script>
-        let selectedLayoutSize = "a4";
-        
         let bankRotateIdx = 0;
         let salesRotateIdx = 0;
         let cashRotateIdx = 0;
         let brokerRotateIdx = 0;
+        let roughRotateIdx = 0;
         let rotationTimer = null;
 
         let isPrivacyActive = false;
@@ -250,7 +487,6 @@
             window.location.href = 'dashboard.html'; 
         }
 
-        // --- Live Global Click for Auto Fullscreen Mode Locking ---
         window.addEventListener('click', function globalFullScreenLock() {
             const doc = document.documentElement;
             if (doc.requestFullscreen) doc.requestFullscreen();
@@ -267,32 +503,21 @@
         }
 
         function triggerMinimize() {
-            console.log("Terminal window tracking minimized.");
+            console.log("Terminal view minimalized.");
         }
 
-        function executeCyberPrint(documentType) {
-            alert(`PRINTER COMMAND SENT:\nPrinting ${documentType} Matrix using [${selectedLayoutSize.toUpperCase()}] configuration profile.`);
-        }
-
-        function setPrinterSize(sizeKey) {
-            selectedLayoutSize = sizeKey;
-            const sizes = ['a4', 'a5', 'legal', 'check'];
-            sizes.forEach(item => { document.getElementById(`sz-${item}`).classList.remove('active'); });
-            document.getElementById(`sz-${sizeKey}`).classList.add('active');
-        }
-
-        // --- Popup Control Open/Close System ---
-        function openSettingsPopup() {
+        function openSettingsPopup(e) {
+            e.stopPropagation();
             document.getElementById('settings-modal').style.display = 'flex';
         }
 
         function closeSettingsPopup(e, forceClose = false) {
+            if(e) e.stopPropagation();
             if (forceClose || (e && e.target.id === 'settings-modal')) {
                 document.getElementById('settings-modal').style.display = 'none';
             }
         }
 
-        // --- 2050 Advanced Live Switches Logic ---
         function togglePrivacyMode() {
             isPrivacyActive = !isPrivacyActive;
             const btn = document.getElementById('btn-privacy');
@@ -326,19 +551,13 @@
         function toggleAnomalyDetection() {
             isAnomalyActive = !isAnomalyActive;
             const btn = document.getElementById('btn-anomaly');
-            if(isAnomalyActive) {
-                btn.classList.add('active');
-                console.log("Anomaly scanner operating actively.");
-            } else {
-                btn.classList.remove('active');
-            }
+            if(isAnomalyActive) btn.classList.add('active');
+            else btn.classList.remove('active');
         }
 
-        // --- Pure Container Real-Time Dashboard Synchronization Logic ---
         function loadDashboardData() {
             const usdRate = parseFloat(localStorage.getItem('usd_rate')) || 83.72;
 
-            // 1. BANK CARD (Syncs only when inner database contains entries)
             const bankAccounts = JSON.parse(localStorage.getItem('factory_banks'));
             if(bankAccounts && bankAccounts.length > 0) {
                 let currentBank = bankAccounts[bankRotateIdx % bankAccounts.length];
@@ -350,29 +569,32 @@
                 document.getElementById('val-usd').innerText = "NO DATA";
             }
 
-            // 2. ROUGH PURCHASE CARD (Safe Stock Tracker Matrix)
-            const totalRough = parseFloat(localStorage.getItem('total_rough'));
+            const roughLots = JSON.parse(localStorage.getItem('rough_safe_lots'));
             const roughInProcess = parseFloat(localStorage.getItem('rough_in_process')) || 0;
             
-            if (!isNaN(totalRough)) {
-                let netSafeStock = Math.max(0, totalRough - roughInProcess);
+            if(roughLots && roughLots.length > 0) {
+                let totalSafeCalculated = roughLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
+                let netSafeStock = Math.max(0, totalSafeCalculated - roughInProcess);
+
                 if(isForecastActive) {
-                    netSafeStock = Math.max(0, netSafeStock - 150); 
-                    document.getElementById('lbl-rough').innerText = "ROUGH SAFE (AI EST.)";
-                } else {
-                    document.getElementById('lbl-rough').innerText = "ROUGH PURCHASE";
+                    netSafeStock = Math.max(0, netSafeStock - 100);
                 }
-                document.getElementById('val-rough').innerText = netSafeStock.toLocaleString('en-IN') + " Carats";
+
+                let currentLot = roughLots[roughRotateIdx % roughLots.length];
+                
+                document.getElementById('lbl-rough').innerText = `LOT NO: ${currentLot.lot_no}`;
+                document.getElementById('val-rough').innerText = parseFloat(currentLot.weight).toLocaleString('en-IN') + " Cts";
+                document.getElementById('val-rough-total').innerText = `Total Safe: ${netSafeStock.toLocaleString('en-IN')} Cts`;
+                roughRotateIdx++;
             } else {
                 document.getElementById('lbl-rough').innerText = "ROUGH PURCHASE";
                 document.getElementById('val-rough').innerText = "0 Carats";
+                document.getElementById('val-rough-total').innerText = "Total Safe: 0 Carats";
             }
 
-            // 3. GLOBAL SALES CARD (Full Row Detail Slider Logic)
             const polishedStock = JSON.parse(localStorage.getItem('polished_safe_stock'));
             if(polishedStock && polishedStock.length > 0) {
                 let currentPolished = polishedStock[salesRotateIdx % polishedStock.length];
-                // Displays full configuration row string dynamically generated from inner fields
                 document.getElementById('lbl-sales').innerText = `${currentPolished.purity} - ${currentPolished.color} - ${currentPolished.size} - ${currentPolished.fluorescence}`;
                 document.getElementById('val-sales').innerText = currentPolished.weight.toLocaleString('en-IN') + " Carats";
                 salesRotateIdx++;
@@ -381,7 +603,6 @@
                 document.getElementById('val-sales').innerText = "0 Carats";
             }
 
-            // 4. CASH FLOW CARD (3-State Cash Drawer Rotation Engine)
             const cashData = localStorage.getItem('total_cash');
             if (cashData !== null) {
                 let totalCash = parseFloat(cashData) || 0;
@@ -409,7 +630,6 @@
                 document.getElementById('val-cash').innerText = "₹ 0";
             }
 
-            // 5. BROKER & PARTY DIRECTORY (Market Flow Manager Matrix)
             const brokerList = JSON.parse(localStorage.getItem('broker_directory'));
             if(brokerList && brokerList.length > 0) {
                 let currentBroker = brokerList[brokerRotateIdx % brokerList.length];
@@ -430,7 +650,6 @@
             localStorage.setItem('user_rotation_speed', seconds);
         }
 
-        // Initial System Boot Controller Execution
         loadDashboardData();
         let savedSpeed = localStorage.getItem('user_rotation_speed') || 3;
         document.getElementById('txt-timer').value = savedSpeed;
