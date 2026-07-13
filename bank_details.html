@@ -1,228 +1,514 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIAMOND TRANSACTION CORE - CYBER MATRIX v2.0</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0B132B; color: #FFFFFF; padding: 20px; }
-        
-        /* Top Global Vault Header */
-        .header { background-color: #1C2541; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-radius: 6px; margin-bottom: 20px; }
-        .header h1 { font-family: 'Consolas', monospace; font-size: 22px; color: #4EA8DE; }
-        .vault-balances { display: flex; gap: 20px; font-family: 'Consolas', monospace; font-size: 14px; font-weight: bold; }
-        .bal-inr { color: #52B788; }
-        .bal-usd { color: #4EA8DE; }
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+<title>Raghuveer Diamond - AI Future Banking Terminal</title> 
+<style> 
+:root { 
+    --bg-primary: #070B19; 
+    --bg-secondary: #0B132B; 
+    --top-bar-bg: #050814; 
+    --border-color: #1C2541; 
+    --accent-cyan: #5BC0BE; 
+    --accent-blue: #00C6FF; 
+    --accent-green: #27AE60; 
+    --accent-red: #E74C3C; 
+    --text-main: #FFFFFF; 
+    --text-muted: #708090; 
+} 
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; } 
+body { background-color: var(--bg-primary); color: var(--text-main); width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden; } 
+/* Top Cyber Header Matrix */ 
+.window-control-bar { height: 50px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 1px solid var(--border-color); } 
+.brand-wrapper { display: flex; align-items: center; gap: 12px; } 
+.company-logo-frame { width: 16px; height: 16px; border-radius: 50%; background: linear-gradient(45deg, #00C6FF, #0072FF); box-shadow: 0 0 8px #00C6FF; } 
+.brand-title { font-size: 16px; font-weight: 900; letter-spacing: 1px; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), #0072FF, var(--accent-cyan)); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: cyberGlow 6s linear infinite; text-transform: uppercase; } 
+@keyframes cyberGlow { 0% { background-position: 0% center; } 100% { background-position: 300% center; } } 
+.win-btn { background: none; border: none; color: var(--accent-cyan); padding: 5px 15px; font-size: 14px; cursor: pointer; border-radius: 4px; border: 1px solid var(--border-color); } 
+.win-btn:hover { background: var(--accent-red); color: #FFFFFF; } 
+/* Balance Display Grid */ 
+.balance-board { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; padding: 15px 15px 0 15px; } 
+.balance-card { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; position: relative; overflow: hidden; } 
+.balance-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent-blue); } 
+.balance-card.total-card::before { background: var(--accent-cyan); } 
+.card-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; } 
+.card-val { font-size: 18px; font-weight: 700; color: #FFFFFF; margin-top: 5px; } 
+/* Main Workspace Split Grid */ 
+.bank-workspace { flex: 1; padding: 15px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 15px; height: calc(100vh - 150px); overflow: hidden; } 
+.panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); overflow: hidden; } 
+.panel-title { font-size: 13px; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 12px; font-weight: 600; letter-spacing: 0.5px; border-bottom: 1px dashed var(--border-color); padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center; } 
+.form-scroll-container { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; flex: 1; padding-right: 5px; } 
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } 
+.input-group { display: flex; flex-direction: column; gap: 4px; } 
+.input-group label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; } 
+.input-control { background: var(--bg-primary); border: 1px solid var(--border-color); color: #FFFFFF; padding: 8px 10px; border-radius: 6px; font-size: 13px; outline: none; } 
+.input-control:focus { border-color: var(--accent-cyan); } 
+.type-toggle-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; } 
+.mode-btn { background: var(--bg-primary); border: 1px solid var(--border-color); color: #FFFFFF; padding: 8px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px; text-transform: uppercase; text-align: center; } 
+.mode-btn.credit.active { background: var(--accent-green); border-color: #2ECC71; } 
+.mode-btn.debit.active { background: var(--accent-red); border-color: #E74C3C; } 
+.mode-btn.transfer.active { background: #8E44AD; border-color: #9B59B6; } 
+/* Table Stream */ 
+.table-wrapper { flex: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); } 
+table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; } 
+th { background: var(--border-color); color: var(--accent-cyan); padding: 10px; position: sticky; top: 0; text-transform: uppercase; font-size: 10px; } 
+td { padding: 10px; border-bottom: 1px solid var(--border-color); } 
+.tx-cr { color: #2ECC71; font-weight: 600; } 
+.tx-dr { color: #E74C3C; font-weight: 600; } 
+.tx-tr { color: #9B59B6; font-weight: 600; } 
+.status-badge { padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; cursor: pointer; } 
+.status-pending { background: #D35400; color: #fff; } 
+.status-cleared { background: #27AE60; color: #fff; } 
+/* Modals for Settings & Verification */ 
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1000; visibility: hidden; opacity: 0; transition: 0.3s; } 
+.modal-box { background: var(--bg-secondary); border: 1px solid var(--accent-cyan); border-radius: 12px; width: 400px; padding: 20px; box-shadow: 0 0 20px rgba(0, 198, 255, 0.3); } 
+/* Bottom Control Panel */ 
+.footer-control-bar { height: 40px; background: var(--top-bar-bg); border-top: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; } 
+.settings-launcher { color: var(--accent-cyan); font-size: 18px; cursor: pointer; background: none; border: none; outline: none; } 
+</style> 
+</head> 
+<body onload="initializeTerminal()" onclick="enableFullScreenMode(event)"> 
+<!-- Header Panel Matrix --> 
+<div class="window-control-bar"> 
+ <div class="brand-wrapper"> 
+ <div class="company-logo-frame"></div> 
+ <div class="brand-title">RAGHUVEER DIAMOND</div> 
+ </div> 
+ <div> 
+ <button class="win-btn" onclick="backToDashboard()">✕ CLOSE TERMINAL</button> </div> 
+ </div> 
+ <!-- Live Balance Board Grid --> 
+ <div class="balance-board" id="balance-cards-container"> 
+ <!-- Dyn cards load here --> 
+ </div> 
+ <!-- Main Workspace Setup --> 
+ <div class="bank-workspace"> 
+ <!-- Left: Form Input --> 
+ <div class="panel-box"> 
+ <div class="panel-title">Intelligent Transaction Core</div> 
+ <div class="form-scroll-container"> 
+ <div class="input-group"> 
+ <label>Accounting Mode</label> 
+ <div class="type-toggle-row"> 
+ <button class="mode-btn credit active" id="mode-credit" onclick="setAccountingMode('CREDIT')">Credit</button> 
+ <button class="mode-btn debit" id="mode-debit" onclick="setAccountingMode('DEBIT')">Debit</button> 
+ <button class="mode-btn transfer" id="mode-transfer" onclick="setAccountingMode('TRANSFER')">Bank Transfer</button> 
+ </div> 
+ </div> 
+ <div class="form-grid-2"> 
+ <div class="input-group" id="src-bank-group"> 
+ <label id="bank-select-label">Select Master Bank</label> 
+ <select class="input-control" id="bank-select"></select> 
+ </div> 
+ <div class="input-group" id="dest-bank-group" style="display: none;"> 
+ <label>Destination Bank</label> 
+ <select class="input-control" id="dest-bank-select"></select> 
+ </div> 
+ </div> 
+ <div class="form-grid-2"> 
+ <div class="input-group"> 
+ <label>Transaction Method</label> 
+ <select class="input-control" id="method-select" onchange="toggleChequeInput()"> 
+ <option value="ONLINE">ONLINE / IMPS</option> 
+ <option value="NEFT_RTGS">NEFT / RTGS</option> 
+ <option value="CHEQUE">BANK CHEQUE</option> 
+ <option value="UPI">UPI SMART CODE</option> 
+ </select> 
+ </div> 
+ <div class="input-group" id="purpose-group"> 
+ <label>Transaction Purpose</label> 
+ <select class="input-control" id="purpose-select"></select> 
+ </div> 
+ </div> 
+ <div class="form-grid-2"> 
+ <div class="input-group" id="party-group"> 
+ <label>Particular / Party Name</label> 
+ <input type="text" class="input-control" id="party-name" placeholder="Enter Entity Name" oninput="triggerLiveAPILinkage()"> 
+ </div> 
+ <div class="input-group"> 
+ <label>Value Amount</label> 
+ <input type="number" class="input-control" id="tx-amount" placeholder="0.00"> </div> 
+ </div> 
+ <div class="form-grid-2"> 
+ <div class="input-group" id="cheque-number-group" style="display: none;"> 
+ <label>Cheque / Reference Number</label> 
+ <input type="text" class="input-control" id="cheque-no" placeholder="Enter Ref / Cheque No"> </div> 
+ <div class="input-group"> 
+ <label>Execution Date</label> 
+ <input type="date" class="input-control" id="tx-date"> </div> 
+ </div> 
+ </div> 
+ <button class="mode-btn credit active" style="width: 100%; margin-top: 10px; padding: 12px; font-size: 13px;" id="post-btn" onclick="executePostEntry()">Post Transaction Matrix</button> </div> 
+ <!-- Right: Live Table --> 
+ <div class="panel-box"> 
+ <div class="panel-title"> 
+ <span>Live Account Ledger Database</span> 
+ <span id="live-clock" style="font-size: 10px; color: var(--text-muted);"></span> </div> 
+ <div class="table-wrapper"> 
+ <table> 
+ <thead> 
+ <tr> 
+ <th>Bank Hierarchy</th> 
+ <th>Details</th> 
+ <th>Method / Status</th> 
+ <th>Amount</th> </tr> 
+ </thead> 
+ <tbody id="ledger-rows"></tbody> </table> </div> </div> </div> 
+ <!-- Bottom Settings Footer Bar --> 
+ <div class="footer-control-bar"> 
+ <span style="font-size: 10px; color: var(--text-muted);">Secure Environment Matrix Active</span> <button class="settings-launcher" onclick="openSettingsModal()" title="Global System Settings">⚙️ Bank Setup</button> </div> 
+ <!-- ⚙️ SETTINGS MODAL ENGINE --> 
+ <div class="modal-overlay" id="settings-modal"> 
+ <div class="modal-box"> 
+ <div class="panel-title" style="border:none; margin-bottom:15px;"> <span>⚙️ Dynamic Bank Configuration</span> <span style="cursor:pointer;" onclick="closeSettingsModal()">✕</span> </div> 
+ <div style="display:flex; flex-direction:column; gap:12px;"> 
+ <div class="input-group"> 
+ <label>Bank Name</label> 
+ <input type="text" class="input-control" id="new-bank-name" placeholder="e.g. SBI, HDFC"> </div> 
+ <div class="input-group"> 
+ <label>Account Number</label> 
+ <input type="text" class="input-control" id="new-bank-acc" placeholder="Enter A/C Number"> </div> 
+ <div class="input-group"> 
+ <label>Account Type</label> 
+ <select class="input-control" id="new-bank-type"> 
+ <option value="Current">Current Account</option> 
+ <option value="Saving">Saving Account</option> 
+ <option value="CC">CC Account</option> 
+ <option value="OD">OD Account</option> 
+ <option value="Forex">Forex Account</option> 
+ </select> </div> 
+ <div class="input-group"> 
+ <label>IFSC Code</label> 
+ <input type="text" class="input-control" id="new-bank-ifsc" placeholder="Enter IFSC Code"> </div> 
+ <div class="input-group"> 
+ <label>Account Holder Name</label> 
+ <input type="text" class="input-control" id="new-bank-holder" placeholder="Holder Full Name"> </div> 
+ <button class="mode-btn credit active" style="background:var(--accent-blue); color:white;" onclick="triggerSecureAPIModal()">Secure API Live Link Account</button> </div> </div> </div> 
+ <!-- 🛡️ SECURE OTP API MODULE --> 
+ <div class="modal-overlay" id="otp-modal" style="z-index: 1001;"> 
+ <div class="modal-box" style="width:340px; border-color:var(--accent-blue);"> 
+ <div class="panel-title" style="border:none;"> <span>🛡️ RBI Account Aggregator Link</span> </div> 
+ <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">Enter secure OTP sent to your bank registered mobile number to automatically sync live balance profile.</p> 
+ <div class="input-group" style="margin-bottom:15px;"> 
+ <label>Secure 6-Digit OTP</label> 
+ <input type="text" class="input-control" id="secure-otp" placeholder="******" style="text-align:center; font-size:16px; letter-spacing:4px;"> </div> 
+ <button class="mode-btn credit active" onclick="verifySecureOTP()">Verify & Fetch Live Balance</button> </div> </div> 
+ <script> 
+ let currentMode = "CREDIT"; 
 
-        /* Main Grid container */
-        .main-container { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; min-height: 580px; }
-        
-        /* Left Entry Panel */
-        .left-panel { background-color: #111D4A; border: 2px solid #1C2541; border-radius: 6px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
-        .mode-buttons { display: flex; gap: 10px; margin-bottom: 25px; }
-        .mode-btn { padding: 10px 25px; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; color: white; background-color: #1C2541; }
-        .mode-btn.active-debit { background-color: #E63946; }
-        .mode-btn.active-credit { background-color: #52B788; }
-        
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 30px; }
-        .form-group { display: flex; flex-direction: column; gap: 5px; }
-        .form-group label { color: #4EA8DE; font-size: 13px; font-weight: bold; }
-        .form-group input, .form-group select { background-color: #1C2541; border: 1px solid #3A506B; padding: 10px; color: white; border-radius: 4px; font-size: 14px; outline: none; }
-        .amt-curr-group { display: flex; gap: 8px; }
-        .amt-curr-group input { flex: 2; }
-        .amt-curr-group select { flex: 1; }
+ // Master Client-Side Simulated Database for Live API matching
+ const apiPartyDirectory = [
+     { name: "Anil Diamonds", type: "SALES_REVENUE" },
+     { name: "Ghanshyam Rough", type: "ROUGH_PURCHASE" },
+     { name: "Vimal Broker", type: "BROKERAGE" },
+     { name: "Ramesh Karigar", type: "ARTISAN_SALARY" },
+     { name: "UGVCL Power", type: "UTILITY_BILL" }
+ ];
 
-        .post-btn { width: 100%; padding: 15px; border: none; font-size: 15px; font-weight: bold; color: white; cursor: pointer; border-radius: 4px; margin-top: 30px; transition: 0.2s; }
-        .post-btn.debit-style { background-color: #E63946; }
-        .post-btn.credit-style { background-color: #52B788; }
+ function initializeTerminal() { 
+     document.getElementById('tx-date').value = new Date().toISOString().split('T')[0]; 
+     updateClock(); 
+     setInterval(updateClock, 1000); 
+     refreshBankData(); 
+     updatePurposeOptions(); 
+ } 
 
-        /* Right Database Panel */
-        .right-panel { background-color: #1C2541; border: 2px solid #3A506B; border-radius: 6px; padding: 20px; display: flex; flex-direction: column; }
-        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #3A506B; padding-bottom: 10px; }
-        .nav-left { color: #888888; font-size: 12px; font-weight: bold; }
-        .nav-right { color: #4EA8DE; font-size: 13px; font-weight: bold; text-decoration: underline; cursor: pointer; }
-        .panel-title { font-size: 15px; font-weight: bold; margin-bottom: 10px; color: #FFFFFF; }
-        
-        .review-box { flex: 1; background-color: #0B132B; border: 1px solid #3A506B; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 13px; padding: 15px; overflow-y: auto; white-space: pre-wrap; color: #52B788; line-height: 1.5; }
-    </style>
-</head>
-<body>
+ function updateClock() { 
+     const now = new Date(); 
+     document.getElementById('live-clock').innerText = now.toLocaleTimeString(); 
+ } 
 
-    <!-- Header Block -->
-    <div class="header">
-        <h1>TRANSACTION MATRIX CORE</h1>
-        <div class="vault-balances">
-            <span class="bal-inr">GLOBAL VAULT (INR): ₹ 48,50,000</span>
-            <span class="bal-usd">GLOBAL VAULT (USD): $ 25,400</span>
-        </div>
-    </div>
+ function enableFullScreenMode(e) { 
+     if (!document.fullscreenElement && e.target.tagName !== 'SELECT' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON') { 
+         document.documentElement.requestFullscreen().catch(err => {}); 
+     } 
+ } 
 
-    <!-- Main Workspace -->
-    <div class="main-container">
-        
-        <!-- Left Data Input Form -->
-        <div class="left-panel">
-            <div>
-                <div class="mode-buttons">
-                    <button type="button" class="mode-btn" id="creditBtn" onclick="switchMode('CREDIT')">CREDIT</button>
-                    <button type="button" class="mode-btn active-debit" id="debitBtn" onclick="switchMode('DEBIT')">DEBIT</button>
-                </div>
+ function backToDashboard() { 
+     window.location.href = 'main_office.html'; 
+ } 
 
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>SELECT MATRIX BANK:</label>
-                        <select id="bankSelect">
-                            <option value="Current">Kotak Mahindra Bank (7587)</option>
-                            <option value="CC">State Bank of India (1102)</option>
-                        </select>
-                    </div>
+ function openSettingsModal() { 
+     document.getElementById('settings-modal').style.visibility = 'visible'; 
+     document.getElementById('settings-modal').style.opacity = 1; 
+ } 
 
-                    <div class="form-group">
-                        <label>TRANSACTION PURPOSE:</label>
-                        <select id="purposeSelect">
-                            <!-- Populated dynamically via JS -->
-                        </select>
-                    </div>
+ function closeSettingsModal() { 
+     document.getElementById('settings-modal').style.visibility = 'hidden'; 
+     document.getElementById('settings-modal').style.opacity = 0; 
+ } 
 
-                    <div class="form-group">
-                        <label>TRANSACTION METHOD:</label>
-                        <select id="methodSelect">
-                            <option>ONLINE / IMPS</option>
-                            <option>RTGS / NEFT</option>
-                            <option>CASH / ANGADIA REPO</option>
-                        </select>
-                    </div>
+ function triggerSecureAPIModal() { 
+     const name = document.getElementById('new-bank-name').value; 
+     const acc = document.getElementById('new-bank-acc').value; 
+     const ifsc = document.getElementById('new-bank-ifsc').value; 
+     if(!name || !acc || !ifsc) { 
+         alert('Please fill account configurations metrics first.'); 
+         return; 
+     } 
+     document.getElementById('otp-modal').style.visibility = 'visible'; 
+     document.getElementById('otp-modal').style.opacity = 1; 
+ } 
 
-                    <div class="form-group">
-                        <label>VALUE AMOUNT & CURRENCY:</label>
-                        <div class="amt-curr-group">
-                            <input type="text" id="amountInput" value="0.00">
-                            <select id="currSelect">
-                                <option>INR</option>
-                                <option>USD</option>
-                            </select>
-                        </div>
-                    </div>
+ function verifySecureOTP() { 
+     const otp = document.getElementById('secure-otp').value; 
+     if(!otp) { 
+         alert('Enter valid security token code.'); 
+         return; 
+     } 
+     const mockLiveBalances = [785000, 1245000, 432000, 1890000]; 
+     const chosenBalance = mockLiveBalances[Math.floor(Math.random() * mockLiveBalances.length)]; 
+     const name = document.getElementById('new-bank-name').value; 
+     const acc = document.getElementById('new-bank-acc').value; 
+     const type = document.getElementById('new-bank-type').value; 
+     const ifsc = document.getElementById('new-bank-ifsc').value; 
+     const holder = document.getElementById('new-bank-holder').value; 
+     const banks = JSON.parse(localStorage.getItem('factory_banks')) || []; 
+     
+     banks.push({ name, acc, type, ifsc, holder, balance: chosenBalance }); 
+     localStorage.setItem('factory_banks', JSON.stringify(banks)); 
+     
+     document.getElementById('new-bank-name').value = ''; 
+     document.getElementById('new-bank-acc').value = ''; 
+     document.getElementById('new-bank-ifsc').value = ''; 
+     document.getElementById('new-bank-holder').value = ''; 
+     document.getElementById('secure-otp').value = ''; 
+     document.getElementById('otp-modal').style.visibility = 'hidden'; 
+     document.getElementById('otp-modal').style.opacity = 0; 
+     closeSettingsModal(); 
+     refreshBankData(); 
+ } 
 
-                    <div class="form-group">
-                        <label>PARTICULAR / PARTY NAME:</label>
-                        <input type="text" id="partyInput" placeholder="Enter Entity Name">
-                    </div>
+ function refreshBankData() { 
+     const banks = JSON.parse(localStorage.getItem('factory_banks')) || []; 
+     const select = document.getElementById('bank-select'); 
+     const destSelect = document.getElementById('dest-bank-select'); 
+     const container = document.getElementById('balance-cards-container'); 
+     if(banks.length === 0) { 
+         select.innerHTML = '<option value="">No Active Bank! Setup via ⚙️</option>'; 
+         destSelect.innerHTML = '<option value="">No Active Bank! Setup via ⚙️</option>'; 
+         container.innerHTML = `<div class="balance-card total-card"><div class="card-label">GLOBAL BALANCES</div><div class="card-val">₹ 0.00</div></div>`; 
+         localStorage.setItem('dashboard_bank_total', "₹ 0"); 
+         loadLedgerLogs(); 
+         return; 
+     } 
+     select.innerHTML = banks.map(b => `<option value="${b.name}">${b.name} (${b.acc.slice(-4)}) [${b.type || 'Current'}]</option>`).join(''); 
+     destSelect.innerHTML = banks.map(b => `<option value="${b.name}">${b.name} (${b.acc.slice(-4)}) [${b.type || 'Current'}]</option>`).join(''); 
+     
+     let globalTotal = 0; 
+     let cardsHtml = ''; 
+     banks.forEach(b => { 
+         globalTotal += b.balance; 
+         cardsHtml += `<div class="balance-card"><div class="card-label">${b.name} [${b.type || 'Current'}]</div><div class="card-val">₹ ${b.balance.toLocaleString('en-IN')}</div></div>`; 
+     }); 
+     container.innerHTML = `<div class="balance-card total-card" style="border-color:var(--accent-cyan);"><div class="card-label">GLOBAL TOTAL VAULT</div><div class="card-val" style="color:var(--accent-cyan);">₹ ${globalTotal.toLocaleString('en-IN')}</div></div>` + cardsHtml; 
+     localStorage.setItem('dashboard_bank_total', `₹ ${globalTotal.toLocaleString('en-IN')}`); 
+     loadLedgerLogs(); 
+ } 
 
-                    <div class="form-group">
-                        <label>EXECUTION DATE:</label>
-                        <input type="text" id="dateInput" value="13-07-2026">
-                    </div>
-                </div>
-            </div>
+ function setAccountingMode(mode) { 
+     currentMode = mode; 
+     const postBtn = document.getElementById('post-btn'); 
+     const destGroup = document.getElementById('dest-bank-group'); 
+     const purposeGroup = document.getElementById('purpose-group'); 
+     const partyGroup = document.getElementById('party-group'); 
+     const bankLabel = document.getElementById('bank-select-label'); 
+     document.getElementById('mode-credit').classList.remove('active'); 
+     document.getElementById('mode-debit').classList.remove('active'); 
+     document.getElementById('mode-transfer').classList.remove('active'); 
+     
+     if(mode === 'CREDIT') { 
+         document.getElementById('mode-credit').classList.add('active'); 
+         postBtn.style.background = 'var(--accent-green)'; 
+         postBtn.innerText = "Post Matrix Entry (Credit / Incoming)"; 
+         destGroup.style.display = 'none'; 
+         purposeGroup.style.display = 'flex'; 
+         partyGroup.style.display = 'flex'; 
+         bankLabel.innerText = "Select Master Bank"; 
+     } else if(mode === 'DEBIT') { 
+         document.getElementById('mode-debit').classList.add('active'); 
+         postBtn.style.background = 'var(--accent-red)'; 
+         postBtn.innerText = "Post Matrix Entry (Debit / Outgoing)"; 
+         destGroup.style.display = 'none'; 
+         purposeGroup.style.display = 'flex'; 
+         partyGroup.style.display = 'flex'; 
+         bankLabel.innerText = "Select Master Bank"; 
+     } else { 
+         document.getElementById('mode-transfer').classList.add('active'); 
+         postBtn.style.background = '#8E44AD'; 
+         postBtn.innerText = "Execute Secure Bank Transfer Protocol"; 
+         destGroup.style.display = 'flex'; 
+         purposeGroup.style.display = 'none'; 
+         partyGroup.style.display = 'none'; 
+         bankLabel.innerText = "Source Bank (From)"; 
+     } 
+     updatePurposeOptions(); 
+ } 
 
-            <button type="button" class="post-btn debit-style" id="postBtn" onclick="handlePostEntry()">POST MATRIX ENTRY (DEBIT / OUTGOING)</button>
-        </div>
+ function updatePurposeOptions() { 
+     const purposeSelect = document.getElementById('purpose-select'); 
+     if(currentMode === 'CREDIT') { 
+         purposeSelect.innerHTML = ` 
+             <option value="Sales Revenue">Sales Revenue</option> 
+             <option value="Bank CC / OD / Loan Disbursal">Bank CC / OD / Loan Disbursal</option> 
+             <option value="Unsecured / Hand Loans">Unsecured / Hand Loans</option> 
+             <option value="Promoter Capital Infusion">Promoter Capital Infusion</option> 
+             <option value="Rough Resale & Boart Income">Rough Resale & Boart Income</option> 
+             <option value="Interest & Government Subsidies">Interest & Government Subsidies</option> 
+             <option value="GST & Tax Refunds">GST & Tax Refunds</option> 
+             <option value="Miscellaneous Income">Miscellaneous Income</option> 
+         `; 
+     } else { 
+         purposeSelect.innerHTML = ` 
+             <option value="Rough Diamonds Purchase">Rough Diamonds Purchase</option> 
+             <option value="Brokerage & Commission">Brokerage & Commission</option> 
+             <option value="Factory Wages & Salaries">Factory Wages & Salaries</option> 
+             <option value="Machinery & Automation Capital">Machinery & Automation Capital</option> 
+             <option value="Consumables & Factory Expenses">Consumables & Factory Expenses</option> 
+             <option value="Utility & Power Bills">Utility & Power Bills</option> 
+             <option value="Office & Administrative Expenses">Office & Administrative Expenses</option> 
+             <option value="Loan EMI & Interest Repayment">Loan EMI & Interest Repayment</option> 
+             <option value="Unsecured Loan Repayment">Unsecured Loan Repayment</option> 
+             <option value="Statutory Taxes & GST Payments">Statutory Taxes & GST Payments</option> 
+             <option value="Partners Withdrawals / Personal">Partners Withdrawals / Personal</option> 
+         `; 
+     } 
+ } 
 
-        <!-- Right Verification & Live View -->
-        <div class="right-panel">
-            <div class="top-nav">
-                <div class="nav-left">BANK HIERARCHY</div>
-                <div class="nav-right">LIVE DETAILS PANEL</div>
-            </div>
-            <div class="panel-title">LIVE ACCOUNT LEDGER DATABASE</div>
-            <div class="review-box" id="reviewBox">[SYSTEM STATUS]: Active&#10;[API NODE]: Waiting for secure bank response...</div>
-        </div>
+ // Live Bank API Auto-Matching Simulation
+ function triggerLiveAPILinkage() {
+     const typedName = document.getElementById('party-name').value.trim();
+     const matched = apiPartyDirectory.find(p => p.name.toLowerCase() === typedName.toLowerCase());
+     
+     if(matched) {
+         const purposeSelect = document.getElementById('purpose-select');
+         // Auto switch purpose based on mapped profile tags
+         for(let i=0; i<purposeSelect.options.length; i++) {
+             if(purposeSelect.options[i].value.toLowerCase().includes(matched.type.toLowerCase().split('_')[0])) {
+                 purposeSelect.selectedIndex = i;
+                 break;
+             }
+         }
+     }
+ }
 
-    </div>
+ function toggleChequeInput() { 
+     const method = document.getElementById('method-select').value; 
+     document.getElementById('cheque-number-group').style.display = (method === 'CHEQUE') ? 'flex' : 'none'; 
+ } 
 
-    <script>
-        let currentMode = "DEBIT";
+ function toggleChequeStatus(index) { 
+     const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || []; 
+     if(entries[index] && entries[index].method === 'CHEQUE') { 
+         const oldStatus = entries[index].status; 
+         const newStatus = oldStatus === 'PENDING' ? 'CLEARED' : 'PENDING'; 
+         const banks = JSON.parse(localStorage.getItem('factory_banks')) || []; 
+         const amt = entries[index].amount; 
+         const bName = entries[index].bank; 
+         const bankIdx = banks.findIndex(b => b.name === bName); 
+         if(bankIdx !== -1) { 
+             if(entries[index].mode === 'CREDIT') { 
+                 banks[bankIdx].balance += (newStatus === 'CLEARED') ? amt : -amt; 
+             } else if(entries[index].mode === 'DEBIT') { 
+                 banks[bankIdx].balance += (newStatus === 'CLEARED') ? -amt : amt; 
+             } 
+             localStorage.setItem('factory_banks', JSON.stringify(banks)); 
+         } 
+         entries[index].status = newStatus; 
+         localStorage.setItem('bank_ledger_logs', JSON.stringify(entries)); 
+         refreshBankData(); 
+     } 
+ } 
 
-        const creditPurposes = [
-            "Sales Revenue", "Bank CC / OD / Loan Disbursal", "Unsecured / Hand Loans",
-            "Promoter Capital Infusion", "Rough Resale & Boart Income", 
-            "Interest & Government Subsidies", "GST & Tax Refunds", "Miscellaneous Income"
-        ];
+ function executePostEntry() { 
+     const bankName = document.getElementById('bank-select').value; 
+     const amount = parseFloat(document.getElementById('tx-amount').value); 
+     const date = document.getElementById('tx-date').value; 
+     const method = document.getElementById('method-select').value; 
+     const chequeNo = document.getElementById('cheque-no').value; 
+     if(!bankName || isNaN(amount) || amount <= 0) { 
+         alert('Valid bank architecture node and amount metrics required.'); 
+         return; 
+     } 
+     const banks = JSON.parse(localStorage.getItem('factory_banks')) || []; 
+     const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || []; 
+     let purpose = document.getElementById('purpose-select').value; 
+     let party = document.getElementById('party-name').value; 
+     let initialStatus = (method === 'CHEQUE') ? 'PENDING' : 'CLEARED'; 
+     
+     if(currentMode === 'TRANSFER') { 
+         const destBankName = document.getElementById('dest-bank-select').value; 
+         if(bankName === destBankName) { 
+             alert('Source and Destination banks cannot be identical.'); 
+             return; 
+         } 
+         const srcIdx = banks.findIndex(b => b.name === bankName); 
+         const destIdx = banks.findIndex(b => b.name === destBankName); 
+         if(banks[srcIdx].balance < amount) { 
+             alert('Execution Halted: Insufficient liquid vault reserves.'); 
+             return; 
+         } 
+         banks[srcIdx].balance -= amount; 
+         banks[destIdx].balance += amount; 
+         entries.unshift({ bank: bankName, destBank: destBankName, method, purpose: 'INTERNAL_TRANSFER', party: `To ${destBankName}`, amount, date, mode: 'TRANSFER', status: 'CLEARED' }); 
+     } else { 
+         const bIdx = banks.findIndex(b => b.name === bankName); 
+         if(currentMode === 'DEBIT') { 
+             if(initialStatus === 'CLEARED') { 
+                 if(banks[bIdx].balance < amount) { 
+                     alert('Execution Halted: Overdraft baseline exceeded.'); 
+                     return; 
+                 } 
+                 banks[bIdx].balance -= amount; 
+             } 
+         } else { 
+             if(initialStatus === 'CLEARED') banks[bIdx].balance += amount; 
+         } 
+         entries.unshift({ bank: bankName, method, purpose, party, amount, date, mode: currentMode, chequeNo, status: initialStatus }); 
+     } 
+     localStorage.setItem('factory_banks', JSON.stringify(banks)); 
+     localStorage.setItem('bank_ledger_logs', JSON.stringify(entries)); 
+     document.getElementById('party-name').value = ''; 
+     document.getElementById('tx-amount').value = ''; 
+     document.getElementById('cheque-no').value = ''; 
+     refreshBankData(); 
+ } 
 
-        const debitPurposes = [
-            "Rough Diamonds Purchase", "Brokerage & Commission", "Factory Wages & Salaries",
-            "Machinery & Automation Capital", "Consumables & Factory Expenses", "Utility & Power Bills",
-            "Office & Administrative Expenses", "Loan EMI & Interest Repayment", 
-            "Unsecured Loan Repayment", "Statutory Taxes & GST Payments", "Partners Withdrawals / Personal"
-        ];
-
-        function updatePurposeOptions() {
-            const select = document.getElementById("purposeSelect");
-            select.innerHTML = "";
-            const currentList = (currentMode === "CREDIT") ? creditPurposes : debitPurposes;
-            
-            currentList.forEach(purpose => {
-                let opt = document.createElement("option");
-                opt.value = purpose;
-                opt.textContent = purpose;
-                select.appendChild(opt);
-            });
-        }
-
-        function switchMode(mode) {
-            currentMode = mode;
-            const creditBtn = document.getElementById("creditBtn");
-            const debitBtn = document.getElementById("debitBtn");
-            const postBtn = document.getElementById("postBtn");
-
-            if (mode === "CREDIT") {
-                creditBtn.className = "mode-btn active-credit";
-                debitBtn.className = "mode-btn";
-                postBtn.className = "post-btn credit-style";
-                postBtn.textContent = "POST MATRIX ENTRY (CREDIT / INCOMING)";
-            } else {
-                creditBtn.className = "mode-btn";
-                debitBtn.className = "mode-btn active-debit";
-                postBtn.className = "post-btn debit-style";
-                postBtn.textContent = "POST MATRIX ENTRY (DEBIT / OUTGOING)";
-            }
-            updatePurposeOptions();
-        }
-
-        function handlePostEntry() {
-            const party = document.getElementById("partyInput").value.trim();
-            const amount = document.getElementById("amountInput").value.trim();
-            const purpose = document.getElementById("purposeSelect").value;
-            const bankSelect = document.getElementById("bankSelect");
-            const bankName = bankSelect.options[bankSelect.selectedIndex].text;
-            const accType = bankSelect.value;
-            const currency = document.getElementById("currSelect").value;
-
-            if (!party) {
-                alert("Please provide a valid Party or Entity Name.");
-                return;
-            }
-
-            const colorIndicator = (currentMode === "CREDIT") ? "🟢 CREDIT" : "🔴 DEBIT";
-            const symbol = (currency === "USD") ? "$" : "₹";
-            const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
-
-            const successLog = 
-`=========================================
- TRANSACTION VERIFICATION SUCCESSFUL
-=========================================
-• Status: Approved & Logged
-• Action: ${colorIndicator}
-• Bank Node: ${bankName}
-• Account Type: ${accType} Account [API Auto-Fetched]
-• Entity Target: ${party}
-• Purpose Category: ${purpose}
-• Final Value: ${symbol} ${amount} (${currency})
-• Timestamp: ${timestamp}
------------------------------------------
-[SYSTEM]: Core Vault Balance adjusted successfully.`;
-
-            const reviewBox = document.getElementById("reviewBox");
-            reviewBox.textContent = successLog;
-            reviewBox.style.color = (currentMode === "CREDIT") ? "#52B788" : "#E63946";
-            
-            alert(`Transaction entry posted successfully under ${purpose}!`);
-        }
-
-        // Initial trigger
-        updatePurposeOptions();
-    </script>
-</body>
-</html>
+ function loadLedgerLogs() { 
+     const tbody = document.getElementById('ledger-rows'); 
+     const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || []; 
+     if(entries.length === 0) { 
+         tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:20px;">No operational records found in sandbox ledger.</td></tr>`; 
+         return; 
+     } 
+     tbody.innerHTML = entries.map((e, index) => { 
+         let amtClass = 'tx-cr'; 
+         let sign = '+'; 
+         if(e.mode === 'DEBIT') { 
+             amtClass = 'tx-dr'; 
+             sign = '-'; 
+         } 
+         if(e.mode === 'TRANSFER') { 
+             amtClass = 'tx-tr'; 
+             sign = '⇄'; 
+         } 
+         let statusHtml = ''; 
+         if(e.method === 'CHEQUE') { 
+             statusHtml = `<span class="status-badge ${e.status === 'CLEARED' ? 'status-cleared' : 'status-pending'}" onclick="toggleChequeStatus(${index})">${e.status}</span>`; 
+         } else { 
+             statusHtml = `<span class="status-badge status-cleared">INSTANT</span>`; 
+         } 
+         return ` 
+             <tr> 
+             <td><strong>${e.bank}</strong>${e.destBank ? ` <span style="color:var(--accent-cyan);">→ ${e.destBank}</span>` : ''}</td> 
+             <td><strong>${e.party || 'Internal Vault Transfer'}</strong><br><small style="color:var(--text-muted);">${e.purpose}</small></td> 
+             <td>${e.method} ${e.chequeNo ? `[#${e.chequeNo}]` : ''}<br>${statusHtml}</td> 
+             <td class="${amtClass}">${sign} ₹ ${e.amount.toLocaleString('en-IN')}</td> 
+             </tr> 
+         `; 
+     }).join(''); 
+ } 
+ </script> 
+ </body> 
+ </html>
