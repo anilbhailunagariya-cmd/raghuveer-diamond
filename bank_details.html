@@ -3,7 +3,7 @@
 <head> 
 <meta charset="UTF-8"> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
-<title>Raghuveer Diamond - AI Future Banking Terminal</title> 
+<title>Raghuveer Diamond - Responsive Banking Terminal</title> 
 <style> 
 :root { 
     --bg-primary: #070B19; 
@@ -14,76 +14,122 @@
     --accent-blue: #00C6FF; 
     --accent-green: #27AE60; 
     --accent-red: #E74C3C; 
+    --accent-purple: #9B59B6;
     --text-main: #FFFFFF; 
     --text-muted: #708090; 
 } 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; } 
 body { background-color: var(--bg-primary); color: var(--text-main); width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden; } 
 
-.window-control-bar { height: 40px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 1px solid var(--border-color); } 
+.window-control-bar { height: 45px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 1px solid var(--border-color); } 
 .brand-title { font-size: 14px; font-weight: 900; letter-spacing: 1px; color: var(--accent-cyan); text-transform: uppercase; } 
-.win-btn { background: none; border: none; color: var(--accent-red); font-size: 12px; cursor: pointer; } 
+.win-btn { background: none; border: none; color: var(--accent-red); font-size: 12px; cursor: pointer; font-weight: bold; } 
 
-.balance-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 15px; } 
+/* રિસ્પોન્સિવ ગ્રીડ: મોબાઈલમાં ૨+૨ બોક્સ અને મોટી સ્ક્રીનમાં ૪ આડા બોક્સ આપોઆપ સેટ થશે */
+.balance-board { 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 12px; 
+    padding: 12px; 
+    width: 100%;
+} 
+@media (min-width: 768px) { 
+    .balance-board { grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 15px; } 
+}
+
 .balance-card { 
     background: var(--bg-secondary); 
     border: 2px solid var(--border-color); 
     border-radius: 12px; 
-    padding: 10px; 
-    aspect-ratio: 2 / 1; 
+    padding: 0; 
+    position: relative; 
+    overflow: hidden; 
+    aspect-ratio: 2 / 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
+    cursor: pointer;
+} 
+.balance-card.active { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(91, 192, 190, 0.4); background: rgba(91, 192, 190, 0.05); }
+.balance-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; } 
+
+#card-top-bank::before { background: var(--accent-blue); }
+#card-top-credit::before { background: var(--accent-green); }
+#card-top-debit::before { background: var(--accent-red); }
+#card-top-transfer::before { background: var(--accent-purple); }
+
+.marquee-strip-container { width: 100%; background: rgba(3, 6, 17, 0.9); border-bottom: 1px solid var(--border-color); padding: 6px 10px; min-height: 28px; display: flex; align-items: center; justify-content: center; }
+.marquee-strip { font-size: 10px; font-weight: bold; color: var(--accent-cyan); text-transform: uppercase; text-align: center; transition: opacity 0.4s ease-in-out; }
+.marquee-strip.fade-out { opacity: 0; }
+
+.card-content-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 5px; }
+.card-val { font-size: 18px; font-weight: 800; color: #FFFFFF; text-align: center; } 
+
+#card-top-bank .card-val { text-shadow: 0 0 12px rgba(0, 198, 255, 0.6); }
+#card-top-credit .card-val { text-shadow: 0 0 12px rgba(39, 174, 96, 0.6); }
+#card-top-debit .card-val { text-shadow: 0 0 12px rgba(231, 76, 60, 0.6); }
+#card-top-transfer .card-val { text-shadow: 0 0 12px rgba(155, 89, 182, 0.6); }
+
+/* વર્કસ્પેસ: મોબાઈલમાં નીચે-ઉપર અને લેપટોપમાં બાજુ-બાજુમાં ફિટ થશે */
+.bank-workspace { 
+    flex: 1; 
+    padding: 0 12px 12px 12px; 
     display: flex; 
     flex-direction: column; 
-    justify-content: center; 
-    align-items: center; 
-    cursor: pointer; 
-    transition: all 0.3s;
+    gap: 12px; 
+    overflow-y: auto; 
 } 
-.balance-card.active { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(91, 192, 190, 0.4); background: rgba(91, 192, 190, 0.1); }
-.card-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; }
-.card-val { font-size: 18px; font-weight: 800; color: #FFFFFF; }
+@media (min-width: 768px) { 
+    .bank-workspace { display: grid; grid-template-columns: 1.1fr 1fr; gap: 15px; padding: 0 15px 15px 15px; height: calc(100vh - 180px); overflow: hidden; } 
+}
 
-.bank-workspace { flex: 1; padding: 0 15px 15px 15px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 15px; height: calc(100vh - 180px); overflow: hidden; } 
-.panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; } 
-.panel-title { font-size: 13px; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 15px; font-weight: 700; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; } 
+.panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); overflow: hidden; } 
+.panel-title { font-size: 13px; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 12px; font-weight: 700; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; } 
 
-.form-scroll-container { display: flex; flex-direction: column; gap: 15px; overflow-y: auto; flex: 1; } 
+.form-scroll-container { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; flex: 1; } 
 .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } 
-.input-group { display: flex; flex-direction: column; gap: 5px; } 
-.input-group label { font-size: 11px; color: #FFFFFF; text-transform: uppercase; } 
-.input-control { background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: 13px; outline: none; } 
+.input-group { display: flex; flex-direction: column; gap: 4px; } 
 
-.mode-btn { background: var(--accent-cyan); color: #030611; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; text-align: center; border: none; } 
+.input-group label { font-size: 11px; color: #FFFFFF; text-transform: uppercase; font-weight: 600; } 
+.input-control { background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; outline: none; } 
+
+.mode-btn { background: var(--accent-cyan); color: #030611; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; text-align: center; border: none; font-size: 13px; margin-top: 10px; } 
 
 .table-wrapper { flex: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); } 
 table { width: 100%; border-collapse: collapse; font-size: 12px; } 
-th { background: var(--border-color); color: var(--accent-cyan); padding: 10px; text-transform: uppercase; } 
-td { padding: 8px 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; } 
+th { background: var(--border-color); color: var(--accent-cyan); padding: 10px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; } 
+td { padding: 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; } 
+.tx-cr { color: #2ECC71; font-weight: 700; } 
+.tx-dr { color: #E74C3C; font-weight: 700; } 
+.tx-tr { color: #9B59B6; font-weight: 700; } 
 </style> 
 </head> 
 <body onload="initializeTerminal()" onclick="makeFullScreen()"> 
 
 <div class="window-control-bar"> 
- <div class="brand-title">RAGHUVEER DIAMOND - BANKING TERMINAL</div> 
+ <div class="brand-title">RAGHUVEER DIAMOND - BANKING CORE</div> 
  <button class="win-btn" onclick="backToDashboard()">✕ CLOSE</button> 
 </div> 
 
  <div class="balance-board"> 
-     <div class="balance-card" id="card-top-bank" onclick="selectMode('BANK')"><div class="card-label">BANK VAULT</div><div class="card-val" id="val-top-vault">₹ 0</div></div>
-     <div class="balance-card active" id="card-top-credit" onclick="selectMode('CREDIT')"><div class="card-label">CREDIT (IN)</div><div class="card-val" id="val-top-credit">₹ 0</div></div>
-     <div class="balance-card" id="card-top-debit" onclick="selectMode('DEBIT')"><div class="card-label">DEBIT (OUT)</div><div class="card-val" id="val-top-debit">₹ 0</div></div>
-     <div class="balance-card" id="card-top-transfer" onclick="selectMode('TRANSFER')"><div class="card-label">TRANSFER</div><div class="card-val">PROTOCOL</div></div>
+     <div class="balance-card" id="card-top-bank" onclick="selectMode('BANK')"><div class="marquee-strip-container"><div class="marquee-strip" id="strip-top-bank">BANK VAULT</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-vault">₹ 0</div></div></div>
+     <div class="balance-card active" id="card-top-credit" onclick="selectMode('CREDIT')"><div class="marquee-strip-container"><div class="marquee-strip">CREDIT TRAFFIC</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-credit">₹ 0</div></div></div>
+     <div class="balance-card" id="card-top-debit" onclick="selectMode('DEBIT')"><div class="marquee-strip-container"><div class="marquee-strip">DEBIT FLOW</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-debit">₹ 0</div></div></div>
+     <div class="balance-card" id="card-top-transfer" onclick="selectMode('TRANSFER')"><div class="marquee-strip-container"><div class="marquee-strip">INTERNAL WIRE</div></div><div class="card-content-wrapper"><div class="card-val">TRANSFER</div></div></div>
  </div> 
 
  <div class="bank-workspace"> 
  <div class="panel-box"> 
- <div class="panel-title" id="panel-title-text">Intelligent Transaction Core (Credit Mode)</div> 
+ <div class="panel-title" id="panel-title-text">Transaction Core (Credit Mode)</div> 
  <div class="form-scroll-container"> 
  <div class="form-grid-2"> 
  <div class="input-group" id="src-bank-group"><label>Source Bank</label><select class="input-control" id="bank-select"></select></div> 
  <div class="input-group" id="dest-bank-group" style="display: none;"><label>Destination Bank</label><select class="input-control" id="dest-bank-select"></select></div> 
  </div> 
  <div class="form-grid-2"> 
- <div class="input-group"><label>Method</label><select class="input-control" id="method-select"><option value="ONLINE">ONLINE</option><option value="CHEQUE">CHEQUE</option></select></div> 
+ <div class="input-group"><label>Method</label><select class="input-control" id="method-select"><option value="ONLINE">ONLINE / IMPS</option><option value="CHEQUE">BANK CHEQUE</option></select></div> 
  <div class="input-group" id="purpose-group"><label>Purpose</label><select class="input-control" id="purpose-select"></select></div> 
  </div> 
  <div class="form-grid-2"> 
@@ -91,40 +137,62 @@ td { padding: 8px 10px; border-bottom: 1px solid var(--border-color); color: #FF
  <div class="input-group"><label>Amount</label><input type="number" class="input-control" id="tx-amount" placeholder="0.00"></div> 
  </div> 
  </div> 
- <button class="mode-btn" id="post-btn" onclick="executePostEntry()">POST TRANSACTION</button> 
+ <button class="mode-btn" id="post-btn" onclick="executePostEntry()">POST TRANSACTION MATRIX</button> 
  </div> 
  
  <div class="panel-box"> 
  <div class="panel-title">Live Account Ledger</div> 
- <div class="table-wrapper"> <table><thead><tr><th>Bank</th><th>Details</th><th>Amount</th></tr></thead><tbody id="ledger-rows"></tbody></table> </div> 
+ <div class="table-wrapper"> <table><thead><tr><th>Bank Hierarchy</th><th>Details</th><th>Amount</th></tr></thead><tbody id="ledger-rows"></tbody></table> </div> 
  </div> 
  </div> 
 
 <script> 
  let currentMode = "CREDIT"; 
+ let bankTitleIdx = 0;
 
  function makeFullScreen() { 
      if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(err => {}); 
  }
 
  function selectMode(mode) { 
+     if (mode === 'BANK') return;
      currentMode = mode; 
      document.querySelectorAll('.balance-card').forEach(el => el.classList.remove('active'));
      if(mode === 'CREDIT') document.getElementById('card-top-credit').classList.add('active');
      else if(mode === 'DEBIT') document.getElementById('card-top-debit').classList.add('active');
      else if(mode === 'TRANSFER') document.getElementById('card-top-transfer').classList.add('active');
      
-     // Update UI
      document.getElementById('panel-title-text').innerText = "Transaction Core (" + mode + " Mode)";
      document.getElementById('dest-bank-group').style.display = (mode === 'TRANSFER') ? 'flex' : 'none';
      document.getElementById('purpose-group').style.display = (mode === 'TRANSFER') ? 'none' : 'flex';
      document.getElementById('party-group').style.display = (mode === 'TRANSFER') ? 'none' : 'flex';
-     
-     if(mode === 'BANK') { /* Open Settings logic here */ openSettingsModal(); }
+     updatePurposeOptions();
  }
 
- function initializeTerminal() { refreshBankData(); } 
+ function initializeTerminal() { 
+     refreshBankData(); 
+     updatePurposeOptions();
+     setInterval(rotateBankTitles, 3000);
+ } 
+ 
  function backToDashboard() { window.location.href = 'main_office.html'; } 
+
+ function updateTextWithFade(elementId, newText) {
+     const el = document.getElementById(elementId);
+     if (el && el.innerText !== newText) {
+         el.classList.add('fade-out');
+         setTimeout(() => { el.innerText = newText; el.classList.remove('fade-out'); }, 400);
+     }
+ }
+
+ function rotateBankTitles() {
+     const banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
+     if(banks.length > 0) {
+         let current = banks[bankTitleIdx % banks.length];
+         updateTextWithFade('strip-top-bank', `${current.name}`);
+         bankTitleIdx++;
+     }
+ }
 
  function refreshBankData() { 
      const banks = JSON.parse(localStorage.getItem('factory_banks')) || []; 
@@ -135,11 +203,64 @@ td { padding: 8px 10px; border-bottom: 1px solid var(--border-color); color: #FF
         destSelect.innerHTML = banks.map(b => `<option value="${b.name}">${b.name}</option>`).join('');
         let total = banks.reduce((s, b) => s + b.balance, 0);
         document.getElementById('val-top-vault').innerText = `₹ ${total.toLocaleString('en-IN')}`;
+     } else {
+        select.innerHTML = '<option value="">No Active Bank</option>';
+        destSelect.innerHTML = '<option value="">No Active Bank</option>';
      }
+     
+     const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
+     let totalCr = entries.filter(e => e.mode === 'CREDIT').reduce((sum, e) => sum + e.amount, 0);
+     let totalDr = entries.filter(e => e.mode === 'DEBIT').reduce((sum, e) => sum + e.amount, 0);
+     document.getElementById('val-top-credit').innerText = `₹ ${totalCr.toLocaleString('en-IN')}`;
+     document.getElementById('val-top-debit').innerText = `₹ ${totalDr.toLocaleString('en-IN')}`;
+     loadLedgerLogs();
  }
 
- function executePostEntry() { /* ...logic kept as before but cleaner... */ refreshBankData(); }
- function openSettingsModal() { /* ... */ }
+ function updatePurposeOptions() { 
+     const sel = document.getElementById('purpose-select'); 
+     if(!sel) return;
+     if(currentMode === 'CREDIT') { 
+         sel.innerHTML = `<option value="Sales Revenue">Sales Revenue</option><option value="Promoter Capital">Promoter Capital</option><option value="GST Refund">GST Refund</option>`; 
+     } else { 
+         sel.innerHTML = `<option value="Rough Purchase">Rough Purchase</option><option value="Brokerage">Brokerage</option><option value="Wages & Salaries">Wages & Salaries</option><option value="Factory Expenses">Factory Expenses</option>`; 
+     } 
+ } 
+
+ function executePostEntry() { 
+     const bankName = document.getElementById('bank-select').value; 
+     const amount = parseFloat(document.getElementById('tx-amount').value); 
+     if(!bankName || isNaN(amount) || amount <= 0) { alert('Enter valid details.'); return; } 
+     
+     const banks = JSON.parse(localStorage.getItem('factory_banks')) || []; 
+     const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || []; 
+     
+     if(currentMode === 'TRANSFER') { 
+         const destBankName = document.getElementById('dest-bank-select').value; 
+         const srcIdx = banks.findIndex(b => b.name === bankName); 
+         const destIdx = banks.findIndex(b => b.name === destBankName); 
+         banks[srcIdx].balance -= amount; banks[destIdx].balance += amount; 
+         entries.unshift({ bank: bankName, destBank: destBankName, method: document.getElementById('method-select').value, purpose: 'INTERNAL_TRANSFER', party: `To ${destBankName}`, amount, mode: 'TRANSFER' }); 
+     } else { 
+         const bIdx = banks.findIndex(b => b.name === bankName); 
+         if(currentMode === 'DEBIT') banks[bIdx].balance -= amount; else banks[bIdx].balance += amount; 
+         entries.unshift({ bank: bankName, method: document.getElementById('method-select').value, purpose: document.getElementById('purpose-select').value, party: document.getElementById('party-name').value, amount, mode: currentMode }); 
+     } 
+     localStorage.setItem('factory_banks', JSON.stringify(banks)); 
+     localStorage.setItem('bank_ledger_logs', JSON.stringify(entries)); 
+     document.getElementById('party-name').value = ''; document.getElementById('tx-amount').value = ''; 
+     refreshBankData(); 
+ } 
+
+ function loadLedgerLogs() { 
+     const tbody = document.getElementById('ledger-rows'); 
+     const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || []; 
+     if(entries.length === 0) { tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:20px;">No operational records found.</td></tr>`; return; } 
+     tbody.innerHTML = entries.map((e) => { 
+         let c = e.mode === 'DEBIT' ? 'tx-dr' : (e.mode === 'TRANSFER' ? 'tx-tr' : 'tx-cr'); 
+         let s = e.mode === 'DEBIT' ? '-' : (e.mode === 'TRANSFER' ? '⇄' : '+'); 
+         return `<tr><td><strong>${e.bank}</strong>${e.destBank ? ` ➔ ${e.destBank}` : ''}</td><td><strong>${e.party || 'Internal Vault'}</strong><br><small style="color:var(--text-muted);">${e.purpose}</small></td><td class="${c}">${s} ₹ ${e.amount.toLocaleString('en-IN')}</td></tr>`; 
+     }).join(''); 
+ } 
 </script> 
 </body> 
 </html>
