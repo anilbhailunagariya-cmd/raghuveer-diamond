@@ -117,7 +117,7 @@
         .office-container {
             flex: 1;
             padding: 20px 15px;
-            max-width: 1400px;
+            max-width: 1200px;
             width: 100%;
             margin: 0 auto;
             display: flex;
@@ -125,16 +125,17 @@
             justify-content: flex-start;
         }
 
+        /* અનિલભાઈના આયોજન મુજબ: લંબાઈ અડધી, ઊંચાઈ બમણી એટલે એકદમ ચોરસ (Square) બોક્સ લેઆઉટ */
         .core-metrics-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 15px;
             width: 100%;
         }
 
         @media (min-width: 768px) {
             .core-metrics-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(4, 1fr); /* મોટી સ્ક્રિન પર બાજુ-બાજુમાં ૪ ચોરસ ગોઠવાશે */
             }
         }
 
@@ -153,7 +154,8 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 125px;
+            aspect-ratio: 1 / 1; /* પદ્ધતિ ૨: બોક્સને પર્ફેક્ટ ચોરસ રાખવા રેશિયો લોક કર્યો */
+            min-height: 160px;
         }
 
         .metric-card:hover {
@@ -169,26 +171,26 @@
         #card-bank::before { background: var(--accent-blue); }
         #card-bank:hover { border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(0, 198, 255, 0.25); }
 
+        #card-cash::before { background: var(--accent-purple); }
+        #card-cash:hover { border-color: var(--accent-purple); box-shadow: 0 0 15px rgba(155, 89, 182, 0.25); }
+
         #card-rough::before { background: var(--accent-orange); }
         #card-rough:hover { border-color: var(--accent-orange); box-shadow: 0 0 15px rgba(243, 156, 18, 0.25); }
 
         #card-sales::before { background: var(--accent-green); }
         #card-sales:hover { border-color: var(--accent-green); box-shadow: 0 0 15px rgba(39, 174, 96, 0.25); }
 
-        #card-cash::before { background: var(--accent-purple); }
-        #card-cash:hover { border-color: var(--accent-purple); box-shadow: 0 0 15px rgba(155, 89, 182, 0.25); }
+        #card-4p-ghat::before { background: #F1C40F; }
+        #card-4p-ghat:hover { border-color: #F1C40F; box-shadow: 0 0 15px rgba(241, 196, 15, 0.25); }
+
+        #card-ready-pur::before { background: #1ABC9C; }
+        #card-ready-pur:hover { border-color: #1ABC9C; box-shadow: 0 0 15px rgba(26, 188, 156, 0.25); }
 
         #card-broker::before { background: var(--accent-cyan); }
         #card-broker:hover { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(91, 192, 190, 0.25); }
 
         #card-print::before { background: #E74C3C; }
         #card-print:hover { border-color: #E74C3C; box-shadow: 0 0 15px rgba(231, 76, 60, 0.25); }
-
-        #card-4p-ghat::before { background: #F1C40F; }
-        #card-4p-ghat:hover { border-color: #F1C40F; box-shadow: 0 0 15px rgba(241, 196, 15, 0.25); }
-
-        #card-ready-pur::before { background: #1ABC9C; }
-        #card-ready-pur:hover { border-color: #1ABC9C; box-shadow: 0 0 15px rgba(26, 188, 156, 0.25); }
 
         .card-label {
             font-size: 10px;
@@ -417,7 +419,7 @@
     <div class="office-container">
         <div class="core-metrics-grid">
             
-            <!-- 1. BANK CARD (સુધારેલું: ૮ નંબર જેવા કાળા બેકગ્રાઉન્ડવાળા ફરતા લાઈવ સ્લાઈડર સાથે) -->
+            <!-- 1. BANK CARD (નવો ક્રમ - ૧) -->
             <div class="metric-card" id="card-bank" onclick="window.location.href='bank_details.html'">
                 <div>
                     <div class="marquee-strip-container">
@@ -428,7 +430,16 @@
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
-            <!-- 2. ROUGH PURCHASE CARD -->
+            <!-- 2. CASH FLOW CARD (નવો ક્રમ - ૨) -->
+            <div class="metric-card" id="card-cash" onclick="window.location.href='cash_flow.html'">
+                <div>
+                    <div class="card-label" id="lbl-cash">CASH FLOW</div>
+                    <div class="card-value" id="val-cash">₹ 0</div>
+                </div>
+                <div class="live-status-indicator"><span class="status-dot"></span></div>
+            </div>
+            
+            <!-- 3. ROUGH PURCHASE CARD (નવો ક્રમ - ૩: ખરીદી) -->
             <div class="metric-card" id="card-rough" onclick="window.location.href='rough_purchase.html'">
                 <div>
                     <div class="card-label" id="lbl-rough">ROUGH PURCHASE</div>
@@ -438,7 +449,7 @@
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
-            <!-- 3. GLOBAL SALES CARD -->
+            <!-- 4. GLOBAL SALES CARD (નવો ક્રમ - ૪: સેલ્સ) -->
             <div class="metric-card" id="card-sales" onclick="window.location.href='sales_details.html'">
                 <div>
                     <div class="card-label" id="lbl-sales">GLOBAL SALES</div>
@@ -446,36 +457,8 @@
                 </div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
-            
-            <!-- 4. CASH FLOW CARD -->
-            <div class="metric-card" id="card-cash" onclick="window.location.href='cash_flow.html'">
-                <div>
-                    <div class="card-label" id="lbl-cash">CASH FLOW</div>
-                    <div class="card-value" id="val-cash">₹ 0</div>
-                </div>
-                <div class="live-status-indicator"><span class="status-dot"></span></div>
-            </div>
 
-            <!-- 5. BROKER & PARTY CARD -->
-            <div class="metric-card" id="card-broker" onclick="window.location.href='broker_list.html'">
-                <div>
-                    <div class="card-label" id="lbl-broker">BROKER & PARTY</div>
-                    <div class="card-value" id="val-broker">STANDBY</div>
-                </div>
-                <div class="live-status-indicator"><span class="status-dot"></span></div>
-            </div>
-
-            <!-- 6. PRINTER STATION CARD -->
-            <div class="metric-card" id="card-print" onclick="window.location.href='printer_station.html'">
-                <div>
-                    <div class="card-label">PRINTER STATION</div>
-                    <div class="card-value" style="color: var(--accent-cyan); font-size: 17px;">OPEN TERMINAL</div>
-                    <div class="card-sub-value">Letter Pad / Check / Excel</div>
-                </div>
-                <div class="live-status-indicator"><span class="status-dot" style="background-color: #E74C3C; box-shadow: 0 0 6px #E74C3C;"></span></div>
-            </div>
-
-            <!-- 7. NEW BOX: 4P GHAT SALES CARD -->
+            <!-- 5. 4P GHAT SALES CARD (નવો ક્રમ - ૫) -->
             <div class="metric-card" id="card-4p-ghat" onclick="window.location.href='ghat_sales.html'">
                 <div>
                     <div class="card-label" id="lbl-4p-ghat">4P GHAT SALES</div>
@@ -485,7 +468,7 @@
                 <div class="live-status-indicator"><span class="status-dot" style="background-color: #F1C40F; box-shadow: 0 0 6px #F1C40F;"></span></div>
             </div>
 
-            <!-- 8. NEW BOX: READY PURCHASE CARD -->
+            <!-- 6. READY PURCHASE CARD (નવો ક્રમ - ૬: તૈયાર ખરીદી) -->
             <div class="metric-card" id="card-ready-pur" onclick="window.location.href='ready_purchase.html'">
                 <div>
                     <div class="marquee-strip-container">
@@ -495,6 +478,25 @@
                     <div class="card-sub-value" id="val-ready-total">Total Ready Safe: 0 Carats</div>
                 </div>
                 <div class="live-status-indicator"><span class="status-dot" style="background-color: #1ABC9C; box-shadow: 0 0 6px #1ABC9C;"></span></div>
+            </div>
+
+            <!-- 7. BROKER & PARTY CARD (નવો ક્રમ - ૭) -->
+            <div class="metric-card" id="card-broker" onclick="window.location.href='broker_list.html'">
+                <div>
+                    <div class="card-label" id="lbl-broker">BROKER & PARTY</div>
+                    <div class="card-value" id="val-broker">STANDBY</div>
+                </div>
+                <div class="live-status-indicator"><span class="status-dot"></span></div>
+            </div>
+
+            <!-- 8. PRINTER STATION CARD (નવો ક્રમ - ૮) -->
+            <div class="metric-card" id="card-print" onclick="window.location.href='printer_station.html'">
+                <div>
+                    <div class="card-label">PRINTER STATION</div>
+                    <div class="card-value" style="color: var(--accent-cyan); font-size: 15px;">OPEN TERMINAL</div>
+                    <div class="card-sub-value">Letter Pad / Excel</div>
+                </div>
+                <div class="live-status-indicator"><span class="status-dot" style="background-color: #E74C3C; box-shadow: 0 0 6px #E74C3C;"></span></div>
             </div>
 
         </div>
@@ -620,7 +622,7 @@
         function loadDashboardData() {
             const usdRate = parseFloat(localStorage.getItem('usd_rate')) || 83.72;
 
-            // 1. BANK CARD - ૮ નંબરના બોક્સ જેવી ફરતી પટ્ટી અને નીચે માત્ર આંકડો
+            // 1. BANK CARD (માત્ર ચોખ્ખો લાઈવ આંકડો)
             let bankAccounts = JSON.parse(localStorage.getItem('factory_banks'));
             if(!bankAccounts || bankAccounts.length === 0) {
                 bankAccounts = [
@@ -631,43 +633,11 @@
             }
             
             let currentBank = bankAccounts[bankRotateIdx % bankAccounts.length];
-            // ઉપર કાળા બોક્સની પટ્ટીમાં બેંકનું નામ ફરશે
             document.getElementById('strip-bank-names').innerText = `BANK: ${currentBank.name}`;
-            // નીચેથી '$ 1 = ₹' બધું જ કાઢી નાખ્યું, માત્ર ચોખ્ખો રેટ જ દેખાશે
             document.getElementById('val-usd').innerText = usdRate.toFixed(2);
             bankRotateIdx++;
 
-            // 2. ROUGH PURCHASE 
-            const roughLots = JSON.parse(localStorage.getItem('rough_safe_lots'));
-            const roughInProcess = parseFloat(localStorage.getItem('rough_in_process')) || 0;
-            if(roughLots && roughLots.length > 0) {
-                let totalSafeCalculated = roughLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
-                let netSafeStock = Math.max(0, totalSafeCalculated - roughInProcess);
-                let currentLot = roughLots[roughRotateIdx % roughLots.length];
-                
-                document.getElementById('lbl-rough').innerText = `LOT NO: ${currentLot.lot_no}`;
-                document.getElementById('val-rough').innerText = parseFloat(currentLot.weight).toLocaleString('en-IN') + " Cts";
-                document.getElementById('val-rough-total').innerText = `Total Safe: ${netSafeStock.toLocaleString('en-IN')} Cts`;
-                roughRotateIdx++;
-            } else {
-                document.getElementById('lbl-rough').innerText = "ROUGH PURCHASE";
-                document.getElementById('val-rough').innerText = "0 Carats";
-                document.getElementById('val-rough-total').innerText = "Total Safe: 0 Carats";
-            }
-
-            // 3. GLOBAL SALES
-            const polishedStock = JSON.parse(localStorage.getItem('polished_safe_stock'));
-            if(polishedStock && polishedStock.length > 0) {
-                let currentPolished = polishedStock[salesRotateIdx % polishedStock.length];
-                document.getElementById('lbl-sales').innerText = `${currentPolished.purity} - ${currentPolished.color} - ${currentPolished.size} - ${currentPolished.fluorescence}`;
-                document.getElementById('val-sales').innerText = currentPolished.weight.toLocaleString('en-IN') + " Carats";
-                salesRotateIdx++;
-            } else {
-                document.getElementById('lbl-sales').innerText = "GLOBAL SALES";
-                document.getElementById('val-sales').innerText = "0 Carats";
-            }
-
-            // 4. CASH FLOW
+            // 2. CASH FLOW
             const cashData = localStorage.getItem('total_cash');
             if (cashData !== null) {
                 let totalCash = parseFloat(cashData) || 0;
@@ -695,19 +665,37 @@
                 document.getElementById('val-cash').innerText = "₹ 0";
             }
 
-            // 5. BROKER & PARTY
-            const brokerList = JSON.parse(localStorage.getItem('broker_directory'));
-            if(brokerList && brokerList.length > 0) {
-                let currentBroker = brokerList[brokerRotateIdx % brokerList.length];
-                document.getElementById('lbl-broker').innerText = `BROKER: ${currentBroker.name}`;
-                document.getElementById('val-broker').innerText = currentBroker.status;
-                brokerRotateIdx++;
+            // 3. ROUGH PURCHASE 
+            const roughLots = JSON.parse(localStorage.getItem('rough_safe_lots'));
+            const roughInProcess = parseFloat(localStorage.getItem('rough_in_process')) || 0;
+            if(roughLots && roughLots.length > 0) {
+                let totalSafeCalculated = roughLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
+                let netSafeStock = Math.max(0, totalSafeCalculated - roughInProcess);
+                let currentLot = roughLots[roughRotateIdx % roughLots.length];
+                
+                document.getElementById('lbl-rough').innerText = `LOT NO: ${currentLot.lot_no}`;
+                document.getElementById('val-rough').innerText = parseFloat(currentLot.weight).toLocaleString('en-IN') + " Cts";
+                document.getElementById('val-rough-total').innerText = `Total Safe: ${netSafeStock.toLocaleString('en-IN')} Cts`;
+                roughRotateIdx++;
             } else {
-                document.getElementById('lbl-broker').innerText = "BROKER & PARTY";
-                document.getElementById('val-broker').innerText = "STANDBY";
+                document.getElementById('lbl-rough').innerText = "ROUGH PURCHASE";
+                document.getElementById('val-rough').innerText = "0 Carats";
+                document.getElementById('val-rough-total').innerText = "Total Safe: 0 Carats";
             }
 
-            // 7. 4P GHAT SALES SYNC
+            // 4. GLOBAL SALES
+            const polishedStock = JSON.parse(localStorage.getItem('polished_safe_stock'));
+            if(polishedStock && polishedStock.length > 0) {
+                let currentPolished = polishedStock[salesRotateIdx % polishedStock.length];
+                document.getElementById('lbl-sales').innerText = `${currentPolished.purity} - ${currentPolished.color} - ${currentPolished.size} - ${currentPolished.fluorescence}`;
+                document.getElementById('val-sales').innerText = currentPolished.weight.toLocaleString('en-IN') + " Carats";
+                salesRotateIdx++;
+            } else {
+                document.getElementById('lbl-sales').innerText = "GLOBAL SALES";
+                document.getElementById('val-sales').innerText = "0 Carats";
+            }
+
+            // 5. 4P GHAT SALES SYNC
             const ghatLots = JSON.parse(localStorage.getItem('4p_ghat_lots'));
             if(ghatLots && ghatLots.length > 0) {
                 let totalGhatStock = ghatLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
@@ -723,7 +711,7 @@
                 document.getElementById('val-4p-total').innerText = "Total Stock: 0 Carats";
             }
 
-            // 8. READY PURCHASE SYNC
+            // 6. READY PURCHASE SYNC
             const readyLots = JSON.parse(localStorage.getItem('ready_purchase_lots'));
             if(readyLots && readyLots.length > 0) {
                 let totalReadyStock = readyLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
@@ -737,6 +725,18 @@
                 document.getElementById('strip-ready-goods').innerText = "LOT: NO DATA | DM: - | PURITY: - | COLOR: - | FLORO: -";
                 document.getElementById('val-ready-pur').innerText = "0 Carats";
                 document.getElementById('val-ready-total').innerText = "Total Ready Safe: 0 Carats";
+            }
+
+            // 7. BROKER & PARTY
+            const brokerList = JSON.parse(localStorage.getItem('broker_directory'));
+            if(brokerList && brokerList.length > 0) {
+                let currentBroker = brokerList[brokerRotateIdx % brokerList.length];
+                document.getElementById('lbl-broker').innerText = `BROKER: ${currentBroker.name}`;
+                document.getElementById('val-broker').innerText = currentBroker.status;
+                brokerRotateIdx++;
+            } else {
+                document.getElementById('lbl-broker').innerText = "BROKER & PARTY";
+                document.getElementById('val-broker').innerText = "STANDBY";
             }
         }
 
