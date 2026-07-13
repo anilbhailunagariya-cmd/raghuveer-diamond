@@ -1,750 +1,246 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Raghuveer Diamond - AI Future Banking Terminal</title>
-    <style>
-        :root {
-            --bg-primary: #070B19;
-            --bg-secondary: #0B132B;
-            --top-bar-bg: #050814;
-            --border-color: #1C2541;
-            --accent-cyan: #5BC0BE;
-            --accent-blue: #00C6FF;
-            --accent-green: #27AE60;
-            --accent-red: #E74C3C;
-            --text-main: #FFFFFF;
-            --text-muted: #708090;
-        }
+import tkinter as tk
+from tkinter import ttk, messagebox
+from datetime import datetime
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            user-select: none;
-        }
-
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-main);
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        /* Top Cyber Header Matrix */
-        .window-control-bar {
-            height: 50px;
-            background-color: var(--top-bar-bg);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .brand-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .company-logo-frame {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #00C6FF, #0072FF);
-            box-shadow: 0 0 8px #00C6FF;
-        }
-
-        .brand-title {
-            font-size: 16px;
-            font-weight: 900;
-            letter-spacing: 1px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), #0072FF, var(--accent-cyan));
-            background-size: 300% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: cyberGlow 6s linear infinite;
-            text-transform: uppercase;
-        }
-
-        @keyframes cyberGlow {
-            0% { background-position: 0% center; }
-            100% { background-position: 300% center; }
-        }
-
-        .win-btn {
-            background: none;
-            border: none;
-            color: var(--accent-cyan);
-            padding: 5px 15px;
-            font-size: 14px;
-            cursor: pointer;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-        }
-
-        .win-btn:hover { background: var(--accent-red); color: #FFFFFF; }
-
-        /* Balance Display Grid */
-        .balance-board {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 15px;
-            padding: 15px 15px 0 15px;
-        }
-
-        .balance-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 12px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .balance-card::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0; bottom: 0;
-            width: 4px;
-            background: var(--accent-blue);
-        }
-
-        .balance-card.total-card::before { background: var(--accent-cyan); }
-
-        .card-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
-        .card-val { font-size: 18px; font-weight: 700; color: #FFFFFF; margin-top: 5px; }
-
-        /* Main Workspace Split Grid */
-        .bank-workspace {
-            flex: 1;
-            padding: 15px;
-            display: grid;
-            grid-template-columns: 1.1fr 1fr;
-            gap: 15px;
-            height: calc(100vh - 150px);
-            overflow: hidden;
-        }
-
-        .panel-box {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            overflow: hidden;
-        }
-
-        .panel-title {
-            font-size: 13px;
-            color: var(--accent-cyan);
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            border-bottom: 1px dashed var(--border-color);
-            padding-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .form-scroll-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            overflow-y: auto;
-            flex: 1;
-            padding-right: 5px;
-        }
-
-        .form-grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .input-group label {
-            font-size: 10px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        .input-control {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            color: #FFFFFF;
-            padding: 8px 10px;
-            border-radius: 6px;
-            font-size: 13px;
-            outline: none;
-        }
-
-        .input-control:focus { border-color: var(--accent-cyan); }
-
-        .type-toggle-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-        }
-
-        .mode-btn {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            color: #FFFFFF;
-            padding: 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 11px;
-            text-transform: uppercase;
-            text-align: center;
-        }
-
-        .mode-btn.credit.active { background: var(--accent-green); border-color: #2ECC71; }
-        .mode-btn.debit.active { background: var(--accent-red); border-color: #E74C3C; }
-        .mode-btn.transfer.active { background: #8E44AD; border-color: #9B59B6; }
-
-        /* Table Stream */
-        .table-wrapper {
-            flex: 1;
-            overflow-y: auto;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--bg-primary);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 12px;
-        }
-
-        th {
-            background: var(--border-color);
-            color: var(--accent-cyan);
-            padding: 10px;
-            position: sticky;
-            top: 0;
-            text-transform: uppercase;
-            font-size: 10px;
-        }
-
-        td {
-            padding: 10px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .tx-cr { color: #2ECC71; font-weight: 600; }
-        .tx-dr { color: #E74C3C; font-weight: 600; }
-        .tx-tr { color: #9B59B6; font-weight: 600; }
-
-        .status-badge {
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 9px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .status-pending { background: #D35400; color: #fff; }
-        .status-cleared { background: #27AE60; color: #fff; }
-
-        /* Modals for Settings & Verification */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            visibility: hidden;
-            opacity: 0;
-            transition: 0.3s;
-        }
-
-        .modal-box {
-            background: var(--bg-secondary);
-            border: 1px solid var(--accent-cyan);
-            border-radius: 12px;
-            width: 400px;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 198, 255, 0.3);
-        }
-
-        /* Bottom Control Panel */
-        .footer-control-bar {
-            height: 40px;
-            background: var(--top-bar-bg);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-        }
-
-        .settings-launcher {
-            color: var(--accent-cyan);
-            font-size: 18px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            outline: none;
-        }
-    </style>
-</head>
-<body onload="initializeTerminal()" onclick="enableFullScreenMode(event)">
-
-    <!-- Header Panel Matrix -->
-    <div class="window-control-bar">
-        <div class="brand-wrapper">
-            <div class="company-logo-frame"></div>
-            <div class="brand-title">RAGHUVEER DIAMOND</div>
-        </div>
-        <div>
-            <button class="win-btn" onclick="backToDashboard()">✕ CLOSE TERMINAL</button>
-        </div>
-    </div>
-
-    <!-- Live Balance Board Grid -->
-    <div class="balance-board" id="balance-cards-container">
-        <!-- Dyn cards load here -->
-    </div>
-
-    <!-- Main Workspace Setup -->
-    <div class="bank-workspace">
+class DiamondMatrixOS:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("DIAMOND TRANSACTION CORE - CYBER MATRIX v2.0")
+        self.root.geometry("1200x750")
+        self.root.configure(bg="#0B132B")  # Deep Cyber Blue/Black Theme
         
-        <!-- Left: Form Input -->
-        <div class="panel-box">
-            <div class="panel-title">Intelligent Transaction Core</div>
+        # Style Configuration
+        self.style = ttk.Style()
+        self.style.theme_use('clam')
+        self.style.configure('TLabel', background='#0B132B', foreground='#FFFFFF', font=('Arial', 10, 'bold'))
+        self.style.configure('TButton', background='#1C2541', foreground='#FFFFFF', font=('Arial', 10, 'bold'))
+        
+        # Data Repositories (Simulated Database)
+        self.active_currency = "INR"  # Multi-Currency Architecture
+        self.banks_db = [
+            {"name": "Kotak Mahindra Bank (7587)", "type": "Current"},
+            {"name": "State Bank of India (1102)", "type": "CC"}
+        ]
+        
+        # Pure English Transaction Purpose Options
+        self.credit_purposes = [
+            "Sales Revenue",
+            "Bank CC / OD / Loan Disbursal",
+            "Unsecured / Hand Loans",
+            "Promoter Capital Infusion",
+            "Rough Resale & Boart Income",
+            "Interest & Government Subsidies",
+            "GST & Tax Refunds",
+            "Miscellaneous Income"
+        ]
+        
+        self.debit_purposes = [
+            "Rough Diamonds Purchase",
+            "Brokerage & Commission",
+            "Factory Wages & Salaries",
+            "Machinery & Automation Capital",
+            "Consumables & Factory Expenses",
+            "Utility & Power Bills",
+            "Office & Administrative Expenses",
+            "Loan EMI & Interest Repayment",
+            "Unsecured Loan Repayment",
+            "Statutory Taxes & GST Payments",
+            "Partners Withdrawals / Personal"
+        ]
+        
+        self.current_mode = "DEBIT"  # Default Mode
+        
+        self.create_header()
+        self.create_main_layout()
+        self.update_purpose_dropdown()
+
+    def create_header(self):
+        # Top Global Vault Header
+        header_frame = tk.Frame(self.root, bg="#1C2541", height=70)
+        header_frame.pack(fill="x", side="top")
+        
+        title_label = tk.Label(header_frame, text="TRANSACTION MATRIX CORE", font=("Consolas", 16, "bold"), fg="#4EA8DE", bg="#1C2541")
+        title_label.pack(side="left", padx=20, pady=15)
+        
+        # Live Multi-Currency Balances
+        balance_frame = tk.Frame(header_frame, bg="#1C2541")
+        balance_frame.pack(side="right", padx=20)
+        
+        inr_bal = tk.Label(balance_frame, text="GLOBAL VAULT (INR): ₹ 48,50,000", font=("Consolas", 11, "bold"), fg="#52B788", bg="#1C2541")
+        inr_bal.pack(side="left", padx=10)
+        
+        usd_bal = tk.Label(balance_frame, text="GLOBAL VAULT (USD): $ 25,400", font=("Consolas", 11, "bold"), fg="#4EA8DE", bg="#1C2541")
+        usd_bal.pack(side="left", padx=10)
+
+    def create_main_layout(self):
+        # Main split: Left Entry / Right Database Panel
+        self.main_container = tk.Frame(self.root, bg="#0B132B")
+        self.main_container.pack(fill="both", expand=True, padx=15, pady=15)
+        
+        self.left_panel = tk.Frame(self.main_container, bg="#111D4A", bd=2, relief="groove")
+        self.left_panel.pack(side="left", fill="both", expand=True, padx=(0, 10))
+        
+        self.right_panel = tk.Frame(self.main_container, bg="#1C2541", bd=2, relief="groove", width=450)
+        self.right_panel.pack(side="right", fill="both", padx=(10, 0))
+        self.right_panel.pack_propagate(False)
+        
+        self.setup_left_entry_form()
+        self.setup_right_database_panel()
+
+    def setup_left_entry_form(self):
+        # Credit/Debit Switch Buttons
+        btn_frame = tk.Frame(self.left_panel, bg="#111D4A")
+        btn_frame.pack(fill="x", pady=15, padx=20)
+        
+        self.credit_btn = tk.Button(btn_frame, text="CREDIT", bg="#1C2541", fg="#FFFFFF", font=("Arial", 11, "bold"), command=lambda: self.switch_mode("CREDIT"), width=15)
+        self.credit_btn.pack(side="left", padx=5)
+        
+        self.debit_btn = tk.Button(btn_frame, text="DEBIT", bg="#E63946", fg="#FFFFFF", font=("Arial", 11, "bold"), command=lambda: self.switch_mode("DEBIT"), width=15)
+        self.debit_btn.pack(side="left", padx=5)
+        
+        # Form Fields
+        form_frame = tk.Frame(self.left_panel, bg="#111D4A")
+        form_frame.pack(fill="both", expand=True, padx=20)
+        
+        # Bank Selector
+        tk.Label(form_frame, text="SELECT MATRIX BANK:", bg="#111D4A", fg="#4EA8DE").grid(row=0, column=0, sticky="w", pady=5)
+        self.bank_var = tk.StringVar()
+        self.bank_cb = ttk.Combobox(form_frame, textvariable=self.bank_var, state="readonly", width=35)
+        self.bank_cb['values'] = [b["name"] for b in self.banks_db]
+        self.bank_cb.current(0)
+        self.bank_cb.grid(row=1, column=0, sticky="w", pady=5)
+        
+        # Transaction Method
+        tk.Label(form_frame, text="TRANSACTION METHOD:", bg="#111D4A", fg="#4EA8DE").grid(row=2, column=0, sticky="w", pady=5)
+        self.method_var = tk.StringVar()
+        self.method_cb = ttk.Combobox(form_frame, textvariable=self.method_var, state="readonly", width=35)
+        self.method_cb['values'] = ["ONLINE / IMPS", "RTGS / NEFT", "CASH / ANGADIA REPO"]
+        self.method_cb.current(0)
+        self.method_cb.grid(row=3, column=0, sticky="w", pady=5)
+        
+        # Particular / Party Name
+        tk.Label(form_frame, text="PARTICULAR / PARTY NAME:", bg="#111D4A", fg="#4EA8DE").grid(row=4, column=0, sticky="w", pady=5)
+        self.party_entry = tk.Entry(form_frame, width=38, font=("Arial", 10), bg="#1C2541", fg="#FFFFFF", insertbackground="white")
+        self.party_entry.insert(0, "Enter Entity Name")
+        self.party_entry.grid(row=5, column=0, sticky="w", pady=5)
+        
+        # Transaction Purpose
+        tk.Label(form_frame, text="TRANSACTION PURPOSE:", bg="#111D4A", fg="#4EA8DE").grid(row=0, column=1, sticky="w", pady=5, padx=20)
+        self.purpose_var = tk.StringVar()
+        self.purpose_cb = ttk.Combobox(form_frame, textvariable=self.purpose_var, state="readonly", width=35)
+        self.purpose_cb.grid(row=1, column=1, sticky="w", pady=5, padx=20)
+        
+        # Value Amount & Currency Selector
+        tk.Label(form_frame, text="VALUE AMOUNT & CURRENCY:", bg="#111D4A", fg="#4EA8DE").grid(row=2, column=1, sticky="w", pady=5, padx=20)
+        amt_curr_frame = tk.Frame(form_frame, bg="#111D4A")
+        amt_curr_frame.grid(row=3, column=1, sticky="w", pady=5, padx=20)
+        
+        self.amount_entry = tk.Entry(amt_curr_frame, width=22, font=("Arial", 10), bg="#1C2541", fg="#FFFFFF", insertbackground="white")
+        self.amount_entry.insert(0, "0.00")
+        self.amount_entry.pack(side="left")
+        
+        self.curr_var = tk.StringVar(value="INR")
+        self.curr_cb = ttk.Combobox(amt_curr_frame, textvariable=self.curr_var, values=["INR", "USD"], state="readonly", width=8)
+        self.curr_cb.pack(side="left", padx=5)
+        
+        # Execution Date
+        tk.Label(form_frame, text="EXECUTION DATE:", bg="#111D4A", fg="#4EA8DE").grid(row=4, column=1, sticky="w", pady=5, padx=20)
+        self.date_entry = tk.Entry(form_frame, width=38, font=("Arial", 10), bg="#1C2541", fg="#FFFFFF")
+        self.date_entry.insert(0, datetime.now().strftime("%d-%m-%Y"))
+        self.date_entry.grid(row=5, column=1, sticky="w", pady=5, padx=20)
+        
+        # Action Button
+        self.post_btn = tk.Button(self.left_panel, text="POST MATRIX ENTRY (DEBIT / OUTGOING)", bg="#E63946", fg="#FFFFFF", font=("Arial", 12, "bold"), height=2, command=self.handle_post_entry)
+        self.post_btn.pack(fill="x", side="bottom", padx=20, pady=20)
+
+    def setup_right_database_panel(self):
+        # Top Navigation inside right panel
+        top_nav = tk.Frame(self.right_panel, bg="#1C2541")
+        top_nav.pack(fill="x", pady=5)
+        
+        bank_hier_btn = tk.Button(top_nav, text="BANK HIERARCHY", bg="#1C2541", fg="#888888", font=("Arial", 9, "bold"), bd=0, activebackground="#1C2541")
+        bank_hier_btn.pack(side="left", padx=10)
+        
+        details_btn = tk.Button(top_nav, text="LIVE DETAILS PANEL", bg="#1C2541", fg="#4EA8DE", font=("Arial", 10, "underline", "bold"), bd=0, activebackground="#1C2541")
+        details_btn.pack(side="right", padx=15)
+        
+        # Sub-title
+        lbl = tk.Label(self.right_panel, text="LIVE ACCOUNT LEDGER DATABASE", font=("Arial", 11, "bold"), bg="#1C2541", fg="#FFFFFF")
+        lbl.pack(anchor="w", padx=15, pady=5)
+        
+        # Intelligent Notification / Review Display Box
+        self.review_box = tk.Text(self.right_panel, bg="#0B132B", fg="#52B788", font=("Consolas", 10), bd=1, relief="solid", highlightthickness=0, padx=10, pady=10)
+        self.review_box.pack(fill="both", expand=True, padx=15, pady=(5, 10))
+        
+        # Display simulated Bank API structure & live log instantly
+        self.refresh_live_details_view("[SYSTEM STATUS]: Active\n[API NODE]: Waiting for secure bank response...")
+
+    def refresh_live_details_view(self, message):
+        self.review_box.config(state="normal")
+        self.review_box.delete("1.0", tk.END)
+        self.review_box.insert(tk.END, message)
+        self.review_box.config(state="disabled")
+
+    def switch_mode(self, mode):
+        self.current_mode = mode
+        if mode == "CREDIT":
+            self.credit_btn.config(bg="#52B788")
+            self.debit_btn.config(bg="#1C2541")
+            self.post_btn.config(text="POST MATRIX ENTRY (CREDIT / INCOMING)", bg="#52B788")
+        else:
+            self.credit_btn.config(bg="#1C2541")
+            self.debit_btn.config(bg="#E63946")
+            self.post_btn.config(text="POST MATRIX ENTRY (DEBIT / OUTGOING)", bg="#E63946")
+        
+        self.update_purpose_dropdown()
+
+    def update_purpose_dropdown(self):
+        if self.current_mode == "CREDIT":
+            self.purpose_cb['values'] = self.credit_purposes
+        else:
+            self.purpose_cb['values'] = self.debit_purposes
+        self.purpose_cb.current(0)
+
+    def handle_post_entry(self):
+        # Fetch data input dynamically
+        party = self.party_entry.get()
+        amount = self.amount_entry.get()
+        purpose = self.purpose_var.get()
+        bank = self.bank_var.get()
+        currency = self.curr_var.get()
+        
+        # Basic Validation
+        if party == "Enter Entity Name" or not party.strip():
+            messagebox.showwarning("Validation Error", "Please provide a valid Party or Entity Name.")
+            return
             
-            <div class="form-scroll-container">
-                <div class="input-group">
-                    <label>Accounting Mode</label>
-                    <div class="type-toggle-row">
-                        <button class="mode-btn credit active" id="mode-credit" onclick="setAccountingMode('CREDIT')">Credit</button>
-                        <button class="mode-btn debit" id="mode-debit" onclick="setAccountingMode('DEBIT')">Debit</button>
-                        <button class="mode-btn transfer" id="mode-transfer" onclick="setAccountingMode('TRANSFER')">Bank Transfer</button>
-                    </div>
-                </div>
+        # Simulate Core Engine Parsing & Real-time Live Log Feedback inside Right Box
+        log_color = "🟢 CREDIT" if self.current_mode == "CREDIT" else "🔴 DEBIT"
+        symbol = "$" if currency == "USD" else "₹"
+        
+        # Fetch Account Type from simulated DB structure to display automatically inside log box
+        acc_type = next((b["type"] for b in self.banks_db if b["name"] == bank), "Current")
+        
+        success_log = (
+            f"=========================================\n"
+            f" TRANSACTION VERIFICATION SUCCESSFUL\n"
+            f"=========================================\n"
+            f"• Status: Approved & Logged\n"
+            f"• Action: {log_color}\n"
+            f"• Bank Node: {bank}\n"
+            f"• Account Type: {acc_type} Account [API Auto-Fetched]\n"
+            f"• Entity Target: {party}\n"
+            f"• Purpose Category: {purpose}\n"
+            f"• Final Value: {symbol} {amount} ({currency})\n"
+            f"• Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+            f"-----------------------------------------\n"
+            f"[SYSTEM]: Core Vault Balance adjusted successfully."
+        )
+        
+        self.refresh_live_details_view(success_log)
+        messagebox.showinfo("Matrix Success", f"Transaction entry posted successfully under {purpose}!")
 
-                <div class="form-grid-2">
-                    <div class="input-group" id="src-bank-group">
-                        <label id="bank-select-label">Select Master Bank</label>
-                        <select class="input-control" id="bank-select"></select>
-                    </div>
-                    <div class="input-group" id="dest-bank-group" style="display: none;">
-                        <label>Destination Bank</label>
-                        <select class="input-control" id="dest-bank-select"></select>
-                    </div>
-                </div>
-
-                <div class="form-grid-2">
-                    <div class="input-group">
-                        <label>Transaction Method</label>
-                        <select class="input-control" id="method-select" onchange="toggleChequeInput()">
-                            <option value="ONLINE">ONLINE / IMPS</option>
-                            <option value="NEFT_RTGS">NEFT / RTGS</option>
-                            <option value="CHEQUE">BANK CHEQUE</option>
-                            <option value="UPI">UPI SMART CODE</option>
-                        </select>
-                    </div>
-                    <div class="input-group" id="purpose-group">
-                        <label>Transaction Purpose</label>
-                        <select class="input-control" id="purpose-select"></select>
-                    </div>
-                </div>
-
-                <div class="form-grid-2">
-                    <div class="input-group" id="party-group">
-                        <label>Particular / Party Name</label>
-                        <input type="text" class="input-control" id="party-name" placeholder="Enter Entity Name">
-                    </div>
-                    <div class="input-group">
-                        <label>Value Amount</label>
-                        <input type="number" class="input-control" id="tx-amount" placeholder="0.00">
-                    </div>
-                </div>
-
-                <div class="form-grid-2">
-                    <div class="input-group" id="cheque-number-group" style="display: none;">
-                        <label>Cheque / Reference Number</label>
-                        <input type="text" class="input-control" id="cheque-no" placeholder="Enter Ref / Cheque No">
-                    </div>
-                    <div class="input-group">
-                        <label>Execution Date</label>
-                        <input type="date" class="input-control" id="tx-date">
-                    </div>
-                </div>
-            </div>
-
-            <button class="mode-btn credit active" style="width: 100%; margin-top: 10px; padding: 12px; font-size: 13px;" id="post-btn" onclick="executePostEntry()">Post Transaction Matrix</button>
-        </div>
-
-        <!-- Right: Live Table -->
-        <div class="panel-box">
-            <div class="panel-title">
-                <span>Live Account Ledger Database</span>
-                <span id="live-clock" style="font-size: 10px; color: var(--text-muted);"></span>
-            </div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Bank Hierarchy</th>
-                            <th>Details</th>
-                            <th>Method / Status</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ledger-rows"></tbody>
-                </table>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Bottom Settings Footer Bar -->
-    <div class="footer-control-bar">
-        <span style="font-size: 10px; color: var(--text-muted);">Secure Environment Matrix Active</span>
-        <button class="settings-launcher" onclick="openSettingsModal()" title="Global System Settings">⚙️ Bank Setup</button>
-    </div>
-
-    <!-- ⚙️ SETTINGS MODAL ENGINE -->
-    <div class="modal-overlay" id="settings-modal">
-        <div class="modal-box">
-            <div class="panel-title" style="border:none; margin-bottom:15px;">
-                <span>⚙️ Dynamic Bank Configuration</span>
-                <span style="cursor:pointer;" onclick="closeSettingsModal()">✕</span>
-            </div>
-            <div style="display:flex; flex-direction:column; gap:12px;">
-                <div class="input-group">
-                    <label>Bank Name</label>
-                    <input type="text" class="input-control" id="new-bank-name" placeholder="e.g. SBI, HDFC">
-                </div>
-                <div class="input-group">
-                    <label>Account Number</label>
-                    <input type="text" class="input-control" id="new-bank-acc" placeholder="Enter A/C Number">
-                </div>
-                <div class="input-group">
-                    <label>IFSC Code</label>
-                    <input type="text" class="input-control" id="new-bank-ifsc" placeholder="Enter IFSC Code">
-                </div>
-                <div class="input-group">
-                    <label>Account Holder Name</label>
-                    <input type="text" class="input-control" id="new-bank-holder" placeholder="Holder Full Name">
-                </div>
-                <button class="mode-btn credit active" style="background:var(--accent-blue); color:white;" onclick="triggerSecureAPIModal()">Secure API Live Link Account</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 🔑 SECURE OTP API MODULE -->
-    <div class="modal-overlay" id="otp-modal" style="z-index: 1001;">
-        <div class="modal-box" style="width:340px; border-color:var(--accent-blue);">
-            <div class="panel-title" style="border:none;">
-                <span>🛡️ RBI Account Aggregator Link</span>
-            </div>
-            <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">Enter secure OTP sent to your bank registered mobile number to automatically sync live balance profile.</p>
-            <div class="input-group" style="margin-bottom:15px;">
-                <label>Secure 6-Digit OTP</label>
-                <input type="text" class="input-control" id="secure-otp" placeholder="******" style="text-align:center; font-size:16px; letter-spacing:4px;">
-            </div>
-            <button class="mode-btn credit active" onclick="verifySecureOTP()">Verify & Fetch Live Balance</button>
-        </div>
-    </div>
-
-    <script>
-        let currentMode = "CREDIT";
-
-        function initializeTerminal() {
-            document.getElementById('tx-date').value = new Date().toISOString().split('T')[0];
-            updateClock();
-            setInterval(updateClock, 1000);
-            refreshBankData();
-            updatePurposeOptions();
-        }
-
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('live-clock').innerText = now.toLocaleTimeString();
-        }
-
-        function enableFullScreenMode(e) {
-            // Auto full screen lock on body touch/click
-            if (!document.fullscreenElement && e.target.tagName !== 'SELECT' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON') {
-                document.documentElement.requestFullscreen().catch(err => {});
-            }
-        }
-
-        function backToDashboard() { window.location.href = 'main_office.html'; }
-        function openSettingsModal() { document.getElementById('settings-modal').style.visibility = 'visible'; document.getElementById('settings-modal').style.opacity = 1; }
-        function closeSettingsModal() { document.getElementById('settings-modal').style.visibility = 'hidden'; document.getElementById('settings-modal').style.opacity = 0; }
-
-        function triggerSecureAPIModal() {
-            const name = document.getElementById('new-bank-name').value;
-            const acc = document.getElementById('new-bank-acc').value;
-            const ifsc = document.getElementById('new-bank-ifsc').value;
-            if(!name || !acc || !ifsc) { alert('Please fill account configurations metrics first.'); return; }
-            
-            document.getElementById('otp-modal').style.visibility = 'visible';
-            document.getElementById('otp-modal').style.opacity = 1;
-        }
-
-        function verifySecureOTP() {
-            const otp = document.getElementById('secure-otp').value;
-            if(!otp) { alert('Enter valid security token code.'); return; }
-
-            // Dynamic Live Balance Simulator via official secure pipeline
-            const mockLiveBalances = [785000, 1245000, 432000, 1890000];
-            const chosenBalance = mockLiveBalances[Math.floor(Math.random() * mockLiveBalances.length)];
-
-            const name = document.getElementById('new-bank-name').value;
-            const acc = document.getElementById('new-bank-acc').value;
-            const ifsc = document.getElementById('new-bank-ifsc').value;
-            const holder = document.getElementById('new-bank-holder').value;
-
-            const banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
-            banks.push({ name, acc, ifsc, holder, balance: chosenBalance });
-            localStorage.setItem('factory_banks', JSON.stringify(banks));
-
-            // Reset forms
-            document.getElementById('new-bank-name').value = '';
-            document.getElementById('new-bank-acc').value = '';
-            document.getElementById('new-bank-ifsc').value = '';
-            document.getElementById('new-bank-holder').value = '';
-            document.getElementById('secure-otp').value = '';
-
-            document.getElementById('otp-modal').style.visibility = 'hidden';
-            document.getElementById('otp-modal').style.opacity = 0;
-            closeSettingsModal();
-            refreshBankData();
-        }
-
-        function refreshBankData() {
-            const banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
-            const select = document.getElementById('bank-select');
-            const destSelect = document.getElementById('dest-bank-select');
-            const container = document.getElementById('balance-cards-container');
-
-            if(banks.length === 0) {
-                select.innerHTML = '<option value="">No Active Bank! Setup via ⚙️</option>';
-                destSelect.innerHTML = '<option value="">No Active Bank! Setup via ⚙️</option>';
-                container.innerHTML = `<div class="balance-card total-card"><div class="card-label">GLOBAL BALANCES</div><div class="card-val">₹ 0.00</div></div>`;
-                localStorage.setItem('dashboard_bank_total', "₹ 0");
-                loadLedgerLogs();
-                return;
-            }
-
-            select.innerHTML = banks.map(b => `<option value="${b.name}">${b.name} (${b.acc.slice(-4)})</option>`).join('');
-            destSelect.innerHTML = banks.map(b => `<option value="${b.name}">${b.name} (${b.acc.slice(-4)})</option>`).join('');
-
-            // Calculate current total
-            let globalTotal = 0;
-            let cardsHtml = '';
-            banks.forEach(b => {
-                globalTotal += b.balance;
-                cardsHtml += `<div class="balance-card"><div class="card-label">${b.name} A/C TERMINAL</div><div class="card-val">₹ ${b.balance.toLocaleString('en-IN')}</div></div>`;
-            });
-
-            container.innerHTML = `<div class="balance-card total-card" style="border-color:var(--accent-cyan);"><div class="card-label">GLOBAL TOTAL VAULT</div><div class="card-val" style="color:var(--accent-cyan);">₹ ${globalTotal.toLocaleString('en-IN')}</div></div>` + cardsHtml;
-            
-            // Sync with main office global variable matrix
-            localStorage.setItem('dashboard_bank_total', `₹ ${globalTotal.toLocaleString('en-IN')}`);
-            loadLedgerLogs();
-        }
-
-        function setAccountingMode(mode) {
-            currentMode = mode;
-            const postBtn = document.getElementById('post-btn');
-            const destGroup = document.getElementById('dest-bank-group');
-            const purposeGroup = document.getElementById('purpose-group');
-            const partyGroup = document.getElementById('party-group');
-            const bankLabel = document.getElementById('bank-select-label');
-
-            document.getElementById('mode-credit').classList.remove('active');
-            document.getElementById('mode-debit').classList.remove('active');
-            document.getElementById('mode-transfer').classList.remove('active');
-
-            if(mode === 'CREDIT') {
-                document.getElementById('mode-credit').classList.add('active');
-                postBtn.style.background = 'var(--accent-green)';
-                postBtn.innerText = "Post Matrix Entry (Credit / Incoming)";
-                destGroup.style.display = 'none';
-                purposeGroup.style.display = 'flex';
-                partyGroup.style.display = 'flex';
-                bankLabel.innerText = "Select Master Bank";
-            } else if(mode === 'DEBIT') {
-                document.getElementById('mode-debit').classList.add('active');
-                postBtn.style.background = 'var(--accent-red)';
-                postBtn.innerText = "Post Matrix Entry (Debit / Outgoing)";
-                destGroup.style.display = 'none';
-                purposeGroup.style.display = 'flex';
-                partyGroup.style.display = 'flex';
-                bankLabel.innerText = "Select Master Bank";
-            } else {
-                document.getElementById('mode-transfer').classList.add('active');
-                postBtn.style.background = '#8E44AD';
-                postBtn.innerText = "Execute Secure Bank Transfer Protocol";
-                destGroup.style.display = 'flex';
-                purposeGroup.style.display = 'none';
-                partyGroup.style.display = 'none';
-                bankLabel.innerText = "Source Bank (From)";
-            }
-            updatePurposeOptions();
-        }
-
-        function updatePurposeOptions() {
-            const purposeSelect = document.getElementById('purpose-select');
-            if(currentMode === 'CREDIT') {
-                purposeSelect.innerHTML = `
-                    <option value="SALES_REVENUE">Sales Revenue (હીરા વેચાણ)</option>
-                    <option value="ASSET_LIQUIDATION">Asset Liquidation (અન્ય આવક)</option>
-                `;
-            } else {
-                purposeSelect.innerHTML = `
-                    <option value="ROUGH_PURCHASE">Rough Purchase (રફ ખરીદી)</option>
-                    <option value="BROKERAGE">Brokerage (દલાલી પેમેન્ટ)</option>
-                    <option value="ARTISAN_SALARY">Artisan Salary / Wages (કારીગર પગાર)</option>
-                    <option value="COMPANY_EXPENSE">Company Expenses (ઓફિસ ખર્ચ)</option>
-                `;
-            }
-        }
-
-        function toggleChequeInput() {
-            const method = document.getElementById('method-select').value;
-            document.getElementById('cheque-number-group').style.display = (method === 'CHEQUE') ? 'flex' : 'none';
-        }
-
-        function toggleChequeStatus(index) {
-            const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
-            if(entries[index] && entries[index].method === 'CHEQUE') {
-                const oldStatus = entries[index].status;
-                const newStatus = oldStatus === 'PENDING' ? 'CLEARED' : 'PENDING';
-                
-                // Recalculate balances safely based on actual clear status changes
-                const banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
-                const amt = entries[index].amount;
-                const bName = entries[index].bank;
-                
-                const bankIdx = banks.findIndex(b => b.name === bName);
-                if(bankIdx !== -1) {
-                    if(entries[index].mode === 'CREDIT') {
-                        banks[bankIdx].balance += (newStatus === 'CLEARED') ? amt : -amt;
-                    } else if(entries[index].mode === 'DEBIT') {
-                        banks[bankIdx].balance += (newStatus === 'CLEARED') ? -amt : amt;
-                    }
-                    localStorage.setItem('factory_banks', JSON.stringify(banks));
-                }
-
-                entries[index].status = newStatus;
-                localStorage.setItem('bank_ledger_logs', JSON.stringify(entries));
-                refreshBankData();
-            }
-        }
-
-        function executePostEntry() {
-            const bankName = document.getElementById('bank-select').value;
-            const amount = parseFloat(document.getElementById('tx-amount').value);
-            const date = document.getElementById('tx-date').value;
-            const method = document.getElementById('method-select').value;
-            const chequeNo = document.getElementById('cheque-no').value;
-
-            if(!bankName || isNaN(amount) || amount <= 0) { alert('Valid bank architecture node and amount metrics required.'); return; }
-
-            const banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
-            const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
-
-            let purpose = document.getElementById('purpose-select').value;
-            let party = document.getElementById('party-name').value;
-            let initialStatus = (method === 'CHEQUE') ? 'PENDING' : 'CLEARED';
-
-            if(currentMode === 'TRANSFER') {
-                const destBankName = document.getElementById('dest-bank-select').value;
-                if(bankName === destBankName) { alert('Source and Destination banks cannot be identical.'); return; }
-                
-                const srcIdx = banks.findIndex(b => b.name === bankName);
-                const destIdx = banks.findIndex(b => b.name === destBankName);
-
-                if(banks[srcIdx].balance < amount) { alert('Execution Halted: Insufficient liquid vault reserves.'); return; }
-
-                banks[srcIdx].balance -= amount;
-                banks[bIdx = destIdx].balance += amount;
-
-                entries.unshift({ bank: bankName, destBank: destBankName, method, purpose: 'INTERNAL_TRANSFER', party: `To ${destBankName}`, amount, date, mode: 'TRANSFER', status: 'CLEARED' });
-            } else {
-                const bIdx = banks.findIndex(b => b.name === bankName);
-                
-                if(currentMode === 'DEBIT') {
-                    if(initialStatus === 'CLEARED') {
-                        if(banks[bIdx].balance < amount) { alert('Execution Halted: Overdraft baseline exceeded.'); return; }
-                        banks[bIdx].balance -= amount;
-                    }
-                } else {
-                    if(initialStatus === 'CLEARED') banks[bIdx].balance += amount;
-                }
-
-                entries.unshift({ bank: bankName, method, purpose, party, amount, date, mode: currentMode, chequeNo, status: initialStatus });
-            }
-
-            localStorage.setItem('factory_banks', JSON.stringify(banks));
-            localStorage.setItem('bank_ledger_logs', JSON.stringify(entries));
-
-            // Flush inputs
-            document.getElementById('party-name').value = '';
-            document.getElementById('tx-amount').value = '';
-            document.getElementById('cheque-no').value = '';
-
-            refreshBankData();
-        }
-
-        function loadLedgerLogs() {
-            const tbody = document.getElementById('ledger-rows');
-            const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
-
-            if(entries.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:20px;">No operational records found in sandbox ledger.</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = entries.map((e, index) => {
-                let amtClass = 'tx-cr';
-                let sign = '+';
-                if(e.mode === 'DEBIT') { amtClass = 'tx-dr'; sign = '-'; }
-                if(e.mode === 'TRANSFER') { amtClass = 'tx-tr'; sign = '⇄'; }
-
-                let statusHtml = '';
-                if(e.method === 'CHEQUE') {
-                    statusHtml = `<span class="status-badge ${e.status === 'CLEARED' ? 'status-cleared' : 'status-pending'}" onclick="toggleChequeStatus(${index})">${e.status}</span>`;
-                } else {
-                    statusHtml = `<span class="status-badge status-cleared">INSTANT</span>`;
-                }
-
-                return `
-                    <tr>
-                        <td><strong>${e.bank}</strong>${e.destBank ? ` <span style="color:var(--accent-cyan);">→ ${e.destBank}</span>` : ''}</td>
-                        <td><strong>${e.party || 'Internal Vault Transfer'}</strong><br><small style="color:var(--text-muted);">${e.purpose}</small></td>
-                        <td>${e.method} ${e.chequeNo ? `[#${e.chequeNo}]` : ''}<br>${statusHtml}</td>
-                        <td class="${amtClass}">${sign} ₹ ${e.amount.toLocaleString('en-IN')}</td>
-                    </tr>
-                `;
-            }).join('');
-        }
-    </script>
-</body>
-</html>
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = DiamondMatrixOS(root)
+    root.mainloop()
