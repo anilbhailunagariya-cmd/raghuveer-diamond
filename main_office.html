@@ -125,7 +125,6 @@
             justify-content: flex-start;
         }
 
-        /* અનિલભાઈના આયોજન મુજબ: લંબાઈ અડધી, ઊંચાઈ બમણી એટલે એકદમ ચોરસ (Square) બોક્સ લેઆઉટ */
         .core-metrics-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -135,7 +134,7 @@
 
         @media (min-width: 768px) {
             .core-metrics-grid {
-                grid-template-columns: repeat(4, 1fr); /* મોટી સ્ક્રિન પર બાજુ-બાજુમાં ૪ ચોરસ ગોઠવાશે */
+                grid-template-columns: repeat(4, 1fr);
             }
         }
 
@@ -145,7 +144,7 @@
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 18px 15px;
+            padding: 0; /* પટ્ટી ઉપર એકદમ ફિક્સ ચોંટે એટલે પેડિંગ ૦ કર્યું */
             position: relative;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
@@ -154,7 +153,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            aspect-ratio: 1 / 1; /* પદ્ધતિ ૨: બોક્સને પર્ફેક્ટ ચોરસ રાખવા રેશિયો લોક કર્યો */
+            aspect-ratio: 1 / 1;
             min-height: 160px;
         }
 
@@ -166,6 +165,7 @@
             content: '';
             position: absolute;
             top: 0; left: 0; width: 4px; height: 100%;
+            z-index: 5;
         }
 
         #card-bank::before { background: var(--accent-blue); }
@@ -192,62 +192,85 @@
         #card-print::before { background: #E74C3C; }
         #card-print:hover { border-color: #E74C3C; box-shadow: 0 0 15px rgba(231, 76, 60, 0.25); }
 
-        .card-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            color: var(--accent-cyan);
-            letter-spacing: 1.2px;
-            font-weight: 700;
+        /* અનિલભાઈની નવી ડિઝાઇન: કાળા કલરની ભરાવદાર અને જાડી પટ્ટી */
+        .marquee-strip-container {
+            width: 100%;
+            background: rgba(3, 6, 17, 0.9);
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px 10px; /* જગ્યા વધારીને જાડી કરી */
+            min-height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
 
+        /* સ્થિર રહીને જગ્યા પર બદલાતા મોટા અક્ષરો */
+        .marquee-strip {
+            font-size: 11px; /* અક્ષરો મોટા કર્યા */
+            font-weight: bold;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            text-align: center;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: opacity 0.4s ease-in-out; /* ધીમો અને સોફ્ટ બદલાવ (Fade Effect) */
+            opacity: 1;
+        }
+
+        .marquee-strip.fade-out {
+            opacity: 0;
+        }
+
+        /* બોક્સનો અંદરનો મુખ્ય ભાગ (આંકડાને વચ્ચે લાવવા માટે) */
+        .card-content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* ઉભી લાઈનમાં સેન્ટર */
+            align-items: center; /* આડી લાઈનમાં સેન્ટર */
+            padding: 15px;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* અનિલભાઈની સોચ: સેન્ટરમાં મોટો ગ્લો આંકડો */
         .card-value {
-            font-size: 19px;
-            font-weight: 700;
+            font-size: 22px; /* મોટા અક્ષર */
+            font-weight: 800;
             letter-spacing: 0.5px;
             color: #FFFFFF;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin: 0;
+            line-height: 1.2;
             word-break: break-word;
-            line-height: 1.3;
-            margin: 6px 0;
         }
+
+        /* નિયોન ગ્લો ઈફેક્ટ (Neon Glow) કલર પ્રમાણે */
+        #card-bank .card-value { text-shadow: 0 0 12px rgba(0, 198, 255, 0.6); }
+        #card-cash .card-value { text-shadow: 0 0 12px rgba(155, 89, 182, 0.6); }
+        #card-rough .card-value { text-shadow: 0 0 12px rgba(243, 156, 18, 0.6); }
+        #card-sales .card-value { text-shadow: 0 0 12px rgba(39, 174, 96, 0.6); }
+        #card-4p-ghat .card-value { text-shadow: 0 0 12px rgba(241, 196, 15, 0.6); }
+        #card-ready-pur .card-value { text-shadow: 0 0 12px rgba(26, 188, 156, 0.6); }
+        #card-broker .card-value { text-shadow: 0 0 12px rgba(91, 192, 190, 0.6); }
+        #card-print .card-value { text-shadow: 0 0 12px rgba(231, 76, 60, 0.6); }
 
         .card-sub-value {
             font-size: 11px;
             color: var(--text-muted);
             font-weight: 600;
-        }
-
-        .marquee-strip-container {
-            width: 100%;
-            overflow: hidden;
-            background: rgba(7, 11, 25, 0.5);
-            border-radius: 4px;
-            padding: 3px 5px;
-            margin-bottom: 4px;
-        }
-
-        .marquee-strip {
-            display: inline-block;
-            white-space: nowrap;
-            font-size: 10px;
-            font-weight: bold;
-            color: var(--accent-cyan);
-            animation: stripMove 10s linear infinite;
-        }
-
-        @keyframes stripMove {
-            0% { transform: translate3d(100%, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
+            margin-top: 6px;
         }
 
         .live-status-indicator {
-            font-size: 9px;
-            color: var(--accent-green);
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-weight: 600;
-            margin-top: 4px;
         }
 
         .status-dot {
@@ -419,80 +442,92 @@
     <div class="office-container">
         <div class="core-metrics-grid">
             
-            <!-- 1. BANK CARD (નવો ક્રમ - ૧) -->
+            <!-- ૧. BANK CARD -->
             <div class="metric-card" id="card-bank" onclick="window.location.href='bank_details.html'">
-                <div>
-                    <div class="marquee-strip-container">
-                        <div class="marquee-strip" id="strip-bank-names">BANK: LOADING...</div>
-                    </div>
+                <div class="marquee-strip-container">
+                    <div class="marquee-strip" id="strip-bank-names">BANK: LOADING...</div>
+                </div>
+                <div class="card-content-wrapper">
                     <div class="card-value" id="val-usd">LOADING...</div>
                 </div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
-            <!-- 2. CASH FLOW CARD (નવો ક્રમ - ૨) -->
+            <!-- ૨. CASH FLOW CARD -->
             <div class="metric-card" id="card-cash" onclick="window.location.href='cash_flow.html'">
-                <div>
-                    <div class="card-label" id="lbl-cash">CASH FLOW</div>
+                <div class="marquee-strip-container">
+                    <div class="marquee-strip" id="strip-cash-label">CASH FLOW</div>
+                </div>
+                <div class="card-content-wrapper">
                     <div class="card-value" id="val-cash">₹ 0</div>
                 </div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
-            <!-- 3. ROUGH PURCHASE CARD (નવો ક્રમ - ૩: ખરીદી) -->
+            <!-- ૩. ROUGH PURCHASE CARD (ખરીદી) -->
             <div class="metric-card" id="card-rough" onclick="window.location.href='rough_purchase.html'">
-                <div>
-                    <div class="card-label" id="lbl-rough">ROUGH PURCHASE</div>
+                <div class="marquee-strip-container">
+                    <div class="marquee-strip" id="strip-rough-label">ROUGH PURCHASE</div>
+                </div>
+                <div class="card-content-wrapper">
                     <div class="card-value" id="val-rough">0 Carats</div>
                     <div class="card-sub-value" id="val-rough-total">Total Safe: 0 Carats</div>
                 </div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
-            <!-- 4. GLOBAL SALES CARD (નવો ક્રમ - ૪: સેલ્સ) -->
+            <!-- ૪. GLOBAL SALES CARD -->
             <div class="metric-card" id="card-sales" onclick="window.location.href='sales_details.html'">
-                <div>
-                    <div class="card-label" id="lbl-sales">GLOBAL SALES</div>
+                <div class="marquee-strip-container">
+                    <div class="marquee-strip" id="strip-sales-label">GLOBAL SALES</div>
+                </div>
+                <div class="card-content-wrapper">
                     <div class="card-value" id="val-sales">0 Carats</div>
                 </div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
 
-            <!-- 5. 4P GHAT SALES CARD (નવો ક્રમ - ૫) -->
+            <!-- ૫. 4P GHAT SALES CARD -->
             <div class="metric-card" id="card-4p-ghat" onclick="window.location.href='ghat_sales.html'">
-                <div>
-                    <div class="card-label" id="lbl-4p-ghat">4P GHAT SALES</div>
+                <div class="marquee-strip-container">
+                    <div class="marquee-strip" id="strip-ghat-label">4P GHAT SALES</div>
+                </div>
+                <div class="card-content-wrapper">
                     <div class="card-value" id="val-4p-ghat">0 Carats</div>
                     <div class="card-sub-value" id="val-4p-total">Total Stock: 0 Carats</div>
                 </div>
                 <div class="live-status-indicator"><span class="status-dot" style="background-color: #F1C40F; box-shadow: 0 0 6px #F1C40F;"></span></div>
             </div>
 
-            <!-- 6. READY PURCHASE CARD (નવો ક્રમ - ૬: તૈયાર ખરીદી) -->
+            <!-- ૬. READY PURCHASE CARD (તૈયાર ખરીદી) -->
             <div class="metric-card" id="card-ready-pur" onclick="window.location.href='ready_purchase.html'">
-                <div>
-                    <div class="marquee-strip-container">
-                        <div class="marquee-strip" id="strip-ready-goods">LOT: NO DATA | DM: - | PURITY: - | COLOR: - | FLORO: -</div>
-                    </div>
+                <div class="marquee-strip-container">
+                    <div class="marquee-strip" id="strip-ready-goods">READY GOODS LOADING...</div>
+                </div>
+                <div class="card-content-wrapper">
                     <div class="card-value" id="val-ready-pur">0 Carats</div>
                     <div class="card-sub-value" id="val-ready-total">Total Ready Safe: 0 Carats</div>
                 </div>
                 <div class="live-status-indicator"><span class="status-dot" style="background-color: #1ABC9C; box-shadow: 0 0 6px #1ABC9C;"></span></div>
             </div>
 
-            <!-- 7. BROKER & PARTY CARD (નવો ક્રમ - ૭) -->
+            <!-- ૭. BROKER & PARTY CARD -->
             <div class="metric-card" id="card-broker" onclick="window.location.href='broker_list.html'">
-                <div>
-                    <div class="card-label" id="lbl-broker">BROKER & PARTY</div>
+                <div class="marquee-strip-container">
+                    <div class="marquee-strip" id="strip-broker-label">BROKER & PARTY</div>
+                </div>
+                <div class="card-content-wrapper">
                     <div class="card-value" id="val-broker">STANDBY</div>
                 </div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
 
-            <!-- 8. PRINTER STATION CARD (નવો ક્રમ - ૮) -->
+            <!-- ૮. PRINTER STATION CARD -->
             <div class="metric-card" id="card-print" onclick="window.location.href='printer_station.html'">
-                <div>
-                    <div class="card-label">PRINTER STATION</div>
+                <div class="marquee-strip-container">
+                    <div class="marquee-strip" id="strip-print-label">PRINTER STATION</div>
+                </div>
+                <div class="card-content-wrapper">
                     <div class="card-value" style="color: var(--accent-cyan); font-size: 15px;">OPEN TERMINAL</div>
                     <div class="card-sub-value">Letter Pad / Excel</div>
                 </div>
@@ -547,34 +582,22 @@
         let isCurrencyUsd = false;
         let isAnomalyActive = false;
 
-        function goToDashboard() {
-            window.location.href = 'dashboard.html'; 
-        }
+        function goToDashboard() { window.location.href = 'dashboard.html'; }
 
         window.addEventListener('click', function globalFullScreenLock() {
             const doc = document.documentElement;
             if (doc.requestFullscreen) doc.requestFullscreen();
-            else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
             window.removeEventListener('click', globalFullScreenLock);
         });
 
         function triggerFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => { console.log(err); });
-            } else {
-                document.exitFullscreen();
-            }
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
         }
 
-        function triggerMinimize() {
-            console.log("Terminal view minimalized.");
-        }
-
-        function openSettingsPopup(e) {
-            e.stopPropagation();
-            document.getElementById('settings-modal').style.display = 'flex';
-        }
-
+        function triggerMinimize() { console.log("Terminal view minimalized."); }
+        function openSettingsPopup(e) { e.stopPropagation(); document.getElementById('settings-modal').style.display = 'flex'; }
+        
         function closeSettingsPopup(e, forceClose = false) {
             if(e) e.stopPropagation();
             if (forceClose || (e && e.target.id === 'settings-modal')) {
@@ -586,158 +609,125 @@
             isPrivacyActive = !isPrivacyActive;
             const btn = document.getElementById('btn-privacy');
             const targets = [document.getElementById('card-sales'), document.getElementById('card-cash'), document.getElementById('card-ready-pur')];
-            
-            if(isPrivacyActive) {
-                btn.classList.add('active');
-                targets.forEach(c => c.classList.add('privacy-blur-effect'));
-            } else {
-                btn.classList.remove('active');
-                targets.forEach(c => c.classList.remove('privacy-blur-effect'));
+            if(isPrivacyActive) { btn.classList.add('active'); targets.forEach(c => c.classList.add('privacy-blur-effect')); }
+            else { btn.classList.remove('active'); targets.forEach(c => c.classList.remove('privacy-blur-effect')); }
+        }
+
+        function toggleForecastMode() { isForecastActive = !isForecastActive; document.getElementById('btn-forecast').classList.toggle('active', isForecastActive); loadDashboardData(); }
+        function toggleCurrencyConverter() { isCurrencyUsd = !isCurrencyUsd; document.getElementById('btn-currency').classList.toggle('active', isCurrencyUsd); loadDashboardData(); }
+        alertToggle = () => { isAnomalyActive = !isAnomalyActive; document.getElementById('btn-anomaly').classList.toggle('active', isAnomalyActive); }
+
+        // જગ્યા પર લખાણ બદલવા માટે સોફ્ટ Fade Effect ફંક્શન
+        function updateTextWithFade(elementId, newText) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            if (el.innerText !== newText) {
+                el.classList.add('fade-out');
+                setTimeout(() => {
+                    el.innerText = newText;
+                    el.classList.remove('fade-out');
+                }, 400);
             }
-        }
-
-        function toggleForecastMode() {
-            isForecastActive = !isForecastActive;
-            const btn = document.getElementById('btn-forecast');
-            if(isForecastActive) btn.classList.add('active');
-            else btn.classList.remove('active');
-            loadDashboardData();
-        }
-
-        function toggleCurrencyConverter() {
-            isCurrencyUsd = !isCurrencyUsd;
-            const btn = document.getElementById('btn-currency');
-            if(isCurrencyUsd) btn.classList.add('active');
-            else btn.classList.remove('active');
-            loadDashboardData();
-        }
-
-        function toggleAnomalyDetection() {
-            isAnomalyActive = !isAnomalyActive;
-            const btn = document.getElementById('btn-anomaly');
-            if(isAnomalyActive) btn.classList.add('active');
-            else btn.classList.remove('active');
         }
 
         function loadDashboardData() {
             const usdRate = parseFloat(localStorage.getItem('usd_rate')) || 83.72;
 
-            // 1. BANK CARD (માત્ર ચોખ્ખો લાઈવ આંકડો)
-            let bankAccounts = JSON.parse(localStorage.getItem('factory_banks'));
-            if(!bankAccounts || bankAccounts.length === 0) {
-                bankAccounts = [
-                    { name: "KOTAK MAHINDRA BANK" },
-                    { name: "STATE BANK OF INDIA" },
-                    { name: "ICICI BANK" }
-                ];
-            }
-            
+            // ૧. BANK
+            let bankAccounts = JSON.parse(localStorage.getItem('factory_banks')) || [
+                { name: "KOTAK MAHINDRA BANK" }, { name: "STATE BANK OF INDIA" }, { name: "ICICI BANK" }
+            ];
             let currentBank = bankAccounts[bankRotateIdx % bankAccounts.length];
-            document.getElementById('strip-bank-names').innerText = `BANK: ${currentBank.name}`;
+            updateTextWithFade('strip-bank-names', `BANK: ${currentBank.name}`);
             document.getElementById('val-usd').innerText = usdRate.toFixed(2);
             bankRotateIdx++;
 
-            // 2. CASH FLOW
+            // ૨. CASH FLOW
             const cashData = localStorage.getItem('total_cash');
-            if (cashData !== null) {
-                let totalCash = parseFloat(cashData) || 0;
-                let todayCashIn = parseFloat(localStorage.getItem('today_cash_incoming')) || 0;
-                let todayCashOut = parseFloat(localStorage.getItem('today_cash_expense')) || 0;
+            let totalCash = parseFloat(cashData) || 0;
+            let todayIn = parseFloat(localStorage.getItem('today_cash_incoming')) || 0;
+            let todayOut = parseFloat(localStorage.getItem('today_cash_expense')) || 0;
+            if(isCurrencyUsd) { totalCash /= usdRate; todayIn /= usdRate; todayOut /= usdRate; }
+            const curSym = isCurrencyUsd ? "$ " : "₹ ";
+            const cashStates = [
+                { label: "CASH FLOW: TOTAL STATUS", val: curSym + totalCash.toLocaleString('en-IN', {maximumFractionDigits:2}) },
+                { label: "CASH FLOW: TODAY IN", val: curSym + todayIn.toLocaleString('en-IN', {maximumFractionDigits:2}) },
+                { label: "CASH FLOW: TODAY OUT", val: curSym + todayOut.toLocaleString('en-IN', {maximumFractionDigits:2}) }
+            ];
+            let curCash = cashStates[cashRotateIdx % cashStates.length];
+            updateTextWithFade('strip-cash-label', curCash.label);
+            document.getElementById('val-cash').innerText = curCash.val;
+            cashRotateIdx++;
 
-                if(isCurrencyUsd) {
-                    totalCash = totalCash / usdRate;
-                    todayCashIn = todayCashIn / usdRate;
-                    todayCashOut = todayCashOut / usdRate;
-                }
-
-                const curSym = isCurrencyUsd ? "$ " : "₹ ";
-                const cashStates = [
-                    { label: "CURRENT CASH", value: curSym + totalCash.toLocaleString('en-IN', {maximumFractionDigits:2}) },
-                    { label: "TODAY INCOMING", value: curSym + todayCashIn.toLocaleString('en-IN', {maximumFractionDigits:2}) },
-                    { label: "TODAY EXPENSE", value: curSym + todayCashOut.toLocaleString('en-IN', {maximumFractionDigits:2}) }
-                ];
-                let currentCashState = cashStates[cashRotateIdx % cashStates.length];
-                document.getElementById('lbl-cash').innerText = currentCashState.label;
-                document.getElementById('val-cash').innerText = currentCashState.value;
-                cashRotateIdx++;
-            } else {
-                document.getElementById('lbl-cash').innerText = "CASH FLOW";
-                document.getElementById('val-cash').innerText = "₹ 0";
-            }
-
-            // 3. ROUGH PURCHASE 
+            // ૩. ROUGH PURCHASE
             const roughLots = JSON.parse(localStorage.getItem('rough_safe_lots'));
             const roughInProcess = parseFloat(localStorage.getItem('rough_in_process')) || 0;
             if(roughLots && roughLots.length > 0) {
-                let totalSafeCalculated = roughLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
-                let netSafeStock = Math.max(0, totalSafeCalculated - roughInProcess);
+                let totalSafe = roughLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0) - roughInProcess;
                 let currentLot = roughLots[roughRotateIdx % roughLots.length];
-                
-                document.getElementById('lbl-rough').innerText = `LOT NO: ${currentLot.lot_no}`;
+                updateTextWithFade('strip-rough-label', `ROUGH LOT: ${currentLot.lot_no}`);
                 document.getElementById('val-rough').innerText = parseFloat(currentLot.weight).toLocaleString('en-IN') + " Cts";
-                document.getElementById('val-rough-total').innerText = `Total Safe: ${netSafeStock.toLocaleString('en-IN')} Cts`;
+                document.getElementById('val-rough-total').innerText = `Total Safe: ${Math.max(0, totalSafe).toLocaleString('en-IN')} Cts`;
                 roughRotateIdx++;
             } else {
-                document.getElementById('lbl-rough').innerText = "ROUGH PURCHASE";
+                updateTextWithFade('strip-rough-label', "ROUGH PURCHASE");
                 document.getElementById('val-rough').innerText = "0 Carats";
-                document.getElementById('val-rough-total').innerText = "Total Safe: 0 Carats";
             }
 
-            // 4. GLOBAL SALES
+            // ૪. GLOBAL SALES
             const polishedStock = JSON.parse(localStorage.getItem('polished_safe_stock'));
             if(polishedStock && polishedStock.length > 0) {
                 let currentPolished = polishedStock[salesRotateIdx % polishedStock.length];
-                document.getElementById('lbl-sales').innerText = `${currentPolished.purity} - ${currentPolished.color} - ${currentPolished.size} - ${currentPolished.fluorescence}`;
-                document.getElementById('val-sales').innerText = currentPolished.weight.toLocaleString('en-IN') + " Carats";
+                updateTextWithFade('strip-sales-label', `SALES STOCK: ${currentPolished.purity} | ${currentPolished.color}`);
+                document.getElementById('val-sales').innerText = currentPolished.weight.toLocaleString('en-IN') + " Cts";
                 salesRotateIdx++;
             } else {
-                document.getElementById('lbl-sales').innerText = "GLOBAL SALES";
+                updateTextWithFade('strip-sales-label', "GLOBAL SALES");
                 document.getElementById('val-sales').innerText = "0 Carats";
             }
 
-            // 5. 4P GHAT SALES SYNC
+            // ૫. 4P GHAT SALES
             const ghatLots = JSON.parse(localStorage.getItem('4p_ghat_lots'));
             if(ghatLots && ghatLots.length > 0) {
-                let totalGhatStock = ghatLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
+                let totalGhat = ghatLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
                 let currentGhat = ghatLots[ghatRotateIdx % ghatLots.length];
-
-                document.getElementById('lbl-4p-ghat').innerText = `GHAT LOT: ${currentGhat.lot_no}`;
+                updateTextWithFade('strip-ghat-label', `GHAT LOT: ${currentGhat.lot_no}`);
                 document.getElementById('val-4p-ghat').innerText = parseFloat(currentGhat.weight).toLocaleString('en-IN') + " Cts";
-                document.getElementById('val-4p-total').innerText = `Total Stock: ${totalGhatStock.toLocaleString('en-IN')} Cts`;
+                document.getElementById('val-4p-total').innerText = `Total Stock: ${totalGhat.toLocaleString('en-IN')} Cts`;
                 ghatRotateIdx++;
             } else {
-                document.getElementById('lbl-4p-ghat').innerText = "4P GHAT SALES";
+                updateTextWithFade('strip-ghat-label', "4P GHAT SALES");
                 document.getElementById('val-4p-ghat').innerText = "0 Carats";
-                document.getElementById('val-4p-total').innerText = "Total Stock: 0 Carats";
             }
 
-            // 6. READY PURCHASE SYNC
+            // ૬. READY PURCHASE
             const readyLots = JSON.parse(localStorage.getItem('ready_purchase_lots'));
             if(readyLots && readyLots.length > 0) {
-                let totalReadyStock = readyLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
+                let totalReady = readyLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
                 let currentReady = readyLots[readyRotateIdx % readyLots.length];
-
-                document.getElementById('strip-ready-goods').innerText = `LOT: ${currentReady.lot_no} | DM: ${currentReady.dm} | PURITY: ${currentReady.purity} | COLOR: ${currentReady.color} | FLORO: ${currentReady.floro}`;
+                updateTextWithFade('strip-ready-goods', `LOT: ${currentReady.lot_no} | DM: ${currentReady.dm} | PURITY: ${currentReady.purity}`);
                 document.getElementById('val-ready-pur').innerText = parseFloat(currentReady.weight).toLocaleString('en-IN') + " Cts";
-                document.getElementById('val-ready-total').innerText = `Total Ready Safe: ${totalReadyStock.toLocaleString('en-IN')} Cts`;
+                document.getElementById('val-ready-total').innerText = `Total Ready: ${totalReady.toLocaleString('en-IN')} Cts`;
                 readyRotateIdx++;
             } else {
-                document.getElementById('strip-ready-goods').innerText = "LOT: NO DATA | DM: - | PURITY: - | COLOR: - | FLORO: -";
+                updateTextWithFade('strip-ready-goods', "LOT: NO DATA AVAILABLE");
                 document.getElementById('val-ready-pur').innerText = "0 Carats";
-                document.getElementById('val-ready-total').innerText = "Total Ready Safe: 0 Carats";
             }
 
-            // 7. BROKER & PARTY
+            // ૭. BROKER & PARTY
             const brokerList = JSON.parse(localStorage.getItem('broker_directory'));
             if(brokerList && brokerList.length > 0) {
                 let currentBroker = brokerList[brokerRotateIdx % brokerList.length];
-                document.getElementById('lbl-broker').innerText = `BROKER: ${currentBroker.name}`;
-                document.getElementById('val-broker').innerText = currentBroker.status;
+                updateTextWithFade('strip-broker-label', `ACTIVE BROKER WAHIVAT`);
+                document.getElementById('val-broker').innerText = currentBroker.name;
                 brokerRotateIdx++;
             } else {
-                document.getElementById('lbl-broker').innerText = "BROKER & PARTY";
+                updateTextWithFade('strip-broker-label', "BROKER & PARTY");
                 document.getElementById('val-broker').innerText = "STANDBY";
             }
+
+            // ૮. PRINTER STATION
+            updateTextWithFade('strip-print-label', "PRINTER STATION TERMINAL");
         }
 
         function updateRotationSpeed() {
