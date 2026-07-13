@@ -125,7 +125,6 @@
             justify-content: flex-start;
         }
 
-        /* 3 Columns Matrix - 8 Blocks Configured */
         .core-metrics-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -216,7 +215,6 @@
             font-weight: 600;
         }
 
-        /* Running Ticker/Strip Animation for Ready Purchase */
         .marquee-strip-container {
             width: 100%;
             overflow: hidden;
@@ -419,11 +417,11 @@
     <div class="office-container">
         <div class="core-metrics-grid">
             
-            <!-- 1. BANK CARD -->
+            <!-- 1. BANK CARD (સુધારેલું: લાઈવ બેંક સ્લાઈડર + માત્ર USD રેટ) -->
             <div class="metric-card" id="card-bank" onclick="window.location.href='bank_details.html'">
                 <div>
                     <div class="card-label" id="lbl-bank">BANK</div>
-                    <div class="card-value" id="val-usd">NO DATA</div>
+                    <div class="card-value" id="val-usd">LOADING USD...</div>
                 </div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
@@ -475,7 +473,7 @@
                 <div class="live-status-indicator"><span class="status-dot" style="background-color: #E74C3C; box-shadow: 0 0 6px #E74C3C;"></span></div>
             </div>
 
-            <!-- 7. NEW BOX: 4P GHAT SALES CARD (4P Outward Linked Rejection) -->
+            <!-- 7. NEW BOX: 4P GHAT SALES CARD -->
             <div class="metric-card" id="card-4p-ghat" onclick="window.location.href='ghat_sales.html'">
                 <div>
                     <div class="card-label" id="lbl-4p-ghat">4P GHAT SALES</div>
@@ -485,7 +483,7 @@
                 <div class="live-status-indicator"><span class="status-dot" style="background-color: #F1C40F; box-shadow: 0 0 6px #F1C40F;"></span></div>
             </div>
 
-            <!-- 8. NEW BOX: READY PURCHASE CARD (Running Strip + Live Weight Config) -->
+            <!-- 8. NEW BOX: READY PURCHASE CARD -->
             <div class="metric-card" id="card-ready-pur" onclick="window.location.href='ready_purchase.html'">
                 <div>
                     <div class="marquee-strip-container">
@@ -618,19 +616,24 @@
         }
 
         function loadDashboardData() {
+            // લાઈવ USD રેટ સેટિંગ (બેકઅપ માટે ડિફોલ્ટ 83.72 રાખ્યો છે, ભવિષ્યમાં API આને ઓટોમેટિક અપડેટ કરશે)
             const usdRate = parseFloat(localStorage.getItem('usd_rate')) || 83.72;
 
-            // 1. BANK CORE
-            const bankAccounts = JSON.parse(localStorage.getItem('factory_banks'));
-            if(bankAccounts && bankAccounts.length > 0) {
-                let currentBank = bankAccounts[bankRotateIdx % bankAccounts.length];
-                document.getElementById('lbl-bank').innerText = `BANK: ${currentBank.name}`;
-                document.getElementById('val-usd').innerText = "₹ " + currentBank.rate;
-                bankRotateIdx++;
-            } else {
-                document.getElementById('lbl-bank').innerText = "BANK";
-                document.getElementById('val-usd').innerText = "NO DATA";
+            // 1. BANK CARD - નવી સ્લાઈડર પદ્ધતિ (માત્ર લાઈવ USD રેટ માટે)
+            // જો ફેક્ટરીની અસલી બેંકો સેટ કરેલી હોય, તો તે ફરશે. નહીંતર તમારી મુખ્ય ત્રણ બેંકો ડિફોલ્ટ ફરશે જેથી undefined ન આવે.
+            let bankAccounts = JSON.parse(localStorage.getItem('factory_banks'));
+            if(!bankAccounts || bankAccounts.length === 0) {
+                bankAccounts = [
+                    { name: "KOTAK MAHINDRA BANK" },
+                    { name: "STATE BANK OF INDIA" },
+                    { name: "ICICI BANK" }
+                ];
             }
+            
+            let currentBank = bankAccounts[bankRotateIdx % bankAccounts.length];
+            document.getElementById('lbl-bank').innerText = `BANK: ${currentBank.name}`;
+            document.getElementById('val-usd').innerText = `$ 1 = ₹ ${usdRate.toFixed(2)}`;
+            bankRotateIdx++;
 
             // 2. ROUGH PURCHASE 
             const roughLots = JSON.parse(localStorage.getItem('rough_safe_lots'));
@@ -702,7 +705,7 @@
                 document.getElementById('val-broker').innerText = "STANDBY";
             }
 
-            // 7. NEW: 4P GHAT SALES SYNC (Automatic combination with rough process metrics)
+            // 7. 4P GHAT SALES SYNC
             const ghatLots = JSON.parse(localStorage.getItem('4p_ghat_lots'));
             if(ghatLots && ghatLots.length > 0) {
                 let totalGhatStock = ghatLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
@@ -718,13 +721,12 @@
                 document.getElementById('val-4p-total').innerText = "Total Stock: 0 Carats";
             }
 
-            // 8. NEW: READY PURCHASE SYNC (Pure 5 Parameter Ticker Strip + Zero Demo logic)
+            // 8. READY PURCHASE SYNC
             const readyLots = JSON.parse(localStorage.getItem('ready_purchase_lots'));
             if(readyLots && readyLots.length > 0) {
                 let totalReadyStock = readyLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
                 let currentReady = readyLots[readyRotateIdx % readyLots.length];
 
-                // Parameter Ticker Strip update without party name for maximum security
                 document.getElementById('strip-ready-goods').innerText = `LOT: ${currentReady.lot_no} | DM: ${currentReady.dm} | PURITY: ${currentReady.purity} | COLOR: ${currentReady.color} | FLORO: ${currentReady.floro}`;
                 document.getElementById('val-ready-pur').innerText = parseFloat(currentReady.weight).toLocaleString('en-IN') + " Cts";
                 document.getElementById('val-ready-total').innerText = `Total Ready Safe: ${totalReadyStock.toLocaleString('en-IN')} Cts`;
