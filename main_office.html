@@ -417,11 +417,13 @@
     <div class="office-container">
         <div class="core-metrics-grid">
             
-            <!-- 1. BANK CARD (સુધારેલું: લાઈવ બેંક સ્લાઈડર + માત્ર USD રેટ) -->
+            <!-- 1. BANK CARD (સુધારેલું: ૮ નંબર જેવા કાળા બેકગ્રાઉન્ડવાળા ફરતા લાઈવ સ્લાઈડર સાથે) -->
             <div class="metric-card" id="card-bank" onclick="window.location.href='bank_details.html'">
                 <div>
-                    <div class="card-label" id="lbl-bank">BANK</div>
-                    <div class="card-value" id="val-usd">LOADING USD...</div>
+                    <div class="marquee-strip-container">
+                        <div class="marquee-strip" id="strip-bank-names">BANK: LOADING...</div>
+                    </div>
+                    <div class="card-value" id="val-usd">LOADING...</div>
                 </div>
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
@@ -616,11 +618,9 @@
         }
 
         function loadDashboardData() {
-            // લાઈવ USD રેટ સેટિંગ (બેકઅપ માટે ડિફોલ્ટ 83.72 રાખ્યો છે, ભવિષ્યમાં API આને ઓટોમેટિક અપડેટ કરશે)
             const usdRate = parseFloat(localStorage.getItem('usd_rate')) || 83.72;
 
-            // 1. BANK CARD - નવી સ્લાઈડર પદ્ધતિ (માત્ર લાઈવ USD રેટ માટે)
-            // જો ફેક્ટરીની અસલી બેંકો સેટ કરેલી હોય, તો તે ફરશે. નહીંતર તમારી મુખ્ય ત્રણ બેંકો ડિફોલ્ટ ફરશે જેથી undefined ન આવે.
+            // 1. BANK CARD - ૮ નંબરના બોક્સ જેવી ફરતી પટ્ટી અને નીચે માત્ર આંકડો
             let bankAccounts = JSON.parse(localStorage.getItem('factory_banks'));
             if(!bankAccounts || bankAccounts.length === 0) {
                 bankAccounts = [
@@ -631,8 +631,10 @@
             }
             
             let currentBank = bankAccounts[bankRotateIdx % bankAccounts.length];
-            document.getElementById('lbl-bank').innerText = `BANK: ${currentBank.name}`;
-            document.getElementById('val-usd').innerText = `$ 1 = ₹ ${usdRate.toFixed(2)}`;
+            // ઉપર કાળા બોક્સની પટ્ટીમાં બેંકનું નામ ફરશે
+            document.getElementById('strip-bank-names').innerText = `BANK: ${currentBank.name}`;
+            // નીચેથી '$ 1 = ₹' બધું જ કાઢી નાખ્યું, માત્ર ચોખ્ખો રેટ જ દેખાશે
+            document.getElementById('val-usd').innerText = usdRate.toFixed(2);
             bankRotateIdx++;
 
             // 2. ROUGH PURCHASE 
