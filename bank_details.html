@@ -14,7 +14,7 @@
     --accent-blue: #00C6FF; 
     --accent-green: #27AE60; 
     --accent-red: #E74C3C; 
-    --accent-purple: #9B59B6;
+    --accent-purple: #9B59B6; 
     --text-main: #FFFFFF; 
     --text-muted: #708090; 
 } 
@@ -25,7 +25,7 @@ body { background-color: var(--bg-primary); color: var(--text-main); width: 100v
 .brand-title { font-size: 14px; font-weight: 900; letter-spacing: 1px; color: var(--accent-cyan); text-transform: uppercase; } 
 .win-btn { background: none; border: none; color: var(--accent-red); font-size: 12px; cursor: pointer; font-weight: bold; } 
 
-/* રિસ્પોન્સિવ ગ્રીડ: મોબાઈલમાં ૨+૨ બોક્સ અને મોટી સ્ક્રીનમાં ૪ આડા બોક્સ આપોઆપ સેટ થશે */
+/* રિસ્પોન્સિવ ૨+૨ ગ્રીડ */
 .balance-board { 
     display: grid; 
     grid-template-columns: repeat(2, 1fr); 
@@ -72,7 +72,7 @@ body { background-color: var(--bg-primary); color: var(--text-main); width: 100v
 #card-top-debit .card-val { text-shadow: 0 0 12px rgba(231, 76, 60, 0.6); }
 #card-top-transfer .card-val { text-shadow: 0 0 12px rgba(155, 89, 182, 0.6); }
 
-/* વર્કસ્પેસ: મોબાઈલમાં નીચે-ઉપર અને લેપટોપમાં બાજુ-બાજુમાં ફિટ થશે */
+/* વર્કસ્પેસ લેઆઉટ */
 .bank-workspace { 
     flex: 1; 
     padding: 0 12px 12px 12px; 
@@ -104,6 +104,10 @@ td { padding: 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF
 .tx-cr { color: #2ECC71; font-weight: 700; } 
 .tx-dr { color: #E74C3C; font-weight: 700; } 
 .tx-tr { color: #9B59B6; font-weight: 700; } 
+
+/* પોપ-અપ મોડલ સેટિંગ્સ */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(3, 6, 17, 0.85); display: flex; align-items: center; justify-content: center; z-index: 2000; visibility: hidden; opacity: 0; transition: 0.3s; } 
+.modal-box { background: #0B132B; border: 1px solid var(--accent-cyan); border-radius: 12px; width: 90%; max-width: 400px; padding: 20px; box-shadow: 0 0 25px rgba(91, 192, 190, 0.4); } 
 </style> 
 </head> 
 <body onload="initializeTerminal()" onclick="makeFullScreen()"> 
@@ -114,6 +118,7 @@ td { padding: 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF
 </div> 
 
  <div class="balance-board"> 
+     <!-- હવે આ ૧ નંબરનું બોક્સ સેટિંગ્સ પોપ-અપ ખોલશે -->
      <div class="balance-card" id="card-top-bank" onclick="selectMode('BANK')"><div class="marquee-strip-container"><div class="marquee-strip" id="strip-top-bank">BANK VAULT</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-vault">₹ 0</div></div></div>
      <div class="balance-card active" id="card-top-credit" onclick="selectMode('CREDIT')"><div class="marquee-strip-container"><div class="marquee-strip">CREDIT TRAFFIC</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-credit">₹ 0</div></div></div>
      <div class="balance-card" id="card-top-debit" onclick="selectMode('DEBIT')"><div class="marquee-strip-container"><div class="marquee-strip">DEBIT FLOW</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-debit">₹ 0</div></div></div>
@@ -146,6 +151,20 @@ td { padding: 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF
  </div> 
  </div> 
 
+ <!-- ⚙️ બેંક એડ કરવાનું અસલી પોપ-અપ પાછું લાવી દીધું --> 
+ <div class="modal-overlay" id="settings-modal" onclick="closeSettingsModal(event)"> 
+ <div class="modal-box" onclick="event.stopPropagation()"> 
+ <div class="panel-title" style="border:none; margin-bottom:15px;"> <span>⚙️ Dynamic Bank Configuration</span> <span style="cursor:pointer;" onclick="hideModalDirect()">✕</span> </div> 
+ <div style="display:flex; flex-direction:column; gap:12px;"> 
+ <div class="input-group"> <label>Bank Name</label> <input type="text" class="input-control" id="new-bank-name" placeholder="e.g. SBI, KOTAK"> </div> 
+ <div class="input-group"> <label>Account Number</label> <input type="text" class="input-control" id="new-bank-acc" placeholder="Enter A/C Number"> </div> 
+ <div class="input-group"> 
+ <label>Account Type</label> 
+ <select class="input-control" id="new-bank-type"> 
+ <option value="Current">Current Account</option> <option value="Saving">Saving Account</option> 
+ </select> </div> 
+ <button class="mode-btn" style="background:var(--accent-blue); color:white; margin-top:10px;" onclick="verifySecureOTP()">Live Link Account</button> </div> </div> </div> 
+
 <script> 
  let currentMode = "CREDIT"; 
  let bankTitleIdx = 0;
@@ -155,7 +174,10 @@ td { padding: 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF
  }
 
  function selectMode(mode) { 
-     if (mode === 'BANK') return;
+     if (mode === 'BANK') {
+         openSettingsModal();
+         return;
+     }
      currentMode = mode; 
      document.querySelectorAll('.balance-card').forEach(el => el.classList.remove('active'));
      if(mode === 'CREDIT') document.getElementById('card-top-credit').classList.add('active');
@@ -176,6 +198,32 @@ td { padding: 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF
  } 
  
  function backToDashboard() { window.location.href = 'main_office.html'; } 
+
+ function openSettingsModal() { 
+     const m = document.getElementById('settings-modal');
+     m.style.visibility = 'visible'; m.style.opacity = 1; 
+ } 
+ function closeSettingsModal(e) { 
+     if(e.target.id === 'settings-modal') hideModalDirect();
+ }
+ function hideModalDirect() {
+     const m = document.getElementById('settings-modal');
+     m.style.visibility = 'hidden'; m.style.opacity = 0;
+ }
+
+ function verifySecureOTP() { 
+     const name = document.getElementById('new-bank-name').value;
+     const acc = document.getElementById('new-bank-acc').value;
+     if(!name || !acc) { alert('Fill bank name and account number.'); return; }
+     
+     const banks = JSON.parse(localStorage.getItem('factory_banks')) || []; 
+     banks.push({ name: name, acc: acc, type: document.getElementById('new-bank-type').value, balance: 785000 }); 
+     localStorage.setItem('factory_banks', JSON.stringify(banks)); 
+     
+     document.getElementById('new-bank-name').value = '';
+     document.getElementById('new-bank-acc').value = '';
+     hideModalDirect(); refreshBankData(); 
+ } 
 
  function updateTextWithFade(elementId, newText) {
      const el = document.getElementById(elementId);
