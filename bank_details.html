@@ -1,246 +1,228 @@
-import tkinter as tk
-from tkinter import ttk, messagebox
-from datetime import datetime
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIAMOND TRANSACTION CORE - CYBER MATRIX v2.0</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0B132B; color: #FFFFFF; padding: 20px; }
+        
+        /* Top Global Vault Header */
+        .header { background-color: #1C2541; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-radius: 6px; margin-bottom: 20px; }
+        .header h1 { font-family: 'Consolas', monospace; font-size: 22px; color: #4EA8DE; }
+        .vault-balances { display: flex; gap: 20px; font-family: 'Consolas', monospace; font-size: 14px; font-weight: bold; }
+        .bal-inr { color: #52B788; }
+        .bal-usd { color: #4EA8DE; }
 
-class DiamondMatrixOS:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("DIAMOND TRANSACTION CORE - CYBER MATRIX v2.0")
-        self.root.geometry("1200x750")
-        self.root.configure(bg="#0B132B")  # Deep Cyber Blue/Black Theme
+        /* Main Grid container */
+        .main-container { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; min-height: 580px; }
         
-        # Style Configuration
-        self.style = ttk.Style()
-        self.style.theme_use('clam')
-        self.style.configure('TLabel', background='#0B132B', foreground='#FFFFFF', font=('Arial', 10, 'bold'))
-        self.style.configure('TButton', background='#1C2541', foreground='#FFFFFF', font=('Arial', 10, 'bold'))
+        /* Left Entry Panel */
+        .left-panel { background-color: #111D4A; border: 2px solid #1C2541; border-radius: 6px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
+        .mode-buttons { display: flex; gap: 10px; margin-bottom: 25px; }
+        .mode-btn { padding: 10px 25px; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; color: white; background-color: #1C2541; }
+        .mode-btn.active-debit { background-color: #E63946; }
+        .mode-btn.active-credit { background-color: #52B788; }
         
-        # Data Repositories (Simulated Database)
-        self.active_currency = "INR"  # Multi-Currency Architecture
-        self.banks_db = [
-            {"name": "Kotak Mahindra Bank (7587)", "type": "Current"},
-            {"name": "State Bank of India (1102)", "type": "CC"}
-        ]
-        
-        # Pure English Transaction Purpose Options
-        self.credit_purposes = [
-            "Sales Revenue",
-            "Bank CC / OD / Loan Disbursal",
-            "Unsecured / Hand Loans",
-            "Promoter Capital Infusion",
-            "Rough Resale & Boart Income",
-            "Interest & Government Subsidies",
-            "GST & Tax Refunds",
-            "Miscellaneous Income"
-        ]
-        
-        self.debit_purposes = [
-            "Rough Diamonds Purchase",
-            "Brokerage & Commission",
-            "Factory Wages & Salaries",
-            "Machinery & Automation Capital",
-            "Consumables & Factory Expenses",
-            "Utility & Power Bills",
-            "Office & Administrative Expenses",
-            "Loan EMI & Interest Repayment",
-            "Unsecured Loan Repayment",
-            "Statutory Taxes & GST Payments",
-            "Partners Withdrawals / Personal"
-        ]
-        
-        self.current_mode = "DEBIT"  # Default Mode
-        
-        self.create_header()
-        self.create_main_layout()
-        self.update_purpose_dropdown()
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 30px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { color: #4EA8DE; font-size: 13px; font-weight: bold; }
+        .form-group input, .form-group select { background-color: #1C2541; border: 1px solid #3A506B; padding: 10px; color: white; border-radius: 4px; font-size: 14px; outline: none; }
+        .amt-curr-group { display: flex; gap: 8px; }
+        .amt-curr-group input { flex: 2; }
+        .amt-curr-group select { flex: 1; }
 
-    def create_header(self):
-        # Top Global Vault Header
-        header_frame = tk.Frame(self.root, bg="#1C2541", height=70)
-        header_frame.pack(fill="x", side="top")
-        
-        title_label = tk.Label(header_frame, text="TRANSACTION MATRIX CORE", font=("Consolas", 16, "bold"), fg="#4EA8DE", bg="#1C2541")
-        title_label.pack(side="left", padx=20, pady=15)
-        
-        # Live Multi-Currency Balances
-        balance_frame = tk.Frame(header_frame, bg="#1C2541")
-        balance_frame.pack(side="right", padx=20)
-        
-        inr_bal = tk.Label(balance_frame, text="GLOBAL VAULT (INR): ₹ 48,50,000", font=("Consolas", 11, "bold"), fg="#52B788", bg="#1C2541")
-        inr_bal.pack(side="left", padx=10)
-        
-        usd_bal = tk.Label(balance_frame, text="GLOBAL VAULT (USD): $ 25,400", font=("Consolas", 11, "bold"), fg="#4EA8DE", bg="#1C2541")
-        usd_bal.pack(side="left", padx=10)
+        .post-btn { width: 100%; padding: 15px; border: none; font-size: 15px; font-weight: bold; color: white; cursor: pointer; border-radius: 4px; margin-top: 30px; transition: 0.2s; }
+        .post-btn.debit-style { background-color: #E63946; }
+        .post-btn.credit-style { background-color: #52B788; }
 
-    def create_main_layout(self):
-        # Main split: Left Entry / Right Database Panel
-        self.main_container = tk.Frame(self.root, bg="#0B132B")
-        self.main_container.pack(fill="both", expand=True, padx=15, pady=15)
+        /* Right Database Panel */
+        .right-panel { background-color: #1C2541; border: 2px solid #3A506B; border-radius: 6px; padding: 20px; display: flex; flex-direction: column; }
+        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #3A506B; padding-bottom: 10px; }
+        .nav-left { color: #888888; font-size: 12px; font-weight: bold; }
+        .nav-right { color: #4EA8DE; font-size: 13px; font-weight: bold; text-decoration: underline; cursor: pointer; }
+        .panel-title { font-size: 15px; font-weight: bold; margin-bottom: 10px; color: #FFFFFF; }
         
-        self.left_panel = tk.Frame(self.main_container, bg="#111D4A", bd=2, relief="groove")
-        self.left_panel.pack(side="left", fill="both", expand=True, padx=(0, 10))
-        
-        self.right_panel = tk.Frame(self.main_container, bg="#1C2541", bd=2, relief="groove", width=450)
-        self.right_panel.pack(side="right", fill="both", padx=(10, 0))
-        self.right_panel.pack_propagate(False)
-        
-        self.setup_left_entry_form()
-        self.setup_right_database_panel()
+        .review-box { flex: 1; background-color: #0B132B; border: 1px solid #3A506B; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 13px; padding: 15px; overflow-y: auto; white-space: pre-wrap; color: #52B788; line-height: 1.5; }
+    </style>
+</head>
+<body>
 
-    def setup_left_entry_form(self):
-        # Credit/Debit Switch Buttons
-        btn_frame = tk.Frame(self.left_panel, bg="#111D4A")
-        btn_frame.pack(fill="x", pady=15, padx=20)
-        
-        self.credit_btn = tk.Button(btn_frame, text="CREDIT", bg="#1C2541", fg="#FFFFFF", font=("Arial", 11, "bold"), command=lambda: self.switch_mode("CREDIT"), width=15)
-        self.credit_btn.pack(side="left", padx=5)
-        
-        self.debit_btn = tk.Button(btn_frame, text="DEBIT", bg="#E63946", fg="#FFFFFF", font=("Arial", 11, "bold"), command=lambda: self.switch_mode("DEBIT"), width=15)
-        self.debit_btn.pack(side="left", padx=5)
-        
-        # Form Fields
-        form_frame = tk.Frame(self.left_panel, bg="#111D4A")
-        form_frame.pack(fill="both", expand=True, padx=20)
-        
-        # Bank Selector
-        tk.Label(form_frame, text="SELECT MATRIX BANK:", bg="#111D4A", fg="#4EA8DE").grid(row=0, column=0, sticky="w", pady=5)
-        self.bank_var = tk.StringVar()
-        self.bank_cb = ttk.Combobox(form_frame, textvariable=self.bank_var, state="readonly", width=35)
-        self.bank_cb['values'] = [b["name"] for b in self.banks_db]
-        self.bank_cb.current(0)
-        self.bank_cb.grid(row=1, column=0, sticky="w", pady=5)
-        
-        # Transaction Method
-        tk.Label(form_frame, text="TRANSACTION METHOD:", bg="#111D4A", fg="#4EA8DE").grid(row=2, column=0, sticky="w", pady=5)
-        self.method_var = tk.StringVar()
-        self.method_cb = ttk.Combobox(form_frame, textvariable=self.method_var, state="readonly", width=35)
-        self.method_cb['values'] = ["ONLINE / IMPS", "RTGS / NEFT", "CASH / ANGADIA REPO"]
-        self.method_cb.current(0)
-        self.method_cb.grid(row=3, column=0, sticky="w", pady=5)
-        
-        # Particular / Party Name
-        tk.Label(form_frame, text="PARTICULAR / PARTY NAME:", bg="#111D4A", fg="#4EA8DE").grid(row=4, column=0, sticky="w", pady=5)
-        self.party_entry = tk.Entry(form_frame, width=38, font=("Arial", 10), bg="#1C2541", fg="#FFFFFF", insertbackground="white")
-        self.party_entry.insert(0, "Enter Entity Name")
-        self.party_entry.grid(row=5, column=0, sticky="w", pady=5)
-        
-        # Transaction Purpose
-        tk.Label(form_frame, text="TRANSACTION PURPOSE:", bg="#111D4A", fg="#4EA8DE").grid(row=0, column=1, sticky="w", pady=5, padx=20)
-        self.purpose_var = tk.StringVar()
-        self.purpose_cb = ttk.Combobox(form_frame, textvariable=self.purpose_var, state="readonly", width=35)
-        self.purpose_cb.grid(row=1, column=1, sticky="w", pady=5, padx=20)
-        
-        # Value Amount & Currency Selector
-        tk.Label(form_frame, text="VALUE AMOUNT & CURRENCY:", bg="#111D4A", fg="#4EA8DE").grid(row=2, column=1, sticky="w", pady=5, padx=20)
-        amt_curr_frame = tk.Frame(form_frame, bg="#111D4A")
-        amt_curr_frame.grid(row=3, column=1, sticky="w", pady=5, padx=20)
-        
-        self.amount_entry = tk.Entry(amt_curr_frame, width=22, font=("Arial", 10), bg="#1C2541", fg="#FFFFFF", insertbackground="white")
-        self.amount_entry.insert(0, "0.00")
-        self.amount_entry.pack(side="left")
-        
-        self.curr_var = tk.StringVar(value="INR")
-        self.curr_cb = ttk.Combobox(amt_curr_frame, textvariable=self.curr_var, values=["INR", "USD"], state="readonly", width=8)
-        self.curr_cb.pack(side="left", padx=5)
-        
-        # Execution Date
-        tk.Label(form_frame, text="EXECUTION DATE:", bg="#111D4A", fg="#4EA8DE").grid(row=4, column=1, sticky="w", pady=5, padx=20)
-        self.date_entry = tk.Entry(form_frame, width=38, font=("Arial", 10), bg="#1C2541", fg="#FFFFFF")
-        self.date_entry.insert(0, datetime.now().strftime("%d-%m-%Y"))
-        self.date_entry.grid(row=5, column=1, sticky="w", pady=5, padx=20)
-        
-        # Action Button
-        self.post_btn = tk.Button(self.left_panel, text="POST MATRIX ENTRY (DEBIT / OUTGOING)", bg="#E63946", fg="#FFFFFF", font=("Arial", 12, "bold"), height=2, command=self.handle_post_entry)
-        self.post_btn.pack(fill="x", side="bottom", padx=20, pady=20)
+    <!-- Header Block -->
+    <div class="header">
+        <h1>TRANSACTION MATRIX CORE</h1>
+        <div class="vault-balances">
+            <span class="bal-inr">GLOBAL VAULT (INR): ₹ 48,50,000</span>
+            <span class="bal-usd">GLOBAL VAULT (USD): $ 25,400</span>
+        </div>
+    </div>
 
-    def setup_right_database_panel(self):
-        # Top Navigation inside right panel
-        top_nav = tk.Frame(self.right_panel, bg="#1C2541")
-        top_nav.pack(fill="x", pady=5)
+    <!-- Main Workspace -->
+    <div class="main-container">
         
-        bank_hier_btn = tk.Button(top_nav, text="BANK HIERARCHY", bg="#1C2541", fg="#888888", font=("Arial", 9, "bold"), bd=0, activebackground="#1C2541")
-        bank_hier_btn.pack(side="left", padx=10)
-        
-        details_btn = tk.Button(top_nav, text="LIVE DETAILS PANEL", bg="#1C2541", fg="#4EA8DE", font=("Arial", 10, "underline", "bold"), bd=0, activebackground="#1C2541")
-        details_btn.pack(side="right", padx=15)
-        
-        # Sub-title
-        lbl = tk.Label(self.right_panel, text="LIVE ACCOUNT LEDGER DATABASE", font=("Arial", 11, "bold"), bg="#1C2541", fg="#FFFFFF")
-        lbl.pack(anchor="w", padx=15, pady=5)
-        
-        # Intelligent Notification / Review Display Box
-        self.review_box = tk.Text(self.right_panel, bg="#0B132B", fg="#52B788", font=("Consolas", 10), bd=1, relief="solid", highlightthickness=0, padx=10, pady=10)
-        self.review_box.pack(fill="both", expand=True, padx=15, pady=(5, 10))
-        
-        # Display simulated Bank API structure & live log instantly
-        self.refresh_live_details_view("[SYSTEM STATUS]: Active\n[API NODE]: Waiting for secure bank response...")
+        <!-- Left Data Input Form -->
+        <div class="left-panel">
+            <div>
+                <div class="mode-buttons">
+                    <button type="button" class="mode-btn" id="creditBtn" onclick="switchMode('CREDIT')">CREDIT</button>
+                    <button type="button" class="mode-btn active-debit" id="debitBtn" onclick="switchMode('DEBIT')">DEBIT</button>
+                </div>
 
-    def refresh_live_details_view(self, message):
-        self.review_box.config(state="normal")
-        self.review_box.delete("1.0", tk.END)
-        self.review_box.insert(tk.END, message)
-        self.review_box.config(state="disabled")
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>SELECT MATRIX BANK:</label>
+                        <select id="bankSelect">
+                            <option value="Current">Kotak Mahindra Bank (7587)</option>
+                            <option value="CC">State Bank of India (1102)</option>
+                        </select>
+                    </div>
 
-    def switch_mode(self, mode):
-        self.current_mode = mode
-        if mode == "CREDIT":
-            self.credit_btn.config(bg="#52B788")
-            self.debit_btn.config(bg="#1C2541")
-            self.post_btn.config(text="POST MATRIX ENTRY (CREDIT / INCOMING)", bg="#52B788")
-        else:
-            self.credit_btn.config(bg="#1C2541")
-            self.debit_btn.config(bg="#E63946")
-            self.post_btn.config(text="POST MATRIX ENTRY (DEBIT / OUTGOING)", bg="#E63946")
-        
-        self.update_purpose_dropdown()
+                    <div class="form-group">
+                        <label>TRANSACTION PURPOSE:</label>
+                        <select id="purposeSelect">
+                            <!-- Populated dynamically via JS -->
+                        </select>
+                    </div>
 
-    def update_purpose_dropdown(self):
-        if self.current_mode == "CREDIT":
-            self.purpose_cb['values'] = self.credit_purposes
-        else:
-            self.purpose_cb['values'] = self.debit_purposes
-        self.purpose_cb.current(0)
+                    <div class="form-group">
+                        <label>TRANSACTION METHOD:</label>
+                        <select id="methodSelect">
+                            <option>ONLINE / IMPS</option>
+                            <option>RTGS / NEFT</option>
+                            <option>CASH / ANGADIA REPO</option>
+                        </select>
+                    </div>
 
-    def handle_post_entry(self):
-        # Fetch data input dynamically
-        party = self.party_entry.get()
-        amount = self.amount_entry.get()
-        purpose = self.purpose_var.get()
-        bank = self.bank_var.get()
-        currency = self.curr_var.get()
-        
-        # Basic Validation
-        if party == "Enter Entity Name" or not party.strip():
-            messagebox.showwarning("Validation Error", "Please provide a valid Party or Entity Name.")
-            return
+                    <div class="form-group">
+                        <label>VALUE AMOUNT & CURRENCY:</label>
+                        <div class="amt-curr-group">
+                            <input type="text" id="amountInput" value="0.00">
+                            <select id="currSelect">
+                                <option>INR</option>
+                                <option>USD</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>PARTICULAR / PARTY NAME:</label>
+                        <input type="text" id="partyInput" placeholder="Enter Entity Name">
+                    </div>
+
+                    <div class="form-group">
+                        <label>EXECUTION DATE:</label>
+                        <input type="text" id="dateInput" value="13-07-2026">
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="post-btn debit-style" id="postBtn" onclick="handlePostEntry()">POST MATRIX ENTRY (DEBIT / OUTGOING)</button>
+        </div>
+
+        <!-- Right Verification & Live View -->
+        <div class="right-panel">
+            <div class="top-nav">
+                <div class="nav-left">BANK HIERARCHY</div>
+                <div class="nav-right">LIVE DETAILS PANEL</div>
+            </div>
+            <div class="panel-title">LIVE ACCOUNT LEDGER DATABASE</div>
+            <div class="review-box" id="reviewBox">[SYSTEM STATUS]: Active&#10;[API NODE]: Waiting for secure bank response...</div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentMode = "DEBIT";
+
+        const creditPurposes = [
+            "Sales Revenue", "Bank CC / OD / Loan Disbursal", "Unsecured / Hand Loans",
+            "Promoter Capital Infusion", "Rough Resale & Boart Income", 
+            "Interest & Government Subsidies", "GST & Tax Refunds", "Miscellaneous Income"
+        ];
+
+        const debitPurposes = [
+            "Rough Diamonds Purchase", "Brokerage & Commission", "Factory Wages & Salaries",
+            "Machinery & Automation Capital", "Consumables & Factory Expenses", "Utility & Power Bills",
+            "Office & Administrative Expenses", "Loan EMI & Interest Repayment", 
+            "Unsecured Loan Repayment", "Statutory Taxes & GST Payments", "Partners Withdrawals / Personal"
+        ];
+
+        function updatePurposeOptions() {
+            const select = document.getElementById("purposeSelect");
+            select.innerHTML = "";
+            const currentList = (currentMode === "CREDIT") ? creditPurposes : debitPurposes;
             
-        # Simulate Core Engine Parsing & Real-time Live Log Feedback inside Right Box
-        log_color = "🟢 CREDIT" if self.current_mode == "CREDIT" else "🔴 DEBIT"
-        symbol = "$" if currency == "USD" else "₹"
-        
-        # Fetch Account Type from simulated DB structure to display automatically inside log box
-        acc_type = next((b["type"] for b in self.banks_db if b["name"] == bank), "Current")
-        
-        success_log = (
-            f"=========================================\n"
-            f" TRANSACTION VERIFICATION SUCCESSFUL\n"
-            f"=========================================\n"
-            f"• Status: Approved & Logged\n"
-            f"• Action: {log_color}\n"
-            f"• Bank Node: {bank}\n"
-            f"• Account Type: {acc_type} Account [API Auto-Fetched]\n"
-            f"• Entity Target: {party}\n"
-            f"• Purpose Category: {purpose}\n"
-            f"• Final Value: {symbol} {amount} ({currency})\n"
-            f"• Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-            f"-----------------------------------------\n"
-            f"[SYSTEM]: Core Vault Balance adjusted successfully."
-        )
-        
-        self.refresh_live_details_view(success_log)
-        messagebox.showinfo("Matrix Success", f"Transaction entry posted successfully under {purpose}!")
+            currentList.forEach(purpose => {
+                let opt = document.createElement("option");
+                opt.value = purpose;
+                opt.textContent = purpose;
+                select.appendChild(opt);
+            });
+        }
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = DiamondMatrixOS(root)
-    root.mainloop()
+        function switchMode(mode) {
+            currentMode = mode;
+            const creditBtn = document.getElementById("creditBtn");
+            const debitBtn = document.getElementById("debitBtn");
+            const postBtn = document.getElementById("postBtn");
+
+            if (mode === "CREDIT") {
+                creditBtn.className = "mode-btn active-credit";
+                debitBtn.className = "mode-btn";
+                postBtn.className = "post-btn credit-style";
+                postBtn.textContent = "POST MATRIX ENTRY (CREDIT / INCOMING)";
+            } else {
+                creditBtn.className = "mode-btn";
+                debitBtn.className = "mode-btn active-debit";
+                postBtn.className = "post-btn debit-style";
+                postBtn.textContent = "POST MATRIX ENTRY (DEBIT / OUTGOING)";
+            }
+            updatePurposeOptions();
+        }
+
+        function handlePostEntry() {
+            const party = document.getElementById("partyInput").value.trim();
+            const amount = document.getElementById("amountInput").value.trim();
+            const purpose = document.getElementById("purposeSelect").value;
+            const bankSelect = document.getElementById("bankSelect");
+            const bankName = bankSelect.options[bankSelect.selectedIndex].text;
+            const accType = bankSelect.value;
+            const currency = document.getElementById("currSelect").value;
+
+            if (!party) {
+                alert("Please provide a valid Party or Entity Name.");
+                return;
+            }
+
+            const colorIndicator = (currentMode === "CREDIT") ? "🟢 CREDIT" : "🔴 DEBIT";
+            const symbol = (currency === "USD") ? "$" : "₹";
+            const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+            const successLog = 
+`=========================================
+ TRANSACTION VERIFICATION SUCCESSFUL
+=========================================
+• Status: Approved & Logged
+• Action: ${colorIndicator}
+• Bank Node: ${bankName}
+• Account Type: ${accType} Account [API Auto-Fetched]
+• Entity Target: ${party}
+• Purpose Category: ${purpose}
+• Final Value: ${symbol} ${amount} (${currency})
+• Timestamp: ${timestamp}
+-----------------------------------------
+[SYSTEM]: Core Vault Balance adjusted successfully.`;
+
+            const reviewBox = document.getElementById("reviewBox");
+            reviewBox.textContent = successLog;
+            reviewBox.style.color = (currentMode === "CREDIT") ? "#52B788" : "#E63946";
+            
+            alert(`Transaction entry posted successfully under ${purpose}!`);
+        }
+
+        // Initial trigger
+        updatePurposeOptions();
+    </script>
+</body>
+</html>
