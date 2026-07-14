@@ -131,22 +131,39 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
  </div> 
  </div> 
 
- <!-- ⚙️ 1. BANK VAULT POPUP - પાંચેય ખાના બે ભાગમાં ગોઠવેલા --> 
+ <!-- ⚙️ 1. BANK VAULT POPUP - સુધારેલી સેટિંગ્સ લાઇન અને નવા એકાઉન્ટ ઓપ્શન્સ --> 
  <div class="modal-overlay" id="bank-modal" onclick="closePopup('bank-modal', event)"> 
  <div class="modal-box" onclick="event.stopPropagation()"> 
  <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>⚙️ Configuration Matrix</span> <span style="cursor:pointer;" onclick="hidePopupDirect('bank-modal')">✕</span> </div> 
  
+ <!-- ૧. પહેલી લાઈન: Bank Name ની સામે Account Type -->
  <div class="form-grid-2">
      <div class="input-group"> <label>Bank Name</label> <input type="text" class="input-control" id="new-bank-name" placeholder="e.g. SBI, KOTAK"> </div> 
+     <div class="input-group"> 
+         <label>Account Type</label> 
+         <select class="input-control" id="new-bank-type">
+             <option value="Saving">Saving Account</option>
+             <option value="Current">Current Account</option>
+             <option value="Forex">Forex Account</option>
+             <option value="Loan">Loan Account</option>
+             <option value="CC">CC Account</option>
+             <option value="OD">OD Account</option>
+             <option value="Other">Other / Custom Account</option>
+         </select> 
+     </div> 
+ </div>
+
+ <!-- ૨. બીજી લાઈન: Account Number ની સામે IFSC Code -->
+ <div class="form-grid-2">
+     <div class="input-group"> <label>Account Number</label> <input type="text" class="input-control" id="new-bank-acc" placeholder="Enter A/C Number"> </div> 
      <div class="input-group"> <label>IFSC Code</label> <input type="text" class="input-control" id="new-bank-ifsc" placeholder="Enter IFSC Code"> </div> 
  </div>
 
- <div class="form-grid-2">
-     <div class="input-group"> <label>Account Holder Name</label> <input type="text" class="input-control" id="new-bank-holder" placeholder="Enter Holder Name"> </div> 
-     <div class="input-group"> <label>Account Number</label> <input type="text" class="input-control" id="new-bank-acc" placeholder="Enter A/C Number"> </div> 
- </div>
-
- <div class="input-group"> <label>Account Type</label> <select class="input-control" id="new-bank-type"><option value="Current">Current Account</option><option value="Saving">Saving Account</option></select> </div> 
+ <!-- ૩. ત્રીજી લાઈન: આખી સિંગલ લાંબી લાઈનમાં Account Holder Name -->
+ <div class="input-group"> 
+     <label>Account Holder Name</label> 
+     <input type="text" class="input-control" id="new-bank-holder" placeholder="Enter Account Holder Full Name"> 
+ </div> 
  
  <button class="mode-btn" style="background:var(--accent-blue); color:white;" onclick="addBankMatrix()">Live Link Account</button> 
  </div> 
