@@ -95,9 +95,9 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
 .tx-dr { color: #E74C3C; font-weight: 700; } 
 .tx-tr { color: #9B59B6; font-weight: 700; } 
 
-/* પોપ-અપ મોડલ ડિઝાઈન */
+/* 800px ઓટો-રિસ્પોન્સિવ પોપ-અપ મોડલ ડિઝાઈન */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(3, 6, 17, 0.85); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; } 
-.modal-box { background: #0B132B; border: 1px solid var(--accent-cyan); border-radius: 12px; width: 92%; max-width: 420px; padding: 20px; box-shadow: 0 0 25px rgba(91, 192, 190, 0.4); } 
+.modal-box { background: #0B132B; border: 1px solid var(--accent-cyan); border-radius: 12px; width: 95%; max-width: 800px; padding: 25px; box-shadow: 0 0 25px rgba(91, 192, 190, 0.4); } 
 
 .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; } 
 .input-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; } 
@@ -118,7 +118,6 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
 </div> 
 
  <div class="balance-board"> 
-     <!-- ૪ મેઈન બોક્સ જેમાંથી પોપ-અપ ખુલશે -->
      <div class="balance-card" id="card-top-bank" onclick="openPopup('bank-modal')"><div class="marquee-strip-container"><div class="marquee-strip">BANK VAULT</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-vault">₹ 0</div></div></div>
      <div class="balance-card" id="card-top-credit" onclick="openPopup('credit-modal')"><div class="marquee-strip-container"><div class="marquee-strip">CREDIT TRAFFIC</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-credit">₹ 0</div></div></div>
      <div class="balance-card" id="card-top-debit" onclick="openPopup('debit-modal')"><div class="marquee-strip-container"><div class="marquee-strip">DEBIT FLOW</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-debit">₹ 0</div></div></div>
