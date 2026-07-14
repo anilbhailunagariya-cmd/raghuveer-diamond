@@ -131,12 +131,11 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
  </div> 
  </div> 
 
- <!-- ⚙️ 1. BANK VAULT POPUP - સુધારેલી સેટિંગ્સ લાઇન અને નવા એકાઉન્ટ ઓપ્શન્સ --> 
+ <!-- ⚙️ 1. BANK VAULT POPUP --> 
  <div class="modal-overlay" id="bank-modal" onclick="closePopup('bank-modal', event)"> 
  <div class="modal-box" onclick="event.stopPropagation()"> 
  <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>⚙️ Configuration Matrix</span> <span style="cursor:pointer;" onclick="hidePopupDirect('bank-modal')">✕</span> </div> 
  
- <!-- ૧. પહેલી લાઈન: Bank Name ની સામે Account Type -->
  <div class="form-grid-2">
      <div class="input-group"> <label>Bank Name</label> <input type="text" class="input-control" id="new-bank-name" placeholder="e.g. SBI, KOTAK"> </div> 
      <div class="input-group"> 
@@ -153,19 +152,16 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
      </div> 
  </div>
 
- <!-- ⚡ કસ્ટમ એકાઉન્ટ ટાઈપ ટાઈપ કરવાનું ખાનું (Other સિલેક્ટ થતા જ લાઈવ દેખાશે) -->
  <div class="input-group" id="custom-account-wrapper" style="display: none; margin-bottom: 12px;">
      <label style="color: var(--accent-blue);">Enter Custom Account Type</label>
      <input type="text" class="input-control" id="new-bank-custom-type" placeholder="e.g. Fixed Deposit, Joint Account" style="border-color: var(--accent-blue);">
  </div>
 
- <!-- ૨. બીજી લાઈન: Account Number ની સામે IFSC Code -->
  <div class="form-grid-2">
      <div class="input-group"> <label>Account Number</label> <input type="text" class="input-control" id="new-bank-acc" placeholder="Enter A/C Number"> </div> 
      <div class="input-group"> <label>IFSC Code</label> <input type="text" class="input-control" id="new-bank-ifsc" placeholder="Enter IFSC Code"> </div> 
  </div>
 
- <!-- ૩. ત્રીજી લાઈન: આખી સિંગલ લાંબી લાઈનમાં Account Holder Name -->
  <div class="input-group"> 
      <label>Account Holder Name</label> 
      <input type="text" class="input-control" id="new-bank-holder" placeholder="Enter Account Holder Full Name"> 
@@ -175,19 +171,56 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
  </div> 
  </div> 
 
- <!-- 🟢 2. CREDIT ENTRY POPUP --> 
+ <!-- 🟢 2. CREDIT ENTRY POPUP - સુધારેલી આડી લાઈનો અને કસ્ટમ ઓપ્શન્સ --> 
  <div class="modal-overlay" id="credit-modal" onclick="closePopup('credit-modal', event)"> 
  <div class="modal-box" onclick="event.stopPropagation()"> 
  <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>🟢 Deposit Matrix (Credit)</span> <span style="cursor:pointer;" onclick="hidePopupDirect('credit-modal')">✕</span> </div> 
+ 
+ <!-- લાઇન ૧: Bank Name ની સામે Method -->
  <div class="form-grid-2">
      <div class="input-group"><label>Bank</label><select class="input-control" id="cr-bank-select"></select></div>
-     <div class="input-group"><label>Method</label><select class="input-control" id="cr-method"><option value="ONLINE">ONLINE / IMPS</option><option value="CHEQUE">CHEQUE</option></select></div>
+     <div class="input-group">
+         <label>Method</label>
+         <select class="input-control" id="cr-method" onchange="toggleCustomCreditMethod(this.value)">
+             <option value="ONLINE">ONLINE / IMPS</option>
+             <option value="CHEQUE">CHEQUE</option>
+             <option value="Other">Other / Custom Method</option>
+         </select>
+     </div>
  </div>
- <div class="input-group"><label>Purpose</label><select class="input-control" id="cr-purpose"><option value="Sales Revenue">Sales Revenue</option><option value="Promoter Capital">Promoter Capital</option><option value="GST Refund">GST Refund</option></select></div>
+
+ <!-- ⚡ મેથડ કસ્ટમ ખાનું (જ્યારે Other મેથડ સિલેક્ટ થાય ત્યારે જ લાઈવ ખુલશે) -->
+ <div class="input-group" id="custom-cr-method-wrapper" style="display: none; margin-bottom: 12px;">
+     <label style="color: var(--accent-green);">Enter Custom Method</label>
+     <input type="text" class="input-control" id="cr-custom-method" placeholder="e.g. RTGS, CASH VOUCHER" style="border-color: var(--accent-green);">
+ </div>
+
+ <!-- લાઇન ૨: Purpose ની સામે Amount -->
  <div class="form-grid-2">
-     <div class="input-group"><label>Party Name</label><input type="text" class="input-control" id="cr-party" placeholder="Entity Name"></div>
+     <div class="input-group">
+         <label>Purpose</label>
+         <select class="input-control" id="cr-purpose" onchange="toggleCustomCreditPurpose(this.value)">
+             <option value="Sales Revenue">Sales Revenue</option>
+             <option value="Promoter Capital">Promoter Capital</option>
+             <option value="GST Refund">GST Refund</option>
+             <option value="Other">Other / Custom Purpose</option>
+         </select>
+     </div>
      <div class="input-group"><label>Amount</label><input type="number" class="input-control" id="cr-amount" placeholder="0.00"></div>
  </div>
+
+ <!-- ⚡ પર્પઝ કસ્ટમ ખાનું (જ્યારે Other પર્પઝ સિલેક્ટ થાય ત્યારે જ લાઈવ ખુલશે) -->
+ <div class="input-group" id="custom-cr-purpose-wrapper" style="display: none; margin-bottom: 12px;">
+     <label style="color: var(--accent-green);">Enter Custom Purpose</label>
+     <input type="text" class="input-control" id="cr-custom-purpose" placeholder="e.g. Interest Credit, Subsidy" style="border-color: var(--accent-green);">
+ </div>
+
+ <!-- લાઇન ૩: આખું લાંબુ Party Name નું બોક્સ -->
+ <div class="input-group">
+     <label>Party Name</label>
+     <input type="text" class="input-control" id="cr-party" placeholder="Enter Full Entity / Party Name">
+ </div>
+
  <button class="mode-btn" style="background:var(--accent-green); color:white;" onclick="executeTransaction('CREDIT')">Post Credit Entry</button> 
  </div> 
  </div> 
@@ -246,9 +279,13 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
      if(id === 'bank-modal') {
          document.getElementById('custom-account-wrapper').style.display = 'none';
      }
+     if(id === 'credit-modal') {
+         document.getElementById('custom-cr-method-wrapper').style.display = 'none';
+         document.getElementById('custom-cr-purpose-wrapper').style.display = 'none';
+     }
  }
 
- // ડ્રોપડાઉન ચેન્જ થાય ત્યારે કસ્ટમ બોક્સ બતાવવા/છુપાવવા માટેનું ફંક્શન
+ // બેંક કસ્ટમ એકાઉન્ટ ઓપ્શન કંટ્રોલ
  function toggleCustomAccountInput(value) {
      const customWrapper = document.getElementById('custom-account-wrapper');
      if(value === 'Other') {
@@ -259,6 +296,28 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
      }
  }
 
+ // 🟢 ક્રેડિટ કસ્ટમ મેથડ શો-હાઇડ કંટ્રોલ
+ function toggleCustomCreditMethod(value) {
+     const wrapper = document.getElementById('custom-cr-method-wrapper');
+     if(value === 'Other') {
+         wrapper.style.display = 'flex';
+         document.getElementById('cr-custom-method').focus();
+     } else {
+         wrapper.style.display = 'none';
+     }
+ }
+
+ // 🟢 ક્રેડિટ કસ્ટમ પર્પઝ શો-હાઇડ કંટ્રોલ
+ function toggleCustomCreditPurpose(value) {
+     const wrapper = document.getElementById('custom-cr-purpose-wrapper');
+     if(value === 'Other') {
+         wrapper.style.display = 'flex';
+         document.getElementById('cr-custom-purpose').focus();
+     } else {
+         wrapper.style.display = 'none';
+     }
+ }
+
  function addBankMatrix() { 
      const name = document.getElementById('new-bank-name').value.trim();
      const acc = document.getElementById('new-bank-acc').value.trim();
@@ -266,7 +325,6 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
      const holder = document.getElementById('new-bank-holder').value.trim();
      let type = document.getElementById('new-bank-type').value;
 
-     // જો કસ્ટમ સિલેક્ટ કરેલું હોય, તો ટેક્સ્ટ બોક્સમાંથી વેલ્યુ લો
      if(type === 'Other') {
          const customType = document.getElementById('new-bank-custom-type').value.trim();
          if(!customType) { alert('Please enter your custom account type.'); return; }
@@ -281,7 +339,6 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
      banks.push({ name: name, acc: acc, ifsc: ifsc, holder: holder, type: type, balance: 785000 }); 
      localStorage.setItem('factory_banks', JSON.stringify(banks)); 
      
-     // ખાના સબમિટ થયા પછી એકદમ સાફ કરી નાખો
      document.getElementById('new-bank-name').value = ''; 
      document.getElementById('new-bank-acc').value = '';
      document.getElementById('new-bank-ifsc').value = '';
@@ -319,10 +376,40 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
      if(mode === 'CREDIT') {
          const bank = document.getElementById('cr-bank-select').value;
          const amount = parseFloat(document.getElementById('cr-amount').value);
-         if(!bank || isNaN(amount) || amount <= 0) return;
+         let method = document.getElementById('cr-method').value;
+         let purpose = document.getElementById('cr-purpose').value;
+         const party = document.getElementById('cr-party').value.trim();
+
+         // જો કસ્ટમ મેથડ ટાઈપ કરી હોય
+         if(method === 'Other') {
+             const customMethod = document.getElementById('cr-custom-method').value.trim();
+             if(!customMethod) { alert('Please enter custom method.'); return; }
+             method = customMethod;
+         }
+
+         // જો કસ્ટમ પર્પઝ ટાઈપ કર્યું હોય
+         if(purpose === 'Other') {
+             const customPurpose = document.getElementById('cr-custom-purpose').value.trim();
+             if(!customPurpose) { alert('Please enter custom purpose.'); return; }
+             purpose = customPurpose;
+         }
+
+         if(!bank || isNaN(amount) || amount <= 0 || !party) { alert('Please fill complete transaction details.'); return; }
+         
          const bIdx = banks.findIndex(b => b.name === bank); banks[bIdx].balance += amount;
-         entries.unshift({ bank, method: document.getElementById('cr-method').value, purpose: document.getElementById('cr-purpose').value, party: document.getElementById('cr-party').value, amount, mode });
-         document.getElementById('cr-amount').value = ''; document.getElementById('cr-party').value = ''; hidePopupDirect('credit-modal');
+         entries.unshift({ bank, method, purpose, party, amount, mode });
+         
+         // 🟢 ડેટા પોસ્ટ થયા પછી ક્રેડિટ ફોર્મ એકદમ ક્લીન કરો
+         document.getElementById('cr-amount').value = ''; 
+         document.getElementById('cr-party').value = ''; 
+         document.getElementById('cr-custom-method').value = '';
+         document.getElementById('cr-custom-purpose').value = '';
+         document.getElementById('cr-method').value = 'ONLINE';
+         document.getElementById('cr-purpose').value = 'Sales Revenue';
+         document.getElementById('custom-cr-method-wrapper').style.display = 'none';
+         document.getElementById('custom-cr-purpose-wrapper').style.display = 'none';
+         
+         hidePopupDirect('credit-modal');
      } else if(mode === 'DEBIT') {
          const bank = document.getElementById('dr-bank-select').value;
          const amount = parseFloat(document.getElementById('dr-amount').value);
@@ -355,6 +442,8 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
          return `<tr><td><strong>${e.bank}</strong>${e.destBank ? ` ➔ ${e.destBank}` : ''}</td><td><strong>${e.party || 'Internal Vault'}</strong><br><small style="color:var(--text-muted);">${e.purpose}</small></td><td class="${c}">${s} ₹ ${e.amount.toLocaleString('en-IN')}</td></tr>`; 
      }).join(''); 
  } 
-</script> 
-</body> 
+</style> 
+</head> 
+<body>
+</body>
 </html>
