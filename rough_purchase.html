@@ -3,111 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Raghuveer Diamond - Purchase Core</title>
+    <title>Raghuveer Diamond - Purchase Core Terminal</title>
     <style>
-        :root { --bg: #070B19; --card: #0B132B; --cyan: #5BC0BE; --text: #FFF; --border: #1C2541; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-        body { background: var(--bg); color: var(--text); height: 100vh; width: 100vw; overflow: hidden; display: flex; flex-direction: column; }
+        :root {
+            --bg-primary: #070B19; 
+            --bg-secondary: #0D1630; 
+            --top-bar-bg: #030611; 
+            --border-color: #1C2541; 
+            --accent-cyan: #5BC0BE; 
+            --accent-blue: #00C6FF; 
+            --accent-green: #27AE60; 
+            --accent-red: #E74C3C; 
+            --accent-purple: #9B59B6;
+            --text-main: #FFFFFF; 
+            --text-muted: #708090; 
+        }
 
-        .header { height: 45px; background: #070B19; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid var(--border); }
-        .win-actions { display: flex; gap: 5px; }
-        .win-btn { background: #111D37; color: var(--cyan); border: 1px solid var(--border); width: 25px; height: 25px; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; }
-        
-        .container { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
-        .ai-dock { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
-        .ai-btn { background: #111D37; color: #FFF; padding: 8px 4px; font-size: 10px; border-radius: 4px; border: 1px solid var(--border); cursor: pointer; font-weight: bold; }
-        .ai-btn:hover { border-color: var(--cyan); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; }
+        body { background-color: var(--bg-primary); color: var(--text-main); width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .form-group { display: flex; flex-direction: column; }
-        label { font-size: 9px; color: #708090; text-transform: uppercase; margin-bottom: 2px; letter-spacing: 0.5px; }
-        input, select { background: var(--card); border: 1px solid var(--border); color: #FFF; padding: 6px; border-radius: 4px; font-size: 12px; outline: none; }
-        input:focus, select:focus { border-color: var(--cyan); }
-        
-        .input-row { display: flex; gap: 5px; }
-        .plus-btn { background: #1C2541; color: var(--cyan); border: none; width: 30px; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 14px; }
-        .plus-btn:hover { background: var(--cyan); color: #000; }
-        
-        .submit-btn { background: var(--cyan); color: #000; padding: 10px; border: none; border-radius: 4px; font-weight: bold; margin-top: 5px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
-        .submit-btn:hover { opacity: 0.9; }
+        /* Top Windows Control Architecture */
+        .window-control-bar { height: 45px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 2px solid var(--border-color); } 
+        .brand-title { font-size: 14px; font-weight: 900; letter-spacing: 1px; color: var(--accent-cyan); text-transform: uppercase; } 
+        .control-group { display: flex; gap: 8px; }
+        .btn-win { width: 32px; height: 26px; border: none; border-radius: 4px; color: white; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 14px; text-decoration: none; }
+        .btn-min { background: #2C3E50; }
+        .btn-max { background: #34495E; }
+        .btn-close { background: var(--accent-red); }
+
+        /* Layout Grid Architecture */
+        .workspace-grid { flex: 1; display: grid; grid-template-columns: 1fr; gap: 15px; padding: 15px; overflow-y: auto; }
+        @media (min-width: 992px) {
+            .workspace-grid { grid-template-columns: 450px 1fr; overflow: hidden; }
+        }
+
+        .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); overflow: hidden; }
+        .panel-title { font-size: 14px; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 15px; font-weight: 700; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; }
+
+        /* AI Dock Premium Matrix */
+        .ai-dock { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+        .ai-btn { background: #16213E; color: #FFF; padding: 10px 5px; font-size: 11px; border-radius: 6px; border: 1px solid var(--border-color); cursor: pointer; font-weight: 800; text-transform: uppercase; transition: all 0.2s ease; letter-spacing: 0.5px; }
+        .ai-btn:hover { border-color: var(--accent-cyan); background: #1A2F56; color: var(--accent-cyan); }
+
+        /* Form Controls */
+        .form-scroller { flex: 1; overflow-y: auto; padding-right: 5px; display: flex; flex-direction: column; gap: 12px; }
+        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .input-group { display: flex; flex-direction: column; gap: 4px; }
+        .input-group label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+        .input-control { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; outline: none; width: 100%; }
+        .input-control:focus { border-color: var(--accent-blue); }
+        .input-row { display: flex; gap: 6px; }
+        .plus-btn { background: #16213E; color: var(--accent-cyan); border: 1px solid var(--border-color); width: 38px; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+        .plus-btn:hover { background: var(--accent-cyan); color: #030611; }
+
+        .submit-btn { background: var(--accent-cyan); color: #030611; padding: 14px; border: none; border-radius: 8px; font-weight: 800; margin-top: 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; box-shadow: 0 4px 12px rgba(91,192,190,0.3); }
+        .submit-btn:hover { background: var(--accent-blue); color: #FFFFFF; }
         .hidden { display: none !important; }
+
+        /* Table Configuration */
+        .table-wrapper { flex: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; background: #070B19; margin-top: 5px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { background: #16213E; color: var(--accent-cyan); padding: 12px 10px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid var(--border-color); }
+        td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; vertical-align: middle; }
+        .tr-row:hover { background: rgba(28, 37, 65, 0.3); }
     </style>
 </head>
-<body>
+<body onload="initPurchaseCore()">
 
-    <div class="header">
-        <div style="font-size:12px; font-weight:bold; letter-spacing:1px; color:var(--cyan)">RAGHUVEER DIAMOND</div>
-        <div class="win-actions">
-            <button class="win-btn" onclick="alert('System Terminal Minimized')">-</button>
-            <button class="win-btn" onclick="toggleFullScreen()">🗖</button>
-            <a href="main_office.html" style="text-decoration:none; color:var(--cyan)"><button class="win-btn">✕</button></a>
+    <!-- Top Window bar Architecture -->
+    <div class="window-control-bar"> 
+        <div class="brand-title">RAGHUVEER DIAMOND - PURCHASE CORE CONTROL</div> 
+        <div class="control-group">
+            <button class="btn-win btn-min" onclick="alert('Terminal Minimized')">-</button>
+            <button class="btn-win btn-max" onclick="toggleFullScreen()">□</button>
+            <a href="main_office.html" class="btn-win btn-close">✕</a>
         </div>
     </div>
 
-    <div class="container">
-        <!-- 3 Core Live AI Buttons Linked to Image 56853.jpg -->
-        <div class="ai-dock">
-            <button class="ai-btn" onclick="triggerAiVoice()">🎤 VOICE</button>
-            <button class="ai-btn" onclick="triggerAiScan()">📸 SCAN</button>
-            <button class="ai-btn" onclick="triggerAiYield()">📈 YIELD</button>
-        </div>
-
-        <div class="form-grid">
-            <div class="form-group"><label>Lot No</label><input type="text" id="lot" placeholder="e.g. RF-101"></div>
-            <div class="form-group"><label>Date</label><input type="date" id="date"></div>
+    <!-- Main Workspace Splitter -->
+    <div class="workspace-grid">
+        
+        <!-- Left Column: Entry Engine -->
+        <div class="panel-box">
+            <div class="panel-title">Rough Intake Compiler</div>
             
-            <div class="form-group" style="grid-column: span 2;">
-                <label>Vendor</label>
-                <div class="input-row">
-                    <select id="vendor" style="flex:1;"><option value="">-- Select Vendor --</option></select>
-                    <button class="plus-btn" onclick="addEntry('rp_vendors', 'vendor')">+</button>
+            <div class="ai-dock">
+                <button class="ai-btn" onclick="triggerAiVoice()">🎤 VOICE</button>
+                <button class="ai-btn" onclick="triggerAiScan()">📸 SCAN</button>
+                <button class="ai-btn" onclick="triggerAiYield()">📈 YIELD</button>
+            </div>
+
+            <div class="form-scroller">
+                <div class="form-grid-2">
+                    <div class="input-group"><label>Lot No</label><input type="text" id="lot" class="input-control" placeholder="e.g. RF-101"></div>
+                    <div class="input-group"><label>Intake Date</label><input type="date" id="date" class="input-control"></div>
                 </div>
-            </div>
 
-            <div class="form-group" style="grid-column: span 2;">
-                <label>Purchase Stream</label>
-                <select id="stream" onchange="toggleBroker()">
-                    <option value="direct">Direct Account</option>
-                    <option value="broker">Via Broker</option>
-                </select>
-            </div>
-
-            <!-- Broker Block Controller -->
-            <div id="broker-block" class="hidden" style="display:contents;">
-                <div class="form-group"><label>Broker</label>
+                <div class="input-group">
+                    <label>Vendor Entity</label>
                     <div class="input-row">
-                        <select id="broker" style="flex:1;"><option value="">-- Select Broker --</option></select>
-                        <button class="plus-btn" onclick="addEntry('rp_brokers', 'broker')">+</button>
+                        <select id="vendor" class="input-control"><option value="">-- Select Vendor --</option></select>
+                        <button class="plus-btn" onclick="addEntry('rp_vendors', 'vendor')">+</button>
                     </div>
                 </div>
-                <div class="form-group"><label>Brokerage %</label><input type="number" id="broker-pct" placeholder="0.00" oninput="calculateTotal()"></div>
-            </div>
 
-            <div class="form-group"><label>Weight (Cts)</label><input type="number" step="0.01" id="weight" placeholder="0.00" oninput="calculateTotal()"></div>
-            <div class="form-group"><label>Price/Cts (₹)</label><input type="number" step="0.01" id="price" placeholder="0.00" oninput="calculateTotal()"></div>
-            
-            <div class="form-group"><label>Tax Class</label>
-                <div class="input-row">
-                    <select id="tax" style="flex:1;" onchange="calculateTotal()"></select>
-                    <button class="plus-btn" onclick="addCustomTaxRate()">+</button>
+                <div class="form-grid-2">
+                    <div class="input-group">
+                        <label>Purchase Stream</label>
+                        <select id="stream" class="input-control" onchange="toggleBrokerBlock()">
+                            <option value="direct">Direct Account</option>
+                            <option value="broker">Via Broker</option>
+                        </select>
+                    </div>
+                    <div class="input-group"><label>Payment Mode Source</label>
+                        <select id="pay-source" class="input-control">
+                            <option value="CASH">OFFICE CASH COUNTER</option>
+                            <option value="BANK">CONNECTED BANK CHANNEL</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group"><label>Due Date</label><input type="date" id="due-date"></div>
-            
-            <div class="form-group" style="grid-column: span 2;">
-                <label style="color:var(--cyan)">Net Payable Amount (₹)</label>
-                <input type="text" id="net-payable" readonly style="color:var(--cyan); font-weight:bold;" placeholder="0.00">
+
+                <!-- Broker Configuration Sub-matrix -->
+                <div id="broker-block" class="form-grid-2 hidden">
+                    <div class="input-group"><label>Broker Target</label>
+                        <div class="input-row">
+                            <select id="broker" class="input-control"><option value="">-- Select Broker --</option></select>
+                            <button class="plus-btn" onclick="addEntry('rp_brokers', 'broker')">+</button>
+                        </div>
+                    </div>
+                    <div class="input-group"><label>Brokerage (%)</label><input type="number" id="broker-pct" class="input-control" placeholder="0.00" oninput="calculateTotalAmount()"></div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="input-group"><label>Weight (Carats)</label><input type="number" step="0.01" id="weight" class="input-control" placeholder="0.00" oninput="calculateTotalAmount()"></div>
+                    <div class="input-group"><label>Price / Carat (₹)</label><input type="number" step="0.01" id="price" class="input-control" placeholder="0.00" oninput="calculateTotalAmount()"></div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="input-group"><label>Tax Structure Class</label>
+                        <div class="input-row">
+                            <select id="tax" class="input-control" onchange="calculateTotalAmount()"></select>
+                            <button class="plus-btn" onclick="addCustomTaxRate()">+</button>
+                        </div>
+                    </div>
+                    <div class="input-group"><label>Due Target Date</label><input type="date" id="due-date" class="input-control"></div>
+                </div>
+
+                <div class="input-group">
+                    <label style="color: var(--accent-blue); font-weight: bold;">Net Payable Valuation (₹)</label>
+                    <input type="text" id="net-payable" class="input-control" readonly style="color: var(--accent-blue); font-size: 16px; background: #030611; border-color: var(--accent-blue);" placeholder="0.00">
+                </div>
+
+                <button class="submit-btn" onclick="savePurchaseRecord()">Commit Purchase to Ledger</button>
             </div>
         </div>
-        <button class="submit-btn" onclick="saveEntry()">COMMIT ENTRY TO SAFE</button>
+
+        <!-- Right Column: Realtime History Database -->
+        <div class="panel-box">
+            <div class="panel-title">Central Procurement History Logs</div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Lot No</th>
+                            <th>Date</th>
+                            <th>Vendor Details</th>
+                            <th>Carats</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="purchase-history-rows"></tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        document.getElementById('date').valueAsDate = new Date();
+        // Core Engine Setup Matrix
+        function initPurchaseCore() {
+            document.getElementById('date').valueAsDate = new Date();
+            
+            if(!localStorage.getItem('purchase_history_log')) localStorage.setItem('purchase_history_log', JSON.stringify([]));
+            if(!localStorage.getItem('total_rough')) localStorage.setItem('total_rough', '0');
+            if(!localStorage.getItem('cash_on_hand')) localStorage.setItem('cash_on_hand', '0');
+            if(!localStorage.getItem('cash_history_log')) localStorage.setItem('cash_history_log', JSON.stringify([]));
 
-        // Dynamic Database Core
+            renderDropdown('rp_vendors', 'vendor');
+            renderDropdown('rp_brokers', 'broker');
+            renderTaxDropdown();
+            refreshPurchaseHistoryTable();
+        }
+
+        function toggleBrokerBlock() {
+            let stream = document.getElementById('stream').value;
+            let block = document.getElementById('broker-block');
+            if(stream === 'broker') {
+                block.classList.remove('hidden');
+            } else {
+                block.classList.add('hidden');
+                document.getElementById('broker-pct').value = '';
+                calculateTotalAmount();
+            }
+        }
+
         function addEntry(storageKey, selectId) {
-            let val = prompt("Enter Name Matrix:");
+            let val = prompt("Enter Entity / Person Name:");
             if(val && val.trim() !== "") {
                 let list = JSON.parse(localStorage.getItem(storageKey)) || [];
                 if(!list.includes(val.trim())) {
@@ -120,31 +221,31 @@
         }
 
         function addCustomTaxRate() {
-            let label = prompt("Enter Tax Name (e.g. GST):");
-            let rate = prompt("Enter Tax % (e.g. 0.25):");
+            let label = prompt("Enter Custom Tax Label (e.g. GST Local):");
+            let rate = prompt("Enter Tax Percentage Factor (e.g. 0.25):");
             if(label && rate) {
                 let taxes = JSON.parse(localStorage.getItem('rp_taxes')) || [];
                 taxes.push({name: `${label} (${rate}%)`, rate: parseFloat(rate)});
                 localStorage.setItem('rp_taxes', JSON.stringify(taxes));
                 renderTaxDropdown();
                 document.getElementById('tax').value = parseFloat(rate);
-                calculateTotal();
+                calculateTotalAmount();
             }
         }
 
         function renderDropdown(key, id) {
             let list = JSON.parse(localStorage.getItem(key)) || [];
             let el = document.getElementById(id);
-            let fallbackText = id === 'vendor' ? 'Vendor' : 'Broker';
-            el.innerHTML = `<option value="">-- Select ${fallbackText} --</option>`;
+            let fallText = id === 'vendor' ? 'Vendor' : 'Broker';
+            el.innerHTML = `<option value="">-- Select ${fallText} --</option>`;
             list.forEach(item => el.innerHTML += `<option value="${item}">${item}</option>`);
         }
 
         function renderTaxDropdown() {
             let taxes = JSON.parse(localStorage.getItem('rp_taxes')) || [
-                {name: "Exempted / No Tax (0%)", rate: 0},
-                {name: "GST Local (0.25%)", rate: 0.25},
-                {name: "GST Inward (1.5%)", rate: 1.5}
+                {name: "Exempted Matrix (0%)", rate: 0},
+                {name: "GST Rough Intake (0.25%)", rate: 0.25},
+                {name: "GST Inward Standard (1.5%)", rate: 1.5}
             ];
             localStorage.setItem('rp_taxes', JSON.stringify(taxes));
             let el = document.getElementById('tax');
@@ -152,18 +253,7 @@
             taxes.forEach(t => el.innerHTML += `<option value="${t.rate}">${t.name}</option>`);
         }
 
-        function toggleBroker() {
-            let s = document.getElementById('stream').value;
-            let b = document.getElementById('broker-block');
-            if(s === 'broker') { b.classList.remove('hidden'); } 
-            else { 
-                b.classList.add('hidden');
-                document.getElementById('broker-pct').value = '';
-                calculateTotal();
-            }
-        }
-
-        function calculateTotal() {
+        function calculateTotalAmount() {
             let weight = parseFloat(document.getElementById('weight').value) || 0;
             let price = parseFloat(document.getElementById('price').value) || 0;
             let base = weight * price;
@@ -177,41 +267,133 @@
             let tPct = parseFloat(document.getElementById('tax').value) || 0;
             let tax = (base * tPct) / 100;
 
-            let finalTotal = base + brokerage + tax;
-            document.getElementById('net-payable').value = finalTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            let finalVal = base + brokerage + tax;
+            document.getElementById('net-payable').value = finalVal.toFixed(2);
+            return finalVal;
         }
 
-        function saveEntry() {
-            let lot = document.getElementById('lot').value;
-            let vendor = document.getElementById('vendor').value;
-            let carat = parseFloat(document.getElementById('weight').value) || 0;
+        function refreshPurchaseHistoryTable() {
+            let logs = JSON.parse(localStorage.getItem('purchase_history_log')) || [];
+            let tbody = document.getElementById('purchase-history-rows');
+            tbody.innerHTML = '';
 
-            if(!lot || !vendor || carat <= 0) {
-                alert("Validation Error: Lot No, Vendor, and Weight are mandatory!");
+            if(logs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:30px;">No procurement data items recorded yet.</td></tr>`;
                 return;
             }
 
-            let currentStock = parseFloat(localStorage.getItem('total_rough')) || 0;
-            localStorage.setItem('total_rough', currentStock + carat);
-
-            alert(`Lot ${lot} compiled into core database!`);
-            window.location.href = 'main_office.html';
+            logs.reverse().forEach(log => {
+                tbody.innerHTML += `
+                    <tr class="tr-row">
+                        <td style="color:var(--accent-blue); font-weight:bold;">${log.lot}</td>
+                        <td style="color:var(--text-muted); font-size:12px;">${log.date}</td>
+                        <td><strong>${log.vendor}</strong><br><small style="color:var(--text-muted);">${log.stream === 'broker' ? 'via ' + log.broker : 'Direct Account'}</small></td>
+                        <td>${log.carat.toLocaleString('en-IN')} Cts</td>
+                        <td style="color:var(--accent-cyan); font-weight:bold;">₹ ${log.netPayable.toLocaleString('en-IN')}</td>
+                    </tr>
+                `;
+            });
         }
 
-        // AI Engine Triggers Linked to Button Matrix
-        function triggerAiVoice() { alert("RA-AI Voice System Active: Listening for Rough Intake details..."); }
-        function triggerAiScan() { alert("RA-AI Optical Scanner Active: Scan vendor slip/invoice..."); }
-        function triggerAiYield() { alert("RA-AI Analytics Core: Simulation predictive yield is approximately 31.8% VVS polish output."); }
+        function savePurchaseRecord() {
+            let lot = document.getElementById('lot').value.trim();
+            let dateInput = document.getElementById('date').value;
+            let vendor = document.getElementById('vendor').value;
+            let source = document.getElementById('pay-source').value;
+            let carat = parseFloat(document.getElementById('weight').value) || 0;
+            let price = parseFloat(document.getElementById('price').value) || 0;
+            let netPayable = calculateTotalAmount();
+
+            if(!lot || !dateInput || !vendor || carat <= 0 || price <= 0) {
+                alert("Validation Check Failure: Lot No, Date, Vendor, Weight and Price are mandatory parameters!");
+                return;
+            }
+
+            // Date processing node conversion
+            let dParts = dateInput.split('-');
+            let dateStr = `${dParts[2]}/${dParts[1]}/${dParts[0]}`;
+
+            // Deduction Ledger Sync Integration Node
+            if(source === 'CASH') {
+                let currentCash = parseFloat(localStorage.getItem('cash_on_hand')) || 0;
+                if(netPayable > currentCash) {
+                    if(!confirm("Warning Matrix Check: Payable exceeds cash vault inventory threshold. Proceed anyway?")) return;
+                }
+                currentCash -= netPayable;
+                localStorage.setItem('cash_on_hand', currentCash.toString());
+
+                // Post directly into operational cash log ledger
+                let cashHistory = JSON.parse(localStorage.getItem('cash_history_log')) || [];
+                cashHistory.push({
+                    date: dateStr,
+                    party: vendor,
+                    purpose: `Rough Intake Lot: ${lot}`,
+                    amount: netPayable,
+                    type: 'javak'
+                });
+                localStorage.setItem('cash_history_log', JSON.stringify(cashHistory));
+
+            } else {
+                // Deduct from Bank Channel Account Architecture
+                let banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
+                if(banks.length === 0) {
+                    alert("Sync Aborted: No connected target bank account found inside system structure!");
+                    return;
+                }
+                
+                // Select first target available bank to clear debit balance
+                banks[0].balance -= netPayable;
+                localStorage.setItem('factory_banks', JSON.stringify(banks));
+
+                let bankLedger = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
+                bankLedger.unshift({
+                    bank: banks[0].name,
+                    method: 'WIRE_TRANSFER',
+                    purpose: `Rough Intake Procurement Lot: ${lot}`,
+                    party: vendor,
+                    amount: netPayable,
+                    mode: 'DEBIT'
+                });
+                localStorage.setItem('bank_ledger_logs', JSON.stringify(bankLedger));
+            }
+
+            // Sync Carat Stock Inventory Node
+            let currentStock = parseFloat(localStorage.getItem('total_rough')) || 0;
+            localStorage.setItem('total_rough', (currentStock + carat).toString());
+
+            // Commit to Procurement Data Engine
+            let purchases = JSON.parse(localStorage.getItem('purchase_history_log')) || [];
+            purchases.push({
+                lot: lot,
+                date: dateStr,
+                vendor: vendor,
+                stream: document.getElementById('stream').value,
+                broker: document.getElementById('broker').value,
+                carat: carat,
+                netPayable: netPayable
+            });
+            localStorage.setItem('purchase_history_log', JSON.stringify(purchases));
+
+            // Component Interface Form Resetter Matrix
+            document.getElementById('lot').value = '';
+            document.getElementById('weight').value = '';
+            document.getElementById('price').value = '';
+            document.getElementById('broker-pct').value = '';
+            document.getElementById('net-payable').value = '0.00';
+            
+            alert(`⚡ System Confirmed: Procurement Lot ${lot} integrated into central ledger databases successfully!`);
+            refreshPurchaseHistoryTable();
+        }
+
+        function triggerAiVoice() { alert("RA-AI Voice System Engine: Ready and tracking input for Rough Intake parameters..."); }
+        document.addEventListener('click', function() { console.log("System Node Awake."); });
+        function triggerAiScan() { alert("RA-AI Optical Vision Core: Initializing high-speed camera matrix to scan invoice slip..."); }
+        function triggerAiYield() { alert("RA-AI Diagnostic Core Analytics: Computational simulation target yields roughly 31.8% VVS Polish outcome."); }
 
         function toggleFullScreen() {
-            if (!document.fullscreenElement) { document.documentElement.requestFullscreen(); } 
+            if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(e=>{}); } 
             else { document.exitFullscreen(); }
         }
-
-        // Init System
-        renderDropdown('rp_vendors', 'vendor');
-        renderDropdown('rp_brokers', 'broker');
-        renderTaxDropdown();
     </script>
 </body>
 </html>
