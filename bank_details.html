@@ -3,7 +3,7 @@
 <head> 
 <meta charset="UTF-8"> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
-<title>Raghuveer Diamond - Responsive Banking Terminal</title> 
+<title>Raghuveer Diamond - All Popup Banking Terminal</title> 
 <style> 
 :root { 
     --bg-primary: #070B19; 
@@ -25,7 +25,7 @@ body { background-color: var(--bg-primary); color: var(--text-main); width: 100v
 .brand-title { font-size: 14px; font-weight: 900; letter-spacing: 1px; color: var(--accent-cyan); text-transform: uppercase; } 
 .win-btn { background: none; border: none; color: var(--accent-red); font-size: 12px; cursor: pointer; font-weight: bold; } 
 
-/* રિસ્પોન્સિવ ૨+૨ ગ્રીડ */
+/* રિસ્પોન્સિવ ૨+૨ ગ્રીડ લેઆઉટ */
 .balance-board { 
     display: grid; 
     grid-template-columns: repeat(2, 1fr); 
@@ -52,7 +52,7 @@ body { background-color: var(--bg-primary); color: var(--text-main); width: 100v
     transition: all 0.3s ease;
     cursor: pointer;
 } 
-.balance-card.active { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(91, 192, 190, 0.4); background: rgba(91, 192, 190, 0.05); }
+.balance-card:hover { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(91, 192, 190, 0.3); }
 .balance-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; } 
 
 #card-top-bank::before { background: var(--accent-blue); }
@@ -61,8 +61,7 @@ body { background-color: var(--bg-primary); color: var(--text-main); width: 100v
 #card-top-transfer::before { background: var(--accent-purple); }
 
 .marquee-strip-container { width: 100%; background: rgba(3, 6, 17, 0.9); border-bottom: 1px solid var(--border-color); padding: 6px 10px; min-height: 28px; display: flex; align-items: center; justify-content: center; }
-.marquee-strip { font-size: 10px; font-weight: bold; color: var(--accent-cyan); text-transform: uppercase; text-align: center; transition: opacity 0.4s ease-in-out; }
-.marquee-strip.fade-out { opacity: 0; }
+.marquee-strip { font-size: 10px; font-weight: bold; color: var(--accent-cyan); text-transform: uppercase; text-align: center; }
 
 .card-content-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 5px; }
 .card-val { font-size: 18px; font-weight: 800; color: #FFFFFF; text-align: center; } 
@@ -72,189 +71,155 @@ body { background-color: var(--bg-primary); color: var(--text-main); width: 100v
 #card-top-debit .card-val { text-shadow: 0 0 12px rgba(231, 76, 60, 0.6); }
 #card-top-transfer .card-val { text-shadow: 0 0 12px rgba(155, 89, 182, 0.6); }
 
-/* વર્કસ્પેસ લેઆઉટ */
+/* ચોપડાનો નવો રિસ્પોન્સિવ લેઆઉટ (ફોર્મ વગર આખી સ્ક્રીનમાં મોટો દેખાશે) */
 .bank-workspace { 
     flex: 1; 
     padding: 0 12px 12px 12px; 
     display: flex; 
     flex-direction: column; 
-    gap: 12px; 
-    overflow-y: auto; 
+    overflow: hidden; 
 } 
 @media (min-width: 768px) { 
-    .bank-workspace { display: grid; grid-template-columns: 1.1fr 1fr; gap: 15px; padding: 0 15px 15px 15px; height: calc(100vh - 180px); overflow: hidden; } 
+    .bank-workspace { padding: 0 15px 15px 15px; height: calc(100vh - 180px); } 
 }
 
-.panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); overflow: hidden; } 
+.panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); flex: 1; overflow: hidden; } 
 .panel-title { font-size: 13px; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 12px; font-weight: 700; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; } 
-
-.form-scroll-container { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; flex: 1; } 
-.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } 
-.input-group { display: flex; flex-direction: column; gap: 4px; } 
-
-.input-group label { font-size: 11px; color: #FFFFFF; text-transform: uppercase; font-weight: 600; } 
-.input-control { background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; outline: none; } 
-
-.mode-btn { background: var(--accent-cyan); color: #030611; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; text-align: center; border: none; font-size: 13px; margin-top: 10px; } 
 
 .table-wrapper { flex: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); } 
 table { width: 100%; border-collapse: collapse; font-size: 12px; } 
-th { background: var(--border-color); color: var(--accent-cyan); padding: 10px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; } 
-td { padding: 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; } 
+th { background: var(--border-color); color: var(--accent-cyan); padding: 12px 10px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; position: sticky; top: 0; } 
+td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; } 
 .tx-cr { color: #2ECC71; font-weight: 700; } 
 .tx-dr { color: #E74C3C; font-weight: 700; } 
 .tx-tr { color: #9B59B6; font-weight: 700; } 
 
-/* પોપ-અપ મોડલ સેટિંગ્સ */
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(3, 6, 17, 0.85); display: flex; align-items: center; justify-content: center; z-index: 2000; visibility: hidden; opacity: 0; transition: 0.3s; } 
-.modal-box { background: #0B132B; border: 1px solid var(--accent-cyan); border-radius: 12px; width: 90%; max-width: 400px; padding: 20px; box-shadow: 0 0 25px rgba(91, 192, 190, 0.4); } 
+/* પોપ-અપ મોડલ કોમન ડિઝાઈન */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(3, 6, 17, 0.85); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; } 
+.modal-box { background: #0B132B; border: 1px solid var(--accent-cyan); border-radius: 12px; width: 92%; max-width: 420px; padding: 20px; box-shadow: 0 0 25px rgba(91, 192, 190, 0.4); } 
+
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; } 
+.input-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; } 
+.input-group label { font-size: 11px; color: #FFFFFF; text-transform: uppercase; font-weight: 600; } 
+.input-control { background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; outline: none; width: 100%; } 
+.mode-btn { width: 100%; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; text-align: center; border: none; font-size: 13px; color: #030611; background: var(--accent-cyan); margin-top: 5px; } 
 </style> 
 </head> 
 <body onload="initializeTerminal()" onclick="makeFullScreen()"> 
 
 <div class="window-control-bar"> 
- <div class="brand-title">RAGHUVEER DIAMOND - BANKING CORE</div> 
+ <div class="brand-title">RAGHUVEER DIAMOND - TOTAL TERMINAL</div> 
  <button class="win-btn" onclick="backToDashboard()">✕ CLOSE</button> 
 </div> 
 
  <div class="balance-board"> 
-     <!-- હવે આ ૧ નંબરનું બોક્સ સેટિંગ્સ પોપ-અપ ખોલશે -->
-     <div class="balance-card" id="card-top-bank" onclick="selectMode('BANK')"><div class="marquee-strip-container"><div class="marquee-strip" id="strip-top-bank">BANK VAULT</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-vault">₹ 0</div></div></div>
-     <div class="balance-card active" id="card-top-credit" onclick="selectMode('CREDIT')"><div class="marquee-strip-container"><div class="marquee-strip">CREDIT TRAFFIC</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-credit">₹ 0</div></div></div>
-     <div class="balance-card" id="card-top-debit" onclick="selectMode('DEBIT')"><div class="marquee-strip-container"><div class="marquee-strip">DEBIT FLOW</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-debit">₹ 0</div></div></div>
-     <div class="balance-card" id="card-top-transfer" onclick="selectMode('TRANSFER')"><div class="marquee-strip-container"><div class="marquee-strip">INTERNAL WIRE</div></div><div class="card-content-wrapper"><div class="card-val">TRANSFER</div></div></div>
+     <!-- ૪ ચોરસ બોક્સ જે હવે પોપ-અપ ખોલશે -->
+     <div class="balance-card" id="card-top-bank" onclick="openPopup('bank-modal')"><div class="marquee-strip-container"><div class="marquee-strip">BANK VAULT</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-vault">₹ 0</div></div></div>
+     <div class="balance-card" id="card-top-credit" onclick="openPopup('credit-modal')"><div class="marquee-strip-container"><div class="marquee-strip">CREDIT TRAFFIC</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-credit">₹ 0</div></div></div>
+     <div class="balance-card" id="card-top-debit" onclick="openPopup('debit-modal')"><div class="marquee-strip-container"><div class="marquee-strip">DEBIT FLOW</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-debit">₹ 0</div></div></div>
+     <div class="balance-card" id="card-top-transfer" onclick="openPopup('transfer-modal')"><div class="marquee-strip-container"><div class="marquee-strip">INTERNAL WIRE</div></div><div class="card-content-wrapper"><div class="card-val">TRANSFER</div></div></div>
  </div> 
 
  <div class="bank-workspace"> 
  <div class="panel-box"> 
- <div class="panel-title" id="panel-title-text">Transaction Core (Credit Mode)</div> 
- <div class="form-scroll-container"> 
- <div class="form-grid-2"> 
- <div class="input-group" id="src-bank-group"><label>Source Bank</label><select class="input-control" id="bank-select"></select></div> 
- <div class="input-group" id="dest-bank-group" style="display: none;"><label>Destination Bank</label><select class="input-control" id="dest-bank-select"></select></div> 
- </div> 
- <div class="form-grid-2"> 
- <div class="input-group"><label>Method</label><select class="input-control" id="method-select"><option value="ONLINE">ONLINE / IMPS</option><option value="CHEQUE">BANK CHEQUE</option></select></div> 
- <div class="input-group" id="purpose-group"><label>Purpose</label><select class="input-control" id="purpose-select"></select></div> 
- </div> 
- <div class="form-grid-2"> 
- <div class="input-group" id="party-group"><label>Party Name</label><input type="text" class="input-control" id="party-name" placeholder="Enter Name"></div> 
- <div class="input-group"><label>Amount</label><input type="number" class="input-control" id="tx-amount" placeholder="0.00"></div> 
- </div> 
- </div> 
- <button class="mode-btn" id="post-btn" onclick="executePostEntry()">POST TRANSACTION MATRIX</button> 
- </div> 
- 
- <div class="panel-box"> 
- <div class="panel-title">Live Account Ledger</div> 
+ <div class="panel-title">Live Account Ledger Database</div> 
  <div class="table-wrapper"> <table><thead><tr><th>Bank Hierarchy</th><th>Details</th><th>Amount</th></tr></thead><tbody id="ledger-rows"></tbody></table> </div> 
  </div> 
  </div> 
 
- <!-- ⚙️ બેંક એડ કરવાનું અસલી પોપ-અપ પાછું લાવી દીધું --> 
- <div class="modal-overlay" id="settings-modal" onclick="closeSettingsModal(event)"> 
+ <!-- ⚙️ ૧. BANK VAULT POPUP --> 
+ <div class="modal-overlay" id="bank-modal" onclick="closePopup('bank-modal', event)"> 
  <div class="modal-box" onclick="event.stopPropagation()"> 
- <div class="panel-title" style="border:none; margin-bottom:15px;"> <span>⚙️ Dynamic Bank Configuration</span> <span style="cursor:pointer;" onclick="hideModalDirect()">✕</span> </div> 
- <div style="display:flex; flex-direction:column; gap:12px;"> 
+ <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>⚙️ Configuration Matrix</span> <span style="cursor:pointer;" onclick="hidePopupDirect('bank-modal')">✕</span> </div> 
  <div class="input-group"> <label>Bank Name</label> <input type="text" class="input-control" id="new-bank-name" placeholder="e.g. SBI, KOTAK"> </div> 
  <div class="input-group"> <label>Account Number</label> <input type="text" class="input-control" id="new-bank-acc" placeholder="Enter A/C Number"> </div> 
- <div class="input-group"> 
- <label>Account Type</label> 
- <select class="input-control" id="new-bank-type"> 
- <option value="Current">Current Account</option> <option value="Saving">Saving Account</option> 
- </select> </div> 
- <button class="mode-btn" style="background:var(--accent-blue); color:white; margin-top:10px;" onclick="verifySecureOTP()">Live Link Account</button> </div> </div> </div> 
+ <div class="input-group"> <label>Account Type</label> <select class="input-control" id="new-bank-type"><option value="Current">Current Account</option><option value="Saving">Saving Account</option></select> </div> 
+ <button class="mode-btn" style="background:var(--accent-blue); color:white;" onclick="addBankMatrix()">Live Link Account</button> 
+ </div> 
+ </div> 
+
+ <!-- 🟢 ૨. CREDIT ENTRY POPUP --> 
+ <div class="modal-overlay" id="credit-modal" onclick="closePopup('credit-modal', event)"> 
+ <div class="modal-box" onclick="event.stopPropagation()"> 
+ <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>🟢 Deposit Matrix (Credit)</span> <span style="cursor:pointer;" onclick="hidePopupDirect('credit-modal')">✕</span> </div> 
+ <div class="form-grid-2">
+     <div class="input-group"><label>Bank</label><select class="input-control" id="cr-bank-select"></select></div>
+     <div class="input-group"><label>Method</label><select class="input-control" id="cr-method"><option value="ONLINE">ONLINE / IMPS</option><option value="CHEQUE">CHEQUE</option></select></div>
+ </div>
+ <div class="input-group"><label>Purpose</label><select class="input-control" id="cr-purpose"><option value="Sales Revenue">Sales Revenue</option><option value="Promoter Capital">Promoter Capital</option><option value="GST Refund">GST Refund</option></select></div>
+ <div class="form-grid-2">
+     <div class="input-group"><label>Party Name</label><input type="text" class="input-control" id="cr-party" placeholder="Entity Name"></div>
+     <div class="input-group"><label>Amount</label><input type="number" class="input-control" id="cr-amount" placeholder="0.00"></div>
+ </div>
+ <button class="mode-btn" style="background:var(--accent-green); color:white;" onclick="executeTransaction('CREDIT')">Post Credit Entry</button> 
+ </div> 
+ </div> 
+
+ <!-- 🔴 ૩. DEBIT ENTRY POPUP --> 
+ <div class="modal-overlay" id="debit-modal" onclick="closePopup('debit-modal', event)"> 
+ <div class="modal-box" onclick="event.stopPropagation()"> 
+ <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>🔴 Expense Matrix (Debit)</span> <span style="cursor:pointer;" onclick="hidePopupDirect('debit-modal')">✕</span> </div> 
+ <div class="form-grid-2">
+     <div class="input-group"><label>Bank</label><select class="input-control" id="dr-bank-select"></select></div>
+     <div class="input-group"><label>Method</label><select class="input-control" id="dr-method"><option value="ONLINE">ONLINE / IMPS</option><option value="CHEQUE">CHEQUE</option></select></div>
+ </div>
+ <div class="input-group"><label>Purpose</label><select class="input-control" id="dr-purpose"><option value="Rough Purchase">Rough Purchase</option><option value="Brokerage">Brokerage</option><option value="Wages & Salaries">Wages & Salaries</option><option value="Factory Expenses">Factory Expenses</option></select></div>
+ <div class="form-grid-2">
+     <div class="input-group"><label>Party Name</label><input type="text" class="input-control" id="dr-party" placeholder="Entity Name"></div>
+     <div class="input-group"><label>Amount</label><input type="number" class="input-control" id="dr-amount" placeholder="0.00"></div>
+ </div>
+ <button class="mode-btn" style="background:var(--accent-red); color:white;" onclick="executeTransaction('DEBIT')">Post Debit Entry</button> 
+ </div> 
+ </div> 
+
+ <!-- 🟣 ૪. BANK TRANSFER POPUP --> 
+ <div class="modal-overlay" id="transfer-modal" onclick="closePopup('transfer-modal', event)"> 
+ <div class="modal-box" onclick="event.stopPropagation()"> 
+ <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>🟣 Interbank Transfer Protocol</span> <span style="cursor:pointer;" onclick="hidePopupDirect('transfer-modal')">✕</span> </div> 
+ <div class="form-grid-2">
+     <div class="input-group"><label>From Bank</label><select class="input-control" id="tr-src-bank"></select></div>
+     <div class="input-group"><label>To Bank</label><select class="input-control" id="tr-dest-bank"></select></div>
+ </div>
+ <div class="form-grid-2">
+     <div class="input-group"><label>Method</label><select class="input-control" id="tr-method"><option value="ONLINE">ONLINE / IMPS</option><option value="CHEQUE">CHEQUE</option></select></div>
+     <div class="input-group"><label>Amount</label><input type="number" class="input-control" id="tr-amount" placeholder="0.00"></div>
+ </div>
+ <button class="mode-btn" style="background:var(--accent-purple); color:white;" onclick="executeTransaction('TRANSFER')">Execute Transfer</button> 
+ </div> 
+ </div> 
 
 <script> 
- let currentMode = "CREDIT"; 
- let bankTitleIdx = 0;
-
  function makeFullScreen() { 
      if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(err => {}); 
  }
-
- function selectMode(mode) { 
-     if (mode === 'BANK') {
-         openSettingsModal();
-         return;
-     }
-     currentMode = mode; 
-     document.querySelectorAll('.balance-card').forEach(el => el.classList.remove('active'));
-     if(mode === 'CREDIT') document.getElementById('card-top-credit').classList.add('active');
-     else if(mode === 'DEBIT') document.getElementById('card-top-debit').classList.add('active');
-     else if(mode === 'TRANSFER') document.getElementById('card-top-transfer').classList.add('active');
-     
-     document.getElementById('panel-title-text').innerText = "Transaction Core (" + mode + " Mode)";
-     document.getElementById('dest-bank-group').style.display = (mode === 'TRANSFER') ? 'flex' : 'none';
-     document.getElementById('purpose-group').style.display = (mode === 'TRANSFER') ? 'none' : 'flex';
-     document.getElementById('party-group').style.display = (mode === 'TRANSFER') ? 'none' : 'flex';
-     updatePurposeOptions();
- }
-
- function initializeTerminal() { 
-     refreshBankData(); 
-     updatePurposeOptions();
-     setInterval(rotateBankTitles, 3000);
- } 
- 
+ function initializeTerminal() { refreshBankData(); } 
  function backToDashboard() { window.location.href = 'main_office.html'; } 
 
- function openSettingsModal() { 
-     const m = document.getElementById('settings-modal');
-     m.style.visibility = 'visible'; m.style.opacity = 1; 
- } 
- function closeSettingsModal(e) { 
-     if(e.target.id === 'settings-modal') hideModalDirect();
- }
- function hideModalDirect() {
-     const m = document.getElementById('settings-modal');
-     m.style.visibility = 'hidden'; m.style.opacity = 0;
- }
+ function openPopup(id) { document.getElementById(id).style.display = 'flex'; } 
+ function closePopup(id, e) { if(e.target.id === id) hidePopupDirect(id); }
+ function hidePopupDirect(id) { document.getElementById(id).style.display = 'none'; }
 
- function verifySecureOTP() { 
+ function addBankMatrix() { 
      const name = document.getElementById('new-bank-name').value;
      const acc = document.getElementById('new-bank-acc').value;
-     if(!name || !acc) { alert('Fill bank name and account number.'); return; }
-     
+     if(!name || !acc) { alert('Fill complete bank details.'); return; }
      const banks = JSON.parse(localStorage.getItem('factory_banks')) || []; 
      banks.push({ name: name, acc: acc, type: document.getElementById('new-bank-type').value, balance: 785000 }); 
      localStorage.setItem('factory_banks', JSON.stringify(banks)); 
-     
-     document.getElementById('new-bank-name').value = '';
-     document.getElementById('new-bank-acc').value = '';
-     hideModalDirect(); refreshBankData(); 
+     document.getElementById('new-bank-name').value = ''; document.getElementById('new-bank-acc').value = '';
+     hidePopupDirect('bank-modal'); refreshBankData(); 
  } 
-
- function updateTextWithFade(elementId, newText) {
-     const el = document.getElementById(elementId);
-     if (el && el.innerText !== newText) {
-         el.classList.add('fade-out');
-         setTimeout(() => { el.innerText = newText; el.classList.remove('fade-out'); }, 400);
-     }
- }
-
- function rotateBankTitles() {
-     const banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
-     if(banks.length > 0) {
-         let current = banks[bankTitleIdx % banks.length];
-         updateTextWithFade('strip-top-bank', `${current.name}`);
-         bankTitleIdx++;
-     }
- }
 
  function refreshBankData() { 
      const banks = JSON.parse(localStorage.getItem('factory_banks')) || []; 
-     const select = document.getElementById('bank-select'); 
-     const destSelect = document.getElementById('dest-bank-select'); 
-     if(banks.length > 0) {
-        select.innerHTML = banks.map(b => `<option value="${b.name}">${b.name}</option>`).join('');
-        destSelect.innerHTML = banks.map(b => `<option value="${b.name}">${b.name}</option>`).join('');
-        let total = banks.reduce((s, b) => s + b.balance, 0);
-        document.getElementById('val-top-vault').innerText = `₹ ${total.toLocaleString('en-IN')}`;
-     } else {
-        select.innerHTML = '<option value="">No Active Bank</option>';
-        destSelect.innerHTML = '<option value="">No Active Bank</option>';
-     }
+     const fillSelect = (id) => {
+         const el = document.getElementById(id);
+         if(el) el.innerHTML = banks.length > 0 ? banks.map(b => `<option value="${b.name}">${b.name}</option>`).join('') : '<option value="">No Bank</option>';
+     };
+     fillSelect('cr-bank-select'); fillSelect('dr-bank-select'); fillSelect('tr-src-bank'); fillSelect('tr-dest-bank');
+
+     let total = banks.reduce((s, b) => s + b.balance, 0);
+     document.getElementById('val-top-vault').innerText = `₹ ${total.toLocaleString('en-IN')}`;
      
      const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
      let totalCr = entries.filter(e => e.mode === 'CREDIT').reduce((sum, e) => sum + e.amount, 0);
@@ -264,40 +229,38 @@ td { padding: 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF
      loadLedgerLogs();
  }
 
- function updatePurposeOptions() { 
-     const sel = document.getElementById('purpose-select'); 
-     if(!sel) return;
-     if(currentMode === 'CREDIT') { 
-         sel.innerHTML = `<option value="Sales Revenue">Sales Revenue</option><option value="Promoter Capital">Promoter Capital</option><option value="GST Refund">GST Refund</option>`; 
-     } else { 
-         sel.innerHTML = `<option value="Rough Purchase">Rough Purchase</option><option value="Brokerage">Brokerage</option><option value="Wages & Salaries">Wages & Salaries</option><option value="Factory Expenses">Factory Expenses</option>`; 
-     } 
- } 
-
- function executePostEntry() { 
-     const bankName = document.getElementById('bank-select').value; 
-     const amount = parseFloat(document.getElementById('tx-amount').value); 
-     if(!bankName || isNaN(amount) || amount <= 0) { alert('Enter valid details.'); return; } 
+ function executeTransaction(mode) {
+     const banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
+     const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
      
-     const banks = JSON.parse(localStorage.getItem('factory_banks')) || []; 
-     const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || []; 
-     
-     if(currentMode === 'TRANSFER') { 
-         const destBankName = document.getElementById('dest-bank-select').value; 
-         const srcIdx = banks.findIndex(b => b.name === bankName); 
-         const destIdx = banks.findIndex(b => b.name === destBankName); 
-         banks[srcIdx].balance -= amount; banks[destIdx].balance += amount; 
-         entries.unshift({ bank: bankName, destBank: destBankName, method: document.getElementById('method-select').value, purpose: 'INTERNAL_TRANSFER', party: `To ${destBankName}`, amount, mode: 'TRANSFER' }); 
-     } else { 
-         const bIdx = banks.findIndex(b => b.name === bankName); 
-         if(currentMode === 'DEBIT') banks[bIdx].balance -= amount; else banks[bIdx].balance += amount; 
-         entries.unshift({ bank: bankName, method: document.getElementById('method-select').value, purpose: document.getElementById('purpose-select').value, party: document.getElementById('party-name').value, amount, mode: currentMode }); 
-     } 
-     localStorage.setItem('factory_banks', JSON.stringify(banks)); 
-     localStorage.setItem('bank_ledger_logs', JSON.stringify(entries)); 
-     document.getElementById('party-name').value = ''; document.getElementById('tx-amount').value = ''; 
-     refreshBankData(); 
- } 
+     if(mode === 'CREDIT') {
+         const bank = document.getElementById('cr-bank-select').value;
+         const amount = parseFloat(document.getElementById('cr-amount').value);
+         if(!bank || isNaN(amount) || amount <= 0) return;
+         const bIdx = banks.findIndex(b => b.name === bank); banks[bIdx].balance += amount;
+         entries.unshift({ bank, method: document.getElementById('cr-method').value, purpose: document.getElementById('cr-purpose').value, party: document.getElementById('cr-party').value, amount, mode });
+         document.getElementById('cr-amount').value = ''; document.getElementById('cr-party').value = ''; hidePopupDirect('credit-modal');
+     } else if(mode === 'DEBIT') {
+         const bank = document.getElementById('dr-bank-select').value;
+         const amount = parseFloat(document.getElementById('dr-amount').value);
+         if(!bank || isNaN(amount) || amount <= 0) return;
+         const bIdx = banks.findIndex(b => b.name === bank); banks[bIdx].balance -= amount;
+         entries.unshift({ bank, method: document.getElementById('dr-method').value, purpose: document.getElementById('dr-purpose').value, party: document.getElementById('dr-party').value, amount, mode });
+         document.getElementById('dr-amount').value = ''; document.getElementById('dr-party').value = ''; hidePopupDirect('debit-modal');
+     } else if(mode === 'TRANSFER') {
+         const src = document.getElementById('tr-src-bank').value;
+         const dest = document.getElementById('tr-dest-bank').value;
+         const amount = parseFloat(document.getElementById('tr-amount').value);
+         if(!src || !dest || src === dest || isNaN(amount) || amount <= 0) return;
+         banks[banks.findIndex(b => b.name === src)].balance -= amount;
+         banks[banks.findIndex(b => b.name === dest)].balance += amount;
+         entries.unshift({ bank: src, destBank: dest, method: document.getElementById('tr-method').value, purpose: 'INTERNAL_TRANSFER', party: `To ${dest}`, amount, mode });
+         document.getElementById('tr-amount').value = ''; hidePopupDirect('transfer-modal');
+     }
+     localStorage.setItem('factory_banks', JSON.stringify(banks));
+     localStorage.setItem('bank_ledger_logs', JSON.stringify(entries));
+     refreshBankData();
+ }
 
  function loadLedgerLogs() { 
      const tbody = document.getElementById('ledger-rows'); 
