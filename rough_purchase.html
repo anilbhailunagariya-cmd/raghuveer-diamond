@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Raghuveer Diamond - Purchase Core Terminal</title>
+    <title>Raghuveer Diamond - Purchase Core</title>
     <style>
         :root {
             --bg-primary: #070B19; 
@@ -56,9 +56,18 @@
         .plus-btn { background: #16213E; color: var(--accent-cyan); border: 1px solid var(--border-color); width: 38px; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 16px; display: flex; align-items: center; justify-content: center; }
         .plus-btn:hover { background: var(--accent-cyan); color: #030611; }
 
+        /* Photo Upload Button styling */
+        .file-label { background: #16213E; color: white; border: 1px dashed var(--accent-cyan); padding: 10px; border-radius: 6px; text-align: center; cursor: pointer; font-size: 12px; font-weight: bold; text-transform: uppercase; display: block; }
+        .file-label:hover { background: rgba(91, 192, 190, 0.1); }
+
         .submit-btn { background: var(--accent-cyan); color: #030611; padding: 14px; border: none; border-radius: 8px; font-weight: 800; margin-top: 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; box-shadow: 0 4px 12px rgba(91,192,190,0.3); }
         .submit-btn:hover { background: var(--accent-blue); color: #FFFFFF; }
         .hidden { display: none !important; }
+
+        /* Filter Controls */
+        .filter-control-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; align-items: center; }
+        .filter-input { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 8px 12px; border-radius: 6px; font-size: 12px; outline: none; font-weight: bold; }
+        .export-btn { background: #27AE60; color: white; border: none; padding: 8px 15px; border-radius: 6px; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-left: auto; }
 
         /* Table Configuration */
         .table-wrapper { flex: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; background: #070B19; margin-top: 5px; }
@@ -66,13 +75,22 @@
         th { background: #16213E; color: var(--accent-cyan); padding: 12px 10px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid var(--border-color); }
         td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; vertical-align: middle; }
         .tr-row:hover { background: rgba(28, 37, 65, 0.3); }
-    </style>
+
+        .alert-safe { color: #2ECC71; font-weight: bold; font-size: 11px; }
+        .alert-warning { color: #F39C12; font-weight: bold; font-size: 11px; }
+        .alert-danger { color: #E74C3C; font-weight: bold; font-size: 11px; }
+
+        /* Photo Preview Modal Overlay */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vw; height: 100vh; background: rgba(3, 6, 17, 0.9); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; }
+        .modal-box { background: #0B132B; border: 1px solid var(--accent-cyan); border-radius: 12px; padding: 15px; max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center; }
+        .modal-box img { max-width: 100%; max-height: 70vh; object-fit: contain; border-radius: 6px; margin-bottom: 10px; }
+    </style> 
 </head>
 <body onload="initPurchaseCore()">
 
     <!-- Top Window bar Architecture -->
     <div class="window-control-bar"> 
-        <div class="brand-title">RAGHUVEER DIAMOND - PURCHASE CORE CONTROL</div> 
+        <div class="brand-title">RAGHUVEER DIAMOND</div> 
         <div class="control-group">
             <button class="btn-win btn-min" onclick="alert('Terminal Minimized')">-</button>
             <button class="btn-win btn-max" onclick="toggleFullScreen()">□</button>
@@ -85,7 +103,6 @@
         
         <!-- Left Column: Entry Engine -->
         <div class="panel-box">
-            <div class="panel-title">Rough Intake Compiler</div>
             
             <div class="ai-dock">
                 <button class="ai-btn" onclick="triggerAiVoice()">🎤 VOICE</button>
@@ -149,6 +166,13 @@
                     <div class="input-group"><label>Due Target Date</label><input type="date" id="due-date" class="input-control"></div>
                 </div>
 
+                <!-- Bill Photo Attachment Input Node -->
+                <div class="input-group">
+                    <label>Attach Bill Invoice Photo</label>
+                    <label for="bill-photo" class="file-label" id="file-label-text">📷 Capture / Upload Bill</label>
+                    <input type="file" id="bill-photo" accept="image/*" class="hidden" onchange="processBillImage(this)">
+                </div>
+
                 <div class="input-group">
                     <label style="color: var(--accent-blue); font-weight: bold;">Net Payable Valuation (₹)</label>
                     <input type="text" id="net-payable" class="input-control" readonly style="color: var(--accent-blue); font-size: 16px; background: #030611; border-color: var(--accent-blue);" placeholder="0.00">
@@ -160,13 +184,20 @@
 
         <!-- Right Column: Realtime History Database -->
         <div class="panel-box">
-            <div class="panel-title">Central Procurement History Logs</div>
+            
+            <!-- Advanced Search, Date Filters & Export Integrated Row -->
+            <div class="filter-control-row">
+                <input type="text" class="filter-input" id="search-party" placeholder="Search Vendor..." oninput="refreshPurchaseHistoryTable()">
+                <input type="date" class="filter-input" id="search-date" onchange="refreshPurchaseHistoryTable()">
+                <button class="export-btn" onclick="exportPurchaseLedgerToCSV()">📥 Export Sheet</button>
+            </div>
+
             <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
                             <th>Lot No</th>
-                            <th>Date</th>
+                            <th>Date / Due Status</th>
                             <th>Vendor Details</th>
                             <th>Carats</th>
                             <th>Total Amount</th>
@@ -179,7 +210,17 @@
 
     </div>
 
+    <!-- Image Preview Lightbox Modal -->
+    <div class="modal-overlay" id="image-modal" onclick="closeImageModal()">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <img id="modal-img-src" src="" alt="Bill Preview">
+            <button class="ai-btn" style="width:100px; border-color:var(--accent-red); color:white;" onclick="closeImageModal()">Close</button>
+        </div>
+    </div>
+
     <script>
+        let attachedImageBase64 = "";
+
         // Core Engine Setup Matrix
         function initPurchaseCore() {
             document.getElementById('date').valueAsDate = new Date();
@@ -205,6 +246,32 @@
                 document.getElementById('broker-pct').value = '';
                 calculateTotalAmount();
             }
+        }
+
+        function processBillImage(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    attachedImageBase64 = e.target.result;
+                    document.getElementById('file-label-text').innerText = "✅ Bill Attached Successfully";
+                    document.getElementById('file-label-text').style.borderBg = "var(--accent-green)";
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function viewAttachedBill(index) {
+            let logs = JSON.parse(localStorage.getItem('purchase_history_log')) || [];
+            if(logs[index] && logs[index].billImage) {
+                document.getElementById('modal-img-src').src = logs[index].billImage;
+                document.getElementById('image-modal').style.display = 'flex';
+            } else {
+                alert("No bill photo attached to this specific procurement lot.");
+            }
+        }
+
+        function closeImageModal() {
+            document.getElementById('image-modal').style.display = 'none';
         }
 
         function addEntry(storageKey, selectId) {
@@ -277,16 +344,54 @@
             let tbody = document.getElementById('purchase-history-rows');
             tbody.innerHTML = '';
 
-            if(logs.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:30px;">No procurement data items recorded yet.</td></tr>`;
+            let searchParty = document.getElementById('search-party').value.toLowerCase().trim();
+            let searchDate = document.getElementById('search-date').value; 
+            if (searchDate) {
+                let parts = searchDate.split('-');
+                searchDate = `${parts[2]}/${parts[1]}/${parts[0]}`; 
+            }
+
+            let filteredLogs = logs.filter(item => {
+                let matchParty = !searchParty || item.vendor.toLowerCase().includes(searchParty);
+                let matchDate = !searchDate || item.date === searchDate;
+                return matchParty && matchDate;
+            });
+
+            if(filteredLogs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:30px;">No procurement data items matching filters.</td></tr>`;
                 return;
             }
 
-            logs.reverse().forEach(log => {
+            // Keep original log index tracking for photo reference
+            filteredLogs.reverse().forEach((log) => {
+                let origIndex = logs.findIndex(l => l.lot === log.lot);
+                
+                // Advanced Due Date Smart Engine Tracking
+                let dueStatusHtml = `<br><span class="alert-safe">Paid Source</span>`;
+                if(log.dueDate) {
+                    let today = new Date();
+                    today.setHours(0,0,0,0);
+                    let parts = log.dueDate.split('/');
+                    let dueObj = new Date(parts[2], parts[1]-1, parts[0]);
+                    
+                    let diffTime = dueObj - today;
+                    let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                    if(diffDays > 0) {
+                        dueStatusHtml = `<br><span class="alert-warning">⏳ ${diffDays} days left</span>`;
+                    } else if(diffDays === 0) {
+                        dueStatusHtml = `<br><span class="alert-danger">🚨 Due Today</span>`;
+                    } else {
+                        dueStatusHtml = `<br><span class="alert-danger">⚠️ Overdue ${Math.abs(diffDays)} days</span>`;
+                    }
+                }
+
+                let cameraIcon = log.billImage ? `<span style="cursor:pointer; margin-left:6px;" onclick="viewAttachedBill(${origIndex})">🖼️</span>` : "";
+
                 tbody.innerHTML += `
                     <tr class="tr-row">
-                        <td style="color:var(--accent-blue); font-weight:bold;">${log.lot}</td>
-                        <td style="color:var(--text-muted); font-size:12px;">${log.date}</td>
+                        <td style="color:var(--accent-blue); font-weight:bold;">${log.lot} ${cameraIcon}</td>
+                        <td style="color:var(--text-muted); font-size:12px;">${log.date} ${dueStatusHtml}</td>
                         <td><strong>${log.vendor}</strong><br><small style="color:var(--text-muted);">${log.stream === 'broker' ? 'via ' + log.broker : 'Direct Account'}</small></td>
                         <td>${log.carat.toLocaleString('en-IN')} Cts</td>
                         <td style="color:var(--accent-cyan); font-weight:bold;">₹ ${log.netPayable.toLocaleString('en-IN')}</td>
@@ -298,6 +403,7 @@
         function savePurchaseRecord() {
             let lot = document.getElementById('lot').value.trim();
             let dateInput = document.getElementById('date').value;
+            let dueDateInput = document.getElementById('due-date').value;
             let vendor = document.getElementById('vendor').value;
             let source = document.getElementById('pay-source').value;
             let carat = parseFloat(document.getElementById('weight').value) || 0;
@@ -309,11 +415,16 @@
                 return;
             }
 
-            // Date processing node conversion
             let dParts = dateInput.split('-');
             let dateStr = `${dParts[2]}/${dParts[1]}/${dParts[0]}`;
 
-            // Deduction Ledger Sync Integration Node
+            let dueDateStr = "";
+            if(dueDateInput) {
+                let ddParts = dueDateInput.split('-');
+                dueDateStr = `${ddParts[2]}/${ddParts[1]}/${ddParts[0]}`;
+            }
+
+            // Balance deduction node routing
             if(source === 'CASH') {
                 let currentCash = parseFloat(localStorage.getItem('cash_on_hand')) || 0;
                 if(netPayable > currentCash) {
@@ -322,71 +433,76 @@
                 currentCash -= netPayable;
                 localStorage.setItem('cash_on_hand', currentCash.toString());
 
-                // Post directly into operational cash log ledger
                 let cashHistory = JSON.parse(localStorage.getItem('cash_history_log')) || [];
-                cashHistory.push({
-                    date: dateStr,
-                    party: vendor,
-                    purpose: `Rough Intake Lot: ${lot}`,
-                    amount: netPayable,
-                    type: 'javak'
-                });
+                cashHistory.push({ date: dateStr, party: vendor, purpose: `Rough Intake Lot: ${lot}`, amount: netPayable, type: 'javak' });
                 localStorage.setItem('cash_history_log', JSON.stringify(cashHistory));
-
             } else {
-                // Deduct from Bank Channel Account Architecture
                 let banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
                 if(banks.length === 0) {
                     alert("Sync Aborted: No connected target bank account found inside system structure!");
                     return;
                 }
-                
-                // Select first target available bank to clear debit balance
                 banks[0].balance -= netPayable;
                 localStorage.setItem('factory_banks', JSON.stringify(banks));
 
                 let bankLedger = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
-                bankLedger.unshift({
-                    bank: banks[0].name,
-                    method: 'WIRE_TRANSFER',
-                    purpose: `Rough Intake Procurement Lot: ${lot}`,
-                    party: vendor,
-                    amount: netPayable,
-                    mode: 'DEBIT'
-                });
+                bankLedger.unshift({ bank: banks[0].name, method: 'WIRE_TRANSFER', purpose: `Rough Intake Lot: ${lot}`, party: vendor, amount: netPayable, mode: 'DEBIT' });
                 localStorage.setItem('bank_ledger_logs', JSON.stringify(bankLedger));
             }
 
-            // Sync Carat Stock Inventory Node
             let currentStock = parseFloat(localStorage.getItem('total_rough')) || 0;
             localStorage.setItem('total_rough', (currentStock + carat).toString());
 
-            // Commit to Procurement Data Engine
             let purchases = JSON.parse(localStorage.getItem('purchase_history_log')) || [];
             purchases.push({
                 lot: lot,
                 date: dateStr,
+                dueDate: dueDateStr,
                 vendor: vendor,
                 stream: document.getElementById('stream').value,
                 broker: document.getElementById('broker').value,
                 carat: carat,
-                netPayable: netPayable
+                netPayable: netPayable,
+                billImage: attachedImageBase64
             });
             localStorage.setItem('purchase_history_log', JSON.stringify(purchases));
 
-            // Component Interface Form Resetter Matrix
+            // Form Reset Matrix
             document.getElementById('lot').value = '';
             document.getElementById('weight').value = '';
             document.getElementById('price').value = '';
             document.getElementById('broker-pct').value = '';
+            document.getElementById('due-date').value = '';
+            document.getElementById('bill-photo').value = '';
+            attachedImageBase64 = "";
+            document.getElementById('file-label-text').innerText = "📷 Capture / Upload Bill";
             document.getElementById('net-payable').value = '0.00';
             
             alert(`⚡ System Confirmed: Procurement Lot ${lot} integrated into central ledger databases successfully!`);
             refreshPurchaseHistoryTable();
         }
 
+        function exportPurchaseLedgerToCSV() {
+            let history = JSON.parse(localStorage.getItem('purchase_history_log')) || [];
+            if(history.length === 0) { alert("Data Empty: No existing purchase log profiles to export!"); return; }
+
+            let csvRows = ['Lot No,Date,Vendor Details,Weight (Carats),Total Amount (INR)'];
+            history.forEach(h => {
+                csvRows.push(`"${h.lot}","${h.date}","${h.vendor} (${h.stream})","${h.carat}","${h.netPayable}"`);
+            });
+
+            let blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            let link = document.createElement("a");
+            let url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", `Raghuveer_Purchase_Report.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
         function triggerAiVoice() { alert("RA-AI Voice System Engine: Ready and tracking input for Rough Intake parameters..."); }
-        document.addEventListener('click', function() { console.log("System Node Awake."); });
         function triggerAiScan() { alert("RA-AI Optical Vision Core: Initializing high-speed camera matrix to scan invoice slip..."); }
         function triggerAiYield() { alert("RA-AI Diagnostic Core Analytics: Computational simulation target yields roughly 31.8% VVS Polish outcome."); }
 
