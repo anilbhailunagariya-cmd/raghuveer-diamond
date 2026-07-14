@@ -131,7 +131,7 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
  </div> 
  </div> 
 
- <!-- ⚙️ 1. BANK VAULT POPUP - ઓટોમેશન સાથે કમ્પ્લીટ --> 
+ <!-- ⚙️ 1. BANK VAULT POPUP --> 
  <div class="modal-overlay" id="bank-modal" onclick="closePopup('bank-modal', event)"> 
  <div class="modal-box" onclick="event.stopPropagation()"> 
  <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>⚙️ Configuration Matrix</span> <span style="cursor:pointer;" onclick="hidePopupDirect('bank-modal')">✕</span> </div> 
@@ -171,7 +171,7 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
  </div> 
  </div> 
 
- <!-- 🟢 2. CREDIT ENTRY POPUP - કસ્ટમ ઓપ્શન્સ અને આડી લાઈનો કમ્પ્લીટ --> 
+ <!-- 🟢 2. CREDIT ENTRY POPUP --> 
  <div class="modal-overlay" id="credit-modal" onclick="closePopup('credit-modal', event)"> 
  <div class="modal-box" onclick="event.stopPropagation()"> 
  <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>🟢 Deposit Matrix (Credit)</span> <span style="cursor:pointer;" onclick="hidePopupDirect('credit-modal')">✕</span> </div> 
@@ -220,19 +220,57 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
  </div> 
  </div> 
 
- <!-- 🔴 3. DEBIT ENTRY POPUP --> 
+ <!-- 🔴 3. DEBIT ENTRY POPUP - કસ્ટમ ઓપ્શન્સ અને આડી લાઈનો કમ્પ્લીટ --> 
  <div class="modal-overlay" id="debit-modal" onclick="closePopup('debit-modal', event)"> 
  <div class="modal-box" onclick="event.stopPropagation()"> 
  <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>🔴 Expense Matrix (Debit)</span> <span style="cursor:pointer;" onclick="hidePopupDirect('debit-modal')">✕</span> </div> 
+ 
+ <!-- લાઇન ૧: Bank Name ની સામે Method -->
  <div class="form-grid-2">
      <div class="input-group"><label>Bank</label><select class="input-control" id="dr-bank-select"></select></div>
-     <div class="input-group"><label>Method</label><select class="input-control" id="dr-method"><option value="ONLINE">ONLINE / IMPS</option><option value="CHEQUE">CHEQUE</option></select></div>
+     <div class="input-group">
+         <label>Method</label>
+         <select class="input-control" id="dr-method" onchange="toggleCustomDebitMethod(this.value)">
+             <option value="ONLINE">ONLINE / IMPS</option>
+             <option value="CHEQUE">CHEQUE</option>
+             <option value="Other">Other / Custom Method</option>
+         </select>
+     </div>
  </div>
- <div class="input-group"><label>Purpose</label><select class="input-control" id="dr-purpose"><option value="Rough Purchase">Rough Purchase</option><option value="Brokerage">Brokerage</option><option value="Wages & Salaries">Wages & Salaries</option><option value="Factory Expenses">Factory Expenses</option></select></div>
+
+ <!-- ⚡ મેથડ કસ્ટમ ખાનું (જ્યારે Other મેથડ સિલેક્ટ થાય ત્યારે જ લાઈવ ખુલશે) -->
+ <div class="input-group" id="custom-dr-method-wrapper" style="display: none; margin-bottom: 12px;">
+     <label style="color: var(--accent-red);">Enter Custom Method</label>
+     <input type="text" class="input-control" id="dr-custom-method" placeholder="e.g. RTGS, CASH" style="border-color: var(--accent-red);">
+ </div>
+
+ <!-- લાઇન ૨: Purpose ની સામે Amount -->
  <div class="form-grid-2">
-     <div class="input-group"><label>Party Name</label><input type="text" class="input-control" id="dr-party" placeholder="Entity Name"></div>
+     <div class="input-group">
+         <label>Purpose</label>
+         <select class="input-control" id="dr-purpose" onchange="toggleCustomDebitPurpose(this.value)">
+             <option value="Rough Purchase">Rough Purchase</option>
+             <option value="Brokerage">Brokerage</option>
+             <option value="Wages & Salaries">Wages & Salaries</option>
+             <option value="Factory Expenses">Factory Expenses</option>
+             <option value="Other">Other / Custom Purpose</option>
+         </select>
+     </div>
      <div class="input-group"><label>Amount</label><input type="number" class="input-control" id="dr-amount" placeholder="0.00"></div>
  </div>
+
+ <!-- ⚡ પર્પઝ કસ્ટમ ખાનું (જ્યારે Other પર્પઝ સિલેક્ટ થાય ત્યારે જ લાઈવ ખુલશે) -->
+ <div class="input-group" id="custom-dr-purpose-wrapper" style="display: none; margin-bottom: 12px;">
+     <label style="color: var(--accent-red);">Enter Custom Purpose</label>
+     <input type="text" class="input-control" id="dr-custom-purpose" placeholder="e.g. Office Rent, Light Bill" style="border-color: var(--accent-red);">
+ </div>
+
+ <!-- લાઇન ૩: આખું લાંબુ Party Name નું બોક્સ -->
+ <div class="input-group">
+     <label>Party Name</label>
+     <input type="text" class="input-control" id="dr-party" placeholder="Enter Full Entity / Party Name">
+ </div>
+
  <button class="mode-btn" style="background:var(--accent-red); color:white;" onclick="executeTransaction('DEBIT')">Post Debit Entry</button> 
  </div> 
  </div> 
@@ -278,6 +316,10 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
          document.getElementById('custom-cr-method-wrapper').style.display = 'none';
          document.getElementById('custom-cr-purpose-wrapper').style.display = 'none';
      }
+     if(id === 'debit-modal') {
+         document.getElementById('custom-dr-method-wrapper').style.display = 'none';
+         document.getElementById('custom-dr-purpose-wrapper').style.display = 'none';
+     }
  }
 
  // બેંક કસ્ટમ એકાઉન્ટ બોક્સ કંટ્રોલ
@@ -291,7 +333,7 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
      }
  }
 
- // ક્રેડિટ કસ્ટમ મેથડ બોક્સ કંટ્રોલ
+ // 🟢 ક્રેડિટ કસ્ટમ મેથડ બોક્સ કંટ્રોલ
  function toggleCustomCreditMethod(value) {
      const wrapper = document.getElementById('custom-cr-method-wrapper');
      if(value === 'Other') {
@@ -302,12 +344,34 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
      }
  }
 
- // ક્રેડિટ કસ્ટમ પર્પઝ બોક્સ કંટ્રોલ
+ // 🟢 ક્રેડિટ કસ્ટમ પર્પઝ બોક્સ કંટ્રોલ
  function toggleCustomCreditPurpose(value) {
      const wrapper = document.getElementById('custom-cr-purpose-wrapper');
      if(value === 'Other') {
          wrapper.style.display = 'flex';
          document.getElementById('cr-custom-purpose').focus();
+     } else {
+         wrapper.style.display = 'none';
+     }
+ }
+
+ // 🔴 ડેબિટ કસ્ટમ મેથડ બોક્સ કંટ્રોલ
+ function toggleCustomDebitMethod(value) {
+     const wrapper = document.getElementById('custom-dr-method-wrapper');
+     if(value === 'Other') {
+         wrapper.style.display = 'flex';
+         document.getElementById('dr-custom-method').focus();
+     } else {
+         wrapper.style.display = 'none';
+     }
+ }
+
+ // 🔴 ડેબિટ કસ્ટમ પર્પઝ બોક્સ કંટ્રોલ
+ function toggleCustomDebitPurpose(value) {
+     const wrapper = document.getElementById('custom-dr-purpose-wrapper');
+     if(value === 'Other') {
+         wrapper.style.display = 'flex';
+         document.getElementById('dr-custom-purpose').focus();
      } else {
          wrapper.style.display = 'none';
      }
@@ -405,10 +469,40 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
      } else if(mode === 'DEBIT') {
          const bank = document.getElementById('dr-bank-select').value;
          const amount = parseFloat(document.getElementById('dr-amount').value);
-         if(!bank || isNaN(amount) || amount <= 0) return;
+         let method = document.getElementById('dr-method').value;
+         let purpose = document.getElementById('dr-purpose').value;
+         const party = document.getElementById('dr-party').value.trim();
+
+         // 🔴 ડેબિટ કસ્ટમ મેથડ લોજિક
+         if(method === 'Other') {
+             const customMethod = document.getElementById('dr-custom-method').value.trim();
+             if(!customMethod) { alert('Please enter custom method.'); return; }
+             method = customMethod;
+         }
+
+         // 🔴 ડેબિટ કસ્ટમ પર્પઝ લોજિક
+         if(purpose === 'Other') {
+             const customPurpose = document.getElementById('dr-custom-purpose').value.trim();
+             if(!customPurpose) { alert('Please enter custom purpose.'); return; }
+             purpose = customPurpose;
+         }
+
+         if(!bank || isNaN(amount) || amount <= 0 || !party) { alert('Please fill complete transaction details.'); return; }
+         
          const bIdx = banks.findIndex(b => b.name === bank); banks[bIdx].balance -= amount;
-         entries.unshift({ bank, method: document.getElementById('dr-method').value, purpose: document.getElementById('dr-purpose').value, party: document.getElementById('dr-party').value, amount, mode });
-         document.getElementById('dr-amount').value = ''; document.getElementById('dr-party').value = ''; hidePopupDirect('debit-modal');
+         entries.unshift({ bank, method, purpose, party, amount, mode });
+         
+         // 🔴 ડેટા પોસ્ટ થયા પછી ડેબિટ ફોર્મ ક્લીન કરો
+         document.getElementById('dr-amount').value = ''; 
+         document.getElementById('dr-party').value = ''; 
+         document.getElementById('dr-custom-method').value = '';
+         document.getElementById('dr-custom-purpose').value = '';
+         document.getElementById('dr-method').value = 'ONLINE';
+         document.getElementById('dr-purpose').value = 'Rough Purchase';
+         document.getElementById('custom-dr-method-wrapper').style.display = 'none';
+         document.getElementById('custom-dr-purpose-wrapper').style.display = 'none';
+         
+         hidePopupDirect('debit-modal');
      } else if(mode === 'TRANSFER') {
          const src = document.getElementById('tr-src-bank').value;
          const dest = document.getElementById('tr-dest-bank').value;
