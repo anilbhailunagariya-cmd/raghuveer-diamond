@@ -141,7 +141,7 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
      <div class="input-group"> <label>Bank Name</label> <input type="text" class="input-control" id="new-bank-name" placeholder="e.g. SBI, KOTAK"> </div> 
      <div class="input-group"> 
          <label>Account Type</label> 
-         <select class="input-control" id="new-bank-type">
+         <select class="input-control" id="new-bank-type" onchange="toggleCustomAccountInput(this.value)">
              <option value="Saving">Saving Account</option>
              <option value="Current">Current Account</option>
              <option value="Forex">Forex Account</option>
@@ -151,6 +151,12 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
              <option value="Other">Other / Custom Account</option>
          </select> 
      </div> 
+ </div>
+
+ <!-- ⚡ કસ્ટમ એકાઉન્ટ ટાઈપ ટાઈપ કરવાનું ખાનું (Other સિલેક્ટ થતા જ લાઈવ દેખાશે) -->
+ <div class="input-group" id="custom-account-wrapper" style="display: none; margin-bottom: 12px;">
+     <label style="color: var(--accent-blue);">Enter Custom Account Type</label>
+     <input type="text" class="input-control" id="new-bank-custom-type" placeholder="e.g. Fixed Deposit, Joint Account" style="border-color: var(--accent-blue);">
  </div>
 
  <!-- ૨. બીજી લાઈન: Account Number ની સામે IFSC Code -->
@@ -235,14 +241,39 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
 
  function openPopup(id) { document.getElementById(id).style.display = 'flex'; } 
  function closePopup(id, e) { if(e.target.id === id) hidePopupDirect(id); }
- function hidePopupDirect(id) { document.getElementById(id).style.display = 'none'; }
+ function hidePopupDirect(id) { 
+     document.getElementById(id).style.display = 'none'; 
+     if(id === 'bank-modal') {
+         document.getElementById('custom-account-wrapper').style.display = 'none';
+     }
+ }
+
+ // ડ્રોપડાઉન ચેન્જ થાય ત્યારે કસ્ટમ બોક્સ બતાવવા/છુપાવવા માટેનું ફંક્શન
+ function toggleCustomAccountInput(value) {
+     const customWrapper = document.getElementById('custom-account-wrapper');
+     if(value === 'Other') {
+         customWrapper.style.display = 'flex';
+         document.getElementById('new-bank-custom-type').focus();
+     } else {
+         customWrapper.style.display = 'none';
+     }
+ }
 
  function addBankMatrix() { 
      const name = document.getElementById('new-bank-name').value.trim();
      const acc = document.getElementById('new-bank-acc').value.trim();
      const ifsc = document.getElementById('new-bank-ifsc').value.trim();
      const holder = document.getElementById('new-bank-holder').value.trim();
-     const type = document.getElementById('new-bank-type').value;
+     let type = document.getElementById('new-bank-type').value;
+
+     // જો કસ્ટમ સિલેક્ટ કરેલું હોય, તો ટેક્સ્ટ બોક્સમાંથી વેલ્યુ લો
+     if(type === 'Other') {
+         const customType = document.getElementById('new-bank-custom-type').value.trim();
+         if(!customType) { alert('Please enter your custom account type.'); return; }
+         type = customType + " Account";
+     } else {
+         type = type + " Account";
+     }
 
      if(!name || !acc || !ifsc || !holder) { alert('Fill complete bank details.'); return; }
      
@@ -255,6 +286,9 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
      document.getElementById('new-bank-acc').value = '';
      document.getElementById('new-bank-ifsc').value = '';
      document.getElementById('new-bank-holder').value = '';
+     document.getElementById('new-bank-custom-type').value = '';
+     document.getElementById('new-bank-type').value = 'Saving';
+     document.getElementById('custom-account-wrapper').style.display = 'none';
      
      hidePopupDirect('bank-modal'); refreshBankData(); 
  } 
