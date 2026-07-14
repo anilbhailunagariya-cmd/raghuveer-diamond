@@ -3,219 +3,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Raghuveer Diamond - Cash Flow Ledger</title>
+    <title>Raghuveer Diamond - Cash Flow Terminal</title>
     <style>
         :root {
-            --bg: #070B19;
-            --card: #0B132B;
-            --cyan: #5BC0BE;
-            --blue: #00C6FF;
-            --border: #1C2541;
-            --text: #FFFFFF;
-            --accent: #5BC0BE;
-            --safe: #39FF14;
-            --danger: #FF3B30;
+            --bg-primary: #070B19; 
+            --bg-secondary: #0D1630; 
+            --top-bar-bg: #030611; 
+            --border-color: #1C2541; 
+            --accent-cyan: #5BC0BE; 
+            --accent-blue: #00C6FF; 
+            --accent-green: #27AE60; 
+            --accent-red: #E74C3C; 
+            --text-main: #FFFFFF; 
+            --text-muted: #708090; 
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { background: var(--bg); color: var(--text); height: 100vh; width: 100vw; overflow: hidden; display: flex; flex-direction: column; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; }
+        body { background-color: var(--bg-primary); color: var(--text-main); width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-        /* Header Terminal Node */
-        .header { height: 50px; background: rgba(0,0,0,0.4); display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid var(--border); }
-        .logo-text { font-size: 15px; font-weight: 800; letter-spacing: 1px; color: var(--blue); text-transform: uppercase; }
-        .win-btn { background: #111D37; color: var(--accent); border: 1px solid var(--border); width: 25px; height: 25px; cursor: pointer; border-radius: 4px; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 11px; }
+        /* Window Control Top Bar */
+        .window-control-bar { height: 45px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 2px solid var(--border-color); } 
+        .brand-title { font-size: 14px; font-weight: 900; letter-spacing: 1px; color: var(--accent-cyan); text-transform: uppercase; } 
+        .control-group { display: flex; gap: 8px; }
+        .btn-win { width: 32px; height: 26px; border: none; border-radius: 4px; color: white; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 14px; text-decoration: none; }
+        .btn-close { background: var(--accent-red); }
 
-        .container { padding: 12px; display: flex; flex-direction: column; gap: 10px; flex: 1; overflow: hidden; }
+        /* Responsive Balance Board Grid */
+        .balance-board { 
+            display: grid; 
+            grid-template-columns: repeat(1, 1fr); 
+            gap: 12px; 
+            padding: 12px; 
+            width: 100%;
+        } 
+        @media (min-width: 768px) { 
+            .balance-board { grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 15px; } 
+        }
 
-        /* Live Safe Vault Display */
-        .vault-box { background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--safe); border-radius: 6px; padding: 15px; text-align: center; }
-        .v-label { font-size: 10px; color: #708090; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
-        .v-value { font-size: 24px; font-weight: bold; color: var(--safe); margin-top: 4px; }
+        .balance-card { 
+            background: var(--bg-secondary); 
+            border: 2px solid var(--border-color); 
+            border-radius: 12px; 
+            padding: 0; 
+            position: relative; 
+            overflow: hidden; 
+            aspect-ratio: 2.5 / 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+        } 
+        .balance-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; } 
 
-        /* Entry Form Core */
-        .entry-box { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
-        .form-title { font-size: 10px; font-weight: bold; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        .form-group { display: flex; flex-direction: column; gap: 2px; }
-        label { font-size: 9px; color: #708090; text-transform: uppercase; font-weight: 600; }
-        input { background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #FFF; padding: 7px; border-radius: 4px; font-size: 12px; outline: none; width: 100%; }
-        input:focus { border-color: var(--blue); }
+        #card-cash-vault::before { background: var(--accent-blue); }
+        #card-cash-in::before { background: var(--accent-green); }
+        #card-cash-out::before { background: var(--accent-red); }
 
-        .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
-        .action-btn { padding: 10px; border: none; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; text-transform: uppercase; text-align: center; color: #000; }
-        .btn-jama { background: var(--safe); }
-        .btn-javak { background: var(--danger); color: #FFF; }
+        .marquee-strip-container { width: 100%; background: #030611; border-bottom: 1px solid var(--border-color); padding: 8px 10px; min-height: 32px; display: flex; align-items: center; justify-content: center; }
+        .marquee-strip { font-size: 13px; font-weight: 800; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Transaction History Matrix */
-        .ledger-box { flex: 1; display: flex; flex-direction: column; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; padding: 8px; overflow: hidden; }
-        .ledger-title { font-size: 10px; font-weight: bold; color: #708090; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
-        
-        .table-container { flex: 1; overflow-y: auto; margin-top: 5px; }
-        .ledger-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: left; }
-        .ledger-table th { color: #708090; font-weight: bold; padding: 6px 4px; border-bottom: 1px solid var(--border); font-size: 9px; text-transform: uppercase; }
-        .ledger-table td { padding: 8px 4px; border-bottom: 1px dashed rgba(28, 37, 65, 0.5); vertical-align: middle; }
-        
-        .amt-jama { color: var(--safe); font-weight: bold; }
-        .amt-javak { color: var(--danger); font-weight: bold; }
-        .note-text { color: #DDD; }
-        .date-text { color: #708090; font-size: 10px; }
-    </style>
+        .card-content-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 5px; }
+        .card-val { font-size: 22px; font-weight: 800; color: #FFFFFF; text-align: center; } 
+
+        /* Operational Action Trigger Row */
+        .action-trigger-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 12px; margin-bottom: 12px; }
+        @media (min-width: 768px) { .action-trigger-row { gap: 15px; padding: 0 15px; margin-bottom: 15px; } }
+        .trigger-btn { padding: 12px; border: none; border-radius: 8px; font-size: 13px; font-weight: 800; text-transform: uppercase; cursor: pointer; text-align: center; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .btn-trigger-in { background: var(--accent-green); }
+        .btn-trigger-out { background: var(--accent-red); }
+
+        /* Workspace Ledger Core */
+        .cash-workspace { 
+            flex: 1; 
+            padding: 0 12px 12px 12px; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+        } 
+        @media (min-width: 768px) { 
+            .cash-workspace { padding: 0 15px 15px 15px; height: calc(100vh - 220px); } 
+        }
+
+        .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); flex: 1; overflow: hidden; } 
+        .panel-title { font-size: 14px; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 12px; font-weight: 700; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; } 
+
+        .table-wrapper { flex: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; background: #070B19; } 
+        table { width: 100%; border-collapse: collapse; font-size: 13px; } 
+        th { background: #16213E; color: var(--accent-cyan); padding: 12px 10px; text-transform: uppercase; font-size: 12px; font-weight: 700; text-align: left; position: sticky; top: 0; } 
+        td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; } 
+        .tx-cr { color: #2ECC71; font-weight: 700; } 
+        .tx-dr { color: #E74C3C; font-weight: 700; } 
+
+        /* 800px Responsive Modal Overlay Matrix */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(3, 6, 17, 0.85); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; } 
+        .modal-box { background: #0B132B; border: 1px solid var(--accent-cyan); border-radius: 12px; width: 95%; max-width: 800px; padding: 25px; box-shadow: 0 0 25px rgba(91, 192, 190, 0.4); } 
+
+        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 12px; } 
+        .input-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; } 
+        .input-group label { font-size: 11px; color: #FFFFFF; text-transform: uppercase; font-weight: 600; } 
+        .input-control { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; outline: none; width: 100%; } 
+        .mode-btn { width: 100%; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; text-align: center; border: none; font-size: 13px; color: #030611; background: var(--accent-cyan); margin-top: 5px; } 
+    </style> 
 </head>
-<body>
+<body onload="initCashFlowCore()">
 
-    <!-- Top Identity Header Terminal -->
-    <div class="header">
-        <div class="logo-text">RAGHUVEER DIAMOND - CASH FLOW TERMINAL</div>
-        <a href="main_office.html" class="win-btn">✕ CLOSE</a>
+    <!-- Top Windows Bar Architecture -->
+    <div class="window-control-bar"> 
+        <div class="brand-title">RAGHUVEER DIAMOND - CASH FLOW PROTOCOL</div> 
+        <div class="control-group">
+            <a href="main_office.html" class="btn-win btn-close">✕</a>
+        </div>
     </div>
 
-    <div class="container">
-        
-        <!-- Current Vault Cash Balance Display -->
-        <div class="vault-box">
-            <div class="v-label">હાથ પરના કુલ રોકડા રૂપિયા (CASH ON HAND)</div>
-            <div class="v-value" id="live-balance">₹ 0.00</div>
-        </div>
+    <!-- Live Analytical Data Cards -->
+    <div class="balance-board"> 
+        <div class="balance-card" id="card-cash-vault"><div class="marquee-strip-container"><div class="marquee-strip">CASH ON HAND</div></div><div class="card-content-wrapper"><div class="card-val" id="val-cash-vault">₹ 0</div></div></div>
+        <div class="balance-card" id="card-cash-in"><div class="marquee-strip-container"><div class="marquee-strip">TOTAL CASH IN</div></div><div class="card-content-wrapper"><div class="card-val" id="val-cash-in">₹ 0</div></div></div>
+        <div class="balance-card" id="card-cash-out"><div class="marquee-strip-container"><div class="marquee-strip">TOTAL CASH OUT</div></div><div class="card-content-wrapper"><div class="card-val" id="val-cash-out">₹ 0</div></div></div>
+    </div> 
 
-        <!-- Cash Entry Entry Form Core -->
-        <div class="entry-box">
-            <div class="form-title">નવી રોકડી એન્ટ્રી (NEW CASH ENTRY)</div>
-            
-            <div class="form-group">
-                <label>રોકડા રૂપિયા (CASH AMOUNT)</label>
-                <input type="number" id="cash-amount" placeholder="રકમ લખો (₹)" min="1">
-            </div>
-            
-            <div class="form-group">
-                <label>આવક / જાવકની વિગત (TRANSACTION DETAILS)</label>
-                <input type="text" id="cash-note" placeholder="વિગત લખો (દા.ત. કારખાના મજૂરી, પાર્ટીનું નામ)">
-            </div>
+    <!-- Action Trigger Intermediaries -->
+    <div class="action-trigger-row">
+        <button class="trigger-btn btn-trigger-in" onclick="openPopup('cash-in-modal')">🟢 Post Cash In</button>
+        <button class="trigger-btn btn-trigger-out" onclick="openPopup('cash-out-modal')">🔴 Post Cash Out</button>
+    </div>
 
-            <div class="btn-row">
-                <button class="action-btn btn-jama" onclick="processTransaction('jama')">🟢 જમા (JAMA)</button>
-                <button class="action-btn btn-javak" onclick="processTransaction('javak')">🔴 જાવક / ઉધાર (JAVAK)</button>
-            </div>
-        </div>
-
-        <!-- Transaction History Ledger Sheet View -->
-        <div class="ledger-box">
-            <div class="ledger-title">રોજમેળ પત્રક વિગત (LIVE TRANSACTION HISTORY LOG)</div>
-            <div class="table-container">
-                <table class="ledger-table">
+    <!-- Workspace Ledger Interface -->
+    <div class="cash-workspace"> 
+        <div class="panel-box"> 
+            <div class="panel-title">Live Cash Ledger Database</div> 
+            <div class="table-wrapper"> 
+                <table>
                     <thead>
                         <tr>
-                            <th style="width: 22%;">તારીખ</th>
-                            <th style="width: 48%;">આવક / જાવકની વિગત</th>
-                            <th style="width: 15%; text-align: right;">જમા (+)</th>
-                            <th style="width: 15%; text-align: right;">જાવક (-)</th>
+                            <th>Timestamp</th>
+                            <th>Operational Details</th>
+                            <th>Amount Flow</th>
                         </tr>
                     </thead>
-                    <tbody id="ledger-body">
-                        <!-- Data rows injected dynamically via storage engine -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                    <tbody id="ledger-rows"></tbody>
+                </table> 
+            </div> 
+        </div> 
+    </div>
 
+    <!-- 🟢 1. CASH IN MODAL ENGINE -->
+    <div class="modal-overlay" id="cash-in-modal" onclick="closePopup('cash-in-modal', event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>🟢 Cash In Matrix</span> <span style="cursor:pointer;" onclick="hidePopupDirect('cash-in-modal')">✕</span> </div>
+            
+            <div class="form-grid-2">
+                <div class="input-group"><label>Amount (₹)</label><input type="number" class="input-control" id="in-amount" placeholder="0.00"></div>
+                <div class="input-group"><label>Received From (Party Name)</label><input type="text" class="input-control" id="in-party" placeholder="Enter Entity Name"></div>
+            </div>
+
+            <div class="input-group">
+                <label>Purpose</label>
+                <select class="input-control" id="in-purpose" onchange="toggleCustomInPurpose(this.value)">
+                    <option value="Brokerage Income">Brokerage Income</option>
+                    <option value="Rough Counter Cash">Rough Counter Cash</option>
+                    <option value="Office Advance Return">Office Advance Return</option>
+                    <option value="Other">Other / Custom Purpose</option>
+                </select>
+            </div>
+
+            <div class="input-group" id="custom-in-purpose-wrapper" style="display: none; margin-bottom: 12px;">
+                <label style="color: var(--accent-green);">Enter Custom Purpose</label>
+                <input type="text" class="input-control" id="in-custom-purpose" placeholder="e.g. Personal Capital Injection" style="border-color: var(--accent-green);">
+            </div>
+
+            <button class="mode-btn" style="background:var(--accent-green); color:white;" onclick="executeCashTransaction('jama')">Confirm Cash In</button>
+        </div>
+    </div>
+
+    <!-- 🔴 2. CASH OUT MODAL ENGINE -->
+    <div class="modal-overlay" id="cash-out-modal" onclick="closePopup('cash-out-modal', event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>🔴 Cash Out Matrix</span> <span style="cursor:pointer;" onclick="hidePopupDirect('cash-out-modal')">✕</span> </div>
+            
+            <div class="form-grid-2">
+                <div class="input-group"><label>Amount (₹)</label><input type="number" class="input-control" id="out-amount" placeholder="0.00"></div>
+                <div class="input-group"><label>Paid To (Party / Person)</label><input type="text" class="input-control" id="out-party" placeholder="Enter Entity Name"></div>
+            </div>
+
+            <div class="input-group">
+                <label>Expense Purpose</label>
+                <select class="input-control" id="out-purpose" onchange="toggleCustomOutPurpose(this.value)">
+                    <option value="Factory Wages">Factory Wages</option>
+                    <option value="Office Refreshments">Office Refreshments</option>
+                    <option value="Stationery Expenses">Stationery Expenses</option>
+                    <option value="Daily Labor Payout">Daily Labor Payout</option>
+                    <option value="Other">Other / Custom Purpose</option>
+                </select>
+            </div>
+
+            <div class="input-group" id="custom-out-purpose-wrapper" style="display: none; margin-bottom: 12px;">
+                <label style="color: var(--accent-red);">Enter Custom Purpose</label>
+                <input type="text" class="input-control" id="out-custom-purpose" placeholder="e.g. Machine Oil Purchase" style="border-color: var(--accent-red);">
+            </div>
+
+            <button class="mode-btn" style="background:var(--accent-red); color:white;" onclick="executeCashTransaction('javak')">Confirm Cash Out</button>
+        </div>
     </div>
 
     <script>
-        // Core Cash Engine Initialization
+        // Core Storage Setup Configuration
         function initCashFlowCore() {
-            if(!localStorage.getItem('cash_on_hand')) {
-                localStorage.setItem('cash_on_hand', '0');
-            }
-            if(!localStorage.getItem('cash_history_log')) {
-                localStorage.setItem('cash_history_log', JSON.stringify([]));
-            }
-            renderCashDashboard();
+            if(!localStorage.getItem('cash_on_hand')) localStorage.setItem('cash_on_hand', '0');
+            if(!localStorage.getItem('cash_history_log')) localStorage.setItem('cash_history_log', JSON.stringify([]));
+            refreshCashDashboard();
         }
 
-        function renderCashDashboard() {
+        function openPopup(id) { document.getElementById(id).style.display = 'flex'; }
+        function closePopup(id, e) { if(e.target.id === id) hidePopupDirect(id); }
+        function hidePopupDirect(id) {
+            document.getElementById(id).style.display = 'none';
+            if(id === 'cash-in-modal') document.getElementById('custom-in-purpose-wrapper').style.display = 'none';
+            if(id === 'cash-out-modal') document.getElementById('custom-out-purpose-wrapper').style.display = 'none';
+        }
+
+        // Custom Selection Field Control Matrix
+        function toggleCustomInPurpose(val) {
+            const wrapper = document.getElementById('custom-in-purpose-wrapper');
+            if(val === 'Other') { wrapper.style.display = 'flex'; document.getElementById('in-custom-purpose').focus(); }
+            else wrapper.style.display = 'none';
+        }
+
+        function toggleCustomOutPurpose(val) {
+            const wrapper = document.getElementById('custom-out-purpose-wrapper');
+            if(val === 'Other') { wrapper.style.display = 'flex'; document.getElementById('out-custom-purpose').focus(); }
+            else wrapper.style.display = 'none';
+        }
+
+        function refreshCashDashboard() {
             let cashVal = parseFloat(localStorage.getItem('cash_on_hand')) || 0;
-            document.getElementById('live-balance').innerText = '₹ ' + cashVal.toLocaleString('en-IN', {minimumFractionDigits: 2});
+            document.getElementById('val-cash-vault').innerText = '₹ ' + cashVal.toLocaleString('en-IN');
 
             let history = JSON.parse(localStorage.getItem('cash_history_log')) || [];
-            let tbody = document.getElementById('ledger-body');
+            
+            let totalIn = history.filter(h => h.type === 'jama').reduce((sum, h) => sum + h.amount, 0);
+            let totalOut = history.filter(h => h.type === 'javak').reduce((sum, h) => sum + h.amount, 0);
+
+            document.getElementById('val-cash-in').innerText = '₹ ' + totalIn.toLocaleString('en-IN');
+            document.getElementById('val-cash-out').innerText = '₹ ' + totalOut.toLocaleString('en-IN');
+
+            let tbody = document.getElementById('ledger-rows');
             tbody.innerHTML = '';
 
             if(history.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#708090; padding:20px;">હજુ સુધી કોઈ રોકડા વહેવાર નોંધાયા નથી.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:20px;">No operational cash records found.</td></tr>`;
                 return;
             }
 
-            // Show latest entries on top
-            history.reverse().forEach(item => {
-                let jamaCol = item.type === 'jama' ? `<span class="amt-jama">+ ₹${item.amount.toLocaleString('en-IN')}</span>` : '-';
-                let javakCol = item.type === 'javak' ? `<span class="amt-javak">- ₹${item.amount.toLocaleString('en-IN')}</span>` : '-';
-                
+            // Display latest logs dynamically on frontend viewport
+            [...history].reverse().forEach(item => {
+                let colorClass = item.type === 'jama' ? 'tx-cr' : 'tx-dr';
+                let sign = item.type === 'jama' ? '+' : '-';
                 tbody.innerHTML += `
                     <tr>
-                        <td class="date-text">${item.date}</td>
-                        <td class="note-text">${item.note}</td>
-                        <td style="text-align: right;">${jamaCol}</td>
-                        <td style="text-align: right;">${javakCol}</td>
+                        <td style="color:var(--text-muted); font-size:12px;">${item.date}</td>
+                        <td><strong>${item.party}</strong><br><small style="color:var(--text-muted);">${item.purpose}</small></td>
+                        <td class="${colorClass}">${sign} ₹ ${item.amount.toLocaleString('en-IN')}</td>
                     </tr>
                 `;
             });
-            // restore history list order back
-            history.reverse();
         }
 
-        function processTransaction(type) {
-            let amount = parseFloat(document.getElementById('cash-amount').value) || 0;
-            let note = document.getElementById('cash-note').value.trim();
+        function executeCashTransaction(type) {
+            let amount = 0, party = '', purpose = '', customPurposeId = '', purposeId = '', modalId = '';
 
-            if(amount <= 0) {
-                alert("ભૂલ: કૃપા કરીને સાચી રકમ લખો!");
-                return;
+            if(type === 'jama') {
+                amount = parseFloat(document.getElementById('in-amount').value) || 0;
+                party = document.getElementById('in-party').value.trim();
+                purpose = document.getElementById('in-purpose').value;
+                customPurposeId = 'in-custom-purpose';
+                purposeId = 'in-purpose';
+                modalId = 'cash-in-modal';
+            } else {
+                amount = parseFloat(document.getElementById('out-amount').value) || 0;
+                party = document.getElementById('out-party').value.trim();
+                purpose = document.getElementById('out-purpose').value;
+                customPurposeId = 'out-custom-purpose';
+                purposeId = 'out-purpose';
+                modalId = 'cash-out-modal';
             }
-            if(note === "") {
-                alert("ભૂલ: કૃપા કરીને આવક અથવા જાવકની સાચી વિગત લખો!");
-                return;
+
+            if(purpose === 'Other') {
+                let customVal = document.getElementById(customPurposeId).value.trim();
+                if(!customVal) { alert("Please enter custom purpose specification!"); return; }
+                purpose = customVal;
             }
+
+            if(amount <= 0 || !party) { alert("Operational Error: Complete all core parameters accurately!"); return; }
 
             let currentCash = parseFloat(localStorage.getItem('cash_on_hand')) || 0;
 
             if(type === 'javak' && amount > currentCash) {
-                if(!confirm("⚠️ એલર્ટ: તિજોરીમાં રહેલા રોકડા કરતાં જાવક (ઉધાર) રકમ વધારે છે. શું આગળ વધવું છે?")) {
-                    return;
-                }
+                if(!confirm("Warning Check: Payout request exceeds cash vault threshold. Proceed anyway?")) return;
             }
 
-            if(type === 'jama') {
-                currentCash += amount;
-            } else {
-                currentCash -= amount;
-            }
+            if(type === 'jama') currentCash += amount;
+            else currentCash -= amount;
 
-            // Create timestamp layout
             let today = new Date();
             let dateStr = today.getDate().toString().padStart(2, '0') + '/' + 
                           (today.getMonth() + 1).toString().padStart(2, '0') + '/' + 
                           today.getFullYear();
 
             let history = JSON.parse(localStorage.getItem('cash_history_log')) || [];
-            history.push({
-                date: dateStr,
-                note: note,
-                amount: amount,
-                type: type
-            });
+            history.push({ date: dateStr, party: party, purpose: purpose, amount: amount, type: type });
 
-            // Sync data with local secure memory
+            // Sync Core Database Memory
             localStorage.setItem('cash_on_hand', currentCash.toString());
             localStorage.setItem('cash_history_log', JSON.stringify(history));
 
-            // Clear input fields safely
-            document.getElementById('cash-amount').value = '';
-            document.getElementById('cash-note').value = '';
+            // Component Field Reset Engine
+            if(type === 'jama') {
+                document.getElementById('in-amount').value = '';
+                document.getElementById('in-party').value = '';
+                document.getElementById('in-custom-purpose').value = '';
+                document.getElementById('in-purpose').value = 'Brokerage Income';
+            } else {
+                document.getElementById('out-amount').value = '';
+                document.getElementById('out-party').value = '';
+                document.getElementById('out-custom-purpose').value = '';
+                document.getElementById('out-purpose').value = 'Factory Wages';
+            }
 
-            alert("⚡ રોજમેળ એન્ટ્રી સફળતાપૂર્વક નોંધી લેવામાં આવી છે!");
-            renderCashDashboard();
+            hidePopupDirect(modalId);
+            refreshCashDashboard();
         }
-
-        window.onload = initCashFlowCore;
     </script>
 </body>
 </html>
