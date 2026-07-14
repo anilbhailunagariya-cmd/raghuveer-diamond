@@ -3,13 +3,13 @@
 <head> 
 <meta charset="UTF-8"> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
-<title>Raghuveer Diamond - All Popup Banking Terminal</title> 
+<title>Raghuveer Diamond - Full Responsive Terminal</title> 
 <style> 
 :root { 
     --bg-primary: #070B19; 
-    --bg-secondary: rgba(17, 29, 55, 0.7); 
+    --bg-secondary: #0D1630; 
     --top-bar-bg: #030611; 
-    --border-color: rgba(28, 37, 65, 0.9); 
+    --border-color: #1C2541; 
     --accent-cyan: #5BC0BE; 
     --accent-blue: #00C6FF; 
     --accent-green: #27AE60; 
@@ -21,11 +21,16 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; } 
 body { background-color: var(--bg-primary); color: var(--text-main); width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden; } 
 
-.window-control-bar { height: 45px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 1px solid var(--border-color); } 
+/* ૩ વિન્ડો કંટ્રોલ બટન */
+.window-control-bar { height: 45px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 2px solid var(--border-color); } 
 .brand-title { font-size: 14px; font-weight: 900; letter-spacing: 1px; color: var(--accent-cyan); text-transform: uppercase; } 
-.win-btn { background: none; border: none; color: var(--accent-red); font-size: 12px; cursor: pointer; font-weight: bold; } 
+.control-group { display: flex; gap: 8px; }
+.btn-win { width: 32px; height: 26px; border: none; border-radius: 4px; color: white; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.btn-min { background: #2C3E50; }
+.btn-max { background: #34495E; }
+.btn-close { background: var(--accent-red); }
 
-/* રિસ્પોન્સિવ ૨+૨ ગ્રીડ લેઆઉટ */
+/* રિસ્પોન્સિવ ગ્રીડ */
 .balance-board { 
     display: grid; 
     grid-template-columns: repeat(2, 1fr); 
@@ -60,18 +65,14 @@ body { background-color: var(--bg-primary); color: var(--text-main); width: 100v
 #card-top-debit::before { background: var(--accent-red); }
 #card-top-transfer::before { background: var(--accent-purple); }
 
-.marquee-strip-container { width: 100%; background: rgba(3, 6, 17, 0.9); border-bottom: 1px solid var(--border-color); padding: 6px 10px; min-height: 28px; display: flex; align-items: center; justify-content: center; }
-.marquee-strip { font-size: 10px; font-weight: bold; color: var(--accent-cyan); text-transform: uppercase; text-align: center; }
+/* ઉપરની બ્લેક પટ્ટી અને મોટા અક્ષરો */
+.marquee-strip-container { width: 100%; background: #030611; border-bottom: 1px solid var(--border-color); padding: 8px 10px; min-height: 32px; display: flex; align-items: center; justify-content: center; }
+.marquee-strip { font-size: 13px; font-weight: 800; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; }
 
 .card-content-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 5px; }
-.card-val { font-size: 18px; font-weight: 800; color: #FFFFFF; text-align: center; } 
+.card-val { font-size: 20px; font-weight: 800; color: #FFFFFF; text-align: center; } 
 
-#card-top-bank .card-val { text-shadow: 0 0 12px rgba(0, 198, 255, 0.6); }
-#card-top-credit .card-val { text-shadow: 0 0 12px rgba(39, 174, 96, 0.6); }
-#card-top-debit .card-val { text-shadow: 0 0 12px rgba(231, 76, 60, 0.6); }
-#card-top-transfer .card-val { text-shadow: 0 0 12px rgba(155, 89, 182, 0.6); }
-
-/* ચોપડાનો નવો રિસ્પોન્સિવ લેઆઉટ (ફોર્મ વગર આખી સ્ક્રીનમાં મોટો દેખાશે) */
+/* લાઇવ ચોપડો */
 .bank-workspace { 
     flex: 1; 
     padding: 0 12px 12px 12px; 
@@ -84,36 +85,40 @@ body { background-color: var(--bg-primary); color: var(--text-main); width: 100v
 }
 
 .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); flex: 1; overflow: hidden; } 
-.panel-title { font-size: 13px; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 12px; font-weight: 700; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; } 
+.panel-title { font-size: 14px; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 12px; font-weight: 700; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; } 
 
-.table-wrapper { flex: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); } 
-table { width: 100%; border-collapse: collapse; font-size: 12px; } 
-th { background: var(--border-color); color: var(--accent-cyan); padding: 12px 10px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; position: sticky; top: 0; } 
+.table-wrapper { flex: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; background: #070B19; } 
+table { width: 100%; border-collapse: collapse; font-size: 13px; } 
+th { background: #16213E; color: var(--accent-cyan); padding: 12px 10px; text-transform: uppercase; font-size: 12px; font-weight: 700; text-align: left; position: sticky; top: 0; } 
 td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; } 
 .tx-cr { color: #2ECC71; font-weight: 700; } 
 .tx-dr { color: #E74C3C; font-weight: 700; } 
 .tx-tr { color: #9B59B6; font-weight: 700; } 
 
-/* પોપ-અપ મોડલ કોમન ડિઝાઈન */
+/* પોપ-અપ મોડલ ડિઝાઈન */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(3, 6, 17, 0.85); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; } 
 .modal-box { background: #0B132B; border: 1px solid var(--accent-cyan); border-radius: 12px; width: 92%; max-width: 420px; padding: 20px; box-shadow: 0 0 25px rgba(91, 192, 190, 0.4); } 
 
 .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; } 
 .input-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; } 
 .input-group label { font-size: 11px; color: #FFFFFF; text-transform: uppercase; font-weight: 600; } 
-.input-control { background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; outline: none; width: 100%; } 
+.input-control { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; outline: none; width: 100%; } 
 .mode-btn { width: 100%; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; text-align: center; border: none; font-size: 13px; color: #030611; background: var(--accent-cyan); margin-top: 5px; } 
 </style> 
 </head> 
 <body onload="initializeTerminal()" onclick="makeFullScreen()"> 
 
 <div class="window-control-bar"> 
- <div class="brand-title">RAGHUVEER DIAMOND - TOTAL TERMINAL</div> 
- <button class="win-btn" onclick="backToDashboard()">✕ CLOSE</button> 
+ <div class="brand-title">RAGHUVEER DIAMOND - TERMINAL CORE</div> 
+ <div class="control-group">
+     <button class="btn-win btn-min" onclick="alert('Minimize')">-</button>
+     <button class="btn-win btn-max" onclick="toggleFullScreen()">□</button>
+     <button class="btn-win btn-close" onclick="backToDashboard()">✕</button>
+ </div>
 </div> 
 
  <div class="balance-board"> 
-     <!-- ૪ ચોરસ બોક્સ જે હવે પોપ-અપ ખોલશે -->
+     <!-- ૪ મેઈન બોક્સ જેમાંથી પોપ-અપ ખુલશે -->
      <div class="balance-card" id="card-top-bank" onclick="openPopup('bank-modal')"><div class="marquee-strip-container"><div class="marquee-strip">BANK VAULT</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-vault">₹ 0</div></div></div>
      <div class="balance-card" id="card-top-credit" onclick="openPopup('credit-modal')"><div class="marquee-strip-container"><div class="marquee-strip">CREDIT TRAFFIC</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-credit">₹ 0</div></div></div>
      <div class="balance-card" id="card-top-debit" onclick="openPopup('debit-modal')"><div class="marquee-strip-container"><div class="marquee-strip">DEBIT FLOW</div></div><div class="card-content-wrapper"><div class="card-val" id="val-top-debit">₹ 0</div></div></div>
@@ -127,7 +132,7 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
  </div> 
  </div> 
 
- <!-- ⚙️ ૧. BANK VAULT POPUP --> 
+ <!-- ⚙️ 1. BANK VAULT POPUP --> 
  <div class="modal-overlay" id="bank-modal" onclick="closePopup('bank-modal', event)"> 
  <div class="modal-box" onclick="event.stopPropagation()"> 
  <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>⚙️ Configuration Matrix</span> <span style="cursor:pointer;" onclick="hidePopupDirect('bank-modal')">✕</span> </div> 
@@ -138,7 +143,7 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
  </div> 
  </div> 
 
- <!-- 🟢 ૨. CREDIT ENTRY POPUP --> 
+ <!-- 🟢 2. CREDIT ENTRY POPUP --> 
  <div class="modal-overlay" id="credit-modal" onclick="closePopup('credit-modal', event)"> 
  <div class="modal-box" onclick="event.stopPropagation()"> 
  <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>🟢 Deposit Matrix (Credit)</span> <span style="cursor:pointer;" onclick="hidePopupDirect('credit-modal')">✕</span> </div> 
@@ -155,7 +160,7 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
  </div> 
  </div> 
 
- <!-- 🔴 ૩. DEBIT ENTRY POPUP --> 
+ <!-- 🔴 3. DEBIT ENTRY POPUP --> 
  <div class="modal-overlay" id="debit-modal" onclick="closePopup('debit-modal', event)"> 
  <div class="modal-box" onclick="event.stopPropagation()"> 
  <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>🔴 Expense Matrix (Debit)</span> <span style="cursor:pointer;" onclick="hidePopupDirect('debit-modal')">✕</span> </div> 
@@ -172,7 +177,7 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
  </div> 
  </div> 
 
- <!-- 🟣 ૪. BANK TRANSFER POPUP --> 
+ <!-- 🟣 4. BANK TRANSFER POPUP --> 
  <div class="modal-overlay" id="transfer-modal" onclick="closePopup('transfer-modal', event)"> 
  <div class="modal-box" onclick="event.stopPropagation()"> 
  <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>🟣 Interbank Transfer Protocol</span> <span style="cursor:pointer;" onclick="hidePopupDirect('transfer-modal')">✕</span> </div> 
@@ -191,6 +196,13 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
 <script> 
  function makeFullScreen() { 
      if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(err => {}); 
+ }
+ function toggleFullScreen() { 
+     if (!document.fullscreenElement) {
+         document.documentElement.requestFullscreen().catch(e => {});
+     } else {
+         document.exitFullscreen();
+     }
  }
  function initializeTerminal() { refreshBankData(); } 
  function backToDashboard() { window.location.href = 'main_office.html'; } 
