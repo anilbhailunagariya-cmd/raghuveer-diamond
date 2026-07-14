@@ -53,7 +53,9 @@
             justify-content: space-between;
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
             transition: all 0.3s ease;
+            cursor: pointer;
         } 
+        .balance-card:hover { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(91, 192, 190, 0.3); }
         .balance-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; } 
 
         #card-cash-vault::before { background: var(--accent-blue); }
@@ -66,13 +68,6 @@
         .card-content-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 5px; }
         .card-val { font-size: 22px; font-weight: 800; color: #FFFFFF; text-align: center; } 
 
-        /* Operational Action Trigger Row */
-        .action-trigger-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 12px; margin-bottom: 12px; }
-        @media (min-width: 768px) { .action-trigger-row { gap: 15px; padding: 0 15px; margin-bottom: 15px; } }
-        .trigger-btn { padding: 12px; border: none; border-radius: 8px; font-size: 13px; font-weight: 800; text-transform: uppercase; cursor: pointer; text-align: center; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .btn-trigger-in { background: var(--accent-green); }
-        .btn-trigger-out { background: var(--accent-red); }
-
         /* Workspace Ledger Core */
         .cash-workspace { 
             flex: 1; 
@@ -82,7 +77,7 @@
             overflow: hidden; 
         } 
         @media (min-width: 768px) { 
-            .cash-workspace { padding: 0 15px 15px 15px; height: calc(100vh - 220px); } 
+            .cash-workspace { padding: 0 15px 15px 15px; height: calc(100vh - 165px); } 
         }
 
         .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); flex: 1; overflow: hidden; } 
@@ -116,18 +111,12 @@
         </div>
     </div>
 
-    <!-- Live Analytical Data Cards -->
+    <!-- Live Analytical Data Cards (Clickable Targets) -->
     <div class="balance-board"> 
         <div class="balance-card" id="card-cash-vault"><div class="marquee-strip-container"><div class="marquee-strip">CASH ON HAND</div></div><div class="card-content-wrapper"><div class="card-val" id="val-cash-vault">₹ 0</div></div></div>
-        <div class="balance-card" id="card-cash-in"><div class="marquee-strip-container"><div class="marquee-strip">TOTAL CASH IN</div></div><div class="card-content-wrapper"><div class="card-val" id="val-cash-in">₹ 0</div></div></div>
-        <div class="balance-card" id="card-cash-out"><div class="marquee-strip-container"><div class="marquee-strip">TOTAL CASH OUT</div></div><div class="card-content-wrapper"><div class="card-val" id="val-cash-out">₹ 0</div></div></div>
+        <div class="balance-card" id="card-cash-in" onclick="openPopup('cash-in-modal')"><div class="marquee-strip-container"><div class="marquee-strip">TOTAL CASH IN</div></div><div class="card-content-wrapper"><div class="card-val" id="val-cash-in">₹ 0</div></div></div>
+        <div class="balance-card" id="card-cash-out" onclick="openPopup('cash-out-modal')"><div class="marquee-strip-container"><div class="marquee-strip">TOTAL CASH OUT</div></div><div class="card-content-wrapper"><div class="card-val" id="val-cash-out">₹ 0</div></div></div>
     </div> 
-
-    <!-- Action Trigger Intermediaries -->
-    <div class="action-trigger-row">
-        <button class="trigger-btn btn-trigger-in" onclick="openPopup('cash-in-modal')">🟢 Post Cash In</button>
-        <button class="trigger-btn btn-trigger-out" onclick="openPopup('cash-out-modal')">🔴 Post Cash Out</button>
-    </div>
 
     <!-- Workspace Ledger Interface -->
     <div class="cash-workspace"> 
