@@ -99,7 +99,7 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(3, 6, 17, 0.85); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; } 
 .modal-box { background: #0B132B; border: 1px solid var(--accent-cyan); border-radius: 12px; width: 95%; max-width: 800px; padding: 25px; box-shadow: 0 0 25px rgba(91, 192, 190, 0.4); } 
 
-.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; } 
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 12px; } 
 .input-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; } 
 .input-group label { font-size: 11px; color: #FFFFFF; text-transform: uppercase; font-weight: 600; } 
 .input-control { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; outline: none; width: 100%; } 
@@ -131,13 +131,23 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
  </div> 
  </div> 
 
- <!-- ⚙️ 1. BANK VAULT POPUP --> 
+ <!-- ⚙️ 1. BANK VAULT POPUP - પાંચેય ખાના બે ભાગમાં ગોઠવેલા --> 
  <div class="modal-overlay" id="bank-modal" onclick="closePopup('bank-modal', event)"> 
  <div class="modal-box" onclick="event.stopPropagation()"> 
  <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>⚙️ Configuration Matrix</span> <span style="cursor:pointer;" onclick="hidePopupDirect('bank-modal')">✕</span> </div> 
- <div class="input-group"> <label>Bank Name</label> <input type="text" class="input-control" id="new-bank-name" placeholder="e.g. SBI, KOTAK"> </div> 
- <div class="input-group"> <label>Account Number</label> <input type="text" class="input-control" id="new-bank-acc" placeholder="Enter A/C Number"> </div> 
+ 
+ <div class="form-grid-2">
+     <div class="input-group"> <label>Bank Name</label> <input type="text" class="input-control" id="new-bank-name" placeholder="e.g. SBI, KOTAK"> </div> 
+     <div class="input-group"> <label>IFSC Code</label> <input type="text" class="input-control" id="new-bank-ifsc" placeholder="Enter IFSC Code"> </div> 
+ </div>
+
+ <div class="form-grid-2">
+     <div class="input-group"> <label>Account Holder Name</label> <input type="text" class="input-control" id="new-bank-holder" placeholder="Enter Holder Name"> </div> 
+     <div class="input-group"> <label>Account Number</label> <input type="text" class="input-control" id="new-bank-acc" placeholder="Enter A/C Number"> </div> 
+ </div>
+
  <div class="input-group"> <label>Account Type</label> <select class="input-control" id="new-bank-type"><option value="Current">Current Account</option><option value="Saving">Saving Account</option></select> </div> 
+ 
  <button class="mode-btn" style="background:var(--accent-blue); color:white;" onclick="addBankMatrix()">Live Link Account</button> 
  </div> 
  </div> 
@@ -211,13 +221,24 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
  function hidePopupDirect(id) { document.getElementById(id).style.display = 'none'; }
 
  function addBankMatrix() { 
-     const name = document.getElementById('new-bank-name').value;
-     const acc = document.getElementById('new-bank-acc').value;
-     if(!name || !acc) { alert('Fill complete bank details.'); return; }
+     const name = document.getElementById('new-bank-name').value.trim();
+     const acc = document.getElementById('new-bank-acc').value.trim();
+     const ifsc = document.getElementById('new-bank-ifsc').value.trim();
+     const holder = document.getElementById('new-bank-holder').value.trim();
+     const type = document.getElementById('new-bank-type').value;
+
+     if(!name || !acc || !ifsc || !holder) { alert('Fill complete bank details.'); return; }
+     
      const banks = JSON.parse(localStorage.getItem('factory_banks')) || []; 
-     banks.push({ name: name, acc: acc, type: document.getElementById('new-bank-type').value, balance: 785000 }); 
+     banks.push({ name: name, acc: acc, ifsc: ifsc, holder: holder, type: type, balance: 785000 }); 
      localStorage.setItem('factory_banks', JSON.stringify(banks)); 
-     document.getElementById('new-bank-name').value = ''; document.getElementById('new-bank-acc').value = '';
+     
+     // ખાના સબમિટ થયા પછી એકદમ સાફ કરી નાખો
+     document.getElementById('new-bank-name').value = ''; 
+     document.getElementById('new-bank-acc').value = '';
+     document.getElementById('new-bank-ifsc').value = '';
+     document.getElementById('new-bank-holder').value = '';
+     
      hidePopupDirect('bank-modal'); refreshBankData(); 
  } 
 
