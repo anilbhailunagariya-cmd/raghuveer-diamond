@@ -31,24 +31,36 @@
         .btn-max { background: #34495E; }
         .btn-close { background: var(--accent-red); }
 
-        /* Layout Grid Architecture */
-        .workspace-grid { flex: 1; display: grid; grid-template-columns: 1fr; gap: 15px; padding: 15px; overflow-y: auto; }
-        @media (min-width: 992px) {
-            .workspace-grid { grid-template-columns: 450px 1fr; overflow: hidden; }
+        /* Layout Grid Architecture - 950px and 400px Custom Splitter */
+        .workspace-grid { flex: 1; display: flex; gap: 15px; padding: 15px; overflow: hidden; justify-content: center; align-items: stretch; }
+        
+        .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); height: 100%; }
+        
+        /* Fixed Precise Dimensions for Desktop Screens */
+        .form-panel { width: 950px; }
+        .log-panel { width: 400px; }
+
+        /* Mobile Auto-Responsive Overrides */
+        @media (max-width: 1390px) {
+            .workspace-grid { flex-direction: column; overflow-y: auto; align-items: center; }
+            .panel-box { width: 100%; max-width: 950px; height: auto; }
         }
 
-        .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); overflow: hidden; }
-        .panel-title { font-size: 14px; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 15px; font-weight: 700; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; }
-
         /* AI Dock Premium Matrix */
-        .ai-dock { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+        .ai-dock { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 15px; }
         .ai-btn { background: #16213E; color: #FFF; padding: 10px 5px; font-size: 11px; border-radius: 6px; border: 1px solid var(--border-color); cursor: pointer; font-weight: 800; text-transform: uppercase; transition: all 0.2s ease; letter-spacing: 0.5px; }
         .ai-btn:hover { border-color: var(--accent-cyan); background: #1A2F56; color: var(--accent-cyan); }
 
-        /* Form Controls */
-        .form-scroller { flex: 1; overflow-y: auto; padding-right: 5px; display: flex; flex-direction: column; gap: 12px; }
-        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .input-group { display: flex; flex-direction: column; gap: 4px; }
+        /* Wide Form Matrix: Removed Inner Scrolling, Created clean 2-column or 3-column rows */
+        .form-container-grid { display: flex; flex-direction: column; gap: 14px; }
+        .form-row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        
+        @media (max-width: 768px) {
+            .form-row-3, .form-row-2 { grid-template-columns: 1fr; gap: 12px; }
+        }
+
+        .input-group { display: flex; flex-direction: column; gap: 5px; }
         .input-group label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
         .input-control { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; outline: none; width: 100%; }
         .input-control:focus { border-color: var(--accent-blue); }
@@ -60,20 +72,21 @@
         .file-label { background: #16213E; color: white; border: 1px dashed var(--accent-cyan); padding: 10px; border-radius: 6px; text-align: center; cursor: pointer; font-size: 12px; font-weight: bold; text-transform: uppercase; display: block; }
         .file-label:hover { background: rgba(91, 192, 190, 0.1); }
 
-        .submit-btn { background: var(--accent-cyan); color: #030611; padding: 14px; border: none; border-radius: 8px; font-weight: 800; margin-top: 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; box-shadow: 0 4px 12px rgba(91,192,190,0.3); }
+        .submit-btn { background: var(--accent-cyan); color: #030611; padding: 14px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; box-shadow: 0 4px 12px rgba(91,192,190,0.3); width: 100%; margin-top: 5px; }
         .submit-btn:hover { background: var(--accent-blue); color: #FFFFFF; }
         .hidden { display: none !important; }
 
         /* Filter Controls */
-        .filter-control-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; align-items: center; }
-        .filter-input { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 8px 12px; border-radius: 6px; font-size: 12px; outline: none; font-weight: bold; }
-        .export-btn { background: #27AE60; color: white; border: none; padding: 8px 15px; border-radius: 6px; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-left: auto; }
+        .filter-control-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+        .filter-search-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .filter-input { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 8px 12px; border-radius: 6px; font-size: 12px; outline: none; font-weight: bold; width: 100%; }
+        .export-btn { background: #27AE60; color: white; border: none; padding: 10px; border-radius: 6px; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; width: 100%; text-align: center; }
 
         /* Table Configuration */
-        .table-wrapper { flex: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; background: #070B19; margin-top: 5px; }
+        .table-wrapper { flex: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; background: #070B19; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { background: #16213E; color: var(--accent-cyan); padding: 12px 10px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid var(--border-color); }
-        td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; vertical-align: middle; }
+        th { background: #16213E; color: var(--accent-cyan); padding: 12px 8px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid var(--border-color); }
+        td { padding: 12px 8px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; vertical-align: middle; }
         .tr-row:hover { background: rgba(28, 37, 65, 0.3); }
 
         .alert-safe { color: #2ECC71; font-weight: bold; font-size: 11px; }
@@ -81,7 +94,7 @@
         .alert-danger { color: #E74C3C; font-weight: bold; font-size: 11px; }
 
         /* Photo Preview Modal Overlay */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vw; height: 100vh; background: rgba(3, 6, 17, 0.9); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(3, 6, 17, 0.9); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; }
         .modal-box { background: #0B132B; border: 1px solid var(--accent-cyan); border-radius: 12px; padding: 15px; max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center; }
         .modal-box img { max-width: 100%; max-height: 70vh; object-fit: contain; border-radius: 6px; margin-bottom: 10px; }
     </style> 
@@ -101,30 +114,30 @@
     <!-- Main Workspace Splitter -->
     <div class="workspace-grid">
         
-        <!-- Left Column: Entry Engine -->
-        <div class="panel-box">
-            
+        <!-- Left Column: Entry Engine (950px Wide Screen Grid) -->
+        <div class="panel-box form-panel">
             <div class="ai-dock">
                 <button class="ai-btn" onclick="triggerAiVoice()">🎤 VOICE</button>
                 <button class="ai-btn" onclick="triggerAiScan()">📸 SCAN</button>
                 <button class="ai-btn" onclick="triggerAiYield()">📈 YIELD</button>
             </div>
 
-            <div class="form-scroller">
-                <div class="form-grid-2">
+            <div class="form-container-grid">
+                <!-- Row 1: Lot, Intake Date, Vendor Entity -->
+                <div class="form-row-3">
                     <div class="input-group"><label>Lot No</label><input type="text" id="lot" class="input-control" placeholder="e.g. RF-101"></div>
                     <div class="input-group"><label>Intake Date</label><input type="date" id="date" class="input-control"></div>
-                </div>
-
-                <div class="input-group">
-                    <label>Vendor Entity</label>
-                    <div class="input-row">
-                        <select id="vendor" class="input-control"><option value="">-- Select Vendor --</option></select>
-                        <button class="plus-btn" onclick="addEntry('rp_vendors', 'vendor')">+</button>
+                    <div class="input-group">
+                        <label>Vendor Entity</label>
+                        <div class="input-row">
+                            <select id="vendor" class="input-control"><option value="">-- Select Vendor --</option></select>
+                            <button class="plus-btn" onclick="addEntry('rp_vendors', 'vendor')">+</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-grid-2">
+                <!-- Row 2: Purchase Stream, Payment Mode, Broker Targets (Conditional Row managed inside grid) -->
+                <div class="form-row-3">
                     <div class="input-group">
                         <label>Purchase Stream</label>
                         <select id="stream" class="input-control" onchange="toggleBrokerBlock()">
@@ -138,25 +151,25 @@
                             <option value="BANK">CONNECTED BANK CHANNEL</option>
                         </select>
                     </div>
-                </div>
-
-                <!-- Broker Configuration Sub-matrix -->
-                <div id="broker-block" class="form-grid-2 hidden">
-                    <div class="input-group"><label>Broker Target</label>
+                    <!-- Empty block to maintain alignment if direct, becomes broker field if via broker -->
+                    <div id="broker-target-group" class="input-group hidden"><label>Broker Target</label>
                         <div class="input-row">
                             <select id="broker" class="input-control"><option value="">-- Select Broker --</option></select>
                             <button class="plus-btn" onclick="addEntry('rp_brokers', 'broker')">+</button>
                         </div>
                     </div>
-                    <div class="input-group"><label>Brokerage (%)</label><input type="number" id="broker-pct" class="input-control" placeholder="0.00" oninput="calculateTotalAmount()"></div>
+                    <div id="broker-placeholder" class="input-group"></div>
                 </div>
 
-                <div class="form-grid-2">
+                <!-- Row 3: Weight, Price, Brokerage -->
+                <div class="form-row-3">
                     <div class="input-group"><label>Weight (Carats)</label><input type="number" step="0.01" id="weight" class="input-control" placeholder="0.00" oninput="calculateTotalAmount()"></div>
                     <div class="input-group"><label>Price / Carat (₹)</label><input type="number" step="0.01" id="price" class="input-control" placeholder="0.00" oninput="calculateTotalAmount()"></div>
+                    <div id="broker-pct-group" class="input-group invisible" style="opacity: 0;"><label>Brokerage (%)</label><input type="number" id="broker-pct" class="input-control" placeholder="0.00" oninput="calculateTotalAmount()"></div>
                 </div>
 
-                <div class="form-grid-2">
+                <!-- Row 4: Tax Structure, Due Target Date, Bill Photo -->
+                <div class="form-row-3">
                     <div class="input-group"><label>Tax Structure Class</label>
                         <div class="input-row">
                             <select id="tax" class="input-control" onchange="calculateTotalAmount()"></select>
@@ -164,31 +177,32 @@
                         </div>
                     </div>
                     <div class="input-group"><label>Due Target Date</label><input type="date" id="due-date" class="input-control"></div>
+                    <div class="input-group">
+                        <label>Attach Bill Invoice Photo</label>
+                        <label for="bill-photo" class="file-label" id="file-label-text">📷 Capture / Upload Bill</label>
+                        <input type="file" id="bill-photo" accept="image/*" class="hidden" onchange="processBillImage(this)">
+                    </div>
                 </div>
 
-                <!-- Bill Photo Attachment Input Node -->
-                <div class="input-group">
-                    <label>Attach Bill Invoice Photo</label>
-                    <label for="bill-photo" class="file-label" id="file-label-text">📷 Capture / Upload Bill</label>
-                    <input type="file" id="bill-photo" accept="image/*" class="hidden" onchange="processBillImage(this)">
+                <!-- Row 5: Valuation and Commit Button -->
+                <div class="form-row-2" style="align-items: flex-end;">
+                    <div class="input-group">
+                        <label style="color: var(--accent-blue); font-weight: bold;">Net Payable Valuation (₹)</label>
+                        <input type="text" id="net-payable" class="input-control" readonly style="color: var(--accent-blue); font-size: 16px; background: #030611; border-color: var(--accent-blue);" placeholder="0.00">
+                    </div>
+                    <button class="submit-btn" onclick="savePurchaseRecord()">Commit Purchase to Ledger</button>
                 </div>
-
-                <div class="input-group">
-                    <label style="color: var(--accent-blue); font-weight: bold;">Net Payable Valuation (₹)</label>
-                    <input type="text" id="net-payable" class="input-control" readonly style="color: var(--accent-blue); font-size: 16px; background: #030611; border-color: var(--accent-blue);" placeholder="0.00">
-                </div>
-
-                <button class="submit-btn" onclick="savePurchaseRecord()">Commit Purchase to Ledger</button>
             </div>
         </div>
 
-        <!-- Right Column: Realtime History Database -->
-        <div class="panel-box">
-            
-            <!-- Advanced Search, Date Filters & Export Integrated Row -->
+        <!-- Right Column: Realtime History Database (400px Wide Screen Panel) -->
+        <div class="panel-box log-panel">
+            <!-- Advanced Search, Date Filters & Export Integrated Blocks -->
             <div class="filter-control-row">
-                <input type="text" class="filter-input" id="search-party" placeholder="Search Vendor..." oninput="refreshPurchaseHistoryTable()">
-                <input type="date" class="filter-input" id="search-date" onchange="refreshPurchaseHistoryTable()">
+                <div class="filter-search-group">
+                    <input type="text" class="filter-input" id="search-party" placeholder="Search Vendor..." oninput="refreshPurchaseHistoryTable()">
+                    <input type="date" class="filter-input" id="search-date" onchange="refreshPurchaseHistoryTable()">
+                </div>
                 <button class="export-btn" onclick="exportPurchaseLedgerToCSV()">📥 Export Sheet</button>
             </div>
 
@@ -197,10 +211,9 @@
                     <thead>
                         <tr>
                             <th>Lot No</th>
-                            <th>Date / Due Status</th>
+                            <th>Date / Status</th>
                             <th>Vendor Details</th>
-                            <th>Carats</th>
-                            <th>Total Amount</th>
+                            <th>Total (₹)</th>
                         </tr>
                     </thead>
                     <tbody id="purchase-history-rows"></tbody>
@@ -238,11 +251,20 @@
 
         function toggleBrokerBlock() {
             let stream = document.getElementById('stream').value;
-            let block = document.getElementById('broker-block');
+            let targetGroup = document.getElementById('broker-target-group');
+            let placeholder = document.getElementById('broker-placeholder');
+            let pctGroup = document.getElementById('broker-pct-group');
+
             if(stream === 'broker') {
-                block.classList.remove('hidden');
+                targetGroup.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+                pctGroup.style.opacity = "1";
+                pctGroup.classList.remove('invisible');
             } else {
-                block.classList.add('hidden');
+                targetGroup.classList.add('hidden');
+                placeholder.classList.remove('hidden');
+                pctGroup.style.opacity = "0";
+                pctGroup.classList.add('invisible');
                 document.getElementById('broker-pct').value = '';
                 calculateTotalAmount();
             }
@@ -253,8 +275,7 @@
                 let reader = new FileReader();
                 reader.onload = function(e) {
                     attachedImageBase64 = e.target.result;
-                    document.getElementById('file-label-text').innerText = "✅ Bill Attached Successfully";
-                    document.getElementById('file-label-text').style.borderBg = "var(--accent-green)";
+                    document.getElementById('file-label-text').innerText = "✅ Bill Attached";
                 }
                 reader.readAsDataURL(input.files[0]);
             }
@@ -266,7 +287,7 @@
                 document.getElementById('modal-img-src').src = logs[index].billImage;
                 document.getElementById('image-modal').style.display = 'flex';
             } else {
-                alert("No bill photo attached to this specific procurement lot.");
+                alert("No bill photo attached to this specific lot.");
             }
         }
 
@@ -358,16 +379,14 @@
             });
 
             if(filteredLogs.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:30px;">No procurement data items matching filters.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:30px;">Empty Logs</td></tr>`;
                 return;
             }
 
-            // Keep original log index tracking for photo reference
             filteredLogs.reverse().forEach((log) => {
                 let origIndex = logs.findIndex(l => l.lot === log.lot);
-                
-                // Advanced Due Date Smart Engine Tracking
                 let dueStatusHtml = `<br><span class="alert-safe">Paid Source</span>`;
+                
                 if(log.dueDate) {
                     let today = new Date();
                     today.setHours(0,0,0,0);
@@ -382,19 +401,18 @@
                     } else if(diffDays === 0) {
                         dueStatusHtml = `<br><span class="alert-danger">🚨 Due Today</span>`;
                     } else {
-                        dueStatusHtml = `<br><span class="alert-danger">⚠️ Overdue ${Math.abs(diffDays)} days</span>`;
+                        dueStatusHtml = `<br><span class="alert-danger">⚠️ Overdue ${Math.abs(diffDays)}d</span>`;
                     }
                 }
 
-                let cameraIcon = log.billImage ? `<span style="cursor:pointer; margin-left:6px;" onclick="viewAttachedBill(${origIndex})">🖼️</span>` : "";
+                let cameraIcon = log.billImage ? `<span style="cursor:pointer; margin-left:4px;" onclick="viewAttachedBill(${origIndex})">🖼️</span>` : "";
 
                 tbody.innerHTML += `
                     <tr class="tr-row">
                         <td style="color:var(--accent-blue); font-weight:bold;">${log.lot} ${cameraIcon}</td>
-                        <td style="color:var(--text-muted); font-size:12px;">${log.date} ${dueStatusHtml}</td>
-                        <td><strong>${log.vendor}</strong><br><small style="color:var(--text-muted);">${log.stream === 'broker' ? 'via ' + log.broker : 'Direct Account'}</small></td>
-                        <td>${log.carat.toLocaleString('en-IN')} Cts</td>
-                        <td style="color:var(--accent-cyan); font-weight:bold;">₹ ${log.netPayable.toLocaleString('en-IN')}</td>
+                        <td style="color:var(--text-muted); font-size:11px;">${log.date} ${dueStatusHtml}</td>
+                        <td><strong>${log.vendor}</strong><br><small style="color:var(--text-muted); font-size:11px;">${log.carat} Cts</small></td>
+                        <td style="color:var(--accent-cyan); font-weight:bold;">₹${Math.round(log.netPayable).toLocaleString('en-IN')}</td>
                     </tr>
                 `;
             });
@@ -411,7 +429,7 @@
             let netPayable = calculateTotalAmount();
 
             if(!lot || !dateInput || !vendor || carat <= 0 || price <= 0) {
-                alert("Validation Check Failure: Lot No, Date, Vendor, Weight and Price are mandatory parameters!");
+                alert("Validation Check Failure: Missing Mandatory parameters!");
                 return;
             }
 
@@ -424,11 +442,10 @@
                 dueDateStr = `${ddParts[2]}/${ddParts[1]}/${ddParts[0]}`;
             }
 
-            // Balance deduction node routing
             if(source === 'CASH') {
                 let currentCash = parseFloat(localStorage.getItem('cash_on_hand')) || 0;
                 if(netPayable > currentCash) {
-                    if(!confirm("Warning Matrix Check: Payable exceeds cash vault inventory threshold. Proceed anyway?")) return;
+                    if(!confirm("Warning Matrix Check: Payable exceeds cash vault inventory threshold. Proceed?")) return;
                 }
                 currentCash -= netPayable;
                 localStorage.setItem('cash_on_hand', currentCash.toString());
@@ -439,7 +456,7 @@
             } else {
                 let banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
                 if(banks.length === 0) {
-                    alert("Sync Aborted: No connected target bank account found inside system structure!");
+                    alert("Sync Aborted: No connected bank account found inside system structure!");
                     return;
                 }
                 banks[0].balance -= netPayable;
@@ -467,7 +484,7 @@
             });
             localStorage.setItem('purchase_history_log', JSON.stringify(purchases));
 
-            // Form Reset Matrix
+            // Reset Matrix
             document.getElementById('lot').value = '';
             document.getElementById('weight').value = '';
             document.getElementById('price').value = '';
@@ -478,13 +495,13 @@
             document.getElementById('file-label-text').innerText = "📷 Capture / Upload Bill";
             document.getElementById('net-payable').value = '0.00';
             
-            alert(`⚡ System Confirmed: Procurement Lot ${lot} integrated into central ledger databases successfully!`);
+            alert(`⚡ System Confirmed: Procurement Lot ${lot} Integrated Successfully!`);
             refreshPurchaseHistoryTable();
         }
 
         function exportPurchaseLedgerToCSV() {
             let history = JSON.parse(localStorage.getItem('purchase_history_log')) || [];
-            if(history.length === 0) { alert("Data Empty: No existing purchase log profiles to export!"); return; }
+            if(history.length === 0) { alert("Data Empty to export!"); return; }
 
             let csvRows = ['Lot No,Date,Vendor Details,Weight (Carats),Total Amount (INR)'];
             history.forEach(h => {
@@ -502,9 +519,9 @@
             document.body.removeChild(link);
         }
 
-        function triggerAiVoice() { alert("RA-AI Voice System Engine: Ready and tracking input for Rough Intake parameters..."); }
-        function triggerAiScan() { alert("RA-AI Optical Vision Core: Initializing high-speed camera matrix to scan invoice slip..."); }
-        function triggerAiYield() { alert("RA-AI Diagnostic Core Analytics: Computational simulation target yields roughly 31.8% VVS Polish outcome."); }
+        function triggerAiVoice() { alert("RA-AI Voice Engine Activated..."); }
+        function triggerAiScan() { alert("RA-AI Invoice Optical Scanner Initializing..."); }
+        function triggerAiYield() { alert("RA-AI Diagnostics: Target calculation yields 31.8% VVS polish outcome."); }
 
         function toggleFullScreen() {
             if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(e=>{}); } 
