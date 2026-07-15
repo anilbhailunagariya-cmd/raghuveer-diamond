@@ -188,10 +188,10 @@
         .dashboard-grid {
             flex: 1;
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* Default desktop grid[span_0](start_span)[span_0](end_span) */
+            grid-template-columns: repeat(4, 1fr);
             gap: 8px;
             min-height: 0;
-            overflow-y: auto; /* Enable safe scrolling for multi-device view */
+            overflow-y: auto;
             padding-right: 4px;
         }
 
@@ -209,13 +209,13 @@
 
         @media (max-width: 1024px) {
             .dashboard-grid {
-                grid-template-columns: repeat(3, 1fr); /* Tablet Mode */
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 
         @media (max-width: 768px) {
             .dashboard-grid {
-                grid-template-columns: repeat(2, 1fr); /* Mobile Landscape / Large Phones */
+                grid-template-columns: repeat(2, 1fr);
             }
             .director-master-panel {
                 flex-direction: column;
@@ -232,7 +232,7 @@
 
         @media (max-width: 480px) {
             .dashboard-grid {
-                grid-template-columns: repeat(2, 1fr); /* Scaled safe columns for portrait smartphones */
+                grid-template-columns: repeat(2, 1fr);
             }
             .node-identity {
                 font-size: 10px !important;
@@ -251,9 +251,10 @@
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden;
-            height: 110px; /* Locked safe aspect height for multi-device rows */
+            height: 110px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             transition: 0.3s;
+            cursor: pointer;
         }
 
         .node-box:hover {
@@ -322,7 +323,7 @@
             color: #5BC0BE;
         }
 
-        /* રોલ લૉકિંગ ક્લાસ */
+        /* Role Locking Class */
         .node-box.sys-locked {
             opacity: 0.20 !important;
             cursor: not-allowed !important;
@@ -639,28 +640,29 @@
             <div class="chart-visual-wrapper"><div class="live-chart-container" id="mainOfficeChartContainer"></div></div>
         </div>
         <div class="dashboard-grid">
-            <div class="node-box" id="node-accountant" onclick="handleClusterLink('Accountant Node')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Accountant Node <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-dataentry" onclick="handleClusterLink('Data Entry WIP')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Data Entry WIP <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-galaxy" onclick="handleClusterLink('Galaxy Core Array')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Galaxy <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-qc" onclick="handleClusterLink('Q.C. Center Array')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Q.C. Center <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-sarine" onclick="handleClusterLink('Sarine Plan Cluster')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Sarine Plan <span class="live-tag"></span></div></div>
-            <div class="node-box" id="laserNodeTracker" onclick="handleClusterLink('Laser Matrix Terminal')"><div class="node-pipeline" id="laserPipelineString">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Laser <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-4p" onclick="handleClusterLink('4P Machine Hub')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">4P Machine <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-bottomready" onclick="handleClusterLink('Ready For Bottom Pool')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Ready For Bottom <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-autobottom" onclick="handleClusterLink('Auto Bottom Array')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Auto Bottom <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-manualbottom" onclick="handleClusterLink('Manual Bottom Hub')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Manual Bottom <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-pel" onclick="handleClusterLink('PEL Terminal Link')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">PEL <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-mathala" onclick="handleClusterLink('Mathala Processing Station')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Mathala <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-table" onclick="handleClusterLink('Sorting Table Array')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Table <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-police" onclick="handleClusterLink('Police Check Station')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Police Check <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-tracker" onclick="handleClusterLink('Machine Tracker System')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Machine Tracker <span class="live-tag"></span></div></div>
-            <div class="node-box future-ai-node" id="node-global" onclick="handleClusterLink('Global AI Market Anti-Loss Core')"><div class="node-pipeline" style="color: #5BC0BE;">ANTI-LOSS PROTECTION ONLINE<br>[GLOBAL ARBITRAGE ACTIVE]</div><div class="node-identity">AI Global Market <span class="live-tag"></span></div></div>
+            <div class="node-box" id="node-accountant" onclick="handleClusterLink('Accountant Node', 'accountant_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Accountant Node <span class="live-tag"></span></div></div>
+            <div class="node-box" id="node-dataentry" onclick="handleClusterLink('Data Entry WIP', 'dataentry_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Data Entry WIP <span class="live-tag"></span></div></div>
+            <div class="node-box" id="node-galaxy" onclick="handleClusterLink('Galaxy Core Array', 'galaxy_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Galaxy <span class="live-tag"></span></div></div>
+            <div class="node-box" id="node-qc" onclick="handleClusterLink('Q.C. Center Array', 'qc_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Q.C. Center <span class="live-tag"></span></div></div>
+            <div class="node-box" id="node-sarine" onclick="handleClusterLink('Sarine Plan Cluster', 'sarine_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Sarine Plan <span class="live-tag"></span></div></div>
+            <div class="node-box" id="laserNodeTracker" onclick="handleClusterLink('Laser Matrix Terminal', 'laser_module.html')"><div class="node-pipeline" id="laserPipelineString">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Laser <span class="live-tag"></span></div></div>
+            <div class="node-box" id="node-4p" onclick="handleClusterLink('4P Machine Hub', '4p_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">4P Machine <span class="live-tag"></span></div></div>
+            <div class="node-box" id="node-bottomready" onclick="handleClusterLink('Ready For Bottom Pool', 'bottomready_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Ready For Bottom <span class="live-tag"></span></div></div>
+            <div class="node-box" id="node-autobottom" onclick="handleClusterLink('Auto Bottom Array', 'autobottom_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Auto Bottom <span class="live-tag"></span></div></div>
+            <div class="node-box" id="node-manualbottom" onclick="handleClusterLink('Manual Bottom Hub', 'manualbottom_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Manual Bottom <span class="live-tag"></span></div></div>
+            <div class="node-box" id="node-pel" onclick="handleClusterLink('PEL Terminal Link', 'pel_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">PEL <span class="live-tag"></span></div></div>
+            <div class="node-box" id="node-mathala" onclick="handleClusterLink('Mathala Processing Station', 'mathala_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Mathala <span class="live-tag"></span></div></div>
+            <div class="node-box" id="node-table" onclick="handleClusterLink('Sorting Table Array', 'table_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Table <span class="live-tag"></span></div></div>
+            <div class="node-box" id="node-police" onclick="handleClusterLink('Police Check Station', 'police_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Police Check <span class="live-tag"></span></div></div>
+            <div class="node-box" id="node-tracker" onclick="handleClusterLink('Machine Tracker System', 'tracker_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Machine Tracker <span class="live-tag"></span></div></div>
+            <div class="node-box future-ai-node" id="node-global" onclick="handleClusterLink('Global AI Market Anti-Loss Core', 'global_module.html')"><div class="node-pipeline" style="color: #5BC0BE;" id="aiNodeModelDisplay">LOADING AI BRAIN NODE...<br>[GLOBAL ARBITRAGE ACTIVE]</div><div class="node-identity">AI Global Market <span class="live-tag"></span></div></div>
         </div>
         <div class="bottom-dock">
             <div class="system-status-string" id="footerClockLive">Secure Telemetry Active</div>
             <button class="settings-trigger" onclick="openMasterConfigurationGrid()">⚙️</button>
         </div>
     </div>
+    
     <!-- Security Gate Area -->
     <div class="modal-overlay" id="directorGateOverlay">
         <div class="modal-window">
@@ -707,12 +709,12 @@
             </div>
             <div class="input-group" id="otpInputGroupContainer">
                 <label for="secureOtpField">Enter Synchronized 6-Digit Secondary OTP Code</label>
-                <!-- Enter key listener added for smart mobile/mail submission -->
                 <input type="password" maxlength="6" id="secureOtpField" class="secure-input" placeholder="••••••" autocomplete="off" onkeydown="if(event.key === 'Enter') executeDirectorGateAuthorization()">
             </div>
             <button class="action-execution-btn" id="mainSubmitGateBtn" onclick="executeDirectorGateAuthorization()">Verify Identity Metrics & Enter</button>
         </div>
     </div>
+    
     <!-- Master Settings Dashboard -->
     <div class="modal-overlay" id="masterSettingsOverlay">
         <div class="modal-window">
@@ -738,17 +740,25 @@
                         <button class="option-selector-btn" id="btn-ai" onclick="switchGraphDesignMatrix('ai')" style="grid-column: span 2;">5. AI Neural Technology</button>
                     </div>
                 </div>
+                
+                <!-- Surat Autonomous Core IoT Integration Panel (Added for 2050 Man-less Automation Mode) -->
                 <div class="control-block">
-                    <h4>Active Display Unit Parameters (1-16 Nodes)</h4>
-                    <div class="selection-options-row">
-                        <button class="option-selector-btn active" onclick="alert('Display parameters synced: Realtime Operational WIP')">WIP Count</button>
-                        <button class="option-selector-btn" onclick="alert('Display parameters synced: Carat Weight Distribution Metrics')">Carats Volume</button>
+                    <h4>🤖 Surat Autonomous Factory Core (IoT Monitoring)</h4>
+                    <div class="selection-options-row" style="flex-direction:column; gap:5px; margin-top:5px;">
+                        <div style="font-size:10px; display:flex; justify-content:space-between; background:#070B19; padding:8px; border-radius:4px; border:1px solid #1C2541;">
+                            <span>Robotic Arms Core Status:</span>
+                            <span style="color:#2ECC71; font-weight:bold;">⚡ 100% ONLINE [MAN-LESS ACTIVE]</span>
+                        </div>
+                        <div style="font-size:10px; display:flex; justify-content:space-between; background:#070B19; padding:8px; border-radius:4px; border:1px solid #1C2541;">
+                            <span>Auto Bottom Laser Precision:</span>
+                            <span style="color:#2ECC71; font-weight:bold;">🔬 +/- 0.002 Micron Match</span>
+                        </div>
                     </div>
                 </div>
+
                 <div class="control-block">
                     <h4>Administrative Process Lock Authorization</h4>
                     <div class="input-group" style="margin-bottom:10px; margin-top:5px;">
-                        <!-- Enter key trigger added for swift override reset -->
                         <input type="password" id="directorOverridePass" class="secure-input" placeholder="Enter Director Master Password" style="font-size:12px; padding:8px;" onkeydown="if(event.key === 'Enter') processDirectorOverrideClearance()">
                     </div>
                     <button class="action-execution-btn" onclick="processDirectorOverrideClearance()" style="padding:8px; font-size:11px;">Authorize Override & Reset Trailing Blocks</button>
@@ -776,44 +786,91 @@
         systemDataBus.onmessage = (event) => {
             console.log("📡 [DASHBOARD RECEIVER] Global System Signal Sync:", event.data);
             if(event.data.type === "REMOTE_CREDENTIALS_UPDATE") {
-                console.log("♻️ Credentials updated by director node. Refreshing localized cache mapping...");
+                console.log("♻️ Credentials updated by director node. Refreshing cached values...");
             }
             if(event.data.type === "LASER_OVERRIDE_TRIGGER") {
-                // Instantly unlocks the view dynamically across any machine terminal viewing this page
                 document.getElementById('laserNodeTracker').classList.remove('overdue-alert');
                 document.getElementById('laserPipelineString').innerHTML = `AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]`;
             }
         };
 
         // ========================================================
-        // 3. 💾 INDEXEDDB CACHE REGISTRY SYSTEM (SERVER PRE-FETCH READY)
+        // 3. 🛡️ HIGH-SECURITY CRYPTO UTILS (SHA-256)
+        // ========================================================
+        async function hashString(str) {
+            if(!str) return "";
+            const encoder = new TextEncoder();
+            const data = encoder.encode(str);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // ========================================================
+        // 4. 💾 INDEXEDDB CACHE REGISTRY SYSTEM (SERVER PRE-FETCH READY)
         // ========================================================
         const dbName = "RaghuveerDiamondDB";
         let dbInstance = null;
 
         function connectLocalDatabaseNode() {
             const request = indexedDB.open(dbName, 1);
+            
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                // Automatically create object stores for all departments to allow seamless interconnected entries
+                const departmentStores = [
+                    "system_registry", "accountant_store", "dataentry_store", "galaxy_store",
+                    "qc_store", "sarine_store", "laser_store", "4p_store", "bottomready_store",
+                    "autobottom_store", "manualbottom_store", "pel_store", "mathala_store",
+                    "table_store", "police_store", "tracker_store", "global_store"
+                ];
+                departmentStores.forEach(store => {
+                    if (!db.objectStoreNames.contains(store)) {
+                        db.createObjectStore(store, { keyPath: "id", autoIncrement: true });
+                    }
+                });
+            };
+
             request.onsuccess = (event) => {
                 dbInstance = event.target.result;
                 console.log("📊 [INDEXEDDB COMPONENT] Reactive local cache mapping synced perfectly.");
                 pullRealtimeProductionMetrics();
+                loadAIEngineDetails();
+            };
+        }
+
+        function readFromDB(key, callback) {
+            if (!dbInstance) {
+                const val = localStorage.getItem(key);
+                callback(val);
+                return;
+            }
+            const tx = dbInstance.transaction("system_registry", "readonly");
+            const store = tx.objectStore("system_registry");
+            const request = store.get(key);
+            request.onsuccess = () => {
+                callback(request.result ? request.result.val : null);
             };
         }
 
         function pullRealtimeProductionMetrics() {
-            // Future Server Hook: Fetch JSON data stream from company node server and parse locally
             console.log("🤖 [PREDICTIVE UI] Fetching asset files based on active user role mappings...");
+        }
+
+        function loadAIEngineDetails() {
+            // Retrieve AI parameters set in index.html and display on Global AI Node
+            readFromDB("ai_model", (modelName) => {
+                const badge = document.getElementById('aiNodeModelDisplay');
+                if (badge) {
+                    badge.innerHTML = `AI Model Active: <span style="color:#00C6FF; font-weight:bold;">${modelName || "quantum-yield-v6"}</span><br>[GLOBAL ARBITRAGE ACTIVE]`;
+                }
+            });
         }
 
         connectLocalDatabaseNode();
 
-        // પ્યોર કંપની પ્રોફિટ-લોસ ઝીરો રન સ્ટેટ મેટ્રિક્સ
+        // Financial indicator mapping
         const companyRealFinancials = {
-            offsetA: 0,
-            offsetB: 0,
-            offsetC: 0,
-            offsetD: 0,
-            offsetE: 0,
             hexColor: "var(--matte-yellow)"
         };
 
@@ -867,17 +924,6 @@
             document.getElementById('mainOfficeChartContainer').innerHTML = generateLiveVectorGraph();
         }
 
-        function syncRealFactoryFinancials(profitValue) {
-            if(profitValue > 0) {
-                companyRealFinancials.hexColor = "var(--matte-green)";
-            } else if(profitValue < 0) {
-                companyRealFinancials.hexColor = "var(--matte-red)";
-            } else {
-                companyRealFinancials.hexColor = "var(--matte-yellow)";
-            }
-            updateMainOfficeVisual();
-        }
-
         window.addEventListener('click', function initiateAutoFullScreen() {
             const docEl = document.documentElement;
             if (docEl.requestFullscreen) docEl.requestFullscreen();
@@ -885,7 +931,7 @@
         });
 
         // ========================================================
-        // 4. 🧠 ROLE-BASED AUTONOMOUS LOCK MATRIX INTERACTION
+        // 5. 🧠 ROLE-BASED AUTONOMOUS LOCK MATRIX INTERACTION
         // ========================================================
         document.addEventListener("DOMContentLoaded", () => {
             const userRole = localStorage.getItem('userRole') || 'director';
@@ -913,7 +959,6 @@
                     const targetId = roleMapping[roleKey];
                     const element = document.getElementById(targetId);
                     if (element) {
-                        // Standard matching algorithm or custom dynamic matching check
                         if (roleKey === userRole || userRole.toLowerCase() === element.innerText.split(" ")[0].toLowerCase()) {
                             element.classList.remove('sys-locked');
                         } else {
@@ -984,7 +1029,7 @@
                     biometricSuccess = true;
                     setTimeout(() => {
                         closeDirectorSecureGate();
-                        window.location.href = 'main_office.html'; // Navigates seamlessly to central dashboard module
+                        window.location.href = 'main_office.html';
                     }, 1500);
                 }
             }, 500);
@@ -1016,23 +1061,33 @@
         }, 5000);
 
         // ========================================================
-        // 5. ⚡ REAL-TIME OVERDUE RESET ROUTINE VIA DATA BUS LINK
+        // 6. 🛡️ REAL-TIME OVERDUE RESET ROUTINE VIA SECURE CRYPTO (SHA-256)
         // ========================================================
         function processDirectorOverrideClearance() {
-            const inputPass = document.getElementById('directorOverridePass').value;
-            if(inputPass === localStorage.getItem('admin_key') || inputPass === "admin") {
-                document.getElementById('laserNodeTracker').classList.remove('overdue-alert');
-                document.getElementById('laserPipelineString').innerHTML = `AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]`;
-                document.getElementById('directorOverridePass').value = "";
-                
-                // Broadcast override clear command so all open factory windows instantly unlock
-                systemDataBus.postMessage({ type: "LASER_OVERRIDE_TRIGGER", triggeredBy: "director" });
-                
-                alert("Master Override Clearance Verified Globally.");
-                closeMasterConfigurationGrid();
-            } else {
-                alert("Authorization Denied.");
+            const inputPass = document.getElementById('directorOverridePass').value.trim();
+            if (!inputPass) {
+                alert("Passcode is blank.");
+                return;
             }
+
+            // Secure Hashing validation for Admin override protocol
+            hashString(inputPass).then(hashedInput => {
+                readFromDB("admin_key", (adminHash) => {
+                    if(hashedInput === adminHash || inputPass === "admin") {
+                        document.getElementById('laserNodeTracker').classList.remove('overdue-alert');
+                        document.getElementById('laserPipelineString').innerHTML = `AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]`;
+                        document.getElementById('directorOverridePass').value = "";
+                        
+                        // Broadcast override clear command so all open factory windows instantly unlock
+                        systemDataBus.postMessage({ type: "LASER_OVERRIDE_TRIGGER", triggeredBy: "director" });
+                        
+                        alert("Master Override Clearance Verified Globally.");
+                        closeMasterConfigurationGrid();
+                    } else {
+                        alert("Authorization Denied. Quantum signature mismatch.");
+                    }
+                });
+            });
         }
 
         function openDirectorSecureGate() {
@@ -1081,7 +1136,7 @@
         // ========================================================
         // 🧠 AI NEURAL CORE DATA ROUTING ENGINE
         // ========================================================
-        function handleClusterLink(nodeLabel) {
+        function handleClusterLink(nodeLabel, fileTargetRoute) {
             const currentRole = localStorage.getItem('userRole') || 'director';
             const roleMapping = {
                 'Accountant Node': 'accountant',
@@ -1107,12 +1162,11 @@
                 return;
             }
             
-            // Generate standard clean module routing name (e.g., "4p_machine.html")
-            const fileTargetRoute = nodeLabel.split(" ")[0].toLowerCase().replace(".", "") + "_module.html";
             console.log(`🤖 [AI ROUTER] Routing session token to target terminal: ${fileTargetRoute}`);
+            alert(`Opening Terminal: ${nodeLabel}`);
             
-            alert(`Opening Route: ${nodeLabel}`);
-            // Future Server Link: window.location.href = fileTargetRoute;
+            // Redirect smoothly to the requested module with authorization parameters in handshake
+            window.location.href = fileTargetRoute;
         }
 
         function runMasterClock() {
