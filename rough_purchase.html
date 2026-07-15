@@ -35,26 +35,19 @@
 
         /* Workspace Splitter */
         .workspace-grid { flex: 1; display: flex; flex-direction: row; gap: 15px; padding: 15px; overflow: hidden !important; justify-content: center; align-items: stretch; }
-        
-        /* Fixed padding to guarantee absolute 15px breathing space at the very bottom */
         .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px 20px 15px 20px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); height: 100%; overflow: hidden !important; }
         
-        /* Original Standard Sizing */
         .form-panel { flex: 0 0 950px; max-width: 950px; }
         .log-panel { flex: 0 0 400px; max-width: 400px; }
 
-        /* Dynamic Full-Height Form Container using Flexbox */
+        /* Dynamic Full-Height Flex Matrix */
         .form-container-grid { display: flex; flex-direction: column; height: 100%; justify-content: space-between; gap: 0; }
         
-        /* Auto-Expanding Rows that scale symmetrically to consume empty screen estate */
-        .form-row-3, .form-row-2 { flex: 1; display: grid; gap: 15px; padding-bottom: 12px; align-items: stretch; }
-        .form-row-3 { grid-template-columns: repeat(3, 1fr); }
-        .form-row-2 { grid-template-columns: 1fr 1fr; }
+        /* Layout Row Definitions */
+        .form-row-full { flex: 1; display: grid; grid-template-columns: 1fr; padding-bottom: 10px; align-items: stretch; }
+        .form-row-2 { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding-bottom: 10px; align-items: stretch; }
 
-        /* Intelligent Fluid input Grouping */
         .input-group { display: flex; flex-direction: column; justify-content: space-between; height: 100%; min-height: 0; }
-        
-        /* Responsive Viewport Typography that auto-scales dynamically with container height */
         .input-group label { font-size: calc(10px + 0.15vh); color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 4px; display: block; }
         .input-control { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: calc(12px + 0.2vh); font-weight: bold; outline: none; width: 100%; flex: 1; display: flex; align-items: center; min-height: 0; }
         .input-control:focus { border-color: var(--accent-blue); }
@@ -66,25 +59,30 @@
         .file-label { background: #16213E; color: white; border: 1px dashed var(--accent-cyan); border-radius: 6px; text-align: center; cursor: pointer; font-size: calc(11px + 0.1vh); font-weight: bold; text-transform: uppercase; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; flex: 1; }
         .file-label:hover { background: rgba(91, 192, 190, 0.1); }
 
-        .submit-btn { background: var(--accent-cyan); color: #030611; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: calc(12px + 0.15vh); box-shadow: 0 4px 12px rgba(91,192,190,0.3); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex: 1; }
-        .submit-btn:hover { background: var(--accent-blue); color: #FFFFFF; }
-        
+        /* ADVANCED ROUND SWITCH ARCHITECTURE */
+        .switch-container { display: flex; align-items: center; gap: 12px; background: #070B19; padding: 5px 15px; border-radius: 30px; border: 1px solid var(--border-color); justify-content: space-between; width: 100%; height: 100%; }
+        .switch-label { font-size: calc(11px + 0.1vh); font-weight: 800; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.5px; }
+        .round-toggle-switch { position: relative; display: inline-block; width: 56px; height: 30px; flex-shrink: 0; }
+        .round-toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider-round { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #16213E; transition: .3s; border-radius: 34px; border: 1px solid var(--border-color); }
+        .slider-round:before { position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px; background-color: var(--text-muted); transition: .3s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        input:checked + .slider-round { background-color: rgba(0, 198, 255, 0.2); border-color: var(--accent-blue); }
+        input:checked + .slider-round:before { transform: translateX(26px); background-color: var(--accent-blue); box-shadow: 0 0 10px var(--accent-blue); }
+
         .hidden { display: none !important; }
         .invisible { visibility: hidden !important; }
 
-        /* 2x2 ACTION MATRIX SECURED EXACTLY 15px FROM FORM TOWER BOTTOM */
+        /* 2x2 Action Buttons Bottom Grid */
         .form-button-matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; flex-shrink: 0; }
         .matrix-btn { background: #16213E; color: #FFF; padding: 14px 10px; font-size: calc(11px + 0.1vh); border-radius: 6px; border: 1px solid var(--accent-cyan); cursor: pointer; font-weight: 800; text-transform: uppercase; transition: all 0.2s ease; letter-spacing: 0.5px; text-align: center; }
         .matrix-btn:hover { border-color: var(--accent-blue); background: #1A2F56; color: var(--accent-cyan); }
         .matrix-btn-export { background: var(--accent-green); color: white; border: 1px solid var(--accent-green); }
         .matrix-btn-export:hover { background: #219653; color: white; }
 
-        /* Filter Controls */
+        /* Table Architecture */
         .filter-control-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; flex-shrink: 0; }
         .filter-search-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .filter-input { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 8px 12px; border-radius: 6px; font-size: 12px; outline: none; font-weight: bold; width: 100%; }
-
-        /* Table Configuration */
         .table-wrapper { flex: 1; overflow-y: auto !important; border: 1px solid var(--border-color); border-radius: 6px; background: #070B19; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th { background: #16213E; color: var(--accent-cyan); padding: 12px 8px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid var(--border-color); }
@@ -95,7 +93,6 @@
         .alert-warning { color: #F39C12; font-weight: bold; font-size: 11px; }
         .alert-danger { color: #E74C3C; font-weight: bold; font-size: 11px; }
 
-        /* Photo Preview Modal Overlay */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(3, 6, 17, 0.9); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; }
         .modal-box { background: #0B132B; border: 1px solid var(--accent-cyan); border-radius: 12px; padding: 15px; max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center; }
         .modal-box img { max-width: 100%; max-height: 70vh; object-fit: contain; border-radius: 6px; margin-bottom: 10px; }
@@ -103,7 +100,7 @@
 </head>
 <body onload="initPurchaseCore()">
 
-    <!-- Top Window bar Architecture -->
+    <!-- Control Header -->
     <div class="window-control-bar"> 
         <div class="brand-title">RAGHUVEER DIAMOND</div> 
         <div class="control-group">
@@ -113,27 +110,38 @@
         </div>
     </div>
 
-    <!-- Main Workspace Splitter -->
+    <!-- Workspace Structure -->
     <div class="workspace-grid">
         
-        <!-- Left Column: Entry Engine (950px Wide Screen Grid Grid Expanded) -->
+        <!-- Left Core Panel -->
         <div class="panel-box form-panel">
             <div class="form-container-grid">
-                <!-- Row 1: Lot, Intake Date, Vendor Entity -->
-                <div class="form-row-3">
-                    <div class="input-group"><label>Lot No</label><input type="text" id="lot" class="input-control" placeholder="e.g. RF-101"></div>
-                    <div class="input-group"><label>Intake Date</label><input type="date" id="date" class="input-control"></div>
+                
+                <!-- ROW 0: FULL LENGTH VENDOR MASTER -->
+                <div class="form-row-full">
                     <div class="input-group">
-                        <label>Vendor Entity</label>
+                        <label>Vendor Entity Target</label>
                         <div class="input-row">
-                            <select id="vendor" class="input-control"><option value="">-- Select Vendor --</option></select>
+                            <select id="vendor" class="input-control"><option value="">-- Select Vendor Entity --</option></select>
                             <button class="plus-btn" onclick="addEntry('rp_vendors', 'vendor')">+</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Row 2: Purchase Stream, Payment Mode, Broker Targets -->
-                <div class="form-row-3">
+                <!-- ROW 1: DATE & LOT NO -->
+                <div class="form-row-2">
+                    <div class="input-group"><label>Intake Date</label><input type="date" id="date" class="input-control"></div>
+                    <div class="input-group"><label>Lot No</label><input type="text" id="lot" class="input-control" placeholder="e.g. RF-101"></div>
+                </div>
+
+                <!-- ROW 2: WEIGHT & PRICE -->
+                <div class="form-row-2">
+                    <div class="input-group"><label>Weight (Carats)</label><input type="number" step="0.01" id="weight" class="input-control" placeholder="0.00" oninput="calculateTotalAmount()"></div>
+                    <div class="input-group"><label>Price / Carat (₹)</label><input type="number" step="0.01" id="price" class="input-control" placeholder="0.00" oninput="calculateTotalAmount()"></div>
+                </div>
+
+                <!-- ROW 3: PURCHASE STREAM & TAX CLASS -->
+                <div class="form-row-2">
                     <div class="input-group">
                         <label>Purchase Stream</label>
                         <select id="stream" class="input-control" onchange="toggleBrokerBlock()">
@@ -141,58 +149,64 @@
                             <option value="broker">Via Broker</option>
                         </select>
                     </div>
-                    <div class="input-group"><label>Payment Mode Source</label>
-                        <select id="pay-source" class="input-control">
-                            <option value="CASH">OFFICE CASH COUNTER</option>
-                            <option value="BANK">CONNECTED BANK CHANNEL</option>
-                        </select>
-                    </div>
-                    <!-- Conditional Broker Target block -->
-                    <div id="broker-target-group" class="input-group hidden"><label>Broker Target</label>
-                        <div class="input-row">
-                            <select id="broker" class="input-control"><option value="">-- Select Broker --</option></select>
-                            <button class="plus-btn" onclick="addEntry('rp_brokers', 'broker')">+</button>
-                        </div>
-                    </div>
-                    <div id="broker-placeholder" class="input-group"></div>
-                </div>
-
-                <!-- Row 3: Weight, Price, Brokerage -->
-                <div class="form-row-3">
-                    <div class="input-group"><label>Weight (Carats)</label><input type="number" step="0.01" id="weight" class="input-control" placeholder="0.00" oninput="calculateTotalAmount()"></div>
-                    <div class="input-group"><label>Price / Carat (₹)</label><input type="number" step="0.01" id="price" class="input-control" placeholder="0.00" oninput="calculateTotalAmount()"></div>
-                    <div id="broker-pct-group" class="input-group invisible" style="opacity: 0;"><label>Brokerage (%)</label><input type="number" id="broker-pct" class="input-control" placeholder="0.00" oninput="calculateTotalAmount()"></div>
-                </div>
-
-                <!-- Row 4: Tax Structure, Due Target Date, Bill Photo -->
-                <div class="form-row-3">
                     <div class="input-group"><label>Tax Structure Class</label>
                         <div class="input-row">
                             <select id="tax" class="input-control" onchange="calculateTotalAmount()"></select>
                             <button class="plus-btn" onclick="addCustomTaxRate()">+</button>
                         </div>
                     </div>
-                    <div class="input-group"><label>Due Target Date</label><input type="date" id="due-date" class="input-control"></div>
-                    <div class="input-group">
-                        <label>Attach Bill Invoice Photo</label>
-                        <label for="bill-photo" class="file-label" id="file-label-text">📷 Capture / Upload Bill</label>
-                        <input type="file" id="bill-photo" accept="image/*" class="hidden" onchange="processBillImage(this)">
-                    </div>
                 </div>
 
-                <!-- Row 5: Valuation and Commit Button -->
+                <!-- ROW 4: NET VALUATION & PAYMENT MODE -->
                 <div class="form-row-2">
                     <div class="input-group">
                         <label style="color: var(--accent-blue); font-weight: bold;">Net Payable Valuation (₹)</label>
                         <input type="text" id="net-payable" class="input-control" readonly style="color: var(--accent-blue); background: #030611; border-color: var(--accent-blue);" placeholder="0.00">
                     </div>
-                    <div class="input-group">
-                        <label class="invisible">Commit Action Target</label>
-                        <button class="submit-btn" onclick="savePurchaseRecord()">Commit Purchase to Ledger</button>
+                    <div class="input-group"><label>Payment Mode Source</label>
+                        <select id="pay-source" class="input-control">
+                            <option value="CASH">OFFICE CASH COUNTER</option>
+                            <option value="BANK">CONNECTED BANK CHANNEL</option>
+                        </select>
                     </div>
                 </div>
 
-                <!-- Row 6: 2x2 Action Buttons Matrix perfectly padded at the absolute bottom wall -->
+                <!-- ROW 5: CONDITIONAL DYNAMIC BROKER ARCHITECTURE & DUE TARGET DATE -->
+                <div class="form-row-2">
+                    <div id="broker-target-group" class="input-group hidden">
+                        <label>Broker Target</label>
+                        <div class="input-row">
+                            <select id="broker" class="input-control"><option value="">-- Select Broker --</option></select>
+                            <button class="plus-btn" onclick="addEntry('rp_brokers', 'broker')">+</button>
+                        </div>
+                    </div>
+                    <div id="broker-pct-group" class="input-group invisible" style="opacity: 0; display:none;"><label>Brokerage (%)</label><input type="number" id="broker-pct" class="input-control" placeholder="0.00" oninput="calculateTotalAmount()"></div>
+                    
+                    <div id="broker-placeholder" class="input-group invisible"></div>
+                    
+                    <div class="input-group"><label>Due Target Date</label><input type="date" id="due-date" class="input-control"></div>
+                </div>
+
+                <!-- ROW 6: IMAGE BILL MEDIA & SMALL ROUND TOGGLE SWITCH -->
+                <div class="form-row-2">
+                    <div class="input-group">
+                        <label>Invoice Verification Media</label>
+                        <label for="bill-photo" class="file-label" id="file-label-text">📷 Capture / Upload Bill</label>
+                        <input type="file" id="bill-photo" accept="image/*" class="hidden" onchange="processBillImage(this)">
+                    </div>
+                    <div class="input-group">
+                        <label>Commit Operational Control</label>
+                        <div class="switch-container">
+                            <span class="switch-label" id="switch-text-state">Slide to Commit</span>
+                            <label class="round-toggle-switch">
+                                <input type="checkbox" id="commit-toggle" onchange="handleSwitchCommit(this)">
+                                <span class="slider-round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom 2x2 Operations Matrix Box Locked 15px From Bottom -->
                 <div class="form-button-matrix">
                     <button class="matrix-btn" onclick="triggerAiVoice()">🎤 VOICE</button>
                     <button class="matrix-btn" onclick="triggerAiScan()">📸 SCAN</button>
@@ -202,7 +216,7 @@
             </div>
         </div>
 
-        <!-- Middle Column: Realtime History Database (400px Wide Screen Panel) -->
+        <!-- Right Side Database Panel -->
         <div class="panel-box log-panel">
             <div class="filter-control-row">
                 <div class="filter-search-group">
@@ -210,7 +224,6 @@
                     <input type="date" class="filter-input" id="search-date" onchange="refreshPurchaseHistoryTable()">
                 </div>
             </div>
-
             <div class="table-wrapper">
                 <table>
                     <thead>
@@ -228,7 +241,7 @@
 
     </div>
 
-    <!-- Image Preview Lightbox Modal -->
+    <!-- Lightbox -->
     <div class="modal-overlay" id="image-modal" onclick="closeImageModal()">
         <div class="modal-box" onclick="event.stopPropagation()">
             <img id="modal-img-src" src="" alt="Bill Preview">
@@ -271,6 +284,17 @@
                 pctGroup.classList.add('invisible');
                 document.getElementById('broker-pct').value = '';
                 calculateTotalAmount();
+            }
+        }
+
+        function handleSwitchCommit(toggle) {
+            if(toggle.checked) {
+                document.getElementById('switch-text-state').innerText = "Processing...";
+                setTimeout(() => {
+                    savePurchaseRecord();
+                    toggle.checked = false; // Reset Switch instantly
+                    document.getElementById('switch-text-state').innerText = "Slide to Commit";
+                }, 400);
             }
         }
 
