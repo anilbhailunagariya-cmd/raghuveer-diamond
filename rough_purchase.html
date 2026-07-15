@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-color-scale=1.0, user-scalable=no">
     <title>Raghuveer Diamond - Purchase Core</title>
     <style>
         :root {
@@ -19,39 +19,36 @@
             --text-muted: #708090; 
         }
 
+        /* 1. FORCE REMOVE ALL SCROLLBARS NATIONWIDE */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; }
-        body { background-color: var(--bg-primary); color: var(--text-main); width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-
-        /* Top Windows Control Architecture */
-        .window-control-bar { height: 45px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 2px solid var(--border-color); } 
-        .brand-title { font-size: 14px; font-weight: 900; letter-spacing: 1px; color: var(--accent-cyan); text-transform: uppercase; } 
-        .control-group { display: flex; gap: 8px; }
-        .btn-win { width: 32px; height: 26px; border: none; border-radius: 4px; color: white; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 14px; text-decoration: none; }
-        .btn-min { background: #2C3E50; }
-        .btn-max { background: #34495E; }
-        .btn-close { background: var(--accent-red); }
-
-        /* Layout Grid Architecture - 950px and 400px Custom Splitter */
-        .workspace-grid { flex: 1; display: flex; gap: 15px; padding: 15px; overflow: hidden; justify-content: center; align-items: stretch; }
+        ::-webkit-scrollbar { display: none !important; width: 0px !important; }
         
-        .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); height: 100%; }
+        body { background-color: var(--bg-primary); color: var(--text-main); width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden !important; }
+
+        /* Main Screen Layout Matrix - Fixed Splitter 950px and 400px with Right Sidebar Space */
+        .workspace-grid { flex: 1; display: flex; gap: 15px; padding: 15px; overflow: hidden !important; justify-content: center; align-items: stretch; }
+        
+        .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); height: 100%; overflow: hidden !important; }
         
         /* Fixed Precise Dimensions for Desktop Screens */
         .form-panel { width: 950px; }
         .log-panel { width: 400px; }
 
+        /* 2. RIGHT HAND CONTROL SIDEBAR TOWER FOR THE 4 BUTTONS */
+        .right-control-tower { width: 130px; display: flex; flex-direction: column; gap: 15px; justify-content: center; align-items: stretch; }
+        .tower-btn { background: #16213E; color: #FFF; padding: 18px 5px; font-size: 11px; border-radius: 10px; border: 1px solid var(--accent-cyan); cursor: pointer; font-weight: 800; text-transform: uppercase; transition: all 0.2s ease; letter-spacing: 0.5px; text-align: center; }
+        .tower-btn:hover { border-color: var(--accent-blue); background: #1A2F56; color: var(--accent-cyan); }
+        .tower-btn-export { background: var(--accent-green); color: white; border: 1px solid var(--accent-green); }
+        .tower-btn-export:hover { background: #219653; color: white; }
+
         /* Mobile Auto-Responsive Overrides */
-        @media (max-width: 1390px) {
-            .workspace-grid { flex-direction: column; overflow-y: auto; align-items: center; }
+        @media (max-width: 1520px) {
+            .workspace-grid { flex-direction: column; overflow-y: auto !important; align-items: center; justify-content: flex-start; }
             .panel-box { width: 100%; max-width: 950px; height: auto; }
+            .right-control-tower { width: 100%; max-width: 950px; flex-direction: row; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 5px; margin-bottom: 20px; }
         }
 
-        /* AI Dock Premium Matrix */
-        .ai-dock { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 15px; }
-        .ai-btn { background: #16213E; color: #FFF; padding: 10px 5px; font-size: 11px; border-radius: 6px; border: 1px solid var(--border-color); cursor: pointer; font-weight: 800; text-transform: uppercase; transition: all 0.2s ease; letter-spacing: 0.5px; }
-        .ai-btn:hover { border-color: var(--accent-cyan); background: #1A2F56; color: var(--accent-cyan); }
-
-        /* Wide Form Matrix: Removed Inner Scrolling, Created clean 2-column or 3-column rows */
+        /* Wide Form Matrix: Removed Inner Scrolling */
         .form-container-grid { display: flex; flex-direction: column; gap: 14px; }
         .form-row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
         .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -75,15 +72,15 @@
         .submit-btn { background: var(--accent-cyan); color: #030611; padding: 14px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; box-shadow: 0 4px 12px rgba(91,192,190,0.3); width: 100%; margin-top: 5px; }
         .submit-btn:hover { background: var(--accent-blue); color: #FFFFFF; }
         .hidden { display: none !important; }
+        .invisible { visibility: hidden !important; }
 
         /* Filter Controls */
         .filter-control-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
         .filter-search-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .filter-input { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 8px 12px; border-radius: 6px; font-size: 12px; outline: none; font-weight: bold; width: 100%; }
-        .export-btn { background: #27AE60; color: white; border: none; padding: 10px; border-radius: 6px; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; width: 100%; text-align: center; }
 
         /* Table Configuration */
-        .table-wrapper { flex: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; background: #070B19; }
+        .table-wrapper { flex: 1; overflow-y: auto !important; border: 1px solid var(--border-color); border-radius: 6px; background: #070B19; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th { background: #16213E; color: var(--accent-cyan); padding: 12px 8px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid var(--border-color); }
         td { padding: 12px 8px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; vertical-align: middle; }
@@ -116,12 +113,6 @@
         
         <!-- Left Column: Entry Engine (950px Wide Screen Grid) -->
         <div class="panel-box form-panel">
-            <div class="ai-dock">
-                <button class="ai-btn" onclick="triggerAiVoice()">🎤 VOICE</button>
-                <button class="ai-btn" onclick="triggerAiScan()">📸 SCAN</button>
-                <button class="ai-btn" onclick="triggerAiYield()">📈 YIELD</button>
-            </div>
-
             <div class="form-container-grid">
                 <!-- Row 1: Lot, Intake Date, Vendor Entity -->
                 <div class="form-row-3">
@@ -136,7 +127,7 @@
                     </div>
                 </div>
 
-                <!-- Row 2: Purchase Stream, Payment Mode, Broker Targets (Conditional Row managed inside grid) -->
+                <!-- Row 2: Purchase Stream, Payment Mode, Broker Targets -->
                 <div class="form-row-3">
                     <div class="input-group">
                         <label>Purchase Stream</label>
@@ -151,7 +142,7 @@
                             <option value="BANK">CONNECTED BANK CHANNEL</option>
                         </select>
                     </div>
-                    <!-- Empty block to maintain alignment if direct, becomes broker field if via broker -->
+                    <!-- Conditional Broker Target block -->
                     <div id="broker-target-group" class="input-group hidden"><label>Broker Target</label>
                         <div class="input-row">
                             <select id="broker" class="input-control"><option value="">-- Select Broker --</option></select>
@@ -195,15 +186,14 @@
             </div>
         </div>
 
-        <!-- Right Column: Realtime History Database (400px Wide Screen Panel) -->
+        <!-- Middle Column: Realtime History Database (400px Wide Screen Panel) -->
         <div class="panel-box log-panel">
-            <!-- Advanced Search, Date Filters & Export Integrated Blocks -->
+            <!-- Advanced Search, Date Filters Row -->
             <div class="filter-control-row">
                 <div class="filter-search-group">
                     <input type="text" class="filter-input" id="search-party" placeholder="Search Vendor..." oninput="refreshPurchaseHistoryTable()">
                     <input type="date" class="filter-input" id="search-date" onchange="refreshPurchaseHistoryTable()">
                 </div>
-                <button class="export-btn" onclick="exportPurchaseLedgerToCSV()">📥 Export Sheet</button>
             </div>
 
             <div class="table-wrapper">
@@ -221,13 +211,21 @@
             </div>
         </div>
 
+        <!-- Right Column Sidebar: Clean Action Tower Architecture for the 4 Buttons -->
+        <div class="right-control-tower">
+            <button class="tower-btn" onclick="triggerAiVoice()">🎤 VOICE</button>
+            <button class="tower-btn" onclick="triggerAiScan()">📸 SCAN</button>
+            <button class="tower-btn" onclick="triggerAiYield()">📈 YIELD</button>
+            <button class="tower-btn tower-btn-export" onclick="exportPurchaseLedgerToCSV()">📥 EXPORT SHEET</button>
+        </div>
+
     </div>
 
     <!-- Image Preview Lightbox Modal -->
     <div class="modal-overlay" id="image-modal" onclick="closeImageModal()">
         <div class="modal-box" onclick="event.stopPropagation()">
             <img id="modal-img-src" src="" alt="Bill Preview">
-            <button class="ai-btn" style="width:100px; border-color:var(--accent-red); color:white;" onclick="closeImageModal()">Close</button>
+            <button class="tower-btn" style="width:100px; border-color:var(--accent-red); color:white; background:var(--accent-red);" onclick="closeImageModal()">Close</button>
         </div>
     </div>
 
