@@ -33,45 +33,54 @@
         .btn-max { background: #34495E; }
         .btn-close { background: var(--accent-red); }
 
-        /* Workspace Layout */
+        /* Workspace Splitter */
         .workspace-grid { flex: 1; display: flex; flex-direction: row; gap: 15px; padding: 15px; overflow: hidden !important; justify-content: center; align-items: stretch; }
         
-        .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); height: 100%; overflow: hidden !important; }
+        /* Fixed padding to guarantee absolute 15px breathing space at the very bottom */
+        .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px 20px 15px 20px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); height: 100%; overflow: hidden !important; }
         
-        /* Layout Sizing */
+        /* Original Standard Sizing */
         .form-panel { flex: 0 0 950px; max-width: 950px; }
         .log-panel { flex: 0 0 400px; max-width: 400px; }
 
-        /* Form Grid - HEIGHT 100% IS IMPORTANT TO PUSH BUTTONS DOWN */
-        .form-container-grid { display: flex; flex-direction: column; gap: 14px; height: 100%; }
-        .form-row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-        .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        /* Dynamic Full-Height Form Container using Flexbox */
+        .form-container-grid { display: flex; flex-direction: column; height: 100%; justify-content: space-between; gap: 0; }
+        
+        /* Auto-Expanding Rows that scale symmetrically to consume empty screen estate */
+        .form-row-3, .form-row-2 { flex: 1; display: grid; gap: 15px; padding-bottom: 12px; align-items: stretch; }
+        .form-row-3 { grid-template-columns: repeat(3, 1fr); }
+        .form-row-2 { grid-template-columns: 1fr 1fr; }
 
-        /* 2x2 ACTION MATRIX: MARGIN-TOP: AUTO PUSHES IT TO THE BOTTOM */
-        .form-button-matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: auto; padding-bottom: 15px; }
-        .matrix-btn { background: #16213E; color: #FFF; padding: 12px 10px; font-size: 11px; border-radius: 6px; border: 1px solid var(--accent-cyan); cursor: pointer; font-weight: 800; text-transform: uppercase; transition: all 0.2s ease; letter-spacing: 0.5px; text-align: center; }
+        /* Intelligent Fluid input Grouping */
+        .input-group { display: flex; flex-direction: column; justify-content: space-between; height: 100%; min-height: 0; }
+        
+        /* Responsive Viewport Typography that auto-scales dynamically with container height */
+        .input-group label { font-size: calc(10px + 0.15vh); color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 4px; display: block; }
+        .input-control { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: calc(12px + 0.2vh); font-weight: bold; outline: none; width: 100%; flex: 1; display: flex; align-items: center; min-height: 0; }
+        .input-control:focus { border-color: var(--accent-blue); }
+        
+        .input-row { display: flex; gap: 6px; flex: 1; min-height: 0; }
+        .plus-btn { background: #16213E; color: var(--accent-cyan); border: 1px solid var(--border-color); width: 42px; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+        .plus-btn:hover { background: var(--accent-cyan); color: #030611; }
+
+        .file-label { background: #16213E; color: white; border: 1px dashed var(--accent-cyan); border-radius: 6px; text-align: center; cursor: pointer; font-size: calc(11px + 0.1vh); font-weight: bold; text-transform: uppercase; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; flex: 1; }
+        .file-label:hover { background: rgba(91, 192, 190, 0.1); }
+
+        .submit-btn { background: var(--accent-cyan); color: #030611; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: calc(12px + 0.15vh); box-shadow: 0 4px 12px rgba(91,192,190,0.3); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex: 1; }
+        .submit-btn:hover { background: var(--accent-blue); color: #FFFFFF; }
+        
+        .hidden { display: none !important; }
+        .invisible { visibility: hidden !important; }
+
+        /* 2x2 ACTION MATRIX SECURED EXACTLY 15px FROM FORM TOWER BOTTOM */
+        .form-button-matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; flex-shrink: 0; }
+        .matrix-btn { background: #16213E; color: #FFF; padding: 14px 10px; font-size: calc(11px + 0.1vh); border-radius: 6px; border: 1px solid var(--accent-cyan); cursor: pointer; font-weight: 800; text-transform: uppercase; transition: all 0.2s ease; letter-spacing: 0.5px; text-align: center; }
         .matrix-btn:hover { border-color: var(--accent-blue); background: #1A2F56; color: var(--accent-cyan); }
         .matrix-btn-export { background: var(--accent-green); color: white; border: 1px solid var(--accent-green); }
         .matrix-btn-export:hover { background: #219653; color: white; }
 
-        .input-group { display: flex; flex-direction: column; gap: 5px; }
-        .input-group label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
-        .input-control { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; outline: none; width: 100%; }
-        .input-control:focus { border-color: var(--accent-blue); }
-        .input-row { display: flex; gap: 6px; }
-        .plus-btn { background: #16213E; color: var(--accent-cyan); border: 1px solid var(--border-color); width: 38px; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 16px; display: flex; align-items: center; justify-content: center; }
-        .plus-btn:hover { background: var(--accent-cyan); color: #030611; }
-
-        .file-label { background: #16213E; color: white; border: 1px dashed var(--accent-cyan); padding: 10px; border-radius: 6px; text-align: center; cursor: pointer; font-size: 12px; font-weight: bold; text-transform: uppercase; display: block; }
-        .file-label:hover { background: rgba(91, 192, 190, 0.1); }
-
-        .submit-btn { background: var(--accent-cyan); color: #030611; padding: 14px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; box-shadow: 0 4px 12px rgba(91,192,190,0.3); width: 100%; margin-top: 5px; }
-        .submit-btn:hover { background: var(--accent-blue); color: #FFFFFF; }
-        .hidden { display: none !important; }
-        .invisible { visibility: hidden !important; }
-
         /* Filter Controls */
-        .filter-control-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+        .filter-control-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; flex-shrink: 0; }
         .filter-search-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .filter-input { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 8px 12px; border-radius: 6px; font-size: 12px; outline: none; font-weight: bold; width: 100%; }
 
@@ -107,7 +116,7 @@
     <!-- Main Workspace Splitter -->
     <div class="workspace-grid">
         
-        <!-- Left Column: Entry Engine (950px Wide Screen Grid) -->
+        <!-- Left Column: Entry Engine (950px Wide Screen Grid Grid Expanded) -->
         <div class="panel-box form-panel">
             <div class="form-container-grid">
                 <!-- Row 1: Lot, Intake Date, Vendor Entity -->
@@ -172,15 +181,18 @@
                 </div>
 
                 <!-- Row 5: Valuation and Commit Button -->
-                <div class="form-row-2" style="align-items: flex-end;">
+                <div class="form-row-2">
                     <div class="input-group">
                         <label style="color: var(--accent-blue); font-weight: bold;">Net Payable Valuation (₹)</label>
-                        <input type="text" id="net-payable" class="input-control" readonly style="color: var(--accent-blue); font-size: 16px; background: #030611; border-color: var(--accent-blue);" placeholder="0.00">
+                        <input type="text" id="net-payable" class="input-control" readonly style="color: var(--accent-blue); background: #030611; border-color: var(--accent-blue);" placeholder="0.00">
                     </div>
-                    <button class="submit-btn" onclick="savePurchaseRecord()">Commit Purchase to Ledger</button>
+                    <div class="input-group">
+                        <label class="invisible">Commit Action Target</label>
+                        <button class="submit-btn" onclick="savePurchaseRecord()">Commit Purchase to Ledger</button>
+                    </div>
                 </div>
 
-                <!-- Row 6: 2x2 Action Buttons Matrix perfectly locked at the bottom -->
+                <!-- Row 6: 2x2 Action Buttons Matrix perfectly padded at the absolute bottom wall -->
                 <div class="form-button-matrix">
                     <button class="matrix-btn" onclick="triggerAiVoice()">🎤 VOICE</button>
                     <button class="matrix-btn" onclick="triggerAiScan()">📸 SCAN</button>
