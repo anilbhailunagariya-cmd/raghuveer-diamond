@@ -19,7 +19,7 @@
             --text-muted: #708090; 
         }
 
-        /* STRICT SCROLLBAR DISMISSAL */
+        /* PERMANENT NO SCROLLBAR POLICY */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; }
         body { background-color: var(--bg-primary); color: var(--text-main); width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden !important; }
         ::-webkit-scrollbar { display: none !important; width: 0px !important; }
@@ -33,37 +33,26 @@
         .btn-max { background: #34495E; }
         .btn-close { background: var(--accent-red); }
 
-        /* Fixed Row Layout: Forms, Logs, and then Sidebar on the Right Space */
+        /* Absolute Flex Row: Never wraps or breaks on any display size */
         .workspace-grid { flex: 1; display: flex; flex-direction: row; gap: 15px; padding: 15px; overflow: hidden !important; justify-content: center; align-items: stretch; }
         
         .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); height: 100%; overflow: hidden !important; }
         
-        .form-panel { width: 950px; flex-shrink: 0; }
-        .log-panel { width: 400px; flex-shrink: 0; }
+        /* Auto-Sizing Flex Containers based on your targeted dimensions */
+        .form-panel { flex: 0 0 950px; max-width: 950px; }
+        .log-panel { flex: 0 0 400px; max-width: 400px; }
 
-        /* RIGHT CONTROL SIDEBAR - SECURED EXACTLY ON THE RIGHT SPACE */
-        .right-control-tower { width: 130px; display: flex; flex-direction: column; gap: 15px; justify-content: center; align-items: stretch; flex-shrink: 0; height: 100%; }
+        /* FIXED RIGHT CONTROL TOWER IN THE SIDE SPACE */
+        .right-control-tower { flex: 0 0 130px; display: flex; flex-direction: column; gap: 15px; justify-content: center; align-items: stretch; height: 100%; }
         .tower-btn { background: #16213E; color: #FFF; padding: 18px 5px; font-size: 11px; border-radius: 10px; border: 1px solid var(--accent-cyan); cursor: pointer; font-weight: 800; text-transform: uppercase; transition: all 0.2s ease; letter-spacing: 0.5px; text-align: center; }
         .tower-btn:hover { border-color: var(--accent-blue); background: #1A2F56; color: var(--accent-cyan); }
         .tower-btn-export { background: var(--accent-green); color: white; border: 1px solid var(--accent-green); }
         .tower-btn-export:hover { background: #219653; color: white; }
 
-        /* Responsive Layout Overrides ONLY for Actual Mobile Screens */
-        @media (max-width: 1520px) {
-            body { overflow-y: auto !important; }
-            .workspace-grid { flex-direction: column; height: auto; overflow: visible !important; align-items: center; justify-content: flex-start; }
-            .panel-box { width: 100%; max-width: 950px; height: auto; }
-            .right-control-tower { width: 100%; max-width: 950px; flex-direction: row; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 5px; margin-bottom: 20px; height: auto; }
-        }
-
-        /* Wide Form Matrix Configuration */
+        /* Wide Form Matrix Structure */
         .form-container-grid { display: flex; flex-direction: column; gap: 14px; }
         .form-row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
         .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        
-        @media (max-width: 768px) {
-            .form-row-3, .form-row-2 { grid-template-columns: 1fr; gap: 12px; }
-        }
 
         .input-group { display: flex; flex-direction: column; gap: 5px; }
         .input-group label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
@@ -217,7 +206,7 @@
             </div>
         </div>
 
-        <!-- Right Column Sidebar: 4 Buttons Permanently Pushed to the Rightmost Side Space -->
+        <!-- Right Column Sidebar: Locked on the right side on ALL screen sizes -->
         <div class="right-control-tower">
             <button class="tower-btn" onclick="triggerAiVoice()">🎤 VOICE</button>
             <button class="tower-btn" onclick="triggerAiScan()">📸 SCAN</button>
