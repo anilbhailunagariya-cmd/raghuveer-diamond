@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-color-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Raghuveer Diamond - Purchase Core</title>
     <style>
         :root {
@@ -19,22 +19,29 @@
             --text-muted: #708090; 
         }
 
-        /* 1. FORCE REMOVE ALL SCROLLBARS NATIONWIDE */
+        /* 1. JADMUD THI SCROLLBAR GAYAB */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; }
-        ::-webkit-scrollbar { display: none !important; width: 0px !important; }
-        
         body { background-color: var(--bg-primary); color: var(--text-main); width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden !important; }
+        ::-webkit-scrollbar { display: none !important; width: 0px !important; }
 
-        /* Main Screen Layout Matrix - Fixed Splitter 950px and 400px with Right Sidebar Space */
+        /* Top Windows Control Architecture */
+        .window-control-bar { height: 45px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 2px solid var(--border-color); } 
+        .brand-title { font-size: 14px; font-weight: 900; letter-spacing: 1px; color: var(--accent-cyan); text-transform: uppercase; } 
+        .control-group { display: flex; gap: 8px; }
+        .btn-win { width: 32px; height: 26px; border: none; border-radius: 4px; color: white; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 14px; text-decoration: none; }
+        .btn-min { background: #2C3E50; }
+        .btn-max { background: #34495E; }
+        .btn-close { background: var(--accent-red); }
+
+        /* Layout Grid Architecture - Exactly as your screenshot (950px and 400px Side-by-Side) */
         .workspace-grid { flex: 1; display: flex; gap: 15px; padding: 15px; overflow: hidden !important; justify-content: center; align-items: stretch; }
         
         .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); height: 100%; overflow: hidden !important; }
         
-        /* Fixed Precise Dimensions for Desktop Screens */
         .form-panel { width: 950px; }
         .log-panel { width: 400px; }
 
-        /* 2. RIGHT HAND CONTROL SIDEBAR TOWER FOR THE 4 BUTTONS */
+        /* 2. RIGHT SIDEBAR BUTTON MATIX (KHALI JAGYA MA SET) */
         .right-control-tower { width: 130px; display: flex; flex-direction: column; gap: 15px; justify-content: center; align-items: stretch; }
         .tower-btn { background: #16213E; color: #FFF; padding: 18px 5px; font-size: 11px; border-radius: 10px; border: 1px solid var(--accent-cyan); cursor: pointer; font-weight: 800; text-transform: uppercase; transition: all 0.2s ease; letter-spacing: 0.5px; text-align: center; }
         .tower-btn:hover { border-color: var(--accent-blue); background: #1A2F56; color: var(--accent-cyan); }
@@ -48,7 +55,7 @@
             .right-control-tower { width: 100%; max-width: 950px; flex-direction: row; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 5px; margin-bottom: 20px; }
         }
 
-        /* Wide Form Matrix: Removed Inner Scrolling */
+        /* Wide Form Matrix */
         .form-container-grid { display: flex; flex-direction: column; gap: 14px; }
         .form-row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
         .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -65,7 +72,6 @@
         .plus-btn { background: #16213E; color: var(--accent-cyan); border: 1px solid var(--border-color); width: 38px; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 16px; display: flex; align-items: center; justify-content: center; }
         .plus-btn:hover { background: var(--accent-cyan); color: #030611; }
 
-        /* Photo Upload Button styling */
         .file-label { background: #16213E; color: white; border: 1px dashed var(--accent-cyan); padding: 10px; border-radius: 6px; text-align: center; cursor: pointer; font-size: 12px; font-weight: bold; text-transform: uppercase; display: block; }
         .file-label:hover { background: rgba(91, 192, 190, 0.1); }
 
@@ -188,7 +194,6 @@
 
         <!-- Middle Column: Realtime History Database (400px Wide Screen Panel) -->
         <div class="panel-box log-panel">
-            <!-- Advanced Search, Date Filters Row -->
             <div class="filter-control-row">
                 <div class="filter-search-group">
                     <input type="text" class="filter-input" id="search-party" placeholder="Search Vendor..." oninput="refreshPurchaseHistoryTable()">
@@ -211,7 +216,7 @@
             </div>
         </div>
 
-        <!-- Right Column Sidebar: Clean Action Tower Architecture for the 4 Buttons -->
+        <!-- Right Column Sidebar: 4 Buttons Exactly mapped to the empty side space -->
         <div class="right-control-tower">
             <button class="tower-btn" onclick="triggerAiVoice()">🎤 VOICE</button>
             <button class="tower-btn" onclick="triggerAiScan()">📸 SCAN</button>
@@ -232,7 +237,6 @@
     <script>
         let attachedImageBase64 = "";
 
-        // Core Engine Setup Matrix
         function initPurchaseCore() {
             document.getElementById('date').valueAsDate = new Date();
             
@@ -482,7 +486,6 @@
             });
             localStorage.setItem('purchase_history_log', JSON.stringify(purchases));
 
-            // Reset Matrix
             document.getElementById('lot').value = '';
             document.getElementById('weight').value = '';
             document.getElementById('price').value = '';
