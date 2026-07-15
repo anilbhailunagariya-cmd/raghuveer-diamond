@@ -33,26 +33,26 @@
         .btn-max { background: #34495E; }
         .btn-close { background: var(--accent-red); }
 
-        /* Absolute Flex Row: Never wraps or breaks on any display size */
+        /* Absolute Flex Row: Side-by-Side Splitter */
         .workspace-grid { flex: 1; display: flex; flex-direction: row; gap: 15px; padding: 15px; overflow: hidden !important; justify-content: center; align-items: stretch; }
         
         .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); height: 100%; overflow: hidden !important; }
         
-        /* Auto-Sizing Flex Containers based on your targeted dimensions */
+        /* Layout Sizing */
         .form-panel { flex: 0 0 950px; max-width: 950px; }
         .log-panel { flex: 0 0 400px; max-width: 400px; }
-
-        /* FIXED RIGHT CONTROL TOWER IN THE SIDE SPACE */
-        .right-control-tower { flex: 0 0 130px; display: flex; flex-direction: column; gap: 15px; justify-content: center; align-items: stretch; height: 100%; }
-        .tower-btn { background: #16213E; color: #FFF; padding: 18px 5px; font-size: 11px; border-radius: 10px; border: 1px solid var(--accent-cyan); cursor: pointer; font-weight: 800; text-transform: uppercase; transition: all 0.2s ease; letter-spacing: 0.5px; text-align: center; }
-        .tower-btn:hover { border-color: var(--accent-blue); background: #1A2F56; color: var(--accent-cyan); }
-        .tower-btn-export { background: var(--accent-green); color: white; border: 1px solid var(--accent-green); }
-        .tower-btn-export:hover { background: #219653; color: white; }
 
         /* Wide Form Matrix Structure */
         .form-container-grid { display: flex; flex-direction: column; gap: 14px; }
         .form-row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
         .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        /* 2x2 BUTTON CONTAINER MATRIX INSIDE FORM BOTTOM */
+        .form-button-matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 5px; }
+        .matrix-btn { background: #16213E; color: #FFF; padding: 12px 10px; font-size: 11px; border-radius: 6px; border: 1px solid var(--accent-cyan); cursor: pointer; font-weight: 800; text-transform: uppercase; transition: all 0.2s ease; letter-spacing: 0.5px; text-align: center; }
+        .matrix-btn:hover { border-color: var(--accent-blue); background: #1A2F56; color: var(--accent-cyan); }
+        .matrix-btn-export { background: var(--accent-green); color: white; border: 1px solid var(--accent-green); }
+        .matrix-btn-export:hover { background: #219653; color: white; }
 
         .input-group { display: flex; flex-direction: column; gap: 5px; }
         .input-group label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
@@ -179,6 +179,14 @@
                     </div>
                     <button class="submit-btn" onclick="savePurchaseRecord()">Commit Purchase to Ledger</button>
                 </div>
+
+                <!-- Row 6: 2x2 Action Buttons Matrix in Bottom Empty Space -->
+                <div class="form-button-matrix">
+                    <button class="matrix-btn" onclick="triggerAiVoice()">🎤 VOICE</button>
+                    <button class="matrix-btn" onclick="triggerAiScan()">📸 SCAN</button>
+                    <button class="matrix-btn" onclick="triggerAiYield()">📈 YIELD</button>
+                    <button class="matrix-btn matrix-btn-export" onclick="exportPurchaseLedgerToCSV()">📥 EXPORT SHEET</button>
+                </div>
             </div>
         </div>
 
@@ -206,21 +214,13 @@
             </div>
         </div>
 
-        <!-- Right Column Sidebar: Locked on the right side on ALL screen sizes -->
-        <div class="right-control-tower">
-            <button class="tower-btn" onclick="triggerAiVoice()">🎤 VOICE</button>
-            <button class="tower-btn" onclick="triggerAiScan()">📸 SCAN</button>
-            <button class="tower-btn" onclick="triggerAiYield()">📈 YIELD</button>
-            <button class="tower-btn tower-btn-export" onclick="exportPurchaseLedgerToCSV()">📥 EXPORT SHEET</button>
-        </div>
-
     </div>
 
     <!-- Image Preview Lightbox Modal -->
     <div class="modal-overlay" id="image-modal" onclick="closeImageModal()">
         <div class="modal-box" onclick="event.stopPropagation()">
             <img id="modal-img-src" src="" alt="Bill Preview">
-            <button class="tower-btn" style="width:100px; border-color:var(--accent-red); color:white; background:var(--accent-red);" onclick="closeImageModal()">Close</button>
+            <button class="matrix-btn" style="width:100px; border-color:var(--accent-red); color:white; background:var(--accent-red);" onclick="closeImageModal()">Close</button>
         </div>
     </div>
 
