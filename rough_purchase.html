@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Raghuveer Diamond - Purchase Core</title>
+    <title>Raghuveer Diamond - Advanced Procurement Core</title>
     <style>
         :root {
             --bg-primary: #070B19; 
@@ -37,7 +37,7 @@
         .workspace-grid { flex: 1; display: flex; flex-direction: row; gap: 15px; padding: 15px; overflow: hidden !important; justify-content: center; align-items: stretch; }
         .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px 20px 15px 20px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); height: 100%; overflow: hidden !important; }
         
-        .form-panel { flex: 0 0 950px; max-width: 950px; }
+        .form-panel { flex: 1; max-width: 950px; }
         .log-panel { flex: 0 0 400px; max-width: 400px; }
 
         /* Dynamic Full-Height Flex Matrix */
@@ -46,6 +46,7 @@
         /* Layout Row Definitions */
         .form-row-full { flex: 1; display: grid; grid-template-columns: 1fr; padding-bottom: 10px; align-items: stretch; }
         .form-row-2 { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding-bottom: 10px; align-items: stretch; }
+        .form-row-3 { flex: 1; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; padding-bottom: 10px; align-items: stretch; }
 
         .input-group { display: flex; flex-direction: column; justify-content: space-between; height: 100%; min-height: 0; }
         .input-group label { font-size: calc(10px + 0.15vh); color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 4px; display: block; }
@@ -72,8 +73,8 @@
         .hidden { display: none !important; }
         .invisible { visibility: hidden !important; }
 
-        /* 2x2 Action Buttons Bottom Grid */
-        .form-button-matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; flex-shrink: 0; }
+        /* Action Buttons Grid */
+        .form-button-matrix { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 15px; flex-shrink: 0; }
         .matrix-btn { background: #16213E; color: #FFF; padding: 14px 10px; font-size: calc(11px + 0.1vh); border-radius: 6px; border: 1px solid var(--accent-cyan); cursor: pointer; font-weight: 800; text-transform: uppercase; transition: all 0.2s ease; letter-spacing: 0.5px; text-align: center; }
         .matrix-btn:hover { border-color: var(--accent-blue); background: #1A2F56; color: var(--accent-cyan); }
         .matrix-btn-export { background: var(--accent-green); color: white; border: 1px solid var(--accent-green); }
@@ -96,13 +97,39 @@
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(3, 6, 17, 0.9); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; }
         .modal-box { background: #0B132B; border: 1px solid var(--accent-cyan); border-radius: 12px; padding: 15px; max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center; }
         .modal-box img { max-width: 100%; max-height: 70vh; object-fit: contain; border-radius: 6px; margin-bottom: 10px; }
+
+        /* AI Cargo Tracker Telemetry Widget */
+        .ai-cargo-tracker-widget {
+            background: rgba(11, 29, 55, 0.5);
+            border: 1px solid rgba(91, 192, 190, 0.3);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 5px;
+            flex-shrink: 0;
+        }
+        .tracker-pulse-dot {
+            width: 8px; height: 8px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-cyan);
+            animation: pulseGlow 1.5s infinite;
+        }
+        @keyframes pulseGlow {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
     </style> 
 </head>
 <body onload="initPurchaseCore()">
 
     <!-- Control Header -->
     <div class="window-control-bar"> 
-        <div class="brand-title">RAGHUVEER DIAMOND</div> 
+        <div class="brand-title">RAGHUVEER DIAMOND - ROUGH INTAKE PROCUREMENT CORE</div> 
         <div class="control-group">
             <button class="btn-win btn-min" onclick="alert('Terminal Minimized')">-</button>
             <button class="btn-win btn-max" onclick="toggleFullScreen()">□</button>
@@ -117,13 +144,20 @@
         <div class="panel-box form-panel">
             <div class="form-container-grid">
                 
-                <!-- ROW 0: FULL LENGTH VENDOR MASTER -->
-                <div class="form-row-full">
+                <!-- ROW 0: INWARD PATHWAY & VENDOR MASTER -->
+                <div class="form-row-2">
+                    <div class="input-group">
+                        <label>Procurement Pathway</label>
+                        <select id="inward-pathway" class="input-control" onchange="toggleInwardPathway(this.value)">
+                            <option value="local">Local Market Purchase (GST)</option>
+                            <option value="import">International Import (Customs & Freight)</option>
+                        </select>
+                    </div>
                     <div class="input-group">
                         <label>Vendor Entity Target</label>
                         <div class="input-row">
                             <select id="vendor" class="input-control"><option value="">-- Select Vendor Entity --</option></select>
-                            <button class="plus-btn" onclick="addEntry('rp_vendors', 'vendor')">+</button>
+                            <button class="plus-btn" onclick="addNewVendorEntity()">+</button>
                         </div>
                     </div>
                 </div>
@@ -136,58 +170,88 @@
 
                 <!-- ROW 2: WEIGHT & PRICE -->
                 <div class="form-row-2">
-                    <div class="input-group"><label>Weight (Carats)</label><input type="number" step="0.01" id="weight" class="input-control" placeholder="0.00" oninput="calculateTotalAmount()"></div>
-                    <div class="input-group"><label>Price / Carat (₹)</label><input type="number" step="0.01" id="price" class="input-control" placeholder="0.00" oninput="calculateTotalAmount()"></div>
+                    <div class="input-group"><label>Weight (Carats)</label><input type="number" step="0.01" id="weight" class="input-control" placeholder="0.00" oninput="calculateLandedCosts()"></div>
+                    <div class="input-group"><label>Price / Carat (₹/$) </label><input type="number" step="0.01" id="price" class="input-control" placeholder="0.00" oninput="calculateLandedCosts()"></div>
                 </div>
 
-                <!-- ROW 3: PURCHASE STREAM & TAX CLASS -->
+                <!-- ROW 3: PURCHASE STREAM & CONDITIONAL INTERMEDIATE BROKER -->
                 <div class="form-row-2">
                     <div class="input-group">
                         <label>Purchase Stream</label>
                         <select id="stream" class="input-control" onchange="toggleBrokerBlock()">
                             <option value="direct">Direct Account</option>
-                            <option value="broker">Via Broker</option>
+                            <option value="broker">Via Broker / Intermediary</option>
                         </select>
                     </div>
-                    <div class="input-group"><label>Tax Structure Class</label>
-                        <div class="input-row">
-                            <select id="tax" class="input-control" onchange="calculateTotalAmount()"></select>
-                            <button class="plus-btn" onclick="addCustomTaxRate()">+</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ROW 4: NET VALUATION & PAYMENT MODE -->
-                <div class="form-row-2">
-                    <div class="input-group">
-                        <label style="color: var(--accent-blue); font-weight: bold;">Net Payable Valuation (₹)</label>
-                        <input type="text" id="net-payable" class="input-control" readonly style="color: var(--accent-blue); background: #030611; border-color: var(--accent-blue);" placeholder="0.00">
-                    </div>
-                    <div class="input-group"><label>Payment Mode Source</label>
-                        <select id="pay-source" class="input-control">
-                            <option value="CASH">OFFICE CASH COUNTER</option>
-                            <option value="BANK">CONNECTED BANK CHANNEL</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- ROW 5: CONDITIONAL DYNAMIC BROKER ARCHITECTURE & DUE TARGET DATE -->
-                <div class="form-row-2">
+                    
                     <div id="broker-target-group" class="input-group hidden">
                         <label>Broker Target</label>
                         <div class="input-row">
                             <select id="broker" class="input-control"><option value="">-- Select Broker --</option></select>
-                            <button class="plus-btn" onclick="addEntry('rp_brokers', 'broker')">+</button>
+                            <button class="plus-btn" onclick="addNewBrokerEntity()">+</button>
                         </div>
                     </div>
-                    <div id="broker-pct-group" class="input-group invisible" style="opacity: 0; display:none;"><label>Brokerage (%)</label><input type="number" id="broker-pct" class="input-control" placeholder="0.00" oninput="calculateTotalAmount()"></div>
-                    
-                    <div id="broker-placeholder" class="input-group invisible"></div>
-                    
+                    <div id="broker-placeholder-row" class="input-group"></div>
+                </div>
+
+                <!-- ROW 4: TAX / IMPORT DUTY SYSTEM CONTROLS -->
+                <div class="form-row-3">
+                    <!-- Local Tax Field (Visible only when Local selected) -->
+                    <div class="input-group" id="group-local-tax">
+                        <label>Local GST Structure</label>
+                        <select id="tax-local" class="input-control" onchange="calculateLandedCosts()">
+                            <option value="0.25">GST Rough Intake (0.25%)</option>
+                            <option value="1.5">GST Inward Standard (1.5%)</option>
+                            <option value="0">Exempted / Nil (0%)</option>
+                        </select>
+                    </div>
+
+                    <!-- Import Fields (Visible only when Import selected) -->
+                    <div class="input-group hidden" id="group-import-duty">
+                        <label>Customs Duty (%)</label>
+                        <input type="number" step="0.01" id="tax-import-duty" class="input-control" value="2.5" oninput="calculateLandedCosts()">
+                    </div>
+                    <div class="input-group hidden" id="group-import-freight">
+                        <label>Freight & Insurance (₹)</label>
+                        <input type="number" step="1" id="import-freight" class="input-control" value="0" placeholder="0.00" oninput="calculateLandedCosts()">
+                    </div>
+                    <div class="input-group hidden" id="group-import-clearing">
+                        <label>Clearing Agent Fees (₹)</label>
+                        <input type="number" step="1" id="import-clearing" class="input-control" value="0" placeholder="0.00" oninput="calculateLandedCosts()">
+                    </div>
+
+                    <!-- Brokerage PCT (Visible only when stream === broker) -->
+                    <div id="broker-pct-group" class="input-group hidden">
+                        <label>Brokerage (%)</label>
+                        <input type="number" step="0.01" id="broker-pct" class="input-control" placeholder="0.00" oninput="calculateLandedCosts()">
+                    </div>
+                    <div id="broker-pct-placeholder" class="input-group"></div>
+                </div>
+
+                <!-- ROW 5: LANDED COSTS & PAYMENT MODE SOURCE -->
+                <div class="form-row-2">
+                    <div class="input-group">
+                        <label style="color: var(--accent-blue); font-weight: bold;">Total Landed Cost per Carat (₹)</label>
+                        <input type="text" id="net-landed-carat" class="input-control" readonly style="color: var(--accent-blue); background: #030611; border-color: var(--accent-blue);" placeholder="0.00">
+                    </div>
+                    <div class="input-group">
+                        <label style="color: var(--accent-green); font-weight: bold;">Net Payable Valuation (₹)</label>
+                        <input type="text" id="net-payable" class="input-control" readonly style="color: var(--accent-green); background: #030611; border-color: var(--accent-green);" placeholder="0.00">
+                    </div>
+                </div>
+
+                <!-- ROW 6: PAYMENT MODE SOURCE & DUE TARGET DATE -->
+                <div class="form-row-2">
+                    <div class="input-group"><label>Payment Mode Source</label>
+                        <select id="pay-source" class="input-control">
+                            <option value="BANK">CONNECTED BANK CHANNEL (DIRECT DEBIT)</option>
+                            <option value="CASH">OFFICE CASH COUNTER (LOCAL FLOW)</option>
+                        </select>
+                    </div>
                     <div class="input-group"><label>Due Target Date</label><input type="date" id="due-date" class="input-control"></div>
                 </div>
 
-                <!-- ROW 6: IMAGE BILL MEDIA & SMALL ROUND TOGGLE SWITCH -->
+                <!-- ROW 7: IMAGE BILL MEDIA & SMALL ROUND TOGGLE COMMIT -->
                 <div class="form-row-2">
                     <div class="input-group">
                         <label>Invoice Verification Media</label>
@@ -223,6 +287,15 @@
                     <input type="text" class="filter-input" id="search-party" placeholder="Search Vendor..." oninput="refreshPurchaseHistoryTable()">
                     <input type="date" class="filter-input" id="search-date" onchange="refreshPurchaseHistoryTable()">
                 </div>
+                
+                <!-- AI Unmanned Cargo Tracking Widget -->
+                <div class="ai-cargo-tracker-widget">
+                    <span style="display:flex; align-items:center; gap:6px;">
+                        <span class="tracker-pulse-dot"></span>
+                        <strong>Global Cargo Telemetry:</strong>
+                    </span>
+                    <span id="txt-cargo-telemetry" style="color:var(--accent-cyan); font-weight:bold;">Local Sourcing Active</span>
+                </div>
             </div>
             <div class="table-wrapper">
                 <table>
@@ -231,7 +304,7 @@
                             <th>Lot No</th>
                             <th>Date / Status</th>
                             <th>Vendor Details</th>
-                            <th>Total (₹)</th>
+                            <th>Landed (₹)</th>
                         </tr>
                     </thead>
                     <tbody id="purchase-history-rows"></tbody>
@@ -250,49 +323,171 @@
     </div>
 
     <script>
+        const systemDataBus = new BroadcastChannel('raghuveer_ai_core_bus');
+        const dbName = "RaghuveerDiamondDB";
+        const dbVersion = 2; // Upgraded for seamless IndexedDB integrations
+        let dbInstance = null;
         let attachedImageBase64 = "";
 
+        // ========================================================
+        // 📡 CENTRALIZED INDEXEDDB ASYNC LAYER SETUP
+        // ========================================================
         function initPurchaseCore() {
             document.getElementById('date').valueAsDate = new Date();
             
-            if(!localStorage.getItem('purchase_history_log')) localStorage.setItem('purchase_history_log', JSON.stringify([]));
-            if(!localStorage.getItem('total_rough')) localStorage.setItem('total_rough', '0');
-            if(!localStorage.getItem('cash_on_hand')) localStorage.setItem('cash_on_hand', '0');
-            if(!localStorage.getItem('cash_history_log')) localStorage.setItem('cash_history_log', JSON.stringify([]));
+            const request = indexedDB.open(dbName, dbVersion);
+            request.onsuccess = (event) => {
+                dbInstance = event.target.result;
+                console.log("🧬 [PURCHASE CORE DB] Linked to central database.");
+                seedDefaultVendorsAndBrokers();
+                refreshPurchaseHistoryTable();
+            };
+        }
 
-            renderDropdown('rp_vendors', 'vendor');
-            renderDropdown('rp_brokers', 'broker');
-            renderTaxDropdown();
-            refreshPurchaseHistoryTable();
+        function seedDefaultVendorsAndBrokers() {
+            readAllFromStore("broker_store", (vendors) => {
+                if(vendors.length === 0) {
+                    // Seed standard accounts receivable/payable directories
+                    writeToStore("broker_store", { id: "vend_surat_llp", name: "Surat Local Raw LLP", type: "Vendor", country: "India" });
+                    writeToStore("broker_store", { id: "vend_gorg_dubai", name: "Gorg Diamonds NV", type: "Vendor", country: "UAE" });
+                    writeToStore("broker_store", { id: "vend_antwerp_raw", name: "Antwerp Raw NV", type: "Vendor", country: "Belgium" });
+                    writeToStore("broker_store", { id: "brok_vimal_surat", name: "Vimal Shah (Surat)", type: "Broker", country: "India" });
+                }
+                setTimeout(populateDropdowns, 200);
+            });
+        }
+
+        function writeToStore(storeName, data) {
+            if(!dbInstance) return;
+            const tx = dbInstance.transaction(storeName, "readwrite");
+            const store = tx.objectStore(storeName);
+            store.put(data);
+        }
+
+        function readAllFromStore(storeName, callback) {
+            if(!dbInstance) {
+                callback([]);
+                return;
+            }
+            const tx = dbInstance.transaction(storeName, "readonly");
+            const store = tx.objectStore(storeName);
+            const request = store.getAll();
+            request.onsuccess = () => {
+                callback(request.result || []);
+            };
+        }
+
+        // ========================================================
+        // ⚖️ HIGH-PRECISION MATHEMATICAL ARITHMETIC (No Float Drift)
+        // ========================================================
+        function preciseAdd(a, b) { return parseFloat((a + b).toFixed(2)); }
+        function preciseMult(a, b) { return parseFloat((a * b).toFixed(2)); }
+        function preciseDiv(a, b) { return parseFloat((a / b).toFixed(2)); }
+
+        function populateDropdowns() {
+            readAllFromStore("broker_store", (list) => {
+                const vendorSelect = document.getElementById('vendor');
+                const brokerSelect = document.getElementById('broker');
+
+                vendorSelect.innerHTML = `<option value="">-- Select Vendor Entity --</option>`;
+                brokerSelect.innerHTML = `<option value="">-- Select Broker --</option>`;
+
+                list.forEach(item => {
+                    if (item.type === "Vendor") {
+                        vendorSelect.innerHTML += `<option value="${item.name}">${item.name} (${item.country})</option>`;
+                    } else if (item.type === "Broker") {
+                        brokerSelect.innerHTML += `<option value="${item.name}">${item.name}</option>`;
+                    }
+                });
+            });
+        }
+
+        function toggleInwardPathway(type) {
+            const groupLocal = document.getElementById('group-local-tax');
+            const groupImportDuty = document.getElementById('group-import-duty');
+            const groupImportFreight = document.getElementById('group-import-freight');
+            const groupImportClearing = document.getElementById('group-import-clearing');
+            const cargoText = document.getElementById('txt-cargo-telemetry');
+
+            if (type === "import") {
+                groupLocal.classList.add('hidden');
+                groupImportDuty.classList.remove('hidden');
+                groupImportFreight.classList.remove('hidden');
+                groupImportClearing.classList.remove('hidden');
+                cargoText.innerText = "Transit: Antwerp ➔ Surat Customs [Cleared]";
+            } else {
+                groupLocal.classList.remove('hidden');
+                groupImportDuty.classList.add('hidden');
+                groupImportFreight.classList.add('hidden');
+                groupImportClearing.classList.add('hidden');
+                cargoText.innerText = "Local Sourcing Active";
+            }
+            calculateLandedCosts();
         }
 
         function toggleBrokerBlock() {
             let stream = document.getElementById('stream').value;
             let targetGroup = document.getElementById('broker-target-group');
-            let placeholder = document.getElementById('broker-placeholder');
+            let placeholderRow = document.getElementById('broker-placeholder-row');
             let pctGroup = document.getElementById('broker-pct-group');
+            let pctPlaceholder = document.getElementById('broker-pct-placeholder');
 
-            if(stream === 'broker') {
+            if (stream === 'broker') {
                 targetGroup.classList.remove('hidden');
-                placeholder.classList.add('hidden');
-                pctGroup.style.opacity = "1";
-                pctGroup.classList.remove('invisible');
+                placeholderRow.classList.add('hidden');
+                pctGroup.classList.remove('hidden');
+                pctPlaceholder.classList.add('hidden');
             } else {
                 targetGroup.classList.add('hidden');
-                placeholder.classList.remove('hidden');
-                pctGroup.style.opacity = "0";
-                pctGroup.classList.add('invisible');
+                placeholderRow.classList.remove('hidden');
+                pctGroup.classList.add('hidden');
+                pctPlaceholder.classList.remove('hidden');
                 document.getElementById('broker-pct').value = '';
-                calculateTotalAmount();
+                calculateLandedCosts();
             }
         }
 
+        function calculateLandedCosts() {
+            let weight = parseFloat(document.getElementById('weight').value) || 0;
+            let price = parseFloat(document.getElementById('price').value) || 0;
+            let baseAmount = preciseMult(weight, price);
+
+            let brokerage = 0;
+            if (document.getElementById('stream').value === 'broker') {
+                let bPct = parseFloat(document.getElementById('broker-pct').value) || 0;
+                brokerage = preciseDiv(preciseMult(baseAmount, bPct), 100);
+            }
+
+            let taxAndDuties = 0;
+            let pathway = document.getElementById('inward-pathway').value;
+
+            if (pathway === "local") {
+                let tPct = parseFloat(document.getElementById('tax-local').value) || 0;
+                taxAndDuties = preciseDiv(preciseMult(baseAmount, tPct), 100);
+            } else {
+                let dutyPct = parseFloat(document.getElementById('tax-import-duty').value) || 0;
+                let freight = parseFloat(document.getElementById('import-freight').value) || 0;
+                let clearing = parseFloat(document.getElementById('import-clearing').value) || 0;
+                
+                let baseDuty = preciseDiv(preciseMult(baseAmount, dutyPct), 100);
+                taxAndDuties = preciseAdd(preciseAdd(baseDuty, freight), clearing);
+            }
+
+            let finalNetPayable = preciseAdd(preciseAdd(baseAmount, brokerage), taxAndDuties);
+            let landedCostPerCarat = weight > 0 ? preciseDiv(finalNetPayable, weight) : 0;
+
+            document.getElementById('net-payable').value = finalNetPayable.toFixed(2);
+            document.getElementById('net-landed-carat').value = landedCostPerCarat.toFixed(2);
+
+            return { finalNetPayable, landedCostPerCarat };
+        }
+
         function handleSwitchCommit(toggle) {
-            if(toggle.checked) {
+            if (toggle.checked) {
                 document.getElementById('switch-text-state').innerText = "Processing...";
                 setTimeout(() => {
                     savePurchaseRecord();
-                    toggle.checked = false; // Reset Switch instantly
+                    toggle.checked = false; 
                     document.getElementById('switch-text-state').innerText = "Slide to Commit";
                 }, 400);
             }
@@ -310,139 +505,94 @@
         }
 
         function viewAttachedBill(index) {
-            let logs = JSON.parse(localStorage.getItem('purchase_history_log')) || [];
-            if(logs[index] && logs[index].billImage) {
-                document.getElementById('modal-img-src').src = logs[index].billImage;
-                document.getElementById('image-modal').style.display = 'flex';
-            } else {
-                alert("No bill photo attached to this specific lot.");
-            }
+            readAllFromStore("rough_store", (logs) => {
+                if(logs[index] && logs[index].billImage) {
+                    document.getElementById('modal-img-src').src = logs[index].billImage;
+                    document.getElementById('image-modal').style.display = 'flex';
+                } else {
+                    alert("No bill photo attached to this specific lot.");
+                }
+            });
         }
 
         function closeImageModal() {
             document.getElementById('image-modal').style.display = 'none';
         }
 
-        function addEntry(storageKey, selectId) {
-            let val = prompt("Enter Entity / Person Name:");
+        function addNewVendorEntity() {
+            let val = prompt("Enter New Vendor Entity Name:");
+            let country = prompt("Enter Country / Region (e.g. India, Dubai, Belgium):") || "India";
             if(val && val.trim() !== "") {
-                let list = JSON.parse(localStorage.getItem(storageKey)) || [];
-                if(!list.includes(val.trim())) {
-                    list.push(val.trim());
-                    localStorage.setItem(storageKey, JSON.stringify(list));
-                    renderDropdown(storageKey, selectId);
-                    document.getElementById(selectId).value = val.trim();
-                }
+                const id = "vend_" + val.trim().toLowerCase().replace(/\s+/g, '_');
+                writeToStore("broker_store", { id, name: val.trim(), type: "Vendor", country });
+                setTimeout(populateDropdowns, 200);
             }
         }
 
-        function addCustomTaxRate() {
-            let label = prompt("Enter Custom Tax Label (e.g. GST Local):");
-            let rate = prompt("Enter Tax Percentage Factor (e.g. 0.25):");
-            if(label && rate) {
-                let taxes = JSON.parse(localStorage.getItem('rp_taxes')) || [];
-                taxes.push({name: `${label} (${rate}%)`, rate: parseFloat(rate)});
-                localStorage.setItem('rp_taxes', JSON.stringify(taxes));
-                renderTaxDropdown();
-                document.getElementById('tax').value = parseFloat(rate);
-                calculateTotalAmount();
+        function addNewBrokerEntity() {
+            let val = prompt("Enter Broker Name:");
+            if(val && val.trim() !== "") {
+                const id = "brok_" + val.trim().toLowerCase().replace(/\s+/g, '_');
+                writeToStore("broker_store", { id, name: val.trim(), type: "Broker", country: "India" });
+                setTimeout(populateDropdowns, 200);
             }
-        }
-
-        function renderDropdown(key, id) {
-            let list = JSON.parse(localStorage.getItem(key)) || [];
-            let el = document.getElementById(id);
-            let fallText = id === 'vendor' ? 'Vendor' : 'Broker';
-            el.innerHTML = `<option value="">-- Select ${fallText} --</option>`;
-            list.forEach(item => el.innerHTML += `<option value="${item}">${item}</option>`);
-        }
-
-        function renderTaxDropdown() {
-            let taxes = JSON.parse(localStorage.getItem('rp_taxes')) || [
-                {name: "Exempted Matrix (0%)", rate: 0},
-                {name: "GST Rough Intake (0.25%)", rate: 0.25},
-                {name: "GST Inward Standard (1.5%)", rate: 1.5}
-            ];
-            localStorage.setItem('rp_taxes', JSON.stringify(taxes));
-            let el = document.getElementById('tax');
-            el.innerHTML = '';
-            taxes.forEach(t => el.innerHTML += `<option value="${t.rate}">${t.name}</option>`);
-        }
-
-        function calculateTotalAmount() {
-            let weight = parseFloat(document.getElementById('weight').value) || 0;
-            let price = parseFloat(document.getElementById('price').value) || 0;
-            let base = weight * price;
-
-            let brokerage = 0;
-            if(document.getElementById('stream').value === 'broker') {
-                let bPct = parseFloat(document.getElementById('broker-pct').value) || 0;
-                brokerage = (base * bPct) / 100;
-            }
-
-            let tPct = parseFloat(document.getElementById('tax').value) || 0;
-            let tax = (base * tPct) / 100;
-
-            let finalVal = base + brokerage + tax;
-            document.getElementById('net-payable').value = finalVal.toFixed(2);
-            return finalVal;
         }
 
         function refreshPurchaseHistoryTable() {
-            let logs = JSON.parse(localStorage.getItem('purchase_history_log')) || [];
-            let tbody = document.getElementById('purchase-history-rows');
-            tbody.innerHTML = '';
+            readAllFromStore("rough_store", (logs) => {
+                let tbody = document.getElementById('purchase-history-rows');
+                tbody.innerHTML = '';
 
-            let searchParty = document.getElementById('search-party').value.toLowerCase().trim();
-            let searchDate = document.getElementById('search-date').value; 
-            if (searchDate) {
-                let parts = searchDate.split('-');
-                searchDate = `${parts[2]}/${parts[1]}/${parts[0]}`; 
-            }
-
-            let filteredLogs = logs.filter(item => {
-                let matchParty = !searchParty || item.vendor.toLowerCase().includes(searchParty);
-                let matchDate = !searchDate || item.date === searchDate;
-                return matchParty && matchDate;
-            });
-
-            if(filteredLogs.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:30px;">Empty Logs</td></tr>`;
-                return;
-            }
-
-            filteredLogs.reverse().forEach((log) => {
-                let origIndex = logs.findIndex(l => l.lot === log.lot);
-                let dueStatusHtml = `<br><span class="alert-safe">Paid Source</span>`;
-                
-                if(log.dueDate) {
-                    let today = new Date();
-                    today.setHours(0,0,0,0);
-                    let parts = log.dueDate.split('/');
-                    let dueObj = new Date(parts[2], parts[1]-1, parts[0]);
-                    
-                    let diffTime = dueObj - today;
-                    let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-                    if(diffDays > 0) {
-                        dueStatusHtml = `<br><span class="alert-warning">⏳ ${diffDays} days left</span>`;
-                    } else if(diffDays === 0) {
-                        dueStatusHtml = `<br><span class="alert-danger">🚨 Due Today</span>`;
-                    } else {
-                        dueStatusHtml = `<br><span class="alert-danger">⚠️ Overdue ${Math.abs(diffDays)}d</span>`;
-                    }
+                let searchParty = document.getElementById('search-party').value.toLowerCase().trim();
+                let searchDate = document.getElementById('search-date').value; 
+                if (searchDate) {
+                    let parts = searchDate.split('-');
+                    searchDate = `${parts[2]}/${parts[1]}/${parts[0]}`; 
                 }
 
-                let cameraIcon = log.billImage ? `<span style="cursor:pointer; margin-left:4px;" onclick="viewAttachedBill(${origIndex})">🖼️</span>` : "";
+                let filteredLogs = logs.filter(item => {
+                    let matchParty = !searchParty || item.vendor.toLowerCase().includes(searchParty);
+                    let matchDate = !searchDate || item.date === searchDate;
+                    return matchParty && matchDate;
+                });
 
-                tbody.innerHTML += `
-                    <tr class="tr-row">
-                        <td style="color:var(--accent-blue); font-weight:bold;">${log.lot} ${cameraIcon}</td>
-                        <td style="color:var(--text-muted); font-size:11px;">${log.date} ${dueStatusHtml}</td>
-                        <td><strong>${log.vendor}</strong><br><small style="color:var(--text-muted); font-size:11px;">${log.carat} Cts</small></td>
-                        <td style="color:var(--accent-cyan); font-weight:bold;">₹${Math.round(log.netPayable).toLocaleString('en-IN')}</td>
-                    </tr>
-                `;
+                if(filteredLogs.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:30px;">Empty Logs</td></tr>`;
+                    return;
+                }
+
+                filteredLogs.reverse().forEach((log, index) => {
+                    let dueStatusHtml = `<br><span class="alert-safe">Paid Source</span>`;
+                    
+                    if(log.dueDate) {
+                        let today = new Date();
+                        today.setHours(0,0,0,0);
+                        let parts = log.dueDate.split('/');
+                        let dueObj = new Date(parts[2], parts[1]-1, parts[0]);
+                        
+                        let diffTime = dueObj - today;
+                        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                        if(diffDays > 0) {
+                            dueStatusHtml = `<br><span class="alert-warning">⏳ ${diffDays} days left</span>`;
+                        } else if(diffDays === 0) {
+                            dueStatusHtml = `<br><span class="alert-danger">🚨 Due Today</span>`;
+                        } else {
+                            dueStatusHtml = `<br><span class="alert-danger">⚠️ Overdue ${Math.abs(diffDays)}d</span>`;
+                        }
+                    }
+
+                    let cameraIcon = log.billImage ? `<span style="cursor:pointer; margin-left:4px;" onclick="viewAttachedBill(${index})">🖼️</span>` : "";
+
+                    tbody.innerHTML += `
+                        <tr class="tr-row">
+                            <td style="color:var(--accent-blue); font-weight:bold;">${log.lot_no} ${cameraIcon}</td>
+                            <td style="color:var(--text-muted); font-size:11px;">${log.date} ${dueStatusHtml}</td>
+                            <td><strong>${log.vendor}</strong><br><small style="color:var(--text-muted); font-size:11px;">${log.weight} Cts</small></td>
+                            <td style="color:var(--accent-cyan); font-weight:bold;">₹${Math.round(log.netPayable).toLocaleString('en-IN')}</td>
+                        </tr>
+                    `;
+                });
             });
         }
 
@@ -454,7 +604,9 @@
             let source = document.getElementById('pay-source').value;
             let carat = parseFloat(document.getElementById('weight').value) || 0;
             let price = parseFloat(document.getElementById('price').value) || 0;
-            let netPayable = calculateTotalAmount();
+            
+            const costData = calculateLandedCosts();
+            let netPayable = costData.finalNetPayable;
 
             if(!lot || !dateInput || !vendor || carat <= 0 || price <= 0) {
                 alert("Validation Check Failure: Missing Mandatory parameters!");
@@ -470,48 +622,57 @@
                 dueDateStr = `${ddParts[2]}/${ddParts[1]}/${ddParts[0]}`;
             }
 
-            if(source === 'CASH') {
-                let currentCash = parseFloat(localStorage.getItem('cash_on_hand')) || 0;
-                if(netPayable > currentCash) {
-                    if(!confirm("Warning Matrix Check: Payable exceeds cash vault inventory threshold. Proceed?")) return;
-                }
-                currentCash -= netPayable;
-                localStorage.setItem('cash_on_hand', currentCash.toString());
-
-                let cashHistory = JSON.parse(localStorage.getItem('cash_history_log')) || [];
-                cashHistory.push({ date: dateStr, party: vendor, purpose: `Rough Intake Lot: ${lot}`, amount: netPayable, type: 'javak' });
-                localStorage.setItem('cash_history_log', JSON.stringify(cashHistory));
+            // High Precision DB transaction integration
+            if (source === 'CASH') {
+                readAllFromStore("cash_flow", (records) => {
+                    let cashRec = records[0] || { total_cash: 5200000, today_in: 0, today_out: 0 };
+                    if(netPayable > cashRec.total_cash) {
+                        if(!confirm("Warning Matrix Check: Payable exceeds cash vault inventory threshold. Proceed?")) return;
+                    }
+                    cashRec.total_cash = preciseSubtract(cashRec.total_cash, netPayable);
+                    cashRec.today_out = preciseAdd(cashRec.today_out, netPayable);
+                    writeToStore("cash_flow", cashRec);
+                });
             } else {
-                let banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
-                if(banks.length === 0) {
-                    alert("Sync Aborted: No connected bank account found inside system structure!");
-                    return;
-                }
-                banks[0].balance -= netPayable;
-                localStorage.setItem('factory_banks', JSON.stringify(banks));
+                readAllFromStore("bank_accounts", (banks) => {
+                    if(banks.length === 0) {
+                        alert("Sync Aborted: Connect your bank accounts inside Bank Vault first.");
+                        return;
+                    }
+                    // Subtract from the primary linked bank account
+                    const primaryBank = banks[0];
+                    primaryBank.balance = preciseSubtract(primaryBank.balance, netPayable);
+                    writeToStore("bank_accounts", primaryBank);
 
-                let bankLedger = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
-                bankLedger.unshift({ bank: banks[0].name, method: 'WIRE_TRANSFER', purpose: `Rough Intake Lot: ${lot}`, party: vendor, amount: netPayable, mode: 'DEBIT' });
-                localStorage.setItem('bank_ledger_logs', JSON.stringify(bankLedger));
+                    const txId = "TX-RD-" + Math.random().toString(36).substring(2, 9).toUpperCase();
+                    const timestamp = new Date().toISOString();
+                    
+                    const ledgerEntry = { txId, bank: primaryBank.name, method: 'WIRE_TRANSFER', purpose: `Rough Intake Lot: ${lot}`, party: vendor, amount: netPayable, original_amount: netPayable, original_currency: "INR", mode: 'DEBIT', timestamp };
+                    writeToStore("bank_ledger", ledgerEntry);
+                });
             }
 
-            let currentStock = parseFloat(localStorage.getItem('total_rough')) || 0;
-            localStorage.setItem('total_rough', (currentStock + carat).toString());
-
-            let purchases = JSON.parse(localStorage.getItem('purchase_history_log')) || [];
-            purchases.push({
-                lot: lot,
+            // Save the procurement lot to IndexedDB
+            const finalLotData = {
+                id: lot.toLowerCase(),
+                lot_no: lot,
                 date: dateStr,
                 dueDate: dueDateStr,
                 vendor: vendor,
                 stream: document.getElementById('stream').value,
                 broker: document.getElementById('broker').value,
-                carat: carat,
+                weight: carat,
                 netPayable: netPayable,
+                landedCostPerCarat: costData.landedCostPerCarat,
                 billImage: attachedImageBase64
-            });
-            localStorage.setItem('purchase_history_log', JSON.stringify(purchases));
+            };
 
+            writeToStore("rough_store", finalLotData);
+
+            // Dispatch global event bus message to update main office counters in 1/100s
+            systemDataBus.postMessage({ type: "PRODUCTION_DATA_MUTATION", triggeredBy: "rough_purchase" });
+
+            // Reset inputs
             document.getElementById('lot').value = '';
             document.getElementById('weight').value = '';
             document.getElementById('price').value = '';
@@ -521,29 +682,31 @@
             attachedImageBase64 = "";
             document.getElementById('file-label-text').innerText = "📷 Capture / Upload Bill";
             document.getElementById('net-payable').value = '0.00';
+            document.getElementById('net-landed-carat').value = '0.00';
             
             alert(`⚡ System Confirmed: Procurement Lot ${lot} Integrated Successfully!`);
-            refreshPurchaseHistoryTable();
+            setTimeout(refreshPurchaseHistoryTable, 200);
         }
 
         function exportPurchaseLedgerToCSV() {
-            let history = JSON.parse(localStorage.getItem('purchase_history_log')) || [];
-            if(history.length === 0) { alert("Data Empty to export!"); return; }
+            readAllFromStore("rough_store", (history) => {
+                if(history.length === 0) { alert("Data Empty to export!"); return; }
 
-            let csvRows = ['Lot No,Date,Vendor Details,Weight (Carats),Total Amount (INR)'];
-            history.forEach(h => {
-                csvRows.push(`"${h.lot}","${h.date}","${h.vendor} (${h.stream})","${h.carat}","${h.netPayable}"`);
+                let csvRows = ['Lot No,Date,Vendor Details,Weight (Carats),Landed Cost per Carat (INR),Total Amount (INR)'];
+                history.forEach(h => {
+                    csvRows.push(`"${h.lot_no}","${h.date}","${h.vendor} (${h.stream})","${h.weight}","${h.landedCostPerCarat}","${h.netPayable}"`);
+                });
+
+                let blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+                let link = document.createElement("a");
+                let url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", `Raghuveer_Purchase_Report.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             });
-
-            let blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
-            let link = document.createElement("a");
-            let url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", `Raghuveer_Purchase_Report.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
         }
 
         function triggerAiVoice() { alert("RA-AI Voice Engine Activated..."); }
