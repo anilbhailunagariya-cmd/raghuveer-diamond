@@ -1,36 +1,37 @@
 <!DOCTYPE html> 
-<html lang="en"> 
+<html lang="gu"> 
 <head> 
 <meta charset="UTF-8"> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
-<title>Raghuveer Diamond - Full Responsive Terminal</title> 
+<title>Raghuveer Diamond - Bank Ledger Terminal</title> 
 <style> 
 :root { 
     --bg-primary: #070B19; 
-    --bg-secondary: #0D1630; 
+    --bg-secondary: #111D37; 
     --top-bar-bg: #030611; 
     --border-color: #1C2541; 
     --accent-cyan: #5BC0BE; 
     --accent-blue: #00C6FF; 
-    --accent-green: #27AE60; 
+    --accent-green: #2ECC71; 
     --accent-red: #E74C3C; 
     --accent-purple: #9B59B6; 
     --text-main: #FFFFFF; 
-    --text-muted: #708090; 
+    --text-muted: #8D99AE; 
+    --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 } 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; } 
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); user-select: none; } 
 body { background-color: var(--bg-primary); color: var(--text-main); width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden; } 
 
-/* ૩ વિન્ડો કંટ્રોલ બટન */
-.window-control-bar { height: 45px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 2px solid var(--border-color); } 
-.brand-title { font-size: 14px; font-weight: 900; letter-spacing: 1px; color: var(--accent-cyan); text-transform: uppercase; } 
+/* Top Header Control Bar */
+.window-control-bar { height: 48px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 1px solid var(--border-color); } 
+.brand-title { font-size: 14px; font-weight: 900; letter-spacing: 1.5px; color: var(--accent-cyan); text-transform: uppercase; } 
 .control-group { display: flex; gap: 8px; }
 .btn-win { width: 32px; height: 26px; border: none; border-radius: 4px; color: white; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-.btn-min { background: #2C3E50; }
-.btn-max { background: #34495E; }
+.btn-min { background: #1C2541; }
+.btn-max { background: #2A365C; }
 .btn-close { background: var(--accent-red); }
 
-/* રિસ્પોન્સિવ ગ્રીડ */
+/* Responsive Grid */
 .balance-board { 
     display: grid; 
     grid-template-columns: repeat(2, 1fr); 
@@ -44,7 +45,7 @@ body { background-color: var(--bg-primary); color: var(--text-main); width: 100v
 
 .balance-card { 
     background: var(--bg-secondary); 
-    border: 2px solid var(--border-color); 
+    border: 1px solid var(--border-color); 
     border-radius: 12px; 
     padding: 0; 
     position: relative; 
@@ -57,7 +58,7 @@ body { background-color: var(--bg-primary); color: var(--text-main); width: 100v
     transition: all 0.3s ease;
     cursor: pointer;
 } 
-.balance-card:hover { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(91, 192, 190, 0.3); }
+.balance-card:hover { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(91, 192, 190, 0.3); transform: translateY(-2px); }
 .balance-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; } 
 
 #card-top-bank::before { background: var(--accent-blue); }
@@ -65,14 +66,13 @@ body { background-color: var(--bg-primary); color: var(--text-main); width: 100v
 #card-top-debit::before { background: var(--accent-red); }
 #card-top-transfer::before { background: var(--accent-purple); }
 
-/* ઉપરની બ્લેક પટ્ટી અને મોટા અક્ષરો */
 .marquee-strip-container { width: 100%; background: #030611; border-bottom: 1px solid var(--border-color); padding: 8px 10px; min-height: 32px; display: flex; align-items: center; justify-content: center; }
-.marquee-strip { font-size: 13px; font-weight: 800; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; }
+.marquee-strip { font-size: 12px; font-weight: 800; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; }
 
 .card-content-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 5px; }
 .card-val { font-size: 20px; font-weight: 800; color: #FFFFFF; text-align: center; } 
 
-/* લાઇવ ચોપડો */
+/* Live Ledger Workspace */
 .bank-workspace { 
     flex: 1; 
     padding: 0 12px 12px 12px; 
@@ -85,34 +85,36 @@ body { background-color: var(--bg-primary); color: var(--text-main); width: 100v
 }
 
 .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); flex: 1; overflow: hidden; } 
-.panel-title { font-size: 14px; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 12px; font-weight: 700; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; } 
+.panel-title { font-size: 13px; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 12px; font-weight: 700; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; letter-spacing: 1px; } 
 
 .table-wrapper { flex: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; background: #070B19; } 
 table { width: 100%; border-collapse: collapse; font-size: 13px; } 
-th { background: #16213E; color: var(--accent-cyan); padding: 12px 10px; text-transform: uppercase; font-size: 12px; font-weight: 700; text-align: left; position: sticky; top: 0; } 
+th { background: #111D37; color: var(--accent-cyan); padding: 12px 10px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; position: sticky; top: 0; border-bottom: 1px solid var(--border-color); } 
 td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; } 
-.tx-cr { color: #2ECC71; font-weight: 700; } 
-.tx-dr { color: #E74C3C; font-weight: 700; } 
-.tx-tr { color: #9B59B6; font-weight: 700; } 
+.tx-cr { color: var(--accent-green); font-weight: 700; } 
+.tx-dr { color: var(--accent-red); font-weight: 700; } 
+.tx-tr { color: var(--accent-purple); font-weight: 700; } 
 
-/* 800px ઓટો-રિસ્પોન્સિવ પોપ-અપ મોડલ ડિઝાઈન */
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(3, 6, 17, 0.85); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; } 
-.modal-box { background: #0B132B; border: 1px solid var(--accent-cyan); border-radius: 12px; width: 95%; max-width: 800px; padding: 25px; box-shadow: 0 0 25px rgba(91, 192, 190, 0.4); } 
+/* Popup Overlay Modals */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(7, 11, 25, 0.88); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; } 
+.modal-box { background: #111D37; border: 1px solid var(--border-color); border-radius: 12px; width: 95%; max-width: 750px; padding: 25px; box-shadow: 0 0 35px rgba(0, 0, 0, 0.8); } 
 
 .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 12px; } 
 .input-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; } 
-.input-group label { font-size: 11px; color: #FFFFFF; text-transform: uppercase; font-weight: 600; } 
+.input-group label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; } 
 .input-control { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; outline: none; width: 100%; } 
-.mode-btn { width: 100%; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; text-align: center; border: none; font-size: 13px; color: #030611; background: var(--accent-cyan); margin-top: 5px; } 
+.input-control:focus { border-color: var(--accent-cyan); }
+.mode-btn { width: 100%; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; text-align: center; border: none; font-size: 12px; letter-spacing: 1px; color: var(--bg-primary); background: var(--accent-cyan); margin-top: 5px; transition: 0.3s; } 
+.mode-btn:hover { opacity: 0.9; box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); }
 </style> 
 </head> 
-<body onload="initializeTerminal()" onclick="makeFullScreen()"> 
+<body onload="initializeTerminal()"> 
 
 <div class="window-control-bar"> 
- <div class="brand-title">RAGHUVEER DIAMOND - TERMINAL CORE</div> 
+ <div class="brand-title">RAGHUVEER DIAMOND - BANK LEDGER TERMINAL</div> 
  <div class="control-group">
-     <button class="btn-win btn-min" onclick="alert('Minimize')">-</button>
-     <button class="btn-win btn-max" onclick="toggleFullScreen()">□</button>
+     <button class="btn-win btn-min" onclick="triggerMinimize()">-</button>
+     <button class="btn-win btn-max" onclick="toggleFullScreen()">🗖</button>
      <button class="btn-win btn-close" onclick="backToDashboard()">✕</button>
  </div>
 </div> 
@@ -134,10 +136,10 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
  <!-- ⚙️ 1. BANK VAULT POPUP --> 
  <div class="modal-overlay" id="bank-modal" onclick="closePopup('bank-modal', event)"> 
  <div class="modal-box" onclick="event.stopPropagation()"> 
- <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>⚙️ Configuration Matrix</span> <span style="cursor:pointer;" onclick="hidePopupDirect('bank-modal')">✕</span> </div> 
+ <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>⚙️ Add New Bank Account</span> <span style="cursor:pointer;" onclick="hidePopupDirect('bank-modal')">✕</span> </div> 
  
  <div class="form-grid-2">
-     <div class="input-group"> <label>Bank Name</label> <input type="text" class="input-control" id="new-bank-name" placeholder="e.g. SBI, KOTAK"> </div> 
+     <div class="input-group"> <label>Bank Name</label> <input type="text" class="input-control" id="new-bank-name" placeholder="e.g. KOTAK, SBI, ICICI"> </div> 
      <div class="input-group"> 
          <label>Account Type</label> 
          <select class="input-control" id="new-bank-type" onchange="toggleCustomAccountInput(this.value)">
@@ -154,7 +156,7 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
 
  <div class="input-group" id="custom-account-wrapper" style="display: none; margin-bottom: 12px;">
      <label style="color: var(--accent-blue);">Enter Custom Account Type</label>
-     <input type="text" class="input-control" id="new-bank-custom-type" placeholder="e.g. Fixed Deposit, Joint Account" style="border-color: var(--accent-blue);">
+     <input type="text" class="input-control" id="new-bank-custom-type" placeholder="e.g. Fixed Deposit, Joint Account">
  </div>
 
  <div class="form-grid-2">
@@ -190,7 +192,7 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
 
  <div class="input-group" id="custom-cr-method-wrapper" style="display: none; margin-bottom: 12px;">
      <label style="color: var(--accent-green);">Enter Custom Method</label>
-     <input type="text" class="input-control" id="cr-custom-method" placeholder="e.g. RTGS, CASH VOUCHER" style="border-color: var(--accent-green);">
+     <input type="text" class="input-control" id="cr-custom-method" placeholder="e.g. RTGS, CASH VOUCHER">
  </div>
 
  <div class="form-grid-2">
@@ -208,7 +210,7 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
 
  <div class="input-group" id="custom-cr-purpose-wrapper" style="display: none; margin-bottom: 12px;">
      <label style="color: var(--accent-green);">Enter Custom Purpose</label>
-     <input type="text" class="input-control" id="cr-custom-purpose" placeholder="e.g. Interest Credit, Subsidy" style="border-color: var(--accent-green);">
+     <input type="text" class="input-control" id="cr-custom-purpose" placeholder="e.g. Interest Credit, Subsidy">
  </div>
 
  <div class="input-group">
@@ -239,7 +241,7 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
 
  <div class="input-group" id="custom-dr-method-wrapper" style="display: none; margin-bottom: 12px;">
      <label style="color: var(--accent-red);">Enter Custom Method</label>
-     <input type="text" class="input-control" id="dr-custom-method" placeholder="e.g. RTGS, CASH" style="border-color: var(--accent-red);">
+     <input type="text" class="input-control" id="dr-custom-method" placeholder="e.g. RTGS, CASH">
  </div>
 
  <div class="form-grid-2">
@@ -258,7 +260,7 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
 
  <div class="input-group" id="custom-dr-purpose-wrapper" style="display: none; margin-bottom: 12px;">
      <label style="color: var(--accent-red);">Enter Custom Purpose</label>
-     <input type="text" class="input-control" id="dr-custom-purpose" placeholder="e.g. Office Rent, Light Bill" style="border-color: var(--accent-red);">
+     <input type="text" class="input-control" id="dr-custom-purpose" placeholder="e.g. Office Rent, Light Bill">
  </div>
 
  <div class="input-group">
@@ -270,18 +272,16 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
  </div> 
  </div> 
 
- <!-- 🟣 4. BANK TRANSFER POPUP - નવી જોડી અને કસ્ટમ મેથડ સાથે સેટ --> 
+ <!-- 🟣 4. BANK TRANSFER POPUP --> 
  <div class="modal-overlay" id="transfer-modal" onclick="closePopup('transfer-modal', event)"> 
  <div class="modal-box" onclick="event.stopPropagation()"> 
  <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>🟣 Interbank Transfer Protocol</span> <span style="cursor:pointer;" onclick="hidePopupDirect('transfer-modal')">✕</span> </div> 
  
- <!-- લાઇન ૧: From Bank ની સામે To Bank -->
  <div class="form-grid-2">
      <div class="input-group"><label>From Bank</label><select class="input-control" id="tr-src-bank"></select></div>
      <div class="input-group"><label>To Bank</label><select class="input-control" id="tr-dest-bank"></select></div>
  </div>
 
- <!-- લાઇન ૨: Method ની સામે Amount -->
  <div class="form-grid-2">
      <div class="input-group">
          <label>Method</label>
@@ -294,10 +294,9 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
      <div class="input-group"><label>Amount</label><input type="number" class="input-control" id="tr-amount" placeholder="0.00"></div>
  </div>
 
- <!-- ⚡ ટ્રાન્સફર કસ્ટમ મેથડ ખાનું (જ્યારે Other સિલેક્ટ થાય ત્યારે જ લાઈવ દેખાશે) -->
  <div class="input-group" id="custom-tr-method-wrapper" style="display: none; margin-bottom: 12px;">
      <label style="color: var(--accent-purple);">Enter Custom Transfer Method</label>
-     <input type="text" class="input-control" id="tr-custom-method" placeholder="e.g. RTGS, NEFT, BOOK TRANSFER" style="border-color: var(--accent-purple);">
+     <input type="text" class="input-control" id="tr-custom-method" placeholder="e.g. RTGS, NEFT, BOOK TRANSFER">
  </div>
 
  <button class="mode-btn" style="background:var(--accent-purple); color:white;" onclick="executeTransaction('TRANSFER')">Execute Transfer</button> 
@@ -305,26 +304,41 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
  </div> 
 
 <script> 
- function makeFullScreen() { 
-     if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(err => {}); 
+ const systemDataBus = new BroadcastChannel('raghuveer_ai_core_bus');
+
+ const userRole = sessionStorage.getItem('userRole') || localStorage.getItem('lastActiveRole');
+ if(userRole !== 'director' && userRole !== 'accountant') {
+     alert("ACCESS DENIED: Restricted to Director and Accountant levels.");
+     window.location.href = "index.html";
  }
+
  function toggleFullScreen() { 
      if (!document.fullscreenElement) {
          document.documentElement.requestFullscreen().catch(e => {});
      } else {
-         document.exitFullscreen();
+         document.exitFullscreen().catch(e => {});
      }
  }
- function initializeTerminal() { refreshBankData(); } 
+ function triggerMinimize() { alert("Terminal view minimized."); }
+
+ function initializeTerminal() { 
+     if(!localStorage.getItem('factory_banks')) {
+         const initialBanks = [
+             { name: "KOTAK MAHINDRA BANK", acc: "9876543210", ifsc: "KKBK00001", holder: "Raghuveer Diamond", type: "Current Account", balance: 5000000 },
+             { name: "STATE BANK OF INDIA", acc: "1234567890", ifsc: "SBIN00002", holder: "Raghuveer Diamond", type: "Current Account", balance: 2500000 }
+         ];
+         localStorage.setItem('factory_banks', JSON.stringify(initialBanks));
+     }
+     refreshBankData(); 
+ } 
+ 
  function backToDashboard() { window.location.href = 'main_office.html'; } 
 
  function openPopup(id) { document.getElementById(id).style.display = 'flex'; } 
  function closePopup(id, e) { if(e.target.id === id) hidePopupDirect(id); }
  function hidePopupDirect(id) { 
      document.getElementById(id).style.display = 'none'; 
-     if(id === 'bank-modal') {
-         document.getElementById('custom-account-wrapper').style.display = 'none';
-     }
+     if(id === 'bank-modal') document.getElementById('custom-account-wrapper').style.display = 'none';
      if(id === 'credit-modal') {
          document.getElementById('custom-cr-method-wrapper').style.display = 'none';
          document.getElementById('custom-cr-purpose-wrapper').style.display = 'none';
@@ -333,75 +347,43 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
          document.getElementById('custom-dr-method-wrapper').style.display = 'none';
          document.getElementById('custom-dr-purpose-wrapper').style.display = 'none';
      }
-     if(id === 'transfer-modal') {
-         document.getElementById('custom-tr-method-wrapper').style.display = 'none';
-     }
+     if(id === 'transfer-modal') document.getElementById('custom-tr-method-wrapper').style.display = 'none';
  }
 
- // બેંક કસ્ટમ એકાઉન્ટ બોક્સ કંટ્રોલ
  function toggleCustomAccountInput(value) {
      const customWrapper = document.getElementById('custom-account-wrapper');
-     if(value === 'Other') {
-         customWrapper.style.display = 'flex';
-         document.getElementById('new-bank-custom-type').focus();
-     } else {
-         customWrapper.style.display = 'none';
-     }
+     customWrapper.style.display = value === 'Other' ? 'flex' : 'none';
+     if(value === 'Other') document.getElementById('new-bank-custom-type').focus();
  }
 
- // 🟢 ક્રેડિટ કસ્ટમ મેથડ બોક્સ કંટ્રોલ
  function toggleCustomCreditMethod(value) {
      const wrapper = document.getElementById('custom-cr-method-wrapper');
-     if(value === 'Other') {
-         wrapper.style.display = 'flex';
-         document.getElementById('cr-custom-method').focus();
-     } else {
-         wrapper.style.display = 'none';
-     }
+     wrapper.style.display = value === 'Other' ? 'flex' : 'none';
+     if(value === 'Other') document.getElementById('cr-custom-method').focus();
  }
 
- // 🟢 ક્રેડિટ કસ્ટમ પર્પઝ બોક્સ કંટ્રોલ
  function toggleCustomCreditPurpose(value) {
      const wrapper = document.getElementById('custom-cr-purpose-wrapper');
-     if(value === 'Other') {
-         wrapper.style.display = 'flex';
-         document.getElementById('cr-custom-purpose').focus();
-     } else {
-         wrapper.style.display = 'none';
-     }
+     wrapper.style.display = value === 'Other' ? 'flex' : 'none';
+     if(value === 'Other') document.getElementById('cr-custom-purpose').focus();
  }
 
- // 🔴 ડેબિટ કસ્ટમ મેથડ બોક્સ કંટ્રોલ
  function toggleCustomDebitMethod(value) {
      const wrapper = document.getElementById('custom-dr-method-wrapper');
-     if(value === 'Other') {
-         wrapper.style.display = 'flex';
-         document.getElementById('dr-custom-method').focus();
-     } else {
-         wrapper.style.display = 'none';
-     }
+     wrapper.style.display = value === 'Other' ? 'flex' : 'none';
+     if(value === 'Other') document.getElementById('dr-custom-method').focus();
  }
 
- // 🔴 ડેબિટ કસ્ટમ પર્પઝ બોક્સ કંટ્રોલ
  function toggleCustomDebitPurpose(value) {
      const wrapper = document.getElementById('custom-dr-purpose-wrapper');
-     if(value === 'Other') {
-         wrapper.style.display = 'flex';
-         document.getElementById('dr-custom-purpose').focus();
-     } else {
-         wrapper.style.display = 'none';
-     }
+     wrapper.style.display = value === 'Other' ? 'flex' : 'none';
+     if(value === 'Other') document.getElementById('dr-custom-purpose').focus();
  }
 
- // 🟣 ટ્રાન્સફર કસ્ટમ મેથડ બોક્સ કંટ્રોલ
  function toggleCustomTransferMethod(value) {
      const wrapper = document.getElementById('custom-tr-method-wrapper');
-     if(value === 'Other') {
-         wrapper.style.display = 'flex';
-         document.getElementById('tr-custom-method').focus();
-     } else {
-         wrapper.style.display = 'none';
-     }
+     wrapper.style.display = value === 'Other' ? 'flex' : 'none';
+     if(value === 'Other') document.getElementById('tr-custom-method').focus();
  }
 
  function addBankMatrix() { 
@@ -413,16 +395,16 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
 
      if(type === 'Other') {
          const customType = document.getElementById('new-bank-custom-type').value.trim();
-         if(!customType) { alert('Please enter your custom account type.'); return; }
+         if(!customType) { alert('Please enter custom account type.'); return; }
          type = customType + " Account";
      } else {
          type = type + " Account";
      }
 
-     if(!name || !acc || !ifsc || !holder) { alert('Fill complete bank details.'); return; }
+     if(!name || !acc || !ifsc || !holder) { alert('Please fill complete bank details.'); return; }
      
      const banks = JSON.parse(localStorage.getItem('factory_banks')) || []; 
-     banks.push({ name: name, acc: acc, ifsc: ifsc, holder: holder, type: type, balance: 785000 }); 
+     banks.push({ name: name, acc: acc, ifsc: ifsc, holder: holder, type: type, balance: 0 }); 
      localStorage.setItem('factory_banks', JSON.stringify(banks)); 
      
      document.getElementById('new-bank-name').value = ''; 
@@ -433,18 +415,20 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
      document.getElementById('new-bank-type').value = 'Saving';
      document.getElementById('custom-account-wrapper').style.display = 'none';
      
-     hidePopupDirect('bank-modal'); refreshBankData(); 
+     hidePopupDirect('bank-modal'); 
+     refreshBankData(); 
+     systemDataBus.postMessage({ type: "PRODUCTION_DATA_MUTATION", module: "bank_details" });
  } 
 
  function refreshBankData() { 
      const banks = JSON.parse(localStorage.getItem('factory_banks')) || []; 
      const fillSelect = (id) => {
          const el = document.getElementById(id);
-         if(el) el.innerHTML = banks.length > 0 ? banks.map(b => `<option value="${b.name}">${b.name}</option>`).join('') : '<option value="">No Bank</option>';
+         if(el) el.innerHTML = banks.length > 0 ? banks.map(b => `<option value="${b.name}">${b.name}</option>`).join('') : '<option value="">No Bank Registered</option>';
      };
      fillSelect('cr-bank-select'); fillSelect('dr-bank-select'); fillSelect('tr-src-bank'); fillSelect('tr-dest-bank');
 
-     let total = banks.reduce((s, b) => s + b.balance, 0);
+     let total = banks.reduce((s, b) => s + (b.balance || 0), 0);
      document.getElementById('val-top-vault').innerText = `₹ ${total.toLocaleString('en-IN')}`;
      
      const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
@@ -480,8 +464,9 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
 
          if(!bank || isNaN(amount) || amount <= 0 || !party) { alert('Please fill complete transaction details.'); return; }
          
-         const bIdx = banks.findIndex(b => b.name === bank); banks[bIdx].balance += amount;
-         entries.unshift({ bank, method, purpose, party, amount, mode });
+         const bIdx = banks.findIndex(b => b.name === bank); 
+         if(bIdx !== -1) banks[bIdx].balance += amount;
+         entries.unshift({ bank, method, purpose, party, amount, mode, timestamp: new Date().toISOString() });
          
          document.getElementById('cr-amount').value = ''; 
          document.getElementById('cr-party').value = ''; 
@@ -514,8 +499,9 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
 
          if(!bank || isNaN(amount) || amount <= 0 || !party) { alert('Please fill complete transaction details.'); return; }
          
-         const bIdx = banks.findIndex(b => b.name === bank); banks[bIdx].balance -= amount;
-         entries.unshift({ bank, method, purpose, party, amount, mode });
+         const bIdx = banks.findIndex(b => b.name === bank); 
+         if(bIdx !== -1) banks[bIdx].balance -= amount;
+         entries.unshift({ bank, method, purpose, party, amount, mode, timestamp: new Date().toISOString() });
          
          document.getElementById('dr-amount').value = ''; 
          document.getElementById('dr-party').value = ''; 
@@ -533,7 +519,6 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
          const amount = parseFloat(document.getElementById('tr-amount').value);
          let method = document.getElementById('tr-method').value;
 
-         // 🟣 ટ્રાન્સફર કસ્ટમ મેથડ સબમિટ લોજિક
          if(method === 'Other') {
              const customMethod = document.getElementById('tr-custom-method').value.trim();
              if(!customMethod) { alert('Please enter custom transfer method.'); return; }
@@ -542,11 +527,14 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
 
          if(!src || !dest || src === dest || isNaN(amount) || amount <= 0) { alert('Please fill complete transfer details.'); return; }
          
-         banks[banks.findIndex(b => b.name === src)].balance -= amount;
-         banks[banks.findIndex(b => b.name === dest)].balance += amount;
-         entries.unshift({ bank: src, destBank: dest, method: method, purpose: 'INTERNAL_TRANSFER', party: `To ${dest}`, amount, mode });
+         const srcIdx = banks.findIndex(b => b.name === src);
+         const destIdx = banks.findIndex(b => b.name === dest);
+         if(srcIdx !== -1 && destIdx !== -1) {
+             banks[srcIdx].balance -= amount;
+             banks[destIdx].balance += amount;
+         }
+         entries.unshift({ bank: src, destBank: dest, method: method, purpose: 'INTERNAL_TRANSFER', party: `To ${dest}`, amount, mode, timestamp: new Date().toISOString() });
          
-         // 🟣 ડેટા પોસ્ટ થયા પછી ટ્રાન્સફર ફોર્મ ક્લીન કરો
          document.getElementById('tr-amount').value = ''; 
          document.getElementById('tr-custom-method').value = '';
          document.getElementById('tr-method').value = 'ONLINE';
@@ -557,12 +545,17 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
      localStorage.setItem('factory_banks', JSON.stringify(banks));
      localStorage.setItem('bank_ledger_logs', JSON.stringify(entries));
      refreshBankData();
+     
+     systemDataBus.postMessage({ type: "PRODUCTION_DATA_MUTATION", module: "bank_details" });
  }
 
  function loadLedgerLogs() { 
      const tbody = document.getElementById('ledger-rows'); 
      const entries = JSON.parse(localStorage.getItem('bank_ledger_logs')) || []; 
-     if(entries.length === 0) { tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:20px;">No operational records found.</td></tr>`; return; } 
+     if(entries.length === 0) { 
+         tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:20px;">No operational records found.</td></tr>`; 
+         return; 
+     } 
      tbody.innerHTML = entries.map((e) => { 
          let c = e.mode === 'DEBIT' ? 'tx-dr' : (e.mode === 'TRANSFER' ? 'tx-tr' : 'tx-cr'); 
          let s = e.mode === 'DEBIT' ? '-' : (e.mode === 'TRANSFER' ? '⇄' : '+'); 
