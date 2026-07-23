@@ -1,1 +1,402 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Raghuveer Diamond - 4P Ghat Sales Terminal</title>
+    <style>
+        /* =================================================构造
+           GLOBAL CENTRALIZED THEME VARIABLES (SYNCED WITH INDEX.HTML)
+           ======================================================== */
+        :root {
+            --bg-primary: #070B19; 
+            --bg-secondary: #111D37; 
+            --top-bar-bg: #030611; 
+            --border-color: #1C2541; 
+            --accent-cyan: #5BC0BE; 
+            --accent-blue: #00C6FF; 
+            --accent-green: #2ECC71; 
+            --accent-red: #E74C3C; 
+            --accent-purple: #9B59B6;
+            --accent-yellow: #F1C40F;
+            --text-main: #FFFFFF; 
+            --text-muted: #8D99AE; 
+            --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); user-select: none; }
+        body { background-color: var(--bg-primary); color: var(--text-main); width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+        /* Window Control Bar Architecture */
+        .window-control-bar { height: 48px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 1px solid var(--border-color); } 
+        .brand-title { font-size: 14px; font-weight: 900; letter-spacing: 1.5px; color: var(--accent-cyan); text-transform: uppercase; } 
+        .control-group { display: flex; gap: 8px; }
+        .btn-win { width: 32px; height: 26px; border: none; border-radius: 4px; color: white; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 14px; text-decoration: none; }
+        .btn-min { background: #1C2541; }
+        .btn-max { background: #2A365C; }
+        .btn-close { background: var(--accent-red); }
+
+        /* Balance Board Grid */
+        .balance-board { 
+            display: grid; 
+            grid-template-columns: repeat(1, 1fr); 
+            gap: 12px; 
+            padding: 12px; 
+            width: 100%;
+        } 
+        @media (min-width: 768px) { 
+            .balance-board { grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 15px; } 
+        }
+
+        .balance-card { 
+            background: var(--bg-secondary); 
+            border: 1px solid var(--border-color); 
+            border-radius: 12px; 
+            padding: 0; 
+            position: relative; 
+            overflow: hidden; 
+            aspect-ratio: 2.3 / 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        } 
+        .balance-card:hover { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(91, 192, 190, 0.3); transform: translateY(-2px); }
+        .balance-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; } 
+
+        #card-ghat-total::before { background: var(--accent-yellow); }
+        #card-ghat-revenue::before { background: var(--accent-green); }
+        #card-ghat-lots::before { background: var(--accent-blue); }
+        #card-ghat-entry::before { background: var(--accent-purple); }
+
+        .marquee-strip-container { width: 100%; background: #030611; border-bottom: 1px solid var(--border-color); padding: 8px 10px; min-height: 32px; display: flex; align-items: center; justify-content: center; }
+        .marquee-strip { font-size: 12px; font-weight: 800; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; }
+
+        .card-content-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 5px; }
+        .card-val { font-size: 20px; font-weight: 800; color: #FFFFFF; text-align: center; } 
+
+        /* Filter Controls Row */
+        .filter-control-row { display: flex; flex-wrap: wrap; gap: 10px; padding: 0 12px; margin-bottom: 10px; align-items: center; }
+        @media (min-width: 768px) { .filter-control-row { padding: 0 15px; } }
+        .filter-input { background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 8px 12px; border-radius: 6px; font-size: 12px; outline: none; font-weight: bold; }
+        .filter-input::placeholder { color: var(--text-muted); }
+        .export-btn { background: var(--accent-green); color: white; border: none; padding: 8px 15px; border-radius: 6px; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-left: auto; transition: 0.3s; }
+        .export-btn:hover { opacity: 0.9; box-shadow: 0 0 12px rgba(46, 204, 113, 0.4); }
+
+        /* Workspace Ledger Core */
+        .workspace-container { 
+            flex: 1; 
+            padding: 0 12px 12px 12px; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+        } 
+        @media (min-width: 768px) { 
+            .workspace-container { padding: 0 15px 15px 15px; height: calc(100vh - 210px); } 
+        }
+
+        .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); flex: 1; overflow: hidden; } 
+        .panel-title { font-size: 13px; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 12px; font-weight: 700; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; letter-spacing: 1px; } 
+
+        .table-wrapper { flex: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; background: #070B19; } 
+        table { width: 100%; border-collapse: collapse; font-size: 13px; } 
+        th { background: #111D37; color: var(--accent-cyan); padding: 12px 10px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; position: sticky; top: 0; border-bottom: 1px solid var(--border-color); } 
+        td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; } 
+
+        /* Modals Matrix */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(7, 11, 25, 0.88); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; } 
+        .modal-box { background: #111D37; border: 1px solid var(--border-color); border-radius: 12px; width: 95%; max-width: 750px; padding: 25px; box-shadow: 0 0 35px rgba(0, 0, 0, 0.8); } 
+
+        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 12px; } 
+        .input-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; } 
+        .input-group label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; } 
+        .input-control { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; outline: none; width: 100%; } 
+        .input-control:focus { border-color: var(--accent-cyan); }
+        .mode-btn { width: 100%; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; text-align: center; border: none; font-size: 12px; letter-spacing: 1px; color: var(--bg-primary); background: var(--accent-yellow); margin-top: 5px; transition: 0.3s; } 
+        .mode-btn:hover { opacity: 0.9; box-shadow: 0 0 15px rgba(241, 196, 15, 0.4); }
+    </style> 
+</head>
+<body onload="initGhatSalesCore()">
+
+    <!-- Top Navigation Bar -->
+    <div class="window-control-bar"> 
+        <div class="brand-title">RAGHUVEER DIAMOND - 4P GHAT SALES TERMINAL</div> 
+        <div class="control-group">
+            <button class="btn-win btn-min" onclick="triggerMinimize()">-</button>
+            <button class="btn-win btn-max" onclick="toggleFullScreen()">🗖</button>
+            <a href="main_office.html" class="btn-win btn-close">✕</a>
+        </div>
+    </div>
+
+    <!-- Data Cards Grid -->
+    <div class="balance-board"> 
+        <div class="balance-card" id="card-ghat-total"><div class="marquee-strip-container"><div class="marquee-strip">TOTAL GHAT CARATS</div></div><div class="card-content-wrapper"><div class="card-val" id="val-ghat-carats">0.00 Cts</div></div></div>
+        <div class="balance-card" id="card-ghat-revenue"><div class="marquee-strip-container"><div class="marquee-strip">GHAT SALES REVENUE</div></div><div class="card-content-wrapper"><div class="card-val" id="val-ghat-revenue">₹ 0</div></div></div>
+        <div class="balance-card" id="card-ghat-lots"><div class="marquee-strip-container"><div class="marquee-strip">LINKED ROUGH LOTS</div></div><div class="card-content-wrapper"><div class="card-val" id="val-ghat-lots">0 Lots</div></div></div>
+        <div class="balance-card" id="card-ghat-entry" onclick="openPopup('ghat-sale-modal')"><div class="marquee-strip-container"><div class="marquee-strip">NEW GHAT SALE</div></div><div class="card-content-wrapper"><div class="card-val" style="color:var(--accent-yellow);">+ RECORD SALE</div></div></div>
+    </div> 
+
+    <!-- Search & Export Controls -->
+    <div class="filter-control-row">
+        <input type="text" class="filter-input" id="search-party" placeholder="Search Party or Lot..." oninput="refreshGhatLedger()">
+        <input type="date" class="filter-input" id="search-date" onchange="refreshGhatLedger()">
+        <button class="export-btn" onclick="exportGhatLedgerToCSV()">📥 Export Sheet</button>
+    </div>
+
+    <!-- Ledger Workspace -->
+    <div class="workspace-container"> 
+        <div class="panel-box"> 
+            <div class="panel-title">Live 4P Ghat Sales Ledger & Lot Linkage</div> 
+            <div class="table-wrapper"> 
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date / Lot No</th>
+                            <th>Buyer Details / Reason</th>
+                            <th>Weight & Rate</th>
+                            <th>Total Revenue</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ledger-rows"></tbody>
+                </table> 
+            </div> 
+        </div> 
+    </div>
+
+    <!-- 🟡 4P GHAT SALE MODAL -->
+    <div class="modal-overlay" id="ghat-sale-modal" onclick="closePopup('ghat-sale-modal', event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> 
+                <span>🟡 4P Ghat Sales Entry</span> 
+                <span style="cursor:pointer;" onclick="hidePopupDirect('ghat-sale-modal')">✕</span> 
+            </div>
+            
+            <div class="form-grid-2">
+                <div class="input-group">
+                    <label>Parent Rough Lot No</label>
+                    <select class="input-control" id="ghat-lot-select" onchange="updateLotDetailsInfo()"></select>
+                </div>
+                <div class="input-group">
+                    <label>Buyer Party Name</label>
+                    <input type="text" class="input-control" id="ghat-buyer" placeholder="Party Name...">
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="input-group">
+                    <label>Ghat Weight (Carats)</label>
+                    <input type="number" step="0.01" class="input-control" id="ghat-carat" placeholder="0.00" oninput="calculateGhatTotal()">
+                </div>
+                <div class="input-group">
+                    <label>Rate / Carat (₹)</label>
+                    <input type="number" step="0.01" class="input-control" id="ghat-rate" placeholder="0.00" oninput="calculateGhatTotal()">
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="input-group">
+                    <label>Total Ghat Amount (₹)</label>
+                    <input type="text" class="input-control" id="ghat-total-amount" readonly style="color:var(--accent-green);" value="0.00">
+                </div>
+                <div class="input-group">
+                    <label>Payment Realization Source</label>
+                    <select class="input-control" id="ghat-pay-source">
+                        <option value="CASH">SPOT CASH (OFFICE VAULT)</option>
+                        <option value="BANK">BANK WIRE (DIRECT CREDIT)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Sorting Description / Note</label>
+                <input type="text" class="input-control" id="ghat-note" placeholder="e.g., Unusable Size/DM sold from 4P Sorting">
+            </div>
+
+            <button class="mode-btn" onclick="executeGhatSaleTransaction()">Confirm & Link Ghat Sale</button>
+        </div>
+    </div>
+
+    <script>
+        const systemDataBus = new BroadcastChannel('raghuveer_ai_core_bus');
+
+        const userRole = sessionStorage.getItem('userRole') || localStorage.getItem('lastActiveRole');
+        if(userRole !== 'director' && userRole !== 'accountant' && userRole !== '4p') {
+            alert("ACCESS DENIED: Restricted to Director, Accountant, or 4P Department levels.");
+            window.location.href = "index.html";
+        }
+
+        function toggleFullScreen() { 
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(e => {});
+            } else {
+                document.exitFullscreen().catch(e => {});
+            }
+        }
+        function triggerMinimize() { alert("Terminal view minimized."); }
+
+        function openPopup(id) { document.getElementById(id).style.display = 'flex'; }
+        function closePopup(id, e) { if(e.target.id === id) hidePopupDirect(id); }
+        function hidePopupDirect(id) { document.getElementById(id).style.display = 'none'; }
+
+        function initGhatSalesCore() {
+            if(!localStorage.getItem('ghat_sales_store')) localStorage.setItem('ghat_sales_store', JSON.stringify([]));
+            populateRoughLotsDropdown();
+            refreshGhatLedger();
+        }
+
+        function populateRoughLotsDropdown() {
+            const roughLots = JSON.parse(localStorage.getItem('rough_store')) || [];
+            const selectEl = document.getElementById('ghat-lot-select');
+            
+            if(roughLots.length === 0) {
+                selectEl.innerHTML = '<option value="">No Active Rough Lot Found</option>';
+            } else {
+                selectEl.innerHTML = roughLots.map(l => `<option value="${l.lot_no}">${l.lot_no} (${l.vendor} - ${l.weight} Cts)</option>`).join('');
+            }
+        }
+
+        function updateLotDetailsInfo() {
+            // Placeholder for optional metadata sync
+        }
+
+        function calculateGhatTotal() {
+            let carat = parseFloat(document.getElementById('ghat-carat').value) || 0;
+            let rate = parseFloat(document.getElementById('ghat-rate').value) || 0;
+            let total = carat * rate;
+            document.getElementById('ghat-total-amount').value = total.toFixed(2);
+        }
+
+        function refreshGhatLedger() {
+            let logs = JSON.parse(localStorage.getItem('ghat_sales_store')) || [];
+            
+            let totalCarats = logs.reduce((sum, h) => sum + parseFloat(h.carat || 0), 0);
+            let totalRevenue = logs.reduce((sum, h) => sum + parseFloat(h.totalAmount || 0), 0);
+            let uniqueLots = new Set(logs.map(h => h.lotNo)).size;
+
+            document.getElementById('val-ghat-carats').innerText = totalCarats.toFixed(2) + ' Cts';
+            document.getElementById('val-ghat-revenue').innerText = '₹ ' + totalRevenue.toLocaleString('en-IN');
+            document.getElementById('val-ghat-lots').innerText = uniqueLots + ' Lots';
+
+            let tbody = document.getElementById('ledger-rows');
+            tbody.innerHTML = '';
+
+            let searchParty = document.getElementById('search-party').value.toLowerCase().trim();
+            let searchDate = document.getElementById('search-date').value; 
+            if (searchDate) {
+                let parts = searchDate.split('-');
+                searchDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+
+            let filteredLogs = logs.filter(item => {
+                let matchParty = !searchParty || item.buyer.toLowerCase().includes(searchParty) || item.lotNo.toLowerCase().includes(searchParty);
+                let matchDate = !searchDate || item.date === searchDate;
+                return matchParty && matchDate;
+            });
+
+            if(filteredLogs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:20px;">No 4P Ghat sales records found.</td></tr>`;
+                return;
+            }
+
+            [...filteredLogs].reverse().forEach(item => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="color:var(--accent-yellow); font-weight:bold;">${item.lotNo}<br><small style="color:var(--text-muted);">${item.date}</small></td>
+                        <td><strong>${item.buyer}</strong><br><small style="color:var(--text-muted);">${item.note || '4P Ghat Sale'}</small></td>
+                        <td><strong>${item.carat} Cts</strong> @ ₹${item.rate}/Ct</td>
+                        <td style="color:var(--accent-green); font-weight:bold;">+ ₹ ${parseFloat(item.totalAmount).toLocaleString('en-IN')}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function executeGhatSaleTransaction() {
+            let lotNo = document.getElementById('ghat-lot-select').value;
+            let buyer = document.getElementById('ghat-buyer').value.trim();
+            let carat = parseFloat(document.getElementById('ghat-carat').value) || 0;
+            let rate = parseFloat(document.getElementById('ghat-rate').value) || 0;
+            let totalAmount = carat * rate;
+            let paySource = document.getElementById('ghat-pay-source').value;
+            let note = document.getElementById('ghat-note').value.trim();
+
+            if(!lotNo || !buyer || carat <= 0 || rate <= 0) {
+                alert("Please fill all required parameters accurately.");
+                return;
+            }
+
+            let dateStr = new Date().toLocaleDateString('en-GB');
+
+            // 1. Save to Ghat Store
+            let ghatLogs = JSON.parse(localStorage.getItem('ghat_sales_store')) || [];
+            ghatLogs.push({
+                lotNo, buyer, carat, rate, totalAmount, paySource, note,
+                date: dateStr, timestamp: new Date().toISOString()
+            });
+            localStorage.setItem('ghat_sales_store', JSON.stringify(ghatLogs));
+
+            // 2. Real-Time Account Credit (Cash or Bank)
+            if(paySource === 'CASH') {
+                let currentCash = parseFloat(localStorage.getItem('cash_on_hand')) || 0;
+                currentCash += totalAmount;
+                localStorage.setItem('cash_on_hand', currentCash.toString());
+
+                let cashHistory = JSON.parse(localStorage.getItem('cash_history_log')) || [];
+                cashHistory.push({
+                    date: dateStr, party: buyer, purpose: `4P Ghat Sale (Lot: ${lotNo})`,
+                    amount: totalAmount, type: 'jama', timestamp: new Date().toISOString()
+                });
+                localStorage.setItem('cash_history_log', JSON.stringify(cashHistory));
+            } else {
+                let banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
+                if(banks.length > 0) {
+                    banks[0].balance += totalAmount;
+                    localStorage.setItem('factory_banks', JSON.stringify(banks));
+
+                    let bankLedger = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
+                    bankLedger.unshift({
+                        bank: banks[0].name, method: 'GHAT_SALE_CREDIT', purpose: `4P Ghat Sale (Lot: ${lotNo})`,
+                        party: buyer, amount: totalAmount, mode: 'CREDIT', timestamp: new Date().toISOString()
+                    });
+                    localStorage.setItem('bank_ledger_logs', JSON.stringify(bankLedger));
+                }
+            }
+
+            // 3. Dispatch Signal across all open windows
+            systemDataBus.postMessage({ type: "PRODUCTION_DATA_MUTATION", module: "ghat_sales" });
+
+            // Reset form
+            document.getElementById('ghat-buyer').value = '';
+            document.getElementById('ghat-carat').value = '';
+            document.getElementById('ghat-rate').value = '';
+            document.getElementById('ghat-total-amount').value = '0.00';
+            document.getElementById('ghat-note').value = '';
+
+            hidePopupDirect('ghat-sale-modal');
+            refreshGhatLedger();
+            alert(`⚡ 4P Ghat Sale Recorded: ₹ ${totalAmount.toLocaleString('en-IN')} credited and linked to Lot ${lotNo}.`);
+        }
+
+        function exportGhatLedgerToCSV() {
+            let history = JSON.parse(localStorage.getItem('ghat_sales_store')) || [];
+            if(history.length === 0) { alert("No 4P Ghat sales records to export."); return; }
+
+            let csvRows = ['Date,Parent Lot No,Buyer Party,Carats,Rate per Carat (INR),Total Amount (INR),Payment Source,Note'];
+            history.forEach(h => {
+                csvRows.push(`"${h.date}","${h.lotNo}","${h.buyer}","${h.carat}","${h.rate}","${h.totalAmount}","${h.paySource}","${h.note || ''}"`);
+            });
+
+            let blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            let link = document.createElement("a");
+            let url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", `Raghuveer_4P_Ghat_Sales_Report.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
