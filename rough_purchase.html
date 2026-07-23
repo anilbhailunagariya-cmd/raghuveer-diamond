@@ -127,6 +127,21 @@
             50% { transform: scale(1.15); opacity: 1; }
             100% { transform: scale(0.95); opacity: 0.8; }
         }
+
+        /* 📱 MOBILE RESPONSIVE OVERRIDES */
+        @media (max-width: 900px) {
+            body { overflow-y: auto !important; height: auto; min-height: 100vh; }
+            .window-control-bar { padding: 0 10px; }
+            .brand-title { font-size: 11px; letter-spacing: 0.5px; }
+            .workspace-grid { flex-direction: column; height: auto; overflow: visible !important; padding: 10px; }
+            .panel-box { height: auto; padding: 12px; overflow: visible !important; }
+            .form-panel { max-width: 100%; }
+            .log-panel { flex: 1; max-width: 100%; min-height: 400px; }
+            .form-row-2, .form-row-3 { grid-template-columns: 1fr; gap: 10px; }
+            .form-button-matrix { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .file-label { min-height: 42px; }
+            .switch-container { min-height: 42px; }
+        }
     </style> 
 </head>
 <body onload="initPurchaseCore()">
