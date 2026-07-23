@@ -87,8 +87,18 @@ body { background-color: var(--bg-primary); color: var(--text-main); width: 100v
 .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); flex: 1; overflow: hidden; } 
 .panel-title { font-size: 13px; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 12px; font-weight: 700; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; letter-spacing: 1px; } 
 
-.table-wrapper { flex: 1; overflow-y: auto; overflow-x: auto; border: 1px solid var(--border-color); border-radius: 6px; background: #070B19; } 
-table { width: 100%; border-collapse: collapse; font-size: 13px; } 
+/* 🛠️ TABLE SCROLL ENHANCEMENTS */
+.table-wrapper { 
+    flex: 1; 
+    overflow-y: auto !important; 
+    overflow-x: auto !important; 
+    -webkit-overflow-scrolling: touch; 
+    touch-action: pan-x pan-y;
+    border: 1px solid var(--border-color); 
+    border-radius: 6px; 
+    background: #070B19; 
+} 
+table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 480px; } 
 th { background: #111D37; color: var(--accent-cyan); padding: 12px 10px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; position: sticky; top: 0; border-bottom: 1px solid var(--border-color); white-space: nowrap; } 
 td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; white-space: nowrap; } 
 .tx-cr { color: var(--accent-green); font-weight: 700; } 
@@ -109,14 +119,14 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
 
 /* 📱 MOBILE RESPONSIVE CSS FIXES */
 @media (max-width: 768px) {
-    body { overflow-y: auto; height: auto; min-height: 100vh; }
+    body { overflow-y: auto !important; height: auto; min-height: 100vh; }
     .window-control-bar { padding: 0 10px; }
     .brand-title { font-size: 11px; letter-spacing: 0.5px; }
     .balance-board { grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 8px; }
     .balance-card { aspect-ratio: 1.8 / 1; }
     .marquee-strip { font-size: 9px; letter-spacing: 0.5px; }
     .card-val { font-size: 14px; }
-    .bank-workspace { padding: 0 8px 8px 8px; height: auto; min-height: 350px; }
+    .bank-workspace { padding: 0 8px 8px 8px; height: 380px; }
     .panel-box { padding: 10px; }
     .form-grid-2 { grid-template-columns: 1fr; gap: 0; }
     .modal-box { padding: 15px; width: 98%; }
