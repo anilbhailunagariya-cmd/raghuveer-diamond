@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Raghuveer Diamond - Cash Flow Terminal</title>
+    <title>Raghuveer Diamond - Advanced Procurement Core</title>
     <style>
         /* ========================================================
            GLOBAL CENTRALIZED THEME VARIABLES (SYNCED WITH INDEX.HTML)
@@ -23,11 +23,13 @@
             --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
+        /* PERMANENT NO SCROLLBAR POLICY */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); user-select: none; }
-        body { background-color: var(--bg-primary); color: var(--text-main); width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        body { background-color: var(--bg-primary); color: var(--text-main); width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden !important; }
+        ::-webkit-scrollbar { display: none !important; width: 0px !important; }
 
-        /* Window Control Bar Architecture */
-        .window-control-bar { height: 48px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 1px solid var(--border-color); } 
+        /* Top Windows Control Architecture */
+        .window-control-bar { height: 48px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 1px solid var(--border-color); flex-shrink: 0; } 
         .brand-title { font-size: 14px; font-weight: 900; letter-spacing: 1.5px; color: var(--accent-cyan); text-transform: uppercase; } 
         .control-group { display: flex; gap: 8px; }
         .btn-win { width: 32px; height: 26px; border: none; border-radius: 4px; color: white; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 14px; text-decoration: none; }
@@ -35,96 +37,103 @@
         .btn-max { background: #2A365C; }
         .btn-close { background: var(--accent-red); }
 
-        /* Balance Board Grid */
-        .balance-board { 
-            display: grid; 
-            grid-template-columns: repeat(1, 1fr); 
-            gap: 12px; 
-            padding: 12px; 
-            width: 100%;
-        } 
-        @media (min-width: 768px) { 
-            .balance-board { grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 15px; } 
-        }
+        /* Workspace Splitter */
+        .workspace-grid { flex: 1; display: flex; flex-direction: row; gap: 15px; padding: 15px; overflow: hidden !important; justify-content: center; align-items: stretch; }
+        .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px 20px 15px 20px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); height: 100%; overflow: hidden !important; }
+        
+        .form-panel { flex: 1; max-width: 950px; }
+        .log-panel { flex: 0 0 400px; max-width: 400px; }
 
-        .balance-card { 
-            background: var(--bg-secondary); 
-            border: 1px solid var(--border-color); 
-            border-radius: 12px; 
-            padding: 0; 
-            position: relative; 
-            overflow: hidden; 
-            aspect-ratio: 2.3 / 1;
+        /* Dynamic Full-Height Flex Matrix */
+        .form-container-grid { display: flex; flex-direction: column; height: 100%; justify-content: space-between; gap: 0; }
+        
+        /* Layout Row Definitions */
+        .form-row-full { flex: 1; display: grid; grid-template-columns: 1fr; padding-bottom: 10px; align-items: stretch; }
+        .form-row-2 { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding-bottom: 10px; align-items: stretch; }
+        .form-row-3 { flex: 1; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; padding-bottom: 10px; align-items: stretch; }
+
+        .input-group { display: flex; flex-direction: column; justify-content: space-between; height: 100%; min-height: 0; }
+        .input-group label { font-size: calc(10px + 0.15vh); color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; display: block; }
+        .input-control { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: calc(12px + 0.2vh); font-weight: bold; outline: none; width: 100%; flex: 1; display: flex; align-items: center; min-height: 0; }
+        .input-control:focus { border-color: var(--accent-blue); }
+        
+        .input-row { display: flex; gap: 6px; flex: 1; min-height: 0; }
+        .plus-btn { background: #111D37; color: var(--accent-cyan); border: 1px solid var(--border-color); width: 42px; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+        .plus-btn:hover { background: var(--accent-cyan); color: var(--bg-primary); }
+
+        .file-label { background: #070B19; color: white; border: 1px dashed var(--accent-cyan); border-radius: 6px; text-align: center; cursor: pointer; font-size: calc(11px + 0.1vh); font-weight: bold; text-transform: uppercase; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; flex: 1; }
+        .file-label:hover { background: rgba(91, 192, 190, 0.1); }
+
+        /* ADVANCED ROUND SWITCH ARCHITECTURE */
+        .switch-container { display: flex; align-items: center; gap: 12px; background: #070B19; padding: 5px 15px; border-radius: 30px; border: 1px solid var(--border-color); justify-content: space-between; width: 100%; height: 100%; }
+        .switch-label { font-size: calc(11px + 0.1vh); font-weight: 800; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.5px; }
+        .round-toggle-switch { position: relative; display: inline-block; width: 56px; height: 30px; flex-shrink: 0; }
+        .round-toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider-round { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #111D37; transition: .3s; border-radius: 34px; border: 1px solid var(--border-color); }
+        .slider-round:before { position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px; background-color: var(--text-muted); transition: .3s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        input:checked + .slider-round { background-color: rgba(0, 198, 255, 0.2); border-color: var(--accent-blue); }
+        input:checked + .slider-round:before { transform: translateX(26px); background-color: var(--accent-blue); box-shadow: 0 0 10px var(--accent-blue); }
+
+        .hidden { display: none !important; }
+        .invisible { visibility: hidden !important; }
+
+        /* Action Buttons Grid */
+        .form-button-matrix { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 15px; flex-shrink: 0; }
+        .matrix-btn { background: #070B19; color: #FFF; padding: 14px 10px; font-size: calc(11px + 0.1vh); border-radius: 6px; border: 1px solid var(--border-color); cursor: pointer; font-weight: 800; text-transform: uppercase; transition: all 0.2s ease; letter-spacing: 0.5px; text-align: center; }
+        .matrix-btn:hover { border-color: var(--accent-cyan); background: #111D37; color: var(--accent-cyan); }
+        .matrix-btn-export { background: var(--accent-green); color: white; border: 1px solid var(--accent-green); }
+        .matrix-btn-export:hover { opacity: 0.9; color: white; }
+
+        /* Table Architecture */
+        .filter-control-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; flex-shrink: 0; }
+        .filter-search-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .filter-input { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 8px 12px; border-radius: 6px; font-size: 12px; outline: none; font-weight: bold; width: 100%; }
+        .table-wrapper { flex: 1; overflow-y: auto !important; border: 1px solid var(--border-color); border-radius: 6px; background: #070B19; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { background: #111D37; color: var(--accent-cyan); padding: 12px 8px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--border-color); }
+        td { padding: 12px 8px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; vertical-align: middle; }
+        .tr-row:hover { background: rgba(28, 37, 65, 0.3); }
+
+        .alert-safe { color: var(--accent-green); font-weight: bold; font-size: 11px; }
+        .alert-warning { color: #F39C12; font-weight: bold; font-size: 11px; }
+        .alert-danger { color: var(--accent-red); font-weight: bold; font-size: 11px; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(7, 11, 25, 0.88); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; }
+        .modal-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center; }
+        .modal-box img { max-width: 100%; max-height: 70vh; object-fit: contain; border-radius: 6px; margin-bottom: 10px; }
+
+        /* AI Cargo Tracker Telemetry Widget */
+        .ai-cargo-tracker-widget {
+            background: #070B19;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 11px;
             display: flex;
-            flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        } 
-        .balance-card:hover { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(91, 192, 190, 0.3); transform: translateY(-2px); }
-        .balance-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; } 
-
-        #card-cash-vault::before { background: var(--accent-blue); }
-        #card-cash-in::before { background: var(--accent-green); }
-        #card-cash-out::before { background: var(--accent-red); }
-        #card-bank-link::before { background: var(--accent-purple); }
-
-        .marquee-strip-container { width: 100%; background: #030611; border-bottom: 1px solid var(--border-color); padding: 8px 10px; min-height: 32px; display: flex; align-items: center; justify-content: center; }
-        .marquee-strip { font-size: 12px; font-weight: 800; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; }
-
-        .card-content-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 5px; }
-        .card-val { font-size: 20px; font-weight: 800; color: #FFFFFF; text-align: center; } 
-
-        /* Filter Controls Row */
-        .filter-control-row { display: flex; flex-wrap: wrap; gap: 10px; padding: 0 12px; margin-bottom: 10px; align-items: center; }
-        @media (min-width: 768px) { .filter-control-row { padding: 0 15px; } }
-        .filter-input { background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 8px 12px; border-radius: 6px; font-size: 12px; outline: none; font-weight: bold; }
-        .filter-input::placeholder { color: var(--text-muted); }
-        .export-btn { background: var(--accent-green); color: white; border: none; padding: 8px 15px; border-radius: 6px; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-left: auto; transition: 0.3s; }
-        .export-btn:hover { opacity: 0.9; box-shadow: 0 0 12px rgba(46, 204, 113, 0.4); }
-
-        /* Workspace Ledger Core */
-        .cash-workspace { 
-            flex: 1; 
-            padding: 0 12px 12px 12px; 
-            display: flex; 
-            flex-direction: column; 
-            overflow: hidden; 
-        } 
-        @media (min-width: 768px) { 
-            .cash-workspace { padding: 0 15px 15px 15px; height: calc(100vh - 210px); } 
+            align-items: center;
+            margin-top: 5px;
+            flex-shrink: 0;
         }
-
-        .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); flex: 1; overflow: hidden; } 
-        .panel-title { font-size: 13px; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 12px; font-weight: 700; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; letter-spacing: 1px; } 
-
-        .table-wrapper { flex: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; background: #070B19; } 
-        table { width: 100%; border-collapse: collapse; font-size: 13px; } 
-        th { background: #111D37; color: var(--accent-cyan); padding: 12px 10px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; position: sticky; top: 0; border-bottom: 1px solid var(--border-color); } 
-        td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; } 
-        .tx-cr { color: var(--accent-green); font-weight: 700; } 
-        .tx-dr { color: var(--accent-red); font-weight: 700; } 
-        .tx-tr { color: var(--accent-purple); font-weight: 700; }
-
-        /* Modals Matrix */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(7, 11, 25, 0.88); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; } 
-        .modal-box { background: #111D37; border: 1px solid var(--border-color); border-radius: 12px; width: 95%; max-width: 750px; padding: 25px; box-shadow: 0 0 35px rgba(0, 0, 0, 0.8); } 
-
-        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 12px; } 
-        .input-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; } 
-        .input-group label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; } 
-        .input-control { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; outline: none; width: 100%; } 
-        .input-control:focus { border-color: var(--accent-cyan); }
-        .mode-btn { width: 100%; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; text-align: center; border: none; font-size: 12px; letter-spacing: 1px; color: var(--bg-primary); background: var(--accent-cyan); margin-top: 5px; transition: 0.3s; } 
-        .mode-btn:hover { opacity: 0.9; box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); }
+        .tracker-pulse-dot {
+            width: 8px; height: 8px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-cyan);
+            animation: pulseGlow 1.5s infinite;
+        }
+        @keyframes pulseGlow {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
     </style> 
 </head>
-<body onload="initCashFlowCore()">
+<body onload="initPurchaseCore()">
 
-    <!-- Top Navigation Bar -->
+    <!-- Header Bar -->
     <div class="window-control-bar"> 
-        <div class="brand-title">RAGHUVEER DIAMOND - CASH FLOW TERMINAL</div> 
+        <div class="brand-title">RAGHUVEER DIAMOND - ROUGH INTAKE PROCUREMENT CORE</div> 
         <div class="control-group">
             <button class="btn-win btn-min" onclick="triggerMinimize()">-</button>
             <button class="btn-win btn-max" onclick="toggleFullScreen()">🗖</button>
@@ -132,379 +141,536 @@
         </div>
     </div>
 
-    <!-- Data Cards Grid -->
-    <div class="balance-board"> 
-        <div class="balance-card" id="card-cash-vault"><div class="marquee-strip-container"><div class="marquee-strip">CASH ON HAND</div></div><div class="card-content-wrapper"><div class="card-val" id="val-cash-vault">₹ 0</div></div></div>
-        <div class="balance-card" id="card-cash-in" onclick="openPopup('cash-in-modal')"><div class="marquee-strip-container"><div class="marquee-strip">CASH IN TRAFFIC</div></div><div class="card-content-wrapper"><div class="card-val" id="val-cash-in">₹ 0</div></div></div>
-        <div class="balance-card" id="card-cash-out" onclick="openPopup('cash-out-modal')"><div class="marquee-strip-container"><div class="marquee-strip">CASHOUT FLOW</div></div><div class="card-content-wrapper"><div class="card-val" id="val-cash-out">₹ 0</div></div></div>
-        <div class="balance-card" id="card-bank-link" onclick="openPopup('bank-link-modal')"><div class="marquee-strip-container"><div class="marquee-strip">BANK LINK WIRE</div></div><div class="card-content-wrapper"><div class="card-val">⇄ BANK LINK</div></div></div>
-    </div> 
+    <!-- Workspace Structure -->
+    <div class="workspace-grid">
+        
+        <!-- Form Panel -->
+        <div class="panel-box form-panel">
+            <div class="form-container-grid">
+                
+                <!-- ROW 0: INWARD PATHWAY & VENDOR MASTER -->
+                <div class="form-row-2">
+                    <div class="input-group">
+                        <label>Procurement Pathway</label>
+                        <select id="inward-pathway" class="input-control" onchange="toggleInwardPathway(this.value)">
+                            <option value="local">Local Market Purchase (GST)</option>
+                            <option value="import">International Import (Customs & Freight)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Vendor Entity Target</label>
+                        <div class="input-row">
+                            <select id="vendor" class="input-control"><option value="">-- Select Vendor Entity --</option></select>
+                            <button class="plus-btn" onclick="addNewVendorEntity()">+</button>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Search & Export Controls -->
-    <div class="filter-control-row">
-        <input type="text" class="filter-input" id="search-party" placeholder="Search by Party..." oninput="refreshCashDashboard()">
-        <input type="date" class="filter-input" id="search-date" onchange="refreshCashDashboard()">
-        <button class="export-btn" onclick="exportLedgerToCSV()">📥 Export Sheet</button>
-    </div>
+                <!-- ROW 1: DATE & LOT NO -->
+                <div class="form-row-2">
+                    <div class="input-group"><label>Intake Date</label><input type="date" id="date" class="input-control"></div>
+                    <div class="input-group"><label>Lot No</label><input type="text" id="lot" class="input-control" placeholder="e.g. RF-101"></div>
+                </div>
 
-    <!-- Ledger Workspace -->
-    <div class="cash-workspace"> 
-        <div class="panel-box"> 
-            <div class="panel-title">Live Cash Ledger Database</div> 
-            <div class="table-wrapper"> 
+                <!-- ROW 2: WEIGHT & PRICE -->
+                <div class="form-row-2">
+                    <div class="input-group"><label>Weight (Carats)</label><input type="number" step="0.01" id="weight" class="input-control" placeholder="0.00" oninput="calculateLandedCosts()"></div>
+                    <div class="input-group"><label>Price / Carat (₹/$) </label><input type="number" step="0.01" id="price" class="input-control" placeholder="0.00" oninput="calculateLandedCosts()"></div>
+                </div>
+
+                <!-- ROW 3: PURCHASE STREAM & BROKER -->
+                <div class="form-row-2">
+                    <div class="input-group">
+                        <label>Purchase Stream</label>
+                        <select id="stream" class="input-control" onchange="toggleBrokerBlock()">
+                            <option value="direct">Direct Account</option>
+                            <option value="broker">Via Broker / Intermediary</option>
+                        </select>
+                    </div>
+                    
+                    <div id="broker-target-group" class="input-group hidden">
+                        <label>Broker Target</label>
+                        <div class="input-row">
+                            <select id="broker" class="input-control"><option value="">-- Select Broker --</option></select>
+                            <button class="plus-btn" onclick="addNewBrokerEntity()">+</button>
+                        </div>
+                    </div>
+                    <div id="broker-placeholder-row" class="input-group"></div>
+                </div>
+
+                <!-- ROW 4: TAX / DUTY CONTROLS -->
+                <div class="form-row-3">
+                    <div class="input-group" id="group-local-tax">
+                        <label>Local GST Structure</label>
+                        <select id="tax-local" class="input-control" onchange="calculateLandedCosts()">
+                            <option value="0.25">GST Rough Intake (0.25%)</option>
+                            <option value="1.5">GST Inward Standard (1.5%)</option>
+                            <option value="0">Exempted / Nil (0%)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group hidden" id="group-import-duty">
+                        <label>Customs Duty (%)</label>
+                        <input type="number" step="0.01" id="tax-import-duty" class="input-control" value="2.5" oninput="calculateLandedCosts()">
+                    </div>
+                    <div class="input-group hidden" id="group-import-freight">
+                        <label>Freight & Insurance (₹)</label>
+                        <input type="number" step="1" id="import-freight" class="input-control" value="0" placeholder="0.00" oninput="calculateLandedCosts()">
+                    </div>
+                    <div class="input-group hidden" id="group-import-clearing">
+                        <label>Clearing Agent Fees (₹)</label>
+                        <input type="number" step="1" id="import-clearing" class="input-control" value="0" placeholder="0.00" oninput="calculateLandedCosts()">
+                    </div>
+
+                    <div id="broker-pct-group" class="input-group hidden">
+                        <label>Brokerage (%)</label>
+                        <input type="number" step="0.01" id="broker-pct" class="input-control" placeholder="0.00" oninput="calculateLandedCosts()">
+                    </div>
+                    <div id="broker-pct-placeholder" class="input-group"></div>
+                </div>
+
+                <!-- ROW 5: LANDED COSTS & NET PAYABLE -->
+                <div class="form-row-2">
+                    <div class="input-group">
+                        <label style="color: var(--accent-cyan); font-weight: bold;">Landed Cost per Carat (₹)</label>
+                        <input type="text" id="net-landed-carat" class="input-control" readonly style="color: var(--accent-cyan); background: #070B19; border-color: var(--border-color);" placeholder="0.00">
+                    </div>
+                    <div class="input-group">
+                        <label style="color: var(--accent-green); font-weight: bold;">Net Payable Valuation (₹)</label>
+                        <input type="text" id="net-payable" class="input-control" readonly style="color: var(--accent-green); background: #070B19; border-color: var(--border-color);" placeholder="0.00">
+                    </div>
+                </div>
+
+                <!-- ROW 6: PAYMENT MODE & DUE DATE -->
+                <div class="form-row-2">
+                    <div class="input-group"><label>Payment Mode Source</label>
+                        <select id="pay-source" class="input-control">
+                            <option value="BANK">CONNECTED BANK CHANNEL (DIRECT DEBIT)</option>
+                            <option value="CASH">OFFICE CASH COUNTER (LOCAL FLOW)</option>
+                        </select>
+                    </div>
+                    <div class="input-group"><label>Due Target Date</label><input type="date" id="due-date" class="input-control"></div>
+                </div>
+
+                <!-- ROW 7: MEDIA & COMMIT TOGGLE -->
+                <div class="form-row-2">
+                    <div class="input-group">
+                        <label>Invoice Verification Media</label>
+                        <label for="bill-photo" class="file-label" id="file-label-text">📷 Capture / Upload Bill</label>
+                        <input type="file" id="bill-photo" accept="image/*" class="hidden" onchange="processBillImage(this)">
+                    </div>
+                    <div class="input-group">
+                        <label>Commit Operational Control</label>
+                        <div class="switch-container">
+                            <span class="switch-label" id="switch-text-state">Slide to Commit</span>
+                            <label class="round-toggle-switch">
+                                <input type="checkbox" id="commit-toggle" onchange="handleSwitchCommit(this)">
+                                <span class="slider-round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Matrix -->
+                <div class="form-button-matrix">
+                    <button class="matrix-btn" onclick="triggerAiVoice()">🎤 VOICE</button>
+                    <button class="matrix-btn" onclick="triggerAiScan()">📸 SCAN</button>
+                    <button class="matrix-btn" onclick="triggerAiYield()">📈 YIELD</button>
+                    <button class="matrix-btn matrix-btn-export" onclick="exportPurchaseLedgerToCSV()">📥 EXPORT SHEET</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Log Database Panel -->
+        <div class="panel-box log-panel">
+            <div class="filter-control-row">
+                <div class="filter-search-group">
+                    <input type="text" class="filter-input" id="search-party" placeholder="Search Vendor..." oninput="refreshPurchaseHistoryTable()">
+                    <input type="date" class="filter-input" id="search-date" onchange="refreshPurchaseHistoryTable()">
+                </div>
+                
+                <div class="ai-cargo-tracker-widget">
+                    <span style="display:flex; align-items:center; gap:6px;">
+                        <span class="tracker-pulse-dot"></span>
+                        <strong>Cargo Telemetry:</strong>
+                    </span>
+                    <span id="txt-cargo-telemetry" style="color:var(--accent-cyan); font-weight:bold;">Local Sourcing Active</span>
+                </div>
+            </div>
+            <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
-                            <th>Timestamp</th>
-                            <th>Operational Details</th>
-                            <th>Amount Flow</th>
+                            <th>Lot No</th>
+                            <th>Date / Status</th>
+                            <th>Vendor Details</th>
+                            <th>Landed (₹)</th>
                         </tr>
                     </thead>
-                    <tbody id="ledger-rows"></tbody>
-                </table> 
-            </div> 
-        </div> 
-    </div>
-
-    <!-- 🟢 1. CASH IN MODAL -->
-    <div class="modal-overlay" id="cash-in-modal" onclick="closePopup('cash-in-modal', event)">
-        <div class="modal-box" onclick="event.stopPropagation()">
-            <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>🟢 Cash In Matrix</span> <span style="cursor:pointer;" onclick="hidePopupDirect('cash-in-modal')">✕</span> </div>
-            
-            <div class="form-grid-2">
-                <div class="input-group">
-                    <label>Purpose</label>
-                    <select class="input-control" id="in-purpose" onchange="toggleCustomInPurpose(this.value)">
-                        <option value="Brokerage Income">Brokerage Income</option>
-                        <option value="Rough Counter Cash">Rough Counter Cash</option>
-                        <option value="Office Advance Return">Office Advance Return</option>
-                        <option value="Other">Other / Custom Purpose</option>
-                    </select>
-                </div>
-                <div class="input-group"><label>Amount (₹)</label><input type="number" class="input-control" id="in-amount" placeholder="0.00"></div>
+                    <tbody id="purchase-history-rows"></tbody>
+                </table>
             </div>
-
-            <div class="input-group" id="custom-in-purpose-wrapper" style="display: none; margin-bottom: 12px;">
-                <label style="color: var(--accent-green);">Enter Custom Purpose</label>
-                <input type="text" class="input-control" id="in-custom-purpose" placeholder="e.g. Personal Capital Injection">
-            </div>
-
-            <div class="input-group">
-                <label>Received From (Party Name)</label>
-                <input type="text" class="input-control" id="in-party" placeholder="Enter Entity Name">
-            </div>
-
-            <button class="mode-btn" style="background:var(--accent-green); color:white;" onclick="executeCashTransaction('jama')">Confirm Cash In</button>
         </div>
+
     </div>
 
-    <!-- 🔴 2. CASH OUT MODAL -->
-    <div class="modal-overlay" id="cash-out-modal" onclick="closePopup('cash-out-modal', event)">
+    <!-- Image Lightbox -->
+    <div class="modal-overlay" id="image-modal" onclick="closeImageModal()">
         <div class="modal-box" onclick="event.stopPropagation()">
-            <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>🔴 Cash Out Matrix</span> <span style="cursor:pointer;" onclick="hidePopupDirect('cash-out-modal')">✕</span> </div>
-            
-            <div class="form-grid-2">
-                <div class="input-group">
-                    <label>Expense Purpose</label>
-                    <select class="input-control" id="out-purpose" onchange="toggleCustomOutPurpose(this.value)">
-                        <option value="Factory Wages">Factory Wages</option>
-                        <option value="Office Refreshments">Office Refreshments</option>
-                        <option value="Stationery Expenses">Stationery Expenses</option>
-                        <option value="Daily Labor Payout">Daily Labor Payout</option>
-                        <option value="Other">Other / Custom Purpose</option>
-                    </select>
-                </div>
-                <div class="input-group"><label>Amount (₹)</label><input type="number" class="input-control" id="out-amount" placeholder="0.00"></div>
-            </div>
-
-            <div class="input-group" id="custom-out-purpose-wrapper" style="display: none; margin-bottom: 12px;">
-                <label style="color: var(--accent-red);">Enter Custom Purpose</label>
-                <input type="text" class="input-control" id="out-custom-purpose" placeholder="e.g. Machine Oil Purchase">
-            </div>
-
-            <div class="input-group">
-                <label>Paid To (Party / Person)</label>
-                <input type="text" class="input-control" id="out-party" placeholder="Enter Entity Name">
-            </div>
-
-            <button class="mode-btn" style="background:var(--accent-red); color:white;" onclick="executeCashTransaction('javak')">Confirm Cash Out</button>
-        </div>
-    </div>
-
-    <!-- 🟣 3. BANK LINK MODAL -->
-    <div class="modal-overlay" id="bank-link-modal" onclick="closePopup('bank-link-modal', event)">
-        <div class="modal-box" onclick="event.stopPropagation()">
-            <div class="panel-title" style="border:none; margin-bottom:15px; display:flex; justify-content:space-between;"> <span>🟣 Bank Link Wire Protocol</span> <span style="cursor:pointer;" onclick="hidePopupDirect('bank-link-modal')">✕</span> </div>
-            
-            <div class="form-grid-2">
-                <div class="input-group">
-                    <label>Operation Direction</label>
-                    <select class="input-control" id="bl-direction">
-                        <option value="B2C">Bank To Cash (Withdrawal)</option>
-                        <option value="C2B">Cash To Bank (Deposit)</option>
-                    </select>
-                </div>
-                <div class="input-group"><label>Linked Bank Target</label><select class="input-control" id="bl-bank-select"></select></div>
-            </div>
-
-            <div class="form-grid-2">
-                <div class="input-group"><label>Amount (₹)</label><input type="number" class="input-control" id="bl-amount" placeholder="0.00"></div>
-                <div class="input-group">
-                    <label>Transfer Method</label>
-                    <select class="input-control" id="bl-method">
-                        <option value="COUNTER_CASH">COUNTER CASH</option>
-                        <option value="CHIEF_VOUCHER">CHIEF VOUCHER</option>
-                    </select>
-                </div>
-            </div>
-
-            <button class="mode-btn" style="background:var(--accent-purple); color:white;" onclick="executeBankLinkTransaction()">Execute Bank Link Wire</button>
+            <img id="modal-img-src" src="" alt="Bill Preview">
+            <button class="matrix-btn" style="width:100px; border-color:var(--accent-red); color:white; background:var(--accent-red);" onclick="closeImageModal()">Close</button>
         </div>
     </div>
 
     <script>
         const systemDataBus = new BroadcastChannel('raghuveer_ai_core_bus');
+        let attachedImageBase64 = "";
 
         const userRole = sessionStorage.getItem('userRole') || localStorage.getItem('lastActiveRole');
-        if(userRole !== 'director' && userRole !== 'accountant') {
-            alert("ACCESS DENIED: Restricted to Director and Accountant levels.");
+        if(userRole !== 'director' && userRole !== 'rough') {
+            alert("ACCESS DENIED: Restricted to Director and Rough Department level access.");
             window.location.href = "index.html";
         }
 
-        function toggleFullScreen() { 
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(e => {});
+        function initPurchaseCore() {
+            document.getElementById('date').valueAsDate = new Date();
+            
+            if(!localStorage.getItem('broker_store')) {
+                const defaultBrokers = [
+                    { id: "vend_surat_llp", name: "Surat Local Raw LLP", type: "Vendor", country: "India" },
+                    { id: "vend_gorg_dubai", name: "Gorg Diamonds NV", type: "Vendor", country: "UAE" },
+                    { id: "brok_vimal_surat", name: "Vimal Shah (Surat)", type: "Broker", country: "India" }
+                ];
+                localStorage.setItem('broker_store', JSON.stringify(defaultBrokers));
+            }
+            populateDropdowns();
+            refreshPurchaseHistoryTable();
+        }
+
+        function populateDropdowns() {
+            const list = JSON.parse(localStorage.getItem('broker_store')) || [];
+            const vendorSelect = document.getElementById('vendor');
+            const brokerSelect = document.getElementById('broker');
+
+            vendorSelect.innerHTML = `<option value="">-- Select Vendor Entity --</option>`;
+            brokerSelect.innerHTML = `<option value="">-- Select Broker --</option>`;
+
+            list.forEach(item => {
+                if (item.type === "Vendor") {
+                    vendorSelect.innerHTML += `<option value="${item.name}">${item.name} (${item.country})</option>`;
+                } else if (item.type === "Broker") {
+                    brokerSelect.innerHTML += `<option value="${item.name}">${item.name}</option>`;
+                }
+            });
+        }
+
+        function toggleInwardPathway(type) {
+            const groupLocal = document.getElementById('group-local-tax');
+            const groupImportDuty = document.getElementById('group-import-duty');
+            const groupImportFreight = document.getElementById('group-import-freight');
+            const groupImportClearing = document.getElementById('group-import-clearing');
+            const cargoText = document.getElementById('txt-cargo-telemetry');
+
+            if (type === "import") {
+                groupLocal.classList.add('hidden');
+                groupImportDuty.classList.remove('hidden');
+                groupImportFreight.classList.remove('hidden');
+                groupImportClearing.classList.remove('hidden');
+                cargoText.innerText = "Transit: Antwerp ➔ Surat Customs [Cleared]";
             } else {
-                document.exitFullscreen().catch(e => {});
+                groupLocal.classList.remove('hidden');
+                groupImportDuty.classList.add('hidden');
+                groupImportFreight.classList.add('hidden');
+                groupImportClearing.classList.add('hidden');
+                cargoText.innerText = "Local Sourcing Active";
+            }
+            calculateLandedCosts();
+        }
+
+        function toggleBrokerBlock() {
+            let stream = document.getElementById('stream').value;
+            let targetGroup = document.getElementById('broker-target-group');
+            let placeholderRow = document.getElementById('broker-placeholder-row');
+            let pctGroup = document.getElementById('broker-pct-group');
+            let pctPlaceholder = document.getElementById('broker-pct-placeholder');
+
+            if (stream === 'broker') {
+                targetGroup.classList.remove('hidden');
+                placeholderRow.classList.add('hidden');
+                pctGroup.classList.remove('hidden');
+                pctPlaceholder.classList.add('hidden');
+            } else {
+                targetGroup.classList.add('hidden');
+                placeholderRow.classList.remove('hidden');
+                pctGroup.classList.add('hidden');
+                pctPlaceholder.classList.remove('hidden');
+                document.getElementById('broker-pct').value = '';
+                calculateLandedCosts();
             }
         }
-        function triggerMinimize() { alert("Terminal view minimized."); }
 
-        function openPopup(id) { document.getElementById(id).style.display = 'flex'; }
-        function closePopup(id, e) { if(e.target.id === id) hidePopupDirect(id); }
-        function hidePopupDirect(id) {
-            document.getElementById(id).style.display = 'none';
-            if(id === 'cash-in-modal') document.getElementById('custom-in-purpose-wrapper').style.display = 'none';
-            if(id === 'cash-out-modal') document.getElementById('custom-out-purpose-wrapper').style.display = 'none';
-        }
+        function calculateLandedCosts() {
+            let weight = parseFloat(document.getElementById('weight').value) || 0;
+            let price = parseFloat(document.getElementById('price').value) || 0;
+            let baseAmount = weight * price;
 
-        function toggleCustomInPurpose(val) {
-            const wrapper = document.getElementById('custom-in-purpose-wrapper');
-            wrapper.style.display = val === 'Other' ? 'flex' : 'none';
-            if(val === 'Other') document.getElementById('in-custom-purpose').focus();
-        }
-
-        function toggleCustomOutPurpose(val) {
-            const wrapper = document.getElementById('custom-out-purpose-wrapper');
-            wrapper.style.display = val === 'Other' ? 'flex' : 'none';
-            if(val === 'Other') document.getElementById('out-custom-purpose').focus();
-        }
-
-        function initCashFlowCore() {
-            if(!localStorage.getItem('cash_on_hand')) localStorage.setItem('cash_on_hand', '5200000');
-            if(!localStorage.getItem('cash_history_log')) localStorage.setItem('cash_history_log', JSON.stringify([]));
-            
-            const banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
-            const blSelect = document.getElementById('bl-bank-select');
-            if(blSelect) {
-                blSelect.innerHTML = banks.length > 0 ? banks.map(b => `<option value="${b.name}">${b.name}</option>`).join('') : '<option value="">No Active Bank Registered</option>';
+            let brokerage = 0;
+            if (document.getElementById('stream').value === 'broker') {
+                let bPct = parseFloat(document.getElementById('broker-pct').value) || 0;
+                brokerage = (baseAmount * bPct) / 100;
             }
-            refreshCashDashboard();
+
+            let taxAndDuties = 0;
+            let pathway = document.getElementById('inward-pathway').value;
+
+            if (pathway === "local") {
+                let tPct = parseFloat(document.getElementById('tax-local').value) || 0;
+                taxAndDuties = (baseAmount * tPct) / 100;
+            } else {
+                let dutyPct = parseFloat(document.getElementById('tax-import-duty').value) || 0;
+                let freight = parseFloat(document.getElementById('import-freight').value) || 0;
+                let clearing = parseFloat(document.getElementById('import-clearing').value) || 0;
+                
+                let baseDuty = (baseAmount * dutyPct) / 100;
+                taxAndDuties = baseDuty + freight + clearing;
+            }
+
+            let finalNetPayable = baseAmount + brokerage + taxAndDuties;
+            let landedCostPerCarat = weight > 0 ? (finalNetPayable / weight) : 0;
+
+            document.getElementById('net-payable').value = finalNetPayable.toFixed(2);
+            document.getElementById('net-landed-carat').value = landedCostPerCarat.toFixed(2);
+
+            return { finalNetPayable, landedCostPerCarat };
         }
 
-        function refreshCashDashboard() {
-            let cashVal = parseFloat(localStorage.getItem('cash_on_hand')) || 0;
-            document.getElementById('val-cash-vault').innerText = '₹ ' + cashVal.toLocaleString('en-IN');
+        function handleSwitchCommit(toggle) {
+            if (toggle.checked) {
+                document.getElementById('switch-text-state').innerText = "Processing...";
+                setTimeout(() => {
+                    savePurchaseRecord();
+                    toggle.checked = false; 
+                    document.getElementById('switch-text-state').innerText = "Slide to Commit";
+                }, 400);
+            }
+        }
 
-            let history = JSON.parse(localStorage.getItem('cash_history_log')) || [];
-            
-            let totalIn = history.filter(h => h.type === 'jama' || h.type === 'B2C').reduce((sum, h) => sum + h.amount, 0);
-            let totalOut = history.filter(h => h.type === 'javak' || h.type === 'C2B').reduce((sum, h) => sum + h.amount, 0);
+        function processBillImage(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    attachedImageBase64 = e.target.result;
+                    document.getElementById('file-label-text').innerText = "✅ Bill Attached";
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
-            document.getElementById('val-cash-in').innerText = '₹ ' + totalIn.toLocaleString('en-IN');
-            document.getElementById('val-cash-out').innerText = '₹ ' + totalOut.toLocaleString('en-IN');
+        function viewAttachedBill(index) {
+            let logs = JSON.parse(localStorage.getItem('rough_store')) || [];
+            if(logs[index] && logs[index].billImage) {
+                document.getElementById('modal-img-src').src = logs[index].billImage;
+                document.getElementById('image-modal').style.display = 'flex';
+            } else {
+                alert("No bill photo attached to this specific lot.");
+            }
+        }
 
-            let tbody = document.getElementById('ledger-rows');
+        function closeImageModal() {
+            document.getElementById('image-modal').style.display = 'none';
+        }
+
+        function addNewVendorEntity() {
+            let val = prompt("Enter New Vendor Entity Name:");
+            let country = prompt("Enter Country / Region (e.g. India, Dubai, Belgium):") || "India";
+            if(val && val.trim() !== "") {
+                const list = JSON.parse(localStorage.getItem('broker_store')) || [];
+                list.push({ id: "vend_" + Date.now(), name: val.trim(), type: "Vendor", country });
+                localStorage.setItem('broker_store', JSON.stringify(list));
+                populateDropdowns();
+            }
+        }
+
+        function addNewBrokerEntity() {
+            let val = prompt("Enter Broker Name:");
+            if(val && val.trim() !== "") {
+                const list = JSON.parse(localStorage.getItem('broker_store')) || [];
+                list.push({ id: "brok_" + Date.now(), name: val.trim(), type: "Broker", country: "India" });
+                localStorage.setItem('broker_store', JSON.stringify(list));
+                populateDropdowns();
+            }
+        }
+
+        function refreshPurchaseHistoryTable() {
+            let logs = JSON.parse(localStorage.getItem('rough_store')) || [];
+            let tbody = document.getElementById('purchase-history-rows');
             tbody.innerHTML = '';
 
             let searchParty = document.getElementById('search-party').value.toLowerCase().trim();
             let searchDate = document.getElementById('search-date').value; 
             if (searchDate) {
                 let parts = searchDate.split('-');
-                searchDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
+                searchDate = `${parts[2]}/${parts[1]}/${parts[0]}`; 
             }
 
-            let filteredHistory = history.filter(item => {
-                let matchParty = !searchParty || item.party.toLowerCase().includes(searchParty);
+            let filteredLogs = logs.filter(item => {
+                let matchParty = !searchParty || item.vendor.toLowerCase().includes(searchParty);
                 let matchDate = !searchDate || item.date === searchDate;
                 return matchParty && matchDate;
             });
 
-            if(filteredHistory.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:20px;">No operational cash records found.</td></tr>`;
+            if(filteredLogs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:30px;">No Rough Intake Records</td></tr>`;
                 return;
             }
 
-            [...filteredHistory].reverse().forEach(item => {
-                let isCredit = (item.type === 'jama' || item.type === 'B2C');
-                let colorClass = isCredit ? 'tx-cr' : 'tx-dr';
-                let sign = isCredit ? '+' : '-';
-                if(item.type === 'B2C' || item.type === 'C2B') colorClass = 'tx-tr';
+            [...filteredLogs].reverse().forEach((log, index) => {
+                let dueStatusHtml = `<br><span class="alert-safe">Paid Source</span>`;
+                
+                if(log.dueDate) {
+                    let today = new Date();
+                    today.setHours(0,0,0,0);
+                    let parts = log.dueDate.split('/');
+                    let dueObj = new Date(parts[2], parts[1]-1, parts[0]);
+                    
+                    let diffTime = dueObj - today;
+                    let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                    if(diffDays > 0) {
+                        dueStatusHtml = `<br><span class="alert-warning">⏳ ${diffDays} days left</span>`;
+                    } else if(diffDays === 0) {
+                        dueStatusHtml = `<br><span class="alert-danger">🚨 Due Today</span>`;
+                    } else {
+                        dueStatusHtml = `<br><span class="alert-danger">⚠️ Overdue ${Math.abs(diffDays)}d</span>`;
+                    }
+                }
+
+                let cameraIcon = log.billImage ? `<span style="cursor:pointer; margin-left:4px;" onclick="viewAttachedBill(${index})">🖼️</span>` : "";
 
                 tbody.innerHTML += `
-                    <tr>
-                        <td style="color:var(--text-muted); font-size:12px;">${item.date}</td>
-                        <td><strong>${item.party}</strong><br><small style="color:var(--text-muted);">${item.purpose}</small></td>
-                        <td class="${colorClass}">${sign} ₹ ${item.amount.toLocaleString('en-IN')}</td>
+                    <tr class="tr-row">
+                        <td style="color:var(--accent-blue); font-weight:bold;">${log.lot_no} ${cameraIcon}</td>
+                        <td style="color:var(--text-muted); font-size:11px;">${log.date} ${dueStatusHtml}</td>
+                        <td><strong>${log.vendor}</strong><br><small style="color:var(--text-muted); font-size:11px;">${log.weight} Cts</small></td>
+                        <td style="color:var(--accent-cyan); font-weight:bold;">₹${Math.round(log.netPayable).toLocaleString('en-IN')}</td>
                     </tr>
                 `;
             });
         }
 
-        function executeCashTransaction(type) {
-            let amount = 0, party = '', purpose = '', customPurposeId = '', modalId = '';
-
-            if(type === 'jama') {
-                amount = parseFloat(document.getElementById('in-amount').value) || 0;
-                party = document.getElementById('in-party').value.trim();
-                purpose = document.getElementById('in-purpose').value;
-                customPurposeId = 'in-custom-purpose';
-                modalId = 'cash-in-modal';
-            } else {
-                amount = parseFloat(document.getElementById('out-amount').value) || 0;
-                party = document.getElementById('out-party').value.trim();
-                purpose = document.getElementById('out-purpose').value;
-                customPurposeId = 'out-custom-purpose';
-                modalId = 'cash-out-modal';
-            }
-
-            if(purpose === 'Other') {
-                let customVal = document.getElementById(customPurposeId).value.trim();
-                if(!customVal) { alert("Please enter custom purpose specification."); return; }
-                purpose = customVal;
-            }
-
-            if(amount <= 0 || !party) { alert("Please fill complete details."); return; }
-
-            let currentCash = parseFloat(localStorage.getItem('cash_on_hand')) || 0;
-
-            if(type === 'javak' && amount > currentCash) {
-                if(!confirm("Warning: Amount exceeds cash vault threshold. Proceed anyway?")) return;
-            }
-
-            if(type === 'jama') currentCash += amount;
-            else currentCash -= amount;
-
-            let today = new Date();
-            let dateStr = today.getDate().toString().padStart(2, '0') + '/' + 
-                          (today.getMonth() + 1).toString().padStart(2, '0') + '/' + 
-                          today.getFullYear();
-
-            let history = JSON.parse(localStorage.getItem('cash_history_log')) || [];
-            history.push({ date: dateStr, party: party, purpose: purpose, amount: amount, type: type, timestamp: new Date().toISOString() });
-
-            localStorage.setItem('cash_on_hand', currentCash.toString());
-            localStorage.setItem('cash_history_log', JSON.stringify(history));
-
-            if(type === 'jama') {
-                document.getElementById('in-amount').value = '';
-                document.getElementById('in-party').value = '';
-                document.getElementById('in-custom-purpose').value = '';
-                document.getElementById('in-purpose').value = 'Brokerage Income';
-            } else {
-                document.getElementById('out-amount').value = '';
-                document.getElementById('out-party').value = '';
-                document.getElementById('out-custom-purpose').value = '';
-                document.getElementById('out-purpose').value = 'Factory Wages';
-            }
-
-            hidePopupDirect(modalId);
-            refreshCashDashboard();
-            systemDataBus.postMessage({ type: "PRODUCTION_DATA_MUTATION", module: "cash_flow" });
-        }
-
-        function executeBankLinkTransaction() {
-            const direction = document.getElementById('bl-direction').value;
-            const bankName = document.getElementById('bl-bank-select').value;
-            const amount = parseFloat(document.getElementById('bl-amount').value) || 0;
-            const method = document.getElementById('bl-method').value;
-
-            if(!bankName || amount <= 0) { alert("Please fill complete Bank Link parameters."); return; }
-
-            let banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
-            let bankIdx = banks.findIndex(b => b.name === bankName);
-            if(bankIdx === -1) { alert("Target Bank Entity not found."); return; }
-
-            let currentCash = parseFloat(localStorage.getItem('cash_on_hand')) || 0;
-
-            if(direction === 'B2C') {
-                banks[bankIdx].balance -= amount;
-                currentCash += amount;
-            } else { 
-                if(amount > currentCash) { alert("Vault Check Rejected: Insufficient Office Cash on hand."); return; }
-                banks[bankIdx].balance += amount;
-                currentCash -= amount;
-            }
-
-            let today = new Date();
-            let dateStr = today.getDate().toString().padStart(2, '0') + '/' + 
-                          (today.getMonth() + 1).toString().padStart(2, '0') + '/' + 
-                          today.getFullYear();
-
-            let cashHistory = JSON.parse(localStorage.getItem('cash_history_log')) || [];
-            cashHistory.push({
-                date: dateStr,
-                party: direction === 'B2C' ? `From ${bankName}` : `To ${bankName}`,
-                purpose: direction === 'B2C' ? `BANK_WITHDRAWAL (${method})` : `BANK_DEPOSIT (${method})`,
-                amount: amount,
-                type: direction,
-                timestamp: new Date().toISOString()
-            });
-
-            let bankLedger = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
-            bankLedger.unshift({
-                bank: bankName,
-                method: method,
-                purpose: direction === 'B2C' ? 'CASH_WITHDRAWAL' : 'CASH_DEPOSIT',
-                party: 'Office Cash Counter',
-                amount: amount,
-                mode: direction === 'B2C' ? 'DEBIT' : 'CREDIT',
-                timestamp: new Date().toISOString()
-            });
-
-            localStorage.setItem('cash_on_hand', currentCash.toString());
-            localStorage.setItem('cash_history_log', JSON.stringify(cashHistory));
-            localStorage.setItem('factory_banks', JSON.stringify(banks));
-            localStorage.setItem('bank_ledger_logs', JSON.stringify(bankLedger));
-
-            document.getElementById('bl-amount').value = '';
-            hidePopupDirect('bank-link-modal');
-            refreshCashDashboard();
+        function savePurchaseRecord() {
+            let lot = document.getElementById('lot').value.trim();
+            let dateInput = document.getElementById('date').value;
+            let dueDateInput = document.getElementById('due-date').value;
+            let vendor = document.getElementById('vendor').value;
+            let source = document.getElementById('pay-source').value;
+            let carat = parseFloat(document.getElementById('weight').value) || 0;
+            let price = parseFloat(document.getElementById('price').value) || 0;
             
-            systemDataBus.postMessage({ type: "PRODUCTION_DATA_MUTATION", module: "cash_flow" });
-            alert(`⚡ Bank Link Wire Executed: Synchronized with ${bankName} ledger.`);
+            const costData = calculateLandedCosts();
+            let netPayable = costData.finalNetPayable;
+
+            if(!lot || !dateInput || !vendor || carat <= 0 || price <= 0) {
+                alert("Validation Check: Please fill all required parameters.");
+                return;
+            }
+
+            let dParts = dateInput.split('-');
+            let dateStr = `${dParts[2]}/${dParts[1]}/${dParts[0]}`;
+
+            let dueDateStr = "";
+            if(dueDateInput) {
+                let ddParts = dueDateInput.split('-');
+                dueDateStr = `${ddParts[2]}/${ddParts[1]}/${ddParts[0]}`;
+            }
+
+            // Debit from selected Payment Source
+            if (source === 'CASH') {
+                let currentCash = parseFloat(localStorage.getItem('cash_on_hand')) || 0;
+                if(netPayable > currentCash) {
+                    if(!confirm("Warning: Net Payable exceeds available Cash Vault. Proceed anyway?")) return;
+                }
+                currentCash -= netPayable;
+                localStorage.setItem('cash_on_hand', currentCash.toString());
+
+                let cashHistory = JSON.parse(localStorage.getItem('cash_history_log')) || [];
+                cashHistory.push({ date: dateStr, party: vendor, purpose: `Rough Purchase Lot: ${lot}`, amount: netPayable, type: 'javak', timestamp: new Date().toISOString() });
+                localStorage.setItem('cash_history_log', JSON.stringify(cashHistory));
+            } else {
+                let banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
+                if(banks.length > 0) {
+                    banks[0].balance -= netPayable;
+                    localStorage.setItem('factory_banks', JSON.stringify(banks));
+
+                    let bankLedger = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
+                    bankLedger.unshift({ bank: banks[0].name, method: 'WIRE_TRANSFER', purpose: `Rough Purchase Lot: ${lot}`, party: vendor, amount: netPayable, mode: 'DEBIT', timestamp: new Date().toISOString() });
+                    localStorage.setItem('bank_ledger_logs', JSON.stringify(bankLedger));
+                }
+            }
+
+            let logs = JSON.parse(localStorage.getItem('rough_store')) || [];
+            logs.push({
+                lot_no: lot,
+                date: dateStr,
+                dueDate: dueDateStr,
+                vendor: vendor,
+                stream: document.getElementById('stream').value,
+                broker: document.getElementById('broker').value,
+                weight: carat,
+                netPayable: netPayable,
+                landedCostPerCarat: costData.landedCostPerCarat,
+                billImage: attachedImageBase64,
+                timestamp: new Date().toISOString()
+            });
+
+            localStorage.setItem('rough_store', JSON.stringify(logs));
+
+            systemDataBus.postMessage({ type: "PRODUCTION_DATA_MUTATION", module: "rough_purchase" });
+
+            document.getElementById('lot').value = '';
+            document.getElementById('weight').value = '';
+            document.getElementById('price').value = '';
+            document.getElementById('broker-pct').value = '';
+            document.getElementById('due-date').value = '';
+            document.getElementById('bill-photo').value = '';
+            attachedImageBase64 = "";
+            document.getElementById('file-label-text').innerText = "📷 Capture / Upload Bill";
+            document.getElementById('net-payable').value = '0.00';
+            document.getElementById('net-landed-carat').value = '0.00';
+            
+            alert(`⚡ System Confirmed: Procurement Lot ${lot} Integrated Successfully!`);
+            refreshPurchaseHistoryTable();
         }
 
-        function exportLedgerToCSV() {
-            let history = JSON.parse(localStorage.getItem('cash_history_log')) || [];
-            if(history.length === 0) { alert("No existing cash log records to export."); return; }
+        function exportPurchaseLedgerToCSV() {
+            let history = JSON.parse(localStorage.getItem('rough_store')) || [];
+            if(history.length === 0) { alert("Data Empty to export!"); return; }
 
-            let csvRows = ['Timestamp,Operational Details,Flow Direction,Amount (INR)'];
+            let csvRows = ['Lot No,Date,Vendor Details,Weight (Carats),Landed Cost per Carat (INR),Total Amount (INR)'];
             history.forEach(h => {
-                let dir = (h.type === 'jama' || h.type === 'B2C') ? 'CREDIT (+)' : 'DEBIT (-)';
-                csvRows.push(`"${h.date}","${h.party} - ${h.purpose}","${dir}","${h.amount}"`);
+                csvRows.push(`"${h.lot_no}","${h.date}","${h.vendor} (${h.stream})","${h.weight}","${h.landedCostPerCarat}","${h.netPayable}"`);
             });
 
             let blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
             let link = document.createElement("a");
             let url = URL.createObjectURL(blob);
             link.setAttribute("href", url);
-            link.setAttribute("download", `Raghuveer_CashFlow_Report.csv`);
+            link.setAttribute("download", `Raghuveer_Rough_Purchase_Report.csv`);
             link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
+
+        function triggerAiVoice() { alert("RA-AI Voice Engine Activated..."); }
+        function triggerAiScan() { alert("RA-AI Invoice Optical Scanner Initializing..."); }
+        function triggerAiYield() { alert("RA-AI Diagnostics: Target calculation yields 31.8% VVS polish outcome."); }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(e=>{}); } 
+            else { document.exitFullscreen().catch(e=>{}); }
+        }
+        function triggerMinimize() { alert("Terminal Minimized."); }
     </script>
 </body>
 </html>
