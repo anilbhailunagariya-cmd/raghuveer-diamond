@@ -1,38 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="gu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Raghuveer Diamond - Master Autonomous Dashboard</title>
     <style>
-        /* Premium Core Master Theme Color Matrix */
+        /* ========================================================
+           GLOBAL CENTRALIZED THEME VARIABLES (SYNCED WITH INDEX.HTML)
+           ======================================================== */
         :root {
             --bg-primary: #0B132B;
-            --bg-secondary: #111D37;
-            --top-bar-bg: #070B19;
+            --bg-secondary: #070B19;
+            --card-bg: #111D37;
             --border-color: #1C2541;
             --accent-cyan: #5BC0BE;
-            --accent-blue: #00C6FF;
+            --accent-blue: #0072FF;
+            --glow-cyan: #00C6FF;
+            --text-main: #FFFFFF;
+            --text-muted: #8D99AE;
             --accent-green: #2ECC71;
             --accent-red: #E74C3C;
-            --accent-orange: #ff9900;
-            --text-main: #FFFFFF;
-            --text-muted: #708090;
-            --matte-green: #27AE60;
-            --matte-red: #C0392B;
-            --matte-yellow: #ffea00;
+            --accent-orange: #FF9900;
+            --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--font-family);
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: #0B132B;
+            background-color: var(--bg-primary);
             color: var(--text-main);
             width: 100vw;
             height: 100vh;
@@ -42,14 +44,15 @@
             position: relative;
         }
 
+        /* Top Header Control Bar */
         .window-control-bar {
             height: 45px;
-            background-color: #070B19;
+            background-color: var(--bg-secondary);
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0 20px;
-            border-bottom: 1px solid #1C2541;
+            border-bottom: 1px solid var(--border-color);
             z-index: 10;
             flex-shrink: 0;
         }
@@ -61,25 +64,25 @@
         }
 
         .brand-glow-dot {
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            background: linear-gradient(45deg, #00C6FF, #0072FF);
-            box-shadow: 0 0 8px #00C6FF;
+            background: linear-gradient(45deg, var(--glow-cyan), var(--accent-blue));
+            box-shadow: 0 0 8px var(--glow-cyan);
             animation: pulseGlow 2s infinite ease-in-out;
         }
 
         @keyframes pulseGlow {
             0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 14px #00C6FF; }
+            50% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 12px var(--glow-cyan); }
             100% { transform: scale(0.95); opacity: 0.8; }
         }
 
         .brand-title {
-            font-size: clamp(14px, 4vw, 20px);
+            font-size: clamp(14px, 3.5vw, 18px);
             font-weight: 900;
-            letter-spacing: 1px;
-            background: linear-gradient(90deg, #5BC0BE, #00C6FF, #0072FF, #5BC0BE);
+            letter-spacing: 1.5px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--glow-cyan), var(--accent-blue), var(--accent-cyan));
             background-size: 300% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -101,7 +104,7 @@
         .action-btn {
             background: none;
             border: none;
-            color: #5BC0BE;
+            color: var(--accent-cyan);
             font-size: 16px;
             cursor: pointer;
             transition: 0.3s;
@@ -109,14 +112,15 @@
 
         .action-btn:hover {
             color: var(--text-main);
-            text-shadow: 0 0 8px #5BC0BE;
+            text-shadow: 0 0 8px var(--accent-cyan);
         }
 
         .action-btn.close-btn:hover {
-            color: #E74C3C;
-            text-shadow: 0 0 8px #E74C3C;
+            color: var(--accent-red);
+            text-shadow: 0 0 8px var(--accent-red);
         }
 
+        /* Main Container Layout */
         .main-container {
             flex: 1;
             display: flex;
@@ -127,35 +131,43 @@
             height: calc(100vh - 45px);
         }
 
+        /* Director Main Office Banner */
         .director-master-panel {
-            flex: 0 0 16vh;
-            min-height: 90px;
-            background: #111D37;
-            border: 1px solid #1C2541;
-            border-radius: 12px;
-            padding: 10px 15px;
+            flex: 0 0 14vh;
+            min-height: 85px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
             transition: 0.3s;
         }
 
         .director-master-panel:hover {
-            border-color: #5BC0BE;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(91, 192, 190, 0.2);
         }
 
         .director-meta h2 {
-            font-size: clamp(16px, 4.5vw, 22px);
+            font-size: clamp(15px, 3.5vw, 20px);
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: #5BC0BE;
+            color: var(--accent-cyan);
             font-weight: bold;
         }
 
+        .director-meta p {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
         .chart-visual-wrapper {
-            width: clamp(150px, 45vw, 400px);
+            width: clamp(150px, 40vw, 380px);
             height: 100%;
             display: flex;
             align-items: center;
@@ -178,75 +190,33 @@
             height: 100%;
         }
 
-        .live-chart-svg path, .live-chart-svg rect, .live-chart-svg circle, .live-chart-svg line {
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* ========================================================
-           1. 📱 ADAPTIVE GRID SCALING ENGINE (CSS MEDIA QUERIES)
-           ======================================================== */
+        /* Factory Department Grid */
         .dashboard-grid {
             flex: 1;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            gap: 10px;
             min-height: 0;
             overflow-y: auto;
             padding-right: 4px;
         }
 
-        /* Custom Scrollbar for High-Tech Vibe */
         .dashboard-grid::-webkit-scrollbar {
             width: 4px;
         }
         .dashboard-grid::-webkit-scrollbar-thumb {
-            background: #1C2541;
+            background: var(--border-color);
             border-radius: 2px;
         }
         .dashboard-grid::-webkit-scrollbar-thumb:hover {
-            background: #5BC0BE;
-        }
-
-        @media (max-width: 1024px) {
-            .dashboard-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .director-master-panel {
-                flex-direction: column;
-                justify-content: center;
-                gap: 10px;
-                padding: 15px;
-            }
-            .chart-visual-wrapper {
-                border-left: none;
-                padding-left: 0;
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .dashboard-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .node-identity {
-                font-size: 10px !important;
-            }
-            .node-pipeline {
-                font-size: 8px !important;
-            }
+            background: var(--accent-cyan);
         }
 
         .node-box {
-            background: #111D37;
-            border: 1px solid #1C2541;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 10px 12px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -258,8 +228,9 @@
         }
 
         .node-box:hover {
-            border-color: #5BC0BE;
-            background: #1C2541;
+            border-color: var(--accent-cyan);
+            background: #162447;
+            transform: translateY(-2px);
         }
 
         .node-box.overdue-alert {
@@ -274,23 +245,22 @@
         }
 
         .node-pipeline {
-            font-size: clamp(7.5px, 2.2vw, 10px);
-            color: #5BC0BE;
-            opacity: 0.7;
+            font-size: clamp(8px, 2vw, 10px);
+            color: var(--accent-cyan);
+            opacity: 0.85;
             letter-spacing: 0.3px;
-            line-height: 1.2;
+            line-height: 1.3;
             overflow: hidden;
         }
 
         .overdue-text {
             color: var(--accent-orange) !important;
             font-weight: 600;
-            opacity: 1 !important;
         }
 
         .node-identity {
-            font-size: clamp(8.5px, 2.5vw, 12px);
-            font-weight: 600;
+            font-size: clamp(9px, 2.2vw, 12px);
+            font-weight: 700;
             letter-spacing: 0.5px;
             text-transform: uppercase;
             margin-top: 2px;
@@ -301,11 +271,11 @@
         }
 
         .live-tag {
-            width: 5px;
-            height: 5px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background-color: #2ECC71;
-            box-shadow: 0 0 6px #2ECC71;
+            background-color: var(--accent-green);
+            box-shadow: 0 0 6px var(--accent-green);
             flex-shrink: 0;
         }
 
@@ -315,21 +285,21 @@
         }
 
         .future-ai-node {
-            border: 1px solid rgba(91, 192, 190, 0.3);
-            background: linear-gradient(135deg, #111D37, rgba(91, 192, 190, 0.05));
+            border: 1px solid rgba(91, 192, 190, 0.4);
+            background: linear-gradient(135deg, var(--card-bg), rgba(91, 192, 190, 0.08));
         }
 
         .future-ai-node .node-identity {
-            color: #5BC0BE;
+            color: var(--accent-cyan);
         }
 
-        /* Role Locking Class */
+        /* Locked Department Style */
         .node-box.sys-locked {
-            opacity: 0.20 !important;
+            opacity: 0.25 !important;
             cursor: not-allowed !important;
             pointer-events: none !important;
-            border-color: #1C2541 !important;
-            background: #070B19 !important;
+            border-color: var(--border-color) !important;
+            background: var(--bg-secondary) !important;
         }
 
         .node-box.sys-locked .node-pipeline {
@@ -342,46 +312,49 @@
             box-shadow: 0 0 6px var(--accent-red) !important;
         }
 
+        /* Bottom Footer Bar */
         .bottom-dock {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 4px 5px;
-            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 4px 10px;
+            border-top: 1px solid var(--border-color);
             height: 35px;
             flex-shrink: 0;
+            background: var(--bg-secondary);
         }
 
         .system-status-string {
             font-size: clamp(8px, 2.2vw, 11px);
-            color: #5BC0BE;
-            opacity: 0.6;
+            color: var(--accent-cyan);
+            opacity: 0.8;
             letter-spacing: 0.5px;
         }
 
         .settings-trigger {
             background: none;
             border: none;
-            color: #1C2541;
+            color: var(--border-color);
             cursor: pointer;
+            font-size: 16px;
             display: flex;
             align-items: center;
             transition: 0.3s;
         }
 
         .settings-trigger:hover {
-            color: #5BC0BE;
+            color: var(--accent-cyan);
         }
 
-        /* Modals Matrix */
+        /* Modals & Overlays */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(7, 11, 25, 0.85);
-            backdrop-filter: blur(5px);
+            background: rgba(7, 11, 25, 0.88);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -397,14 +370,14 @@
         }
 
         .modal-window {
-            background: #111D37;
-            border: 1px solid #1C2541;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             width: 92%;
             max-width: 460px;
             border-radius: 12px;
             padding: 25px;
             position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
             max-height: 95vh;
             overflow-y: auto;
         }
@@ -415,18 +388,18 @@
             right: 15px;
             background: none;
             border: none;
-            color: #5BC0BE;
+            color: var(--accent-cyan);
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
         }
 
         .modal-title {
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             margin-bottom: 20px;
-            color: #5BC0BE;
-            border-bottom: 1px solid #1C2541;
+            color: var(--accent-cyan);
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 8px;
             letter-spacing: 1px;
         }
@@ -439,40 +412,33 @@
         }
 
         .channel-card {
-            flex: 1;
-            border: 1px solid #1C2541;
-            background: #0B132B;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
             padding: 12px;
             border-radius: 8px;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 10px;
-            color: #5BC0BE;
+            font-size: 11px;
+            color: var(--accent-cyan);
             text-transform: uppercase;
             cursor: pointer;
             transition: 0.2s;
         }
 
         .channel-card input[type="radio"] {
-            accent-color: #5BC0BE;
+            accent-color: var(--accent-cyan);
             cursor: pointer;
         }
 
         .dynamic-sub-module {
             display: none;
-            background: #070B19;
-            border: 1px dashed #1C2541;
+            background: var(--bg-secondary);
+            border: 1px dashed var(--border-color);
             border-radius: 8px;
             padding: 12px;
             margin-top: -4px;
             margin-bottom: 10px;
-            animation: slideDown 0.3s ease-out forwards;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .biometric-sub-options {
@@ -484,16 +450,12 @@
         }
 
         .sub-bio-label {
-            font-size: 9px;
-            color: #5BC0BE;
+            font-size: 10px;
+            color: var(--accent-cyan);
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             cursor: pointer;
-        }
-
-        .sub-bio-label input[type="radio"] {
-            accent-color: #2ECC71;
         }
 
         .biometric-scanner-box {
@@ -515,8 +477,8 @@
             position: absolute;
             width: 100%;
             height: 2px;
-            background: #2ECC71;
-            box-shadow: 0 0 8px #2ECC71;
+            background: var(--accent-green);
+            box-shadow: 0 0 8px var(--accent-green);
             top: 0;
             animation: laserScan 2s infinite ease-in-out;
         }
@@ -535,34 +497,34 @@
             display: block;
             font-size: 10px;
             text-transform: uppercase;
-            color: #5BC0BE;
+            color: var(--accent-cyan);
             margin-bottom: 6px;
             font-weight: bold;
         }
 
         .secure-input {
             width: 100%;
-            background: #0B132B;
-            border: 1px solid #1C2541;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
             padding: 10px 14px;
-            border-radius: 8px;
+            border-radius: 6px;
             color: var(--text-main);
             font-size: 13px;
             outline: none;
         }
 
         .secure-input:focus {
-            border-color: #5BC0BE;
+            border-color: var(--accent-cyan);
         }
 
         .action-execution-btn {
             width: 100%;
-            background: #5BC0BE;
+            background: var(--accent-cyan);
             border: none;
             padding: 12px;
-            border-radius: 8px;
-            color: #0B132B;
-            font-weight: 600;
+            border-radius: 6px;
+            color: var(--bg-primary);
+            font-weight: 700;
             text-transform: uppercase;
             cursor: pointer;
             transition: 0.3s;
@@ -571,7 +533,7 @@
 
         .action-execution-btn:hover {
             background: var(--text-main);
-            box-shadow: 0 0 15px var(--text-main);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
         }
 
         .settings-control-grid {
@@ -581,8 +543,8 @@
         }
 
         .control-block {
-            background: #0B132B;
-            border: 1px solid #1C2541;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 12px;
         }
@@ -590,7 +552,7 @@
         .control-block h4 {
             font-size: 11px;
             text-transform: uppercase;
-            color: #5BC0BE;
+            color: var(--accent-cyan);
             margin-bottom: 8px;
             font-weight: bold;
             letter-spacing: 0.5px;
@@ -604,9 +566,9 @@
 
         .option-selector-btn {
             flex: 1;
-            min-width: 100px;
-            background: #111D37;
-            border: 1px solid #1C2541;
+            min-width: 90px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             color: var(--text-main);
             padding: 8px;
             border-radius: 4px;
@@ -617,112 +579,223 @@
         }
 
         .option-selector-btn.active, .option-selector-btn:hover {
-            background: #1C2441;
-            border-color: #5BC0BE;
+            background: var(--border-color);
+            border-color: var(--accent-cyan);
+        }
+
+        /* Breakpoints */
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+            .director-master-panel {
+                flex-direction: column;
+                justify-content: center;
+                gap: 8px;
+                padding: 12px;
+            }
+            .chart-visual-wrapper {
+                border-left: none;
+                padding-left: 0;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .node-box { height: 100px; padding: 10px; }
         }
     </style>
 </head>
 <body>
+
+    <!-- Header Navigation -->
     <div class="window-control-bar">
         <div class="brand-wrapper">
             <div class="brand-glow-dot"></div>
             <div class="brand-title">RAGHUVEER DIAMOND</div>
         </div>
         <div class="window-actions">
-            <button class="action-btn" onclick="triggerMinimize()">-</button>
-            <button class="action-btn" onclick="triggerFullScreen()">🗖</button>
-            <button class="action-btn close-btn" onclick="triggerClose()">✕</button>
+            <button class="action-btn" onclick="triggerMinimize()" title="Minimize">-</button>
+            <button class="action-btn" onclick="triggerFullScreen()" title="Fullscreen">🗖</button>
+            <button class="action-btn close-btn" onclick="triggerClose()" title="Close">✕</button>
         </div>
     </div>
+
     <div class="main-container">
+        
+        <!-- Director Main Office Control -->
         <div class="director-master-panel" onclick="openDirectorSecureGate()">
-            <div class="director-meta"><h2>MAIN OFFICE</h2></div>
-            <div class="chart-visual-wrapper"><div class="live-chart-container" id="mainOfficeChartContainer"></div></div>
+            <div class="director-meta">
+                <h2>MAIN OFFICE (DIRECTOR)</h2>
+                <p id="activeUserRoleDisplay">Logged In As: Checking Authorization...</p>
+            </div>
+            <div class="chart-visual-wrapper">
+                <div class="live-chart-container" id="mainOfficeChartContainer"></div>
+            </div>
         </div>
+
+        <!-- 16 Department Grid Terminals -->
         <div class="dashboard-grid">
-            <div class="node-box" id="node-accountant" onclick="handleClusterLink('Accountant Node', 'accountant_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Accountant Node <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-dataentry" onclick="handleClusterLink('Data Entry WIP', 'dataentry_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Data Entry WIP <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-galaxy" onclick="handleClusterLink('Galaxy Core Array', 'galaxy_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Galaxy <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-qc" onclick="handleClusterLink('Q.C. Center Array', 'qc_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Q.C. Center <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-sarine" onclick="handleClusterLink('Sarine Plan Cluster', 'sarine_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Sarine Plan <span class="live-tag"></span></div></div>
-            <div class="node-box" id="laserNodeTracker" onclick="handleClusterLink('Laser Matrix Terminal', 'laser_module.html')"><div class="node-pipeline" id="laserPipelineString">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Laser <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-4p" onclick="handleClusterLink('4P Machine Hub', '4p_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">4P Machine <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-bottomready" onclick="handleClusterLink('Ready For Bottom Pool', 'bottomready_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Ready For Bottom <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-autobottom" onclick="handleClusterLink('Auto Bottom Array', 'autobottom_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Auto Bottom <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-manualbottom" onclick="handleClusterLink('Manual Bottom Hub', 'manualbottom_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Manual Bottom <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-pel" onclick="handleClusterLink('PEL Terminal Link', 'pel_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">PEL <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-mathala" onclick="handleClusterLink('Mathala Processing Station', 'mathala_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Mathala <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-table" onclick="handleClusterLink('Sorting Table Array', 'table_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Table <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-police" onclick="handleClusterLink('Police Check Station', 'police_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Police Check <span class="live-tag"></span></div></div>
-            <div class="node-box" id="node-tracker" onclick="handleClusterLink('Machine Tracker System', 'tracker_module.html')"><div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div><div class="node-identity">Machine Tracker <span class="live-tag"></span></div></div>
-            <div class="node-box future-ai-node" id="node-global" onclick="handleClusterLink('Global AI Market Anti-Loss Core', 'global_module.html')"><div class="node-pipeline" style="color: #5BC0BE;" id="aiNodeModelDisplay">LOADING AI BRAIN NODE...<br>[GLOBAL ARBITRAGE ACTIVE]</div><div class="node-identity">AI Global Market <span class="live-tag"></span></div></div>
+            <div class="node-box" id="node-accountant" onclick="handleClusterLink('Accountant Node', 'accountant_module.html')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Accountant Node <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" id="node-dataentry" onclick="handleClusterLink('Data Entry WIP', 'dataentry_module.html')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Data Entry WIP <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" id="node-galaxy" onclick="handleClusterLink('Galaxy Core Array', 'galaxy_module.html')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Galaxy <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" id="node-qc" onclick="handleClusterLink('Q.C. Center Array', 'qc_module.html')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Q.C. Center <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" id="node-sarine" onclick="handleClusterLink('Sarine Plan Cluster', 'sarine_module.html')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Sarine Plan <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" id="laserNodeTracker" onclick="handleClusterLink('Laser Matrix Terminal', 'laser_module.html')">
+                <div class="node-pipeline" id="laserPipelineString">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Laser <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" id="node-4p" onclick="handleClusterLink('4P Machine Hub', '4p_module.html')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">4P Machine <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" id="node-bottomready" onclick="handleClusterLink('Ready For Bottom Pool', 'bottomready_module.html')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Ready For Bottom <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" id="node-autobottom" onclick="handleClusterLink('Auto Bottom Array', 'autobottom_module.html')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Auto Bottom <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" id="node-manualbottom" onclick="handleClusterLink('Manual Bottom Hub', 'manualbottom_module.html')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Manual Bottom <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" id="node-pel" onclick="handleClusterLink('PEL Terminal Link', 'pel_module.html')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">PEL <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" id="node-mathala" onclick="handleClusterLink('Mathala Processing Station', 'mathala_module.html')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Mathala <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" id="node-table" onclick="handleClusterLink('Sorting Table Array', 'table_module.html')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Table <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" id="node-police" onclick="handleClusterLink('Police Check Station', 'police_module.html')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Police Check <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box" id="node-tracker" onclick="handleClusterLink('Machine Tracker System', 'tracker_module.html')">
+                <div class="node-pipeline">AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]</div>
+                <div class="node-identity">Machine Tracker <span class="live-tag"></span></div>
+            </div>
+
+            <div class="node-box future-ai-node" id="node-global" onclick="handleClusterLink('Global AI Market Anti-Loss Core', 'global_module.html')">
+                <div class="node-pipeline" style="color: var(--accent-cyan);" id="aiNodeModelDisplay">
+                    LOADING AI BRAIN NODE...<br>[GLOBAL ARBITRAGE ACTIVE]
+                </div>
+                <div class="node-identity">AI Global Market <span class="live-tag"></span></div>
+            </div>
         </div>
+
+        <!-- Footer Bar -->
         <div class="bottom-dock">
             <div class="system-status-string" id="footerClockLive">Secure Telemetry Active</div>
-            <button class="settings-trigger" onclick="openMasterConfigurationGrid()">⚙️</button>
+            <button class="settings-trigger" onclick="openMasterConfigurationGrid()" title="Settings">⚙️</button>
         </div>
+
     </div>
-    
-    <!-- Security Gate Area -->
+
+    <!-- Director Verification Modal -->
     <div class="modal-overlay" id="directorGateOverlay">
         <div class="modal-window">
             <button class="modal-close-x" onclick="closeDirectorSecureGate()">✕</button>
             <div class="modal-title">MAIN OFFICE SECURITY GATE</div>
+            
             <div class="input-group">
-                <label>Active Identity Verification Channel (Select 1)</label>
+                <label>Verification Channel</label>
                 <div class="otp-routing-select">
                     <div class="channel-card" onclick="triggerChannelSelection('mobileRadio')">
-                        <input type="radio" id="mobileRadio" name="secureChannelGate" onclick="event.stopPropagation(); triggerChannelSelection('mobileRadio')">
-                        <span>Mobile Endpoint OTP</span>
+                        <input type="radio" id="mobileRadio" name="secureChannelGate">
+                        <span>Mobile OTP</span>
                     </div>
                     <div id="moduleMobile" class="dynamic-sub-module">
-                        <label style="font-size: 9px; color: #5BC0BE; display:block; margin-bottom:4px;">ENTER REGISTERED MOBILE NO.</label>
+                        <label style="font-size: 9px; color: var(--accent-cyan); display:block; margin-bottom:4px;">ENTER MOBILE NUMBER</label>
                         <input type="tel" class="secure-input" placeholder="+91 XXXXX XXXXX" style="padding: 6px 10px; font-size:12px;">
                     </div>
+
                     <div class="channel-card" onclick="triggerChannelSelection('mailRadio')">
-                        <input type="radio" id="mailRadio" name="secureChannelGate" onclick="event.stopPropagation(); triggerChannelSelection('mailRadio')">
-                        <span>Secure Mail Server OTP</span>
+                        <input type="radio" id="mailRadio" name="secureChannelGate">
+                        <span>Email Server OTP</span>
                     </div>
                     <div id="moduleMail" class="dynamic-sub-module">
-                        <label style="font-size: 9px; color: #5BC0BE; display:block; margin-bottom:4px;">ENTER SECURE DIRECTOR EMAIL ID</label>
+                        <label style="font-size: 9px; color: var(--accent-cyan); display:block; margin-bottom:4px;">ENTER DIRECTOR EMAIL</label>
                         <input type="email" class="secure-input" placeholder="director@raghuveerdiamond.com" style="padding: 6px 10px; font-size:12px;">
                     </div>
+
                     <div class="channel-card" style="border-color: rgba(46, 204, 113, 0.4);" onclick="triggerChannelSelection('biometricRadio')">
-                        <input type="radio" id="biometricRadio" name="secureChannelGate" onclick="event.stopPropagation(); triggerChannelSelection('biometricRadio')">
-                        <span style="color: #2ECC71;">Biometric Scan Matrix</span>
+                        <input type="radio" id="biometricRadio" name="secureChannelGate">
+                        <span style="color: var(--accent-green);">Biometric Scan Matrix</span>
                     </div>
                     <div id="moduleBiometric" class="dynamic-sub-module" style="border-color: rgba(46, 204, 113, 0.3);">
                         <div class="biometric-sub-options">
-                            <label class="sub-bio-label" onclick="event.stopPropagation(); selectBiometricMode('finger')">
-                                <input type="radio" id="bioFingerRadio" name="subBioType" checked> Fingerprint Scan
+                            <label class="sub-bio-label" onclick="selectBiometricMode('finger')">
+                                <input type="radio" id="bioFingerRadio" name="subBioType" checked> Fingerprint
                             </label>
-                            <label class="sub-bio-label" onclick="event.stopPropagation(); selectBiometricMode('face')">
-                                <input type="radio" id="bioFaceRadio" name="subBioType"> Face Lock Scan
+                            <label class="sub-bio-label" onclick="selectBiometricMode('face')">
+                                <input type="radio" id="bioFaceRadio" name="subBioType"> Face Lock
                             </label>
                         </div>
                         <div class="biometric-scanner-box">
                             <div class="laser-fingerprint-node" id="biometricIconContainer"></div>
-                            <span id="biometricStatusText" style="font-size:9px; color:#2ECC71; font-weight:bold; letter-spacing:1px;">PLACE FINGER ON PHONE SCANNER...</span>
+                            <span id="biometricStatusText" style="font-size:9px; color:var(--accent-green); font-weight:bold; letter-spacing:1px;">PLACE FINGER ON SCANNER...</span>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="input-group" id="otpInputGroupContainer">
-                <label for="secureOtpField">Enter Synchronized 6-Digit Secondary OTP Code</label>
+                <label for="secureOtpField">Enter 6-Digit Secondary OTP Code</label>
                 <input type="password" maxlength="6" id="secureOtpField" class="secure-input" placeholder="••••••" autocomplete="off" onkeydown="if(event.key === 'Enter') executeDirectorGateAuthorization()">
             </div>
-            <button class="action-execution-btn" id="mainSubmitGateBtn" onclick="executeDirectorGateAuthorization()">Verify Identity Metrics & Enter</button>
+
+            <button class="action-execution-btn" id="mainSubmitGateBtn" onclick="executeDirectorGateAuthorization()">Verify Identity & Enter Main Office</button>
         </div>
     </div>
-    
-    <!-- Master Settings Dashboard -->
+
+    <!-- Master Settings Modal -->
     <div class="modal-overlay" id="masterSettingsOverlay">
         <div class="modal-window">
             <button class="modal-close-x" onclick="closeMasterConfigurationGrid()">✕</button>
             <div class="modal-title">Master Settings Console</div>
+            
             <div class="settings-control-grid">
                 <div class="control-block">
-                    <h4>Graph Performance Time Filter</h4>
+                    <h4>Graph Duration Filter</h4>
                     <div class="selection-options-row">
                         <button class="option-selector-btn active" id="time-1d" onclick="switchGraphTimeDuration('1d')">1 Day</button>
                         <button class="option-selector-btn" id="time-7d" onclick="switchGraphTimeDuration('7d')">7 Days</button>
@@ -730,211 +803,98 @@
                         <button class="option-selector-btn" id="time-1y" onclick="switchGraphTimeDuration('1y')">1 Year</button>
                     </div>
                 </div>
+
                 <div class="control-block">
-                    <h4>Director Main Office Graph Matrix Design</h4>
+                    <h4>Main Office Visual Style</h4>
                     <div class="selection-options-row" style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
-                        <button class="option-selector-btn active" id="btn-pillars" onclick="switchGraphDesignMatrix('pillars')">1. Brils Pillars</button>
+                        <button class="option-selector-btn active" id="btn-pillars" onclick="switchGraphDesignMatrix('pillars')">1. Pillars</button>
                         <button class="option-selector-btn" id="btn-heart" onclick="switchGraphDesignMatrix('heart')">2. Heart Rate</button>
-                        <button class="option-selector-btn" id="btn-mnc" onclick="switchGraphDesignMatrix('mnc')">3. Corporate MNC</button>
-                        <button class="option-selector-btn" id="btn-high-tech" onclick="switchGraphDesignMatrix('high-tech')">4. 2050 High Tech</button>
-                        <button class="option-selector-btn" id="btn-ai" onclick="switchGraphDesignMatrix('ai')" style="grid-column: span 2;">5. AI Neural Technology</button>
-                    </div>
-                </div>
-                
-                <!-- Surat Autonomous Core IoT Integration Panel (Added for 2050 Man-less Automation Mode) -->
-                <div class="control-block">
-                    <h4>🤖 Surat Autonomous Factory Core (IoT Monitoring)</h4>
-                    <div class="selection-options-row" style="flex-direction:column; gap:5px; margin-top:5px;">
-                        <div style="font-size:10px; display:flex; justify-content:space-between; background:#070B19; padding:8px; border-radius:4px; border:1px solid #1C2541;">
-                            <span>Robotic Arms Core Status:</span>
-                            <span style="color:#2ECC71; font-weight:bold;">⚡ 100% ONLINE [MAN-LESS ACTIVE]</span>
-                        </div>
-                        <div style="font-size:10px; display:flex; justify-content:space-between; background:#070B19; padding:8px; border-radius:4px; border:1px solid #1C2541;">
-                            <span>Auto Bottom Laser Precision:</span>
-                            <span style="color:#2ECC71; font-weight:bold;">🔬 +/- 0.002 Micron Match</span>
-                        </div>
+                        <button class="option-selector-btn" id="btn-mnc" onclick="switchGraphDesignMatrix('mnc')">3. Corporate</button>
+                        <button class="option-selector-btn" id="btn-high-tech" onclick="switchGraphDesignMatrix('high-tech')">4. 2050 Tech</button>
                     </div>
                 </div>
 
                 <div class="control-block">
-                    <h4>Administrative Process Lock Authorization</h4>
+                    <h4>Administrative Overrides</h4>
                     <div class="input-group" style="margin-bottom:10px; margin-top:5px;">
                         <input type="password" id="directorOverridePass" class="secure-input" placeholder="Enter Director Master Password" style="font-size:12px; padding:8px;" onkeydown="if(event.key === 'Enter') processDirectorOverrideClearance()">
                     </div>
-                    <button class="action-execution-btn" onclick="processDirectorOverrideClearance()" style="padding:8px; font-size:11px;">Authorize Override & Reset Trailing Blocks</button>
+                    <button class="action-execution-btn" onclick="processDirectorOverrideClearance()" style="padding:8px; font-size:11px;">Authorize Reset & Unlock</button>
                 </div>
             </div>
         </div>
     </div>
+
     <script>
         let activeDesignStyle = "pillars";
         let activeTimeDuration = "1d";
         let activeBiometricType = "finger";
 
-        // ========================================================
-        // 2. 📡 REAL-TIME DATA BUS & CRYPTO HANDSHAKE CLIENT
-        // ========================================================
+        /* Broadcast Channel for Multi-File Interconnection */
         const systemDataBus = new BroadcastChannel('raghuveer_ai_core_bus');
         
-        // ZKP Cryptographic Token Handshake Verification Routine
-        if(!localStorage.getItem('sessionToken') || !localStorage.getItem('userRole')) {
-            console.error("🔒 Security breach caught. Returning to core gate.");
+        // Security Session Validation Check
+        const userRole = sessionStorage.getItem('userRole') || localStorage.getItem('lastActiveRole');
+        const userToken = sessionStorage.getItem('sessionToken');
+        const departmentTitle = sessionStorage.getItem('departmentTitle') || "Department User";
+
+        if (!userRole) {
+            alert("SECURITY ALERT: Session Expired. Returning to Gateway.");
             window.location.href = "index.html";
         }
 
-        // Live Event Bus listener linked seamlessly across the 40+ dynamic files
+        // Live Event Synchronization
         systemDataBus.onmessage = (event) => {
-            console.log("📡 [DASHBOARD RECEIVER] Global System Signal Sync:", event.data);
-            if(event.data.type === "REMOTE_CREDENTIALS_UPDATE") {
-                console.log("♻️ Credentials updated by director node. Refreshing cached values...");
-            }
-            if(event.data.type === "LASER_OVERRIDE_TRIGGER") {
-                document.getElementById('laserNodeTracker').classList.remove('overdue-alert');
-                document.getElementById('laserPipelineString').innerHTML = `AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]`;
+            console.log("📡 [DASHBOARD] Live Signal Received:", event.data);
+            if (event.data.type === "LASER_OVERRIDE_TRIGGER") {
+                const laserNode = document.getElementById('laserNodeTracker');
+                const laserPipelineText = document.getElementById('laserPipelineString');
+                if (laserNode) laserNode.classList.remove('overdue-alert');
+                if (laserPipelineText) laserPipelineText.innerHTML = `AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]`;
             }
         };
 
-        // ========================================================
-        // 3. 🛡️ HIGH-SECURITY CRYPTO UTILS (SHA-256)
-        // ========================================================
-        async function hashString(str) {
-            if(!str) return "";
-            const encoder = new TextEncoder();
-            const data = encoder.encode(str);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        }
-
-        // ========================================================
-        // 4. 💾 INDEXEDDB CACHE REGISTRY SYSTEM (SERVER PRE-FETCH READY)
-        // ========================================================
-        const dbName = "RaghuveerDiamondDB";
-        let dbInstance = null;
-
-        function connectLocalDatabaseNode() {
-            const request = indexedDB.open(dbName, 1);
-            
-            request.onupgradeneeded = (event) => {
-                const db = event.target.result;
-                // Automatically create object stores for all departments to allow seamless interconnected entries
-                const departmentStores = [
-                    "system_registry", "accountant_store", "dataentry_store", "galaxy_store",
-                    "qc_store", "sarine_store", "laser_store", "4p_store", "bottomready_store",
-                    "autobottom_store", "manualbottom_store", "pel_store", "mathala_store",
-                    "table_store", "police_store", "tracker_store", "global_store"
-                ];
-                departmentStores.forEach(store => {
-                    if (!db.objectStoreNames.contains(store)) {
-                        db.createObjectStore(store, { keyPath: "id", autoIncrement: true });
-                    }
-                });
-            };
-
-            request.onsuccess = (event) => {
-                dbInstance = event.target.result;
-                console.log("📊 [INDEXEDDB COMPONENT] Reactive local cache mapping synced perfectly.");
-                pullRealtimeProductionMetrics();
-                loadAIEngineDetails();
-            };
-        }
-
-        function readFromDB(key, callback) {
-            if (!dbInstance) {
-                const val = localStorage.getItem(key);
-                callback(val);
-                return;
-            }
-            const tx = dbInstance.transaction("system_registry", "readonly");
-            const store = tx.objectStore("system_registry");
-            const request = store.get(key);
-            request.onsuccess = () => {
-                callback(request.result ? request.result.val : null);
-            };
-        }
-
-        function pullRealtimeProductionMetrics() {
-            console.log("🤖 [PREDICTIVE UI] Fetching asset files based on active user role mappings...");
-        }
-
-        function loadAIEngineDetails() {
-            // Retrieve AI parameters set in index.html and display on Global AI Node
-            readFromDB("ai_model", (modelName) => {
-                const badge = document.getElementById('aiNodeModelDisplay');
-                if (badge) {
-                    badge.innerHTML = `AI Model Active: <span style="color:#00C6FF; font-weight:bold;">${modelName || "quantum-yield-v6"}</span><br>[GLOBAL ARBITRAGE ACTIVE]`;
-                }
-            });
-        }
-
-        connectLocalDatabaseNode();
-
-        // Financial indicator mapping
-        const companyRealFinancials = {
-            hexColor: "var(--matte-yellow)"
-        };
-
-        const svgIcons = {
-            finger: `<div class="laser-scanning-line"></div><svg viewBox="0 0 24 24" fill="none" stroke="%232ECC71" stroke-width="1" stroke-linecap="round" style="width:100%;height:100%"><path d="M12 2a10 10 0 0 0-4 19.18M12 5a7 7 0 0 0-2 13.71M12 8a4 4 0 0 0 0 8"/></svg>`,
-            face: `<div class="laser-scanning-line"></div><svg viewBox="0 0 24 24" fill="none" stroke="%232ECC71" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2 M9 10h.01M15 10h.01M10 15s1 1 2 1 2-1 2-1"/></svg>`
-        };
-
+        /* SVG Vector Graphs Rendering */
         function generateLiveVectorGraph() {
-            const hexColor = companyRealFinancials.hexColor;
             const profiles = {
-                pillars: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                    <line x1="10" y1="45" x2="290" y2="45" stroke="${hexColor}" stroke-width="2" stroke-dasharray="4,4" />
-                    <rect x="20" y="44" width="14" height="2" rx="1" fill="${hexColor}" />
-                    <rect x="50" y="44" width="14" height="2" rx="1" fill="${hexColor}" />
-                    <rect x="80" y="44" width="14" height="2" rx="1" fill="${hexColor}" />
-                    <rect x="110" y="44" width="14" height="2" rx="1" fill="${hexColor}" />
-                    <rect x="140" y="44" width="14" height="2" rx="1" fill="${hexColor}" />
-                    <rect x="170" y="44" width="14" height="2" rx="1" fill="${hexColor}" />
-                    <rect x="200" y="44" width="14" height="2" rx="1" fill="${hexColor}" />
-                    <rect x="230" y="44" width="14" height="2" rx="1" fill="${hexColor}" />
-                    <rect x="260" y="44" width="14" height="2" rx="1" fill="${hexColor}" />
+                pillars: `<svg class="live-chart-svg" viewBox="0 0 300 80">
+                    <line x1="10" y1="45" x2="290" y2="45" stroke="#5BC0BE" stroke-width="2" stroke-dasharray="4,4" />
+                    <rect x="20" y="20" width="12" height="25" fill="#5BC0BE" rx="2"/>
+                    <rect x="50" y="10" width="12" height="35" fill="#00C6FF" rx="2"/>
+                    <rect x="80" y="30" width="12" height="15" fill="#5BC0BE" rx="2"/>
+                    <rect x="110" y="15" width="12" height="30" fill="#0072FF" rx="2"/>
+                    <rect x="140" y="5" width="12" height="40" fill="#2ECC71" rx="2"/>
+                    <rect x="170" y="25" width="12" height="20" fill="#5BC0BE" rx="2"/>
+                    <rect x="200" y="12" width="12" height="33" fill="#00C6FF" rx="2"/>
                 </svg>`,
-                heart: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                    <path d="M0,45 L30,45 L40,45 L48,45 L56,45 L62,45 L70,45 L110,45 L120,45 L130,45 L140,45 L148,45 L154,45 L200,45 L210,45 L218,45 L226,45 L232,45 L240,45 L300,45" fill="none" stroke="${hexColor}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                heart: `<svg class="live-chart-svg" viewBox="0 0 300 80">
+                    <path d="M0,45 L40,45 L50,15 L60,65 L70,30 L80,50 L90,45 L300,45" fill="none" stroke="#2ECC71" stroke-width="2.5" stroke-linecap="round"/>
                 </svg>`,
-                mnc: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                    <path d="M10,45 L300,45" fill="none" stroke="${hexColor}" stroke-width="3" stroke-linecap="round"/>
-                    <path d="M10,45 L300,45 L300,80 L10,80 Z" fill="${hexColor}" opacity="0.05"/>
+                mnc: `<svg class="live-chart-svg" viewBox="0 0 300 80">
+                    <path d="M10,60 Q 75,10 150,40 T 290,15" fill="none" stroke="#00C6FF" stroke-width="3"/>
                 </svg>`,
-                "high-tech": `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                    <circle cx="50" cy="40" r="8" fill="none" stroke="${hexColor}" stroke-width="1.5" />
-                    <circle cx="150" cy="40" r="8" fill="none" stroke="${hexColor}" stroke-width="2" />
-                    <circle cx="250" cy="40" r="8" fill="none" stroke="${hexColor}" stroke-width="1.5" />
-                    <path d="M10,40 L290,40" stroke="${hexColor}" stroke-width="2" stroke-dasharray="5,5" />
-                </svg>`,
-                ai: `<svg class="live-chart-svg" viewBox="0 0 300 80" id="masterVisualSvg">
-                    <line x1="30" y1="40" x2="90" y2="40" stroke="${hexColor}" stroke-width="1.5" />
-                    <line x1="90" y1="40" x2="170" y2="40" stroke="${hexColor}" stroke-width="1.5" />
-                    <line x1="170" y1="40" x2="260" y2="40" stroke="${hexColor}" stroke-width="1.5" />
-                    <circle cx="30" cy="40" r="4" fill="${hexColor}" />
-                    <circle cx="90" cy="40" r="4" fill="${hexColor}" />
-                    <circle cx="170" cy="40" r="4" fill="${hexColor}" />
-                    <circle cx="260" cy="5" r="5" fill="${hexColor}" />
+                "high-tech": `<svg class="live-chart-svg" viewBox="0 0 300 80">
+                    <circle cx="50" cy="40" r="10" fill="none" stroke="#5BC0BE" stroke-width="2" />
+                    <circle cx="150" cy="40" r="15" fill="none" stroke="#00C6FF" stroke-width="2" />
+                    <circle cx="250" cy="40" r="10" fill="none" stroke="#5BC0BE" stroke-width="2" />
+                    <path d="M10,40 L290,40" stroke="#5BC0BE" stroke-width="1.5" stroke-dasharray="5,5" />
                 </svg>`
             };
-            return profiles[activeDesignStyle];
+            return profiles[activeDesignStyle] || profiles.pillars;
         }
 
         function updateMainOfficeVisual() {
-            document.getElementById('mainOfficeChartContainer').innerHTML = generateLiveVectorGraph();
+            const chartBox = document.getElementById('mainOfficeChartContainer');
+            if (chartBox) chartBox.innerHTML = generateLiveVectorGraph();
         }
 
-        window.addEventListener('click', function initiateAutoFullScreen() {
-            const docEl = document.documentElement;
-            if (docEl.requestFullscreen) docEl.requestFullscreen();
-            window.removeEventListener('click', initiateAutoFullScreen);
-        });
-
-        // ========================================================
-        // 5. 🧠 ROLE-BASED AUTONOMOUS LOCK MATRIX INTERACTION
-        // ========================================================
+        /* Role Access Lock Application */
         document.addEventListener("DOMContentLoaded", () => {
-            const userRole = localStorage.getItem('userRole') || 'director';
+            const displayLabel = document.getElementById('activeUserRoleDisplay');
+            if (displayLabel) {
+                displayLabel.innerText = `Active Session: ${departmentTitle.toUpperCase()} (${userRole.toUpperCase()})`;
+            }
+
             const roleMapping = {
                 accountant: 'node-accountant',
                 dataentry: 'node-dataentry',
@@ -954,17 +914,18 @@
                 global: 'node-global'
             };
 
+            // If user is not Director (Main Office), Lock other departments
             if (userRole !== 'director') {
                 Object.keys(roleMapping).forEach(roleKey => {
                     const targetId = roleMapping[roleKey];
                     const element = document.getElementById(targetId);
                     if (element) {
-                        if (roleKey === userRole || userRole.toLowerCase() === element.innerText.split(" ")[0].toLowerCase()) {
+                        if (roleKey === userRole) {
                             element.classList.remove('sys-locked');
                         } else {
                             element.classList.add('sys-locked');
                             const pipelineText = element.querySelector('.node-pipeline');
-                            if(pipelineText) pipelineText.innerHTML = "🔒 ACCESS DENIED<br>[TERMINAL LOCKED BY SYSTEM]";
+                            if (pipelineText) pipelineText.innerHTML = "🔒 TERMINAL LOCKED<br>[NO ACCESS PERMISSION]";
                         }
                     }
                 });
@@ -972,172 +933,8 @@
             updateMainOfficeVisual();
         });
 
-        function triggerChannelSelection(targetRadioId) {
-            document.getElementById(targetRadioId).checked = true;
-            const modules = { mobileRadio: 'moduleMobile', mailRadio: 'moduleMail', biometricRadio: 'moduleBiometric' };
-            const otpField = document.getElementById('otpInputGroupContainer');
-            const submitBtn = document.getElementById('mainSubmitGateBtn');
-            Object.keys(modules).forEach(key => {
-                const subBox = document.getElementById(modules[key]);
-                if(key === targetRadioId) {
-                    subBox.style.display = "block";
-                    if(key === 'biometricRadio') {
-                        otpField.style.display = "none";
-                        submitBtn.style.display = "none";
-                        executeDynamicBiometricLoop();
-                    } else {
-                        otpField.style.display = "block";
-                        submitBtn.style.display = "block";
-                    }
-                } else {
-                    subBox.style.display = "none";
-                }
-            });
-        }
-
-        function selectBiometricMode(modeKey) {
-            activeBiometricType = modeKey;
-            if(modeKey === 'finger') {
-                document.getElementById('bioFingerRadio').checked = true;
-                document.getElementById('bioFaceRadio').checked = false;
-            } else {
-                document.getElementById('bioFingerRadio').checked = false;
-                document.getElementById('bioFaceRadio').checked = true;
-            }
-            executeDynamicBiometricLoop();
-        }
-
-        let biometricSuccess = false;
-        let activeScanTimer = null;
-        function executeDynamicBiometricLoop() {
-            biometricSuccess = false;
-            if(activeScanTimer) clearInterval(activeScanTimer);
-            const iconFrame = document.getElementById('biometricIconContainer');
-            const statusLabel = document.getElementById('biometricStatusText');
-            iconFrame.innerHTML = activeBiometricType === 'finger' ? svgIcons.finger : svgIcons.face;
-            const labelStr = activeBiometricType === 'finger' ? "PLACE FINGER ON PHONE SCANNER..." : "POSITION FACE IN FRONT OF CAMERA...";
-            statusLabel.innerText = `${labelStr} [0%]`;
-            statusLabel.style.color = "#00C6FF";
-            let progress = 0;
-            activeScanTimer = setInterval(() => {
-                progress += 25;
-                statusLabel.innerText = `${activeBiometricType === 'finger' ? 'SCANNING FINGERPRINT' : 'SCANNING FACE STRUCTURE'}... [${progress}%]`;
-                if(progress >= 100) {
-                    clearInterval(activeScanTimer);
-                    statusLabel.innerText = `🤖 ${activeBiometricType === 'finger' ? 'FINGERPRINT' : 'FACE'} VERIFIED [SUCCESS]`;
-                    statusLabel.style.color = "#2ECC71";
-                    biometricSuccess = true;
-                    setTimeout(() => {
-                        closeDirectorSecureGate();
-                        window.location.href = 'main_office.html';
-                    }, 1500);
-                }
-            }, 500);
-        }
-
-        function switchGraphTimeDuration(timeKey) {
-            activeTimeDuration = timeKey;
-            ['1d', '7d', '1m', '1y'].forEach(item => document.getElementById(`time-${item}`).classList.remove('active'));
-            document.getElementById(`time-${timeKey}`).classList.add('active');
-            updateMainOfficeVisual();
-        }
-
-        function switchGraphDesignMatrix(targetDesign) {
-            activeDesignStyle = targetDesign;
-            ['pillars', 'heart', 'mnc', 'high-tech', 'ai'].forEach(item => document.getElementById(`btn-${item}`).classList.remove('active'));
-            document.getElementById(`btn-${targetDesign}`).classList.add('active');
-            updateMainOfficeVisual();
-        }
-
-        // Overdue tracker mock
-        setTimeout(() => {
-            const laserNode = document.getElementById('laserNodeTracker');
-            const laserPipelineText = document.getElementById('laserPipelineString');
-            const userRole = localStorage.getItem('userRole') || 'director';
-            if(laserNode && laserPipelineText && (userRole === 'director' || userRole === 'laser')) {
-                laserNode.classList.add('overdue-alert');
-                laserPipelineText.innerHTML = `<span class="overdue-text">OVERDUE TIME THRESHOLD EXCEEDED</span><br>[PROCESS TERMINAL LOCKED - AWAITING DIRECTOR RESET]`;
-            }
-        }, 5000);
-
-        // ========================================================
-        // 6. 🛡️ REAL-TIME OVERDUE RESET ROUTINE VIA SECURE CRYPTO (SHA-256)
-        // ========================================================
-        function processDirectorOverrideClearance() {
-            const inputPass = document.getElementById('directorOverridePass').value.trim();
-            if (!inputPass) {
-                alert("Passcode is blank.");
-                return;
-            }
-
-            // Secure Hashing validation for Admin override protocol
-            hashString(inputPass).then(hashedInput => {
-                readFromDB("admin_key", (adminHash) => {
-                    if(hashedInput === adminHash || inputPass === "admin") {
-                        document.getElementById('laserNodeTracker').classList.remove('overdue-alert');
-                        document.getElementById('laserPipelineString').innerHTML = `AWAITING HARDWARE LINK...<br>[LIVE REALTIME MODE]`;
-                        document.getElementById('directorOverridePass').value = "";
-                        
-                        // Broadcast override clear command so all open factory windows instantly unlock
-                        systemDataBus.postMessage({ type: "LASER_OVERRIDE_TRIGGER", triggeredBy: "director" });
-                        
-                        alert("Master Override Clearance Verified Globally.");
-                        closeMasterConfigurationGrid();
-                    } else {
-                        alert("Authorization Denied. Quantum signature mismatch.");
-                    }
-                });
-            });
-        }
-
-        function openDirectorSecureGate() {
-            document.getElementById('secureOtpField').value = "";
-            biometricSuccess = false;
-            if(activeScanTimer) clearInterval(activeScanTimer);
-            triggerChannelSelection('mobileRadio');
-            document.getElementById('directorGateOverlay').classList.add('active');
-        }
-
-        function closeDirectorSecureGate() {
-            if(activeScanTimer) clearInterval(activeScanTimer);
-            document.getElementById('directorGateOverlay').classList.remove('active');
-        }
-
-        function executeDirectorGateAuthorization() {
-            const code = document.getElementById('secureOtpField').value;
-            if(code.length === 6) {
-                alert("IDENTITY VERIFIED: Secure tunnel established.");
-                closeDirectorSecureGate();
-                window.location.href = 'main_office.html';
-            } else {
-                alert("Invalid Transmission Metrics. 6-Digit code sequence required.");
-            }
-        }
-
-        function triggerFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(() => {});
-            } else {
-                document.exitFullscreen().catch(() => {});
-            }
-        }
-
-        function triggerMinimize() { alert("System minimized."); }
-        function triggerClose() { if (confirm("Terminate connection?")) window.close(); }
-
-        function openMasterConfigurationGrid() {
-            document.getElementById('masterSettingsOverlay').classList.add('active');
-        }
-
-        function closeMasterConfigurationGrid() {
-            document.getElementById('masterSettingsOverlay').classList.remove('active');
-        }
-
-        // ========================================================
-        // 🧠 AI NEURAL CORE DATA ROUTING ENGINE
-        // ========================================================
+        /* Terminal Route Navigation */
         function handleClusterLink(nodeLabel, fileTargetRoute) {
-            const currentRole = localStorage.getItem('userRole') || 'director';
             const roleMapping = {
                 'Accountant Node': 'accountant',
                 'Data Entry WIP': 'dataentry',
@@ -1157,24 +954,110 @@
                 'Global AI Market Anti-Loss Core': 'global'
             };
 
-            if (currentRole !== 'director' && roleMapping[nodeLabel] !== currentRole) {
-                alert("Access Denied: Terminal is locked.");
+            if (userRole !== 'director' && roleMapping[nodeLabel] !== userRole) {
+                alert("ACCESS DENIED: You do not have permission for this terminal.");
                 return;
             }
-            
-            console.log(`🤖 [AI ROUTER] Routing session token to target terminal: ${fileTargetRoute}`);
-            alert(`Opening Terminal: ${nodeLabel}`);
-            
-            // Redirect smoothly to the requested module with authorization parameters in handshake
+
+            console.log(`🤖 Navigating to Terminal: ${fileTargetRoute}`);
             window.location.href = fileTargetRoute;
         }
 
-        function runMasterClock() {
-            document.getElementById('footerClockLive').innerText = `SYSTEM GRID STATUS: SECURE OPERATIONAL STATE | TIME: ${new Date().toUTCString()}`;
+        /* Director Modal Gates */
+        function openDirectorSecureGate() {
+            if (userRole !== 'director') {
+                alert("ACCESS DENIED: Only Director / Main Office can access this panel.");
+                return;
+            }
+            document.getElementById('directorGateOverlay').classList.add('active');
         }
-        setInterval(runMasterClock, 1000);
-        runMasterClock();
-        updateMainOfficeVisual();
+
+        function closeDirectorSecureGate() {
+            document.getElementById('directorGateOverlay').classList.remove('active');
+        }
+
+        function executeDirectorGateAuthorization() {
+            const code = document.getElementById('secureOtpField').value.trim();
+            if (code === "111111" || code.length === 6) {
+                alert("IDENTITY VERIFIED: Connecting to Main Office Terminal...");
+                closeDirectorSecureGate();
+                window.location.href = 'main_office.html';
+            } else {
+                alert("INVALID OTP: Verification failed.");
+            }
+        }
+
+        function triggerChannelSelection(radioId) {
+            document.getElementById(radioId).checked = true;
+            document.getElementById('moduleMobile').style.display = radioId === 'mobileRadio' ? 'block' : 'none';
+            document.getElementById('moduleMail').style.display = radioId === 'mailRadio' ? 'block' : 'none';
+            document.getElementById('moduleBiometric').style.display = radioId === 'biometricRadio' ? 'block' : 'none';
+        }
+
+        function selectBiometricMode(mode) {
+            activeBiometricType = mode;
+            document.getElementById('biometricStatusText').innerText = `SCANNING ${mode.toUpperCase()}... [100%]`;
+            setTimeout(() => {
+                closeDirectorSecureGate();
+                window.location.href = 'main_office.html';
+            }, 1000);
+        }
+
+        function openMasterConfigurationGrid() {
+            document.getElementById('masterSettingsOverlay').classList.add('active');
+        }
+
+        function closeMasterConfigurationGrid() {
+            document.getElementById('masterSettingsOverlay').classList.remove('active');
+        }
+
+        function switchGraphTimeDuration(timeKey) {
+            activeTimeDuration = timeKey;
+            ['1d', '7d', '1m', '1y'].forEach(t => document.getElementById(`time-${t}`)?.classList.remove('active'));
+            document.getElementById(`time-${timeKey}`)?.classList.add('active');
+            updateMainOfficeVisual();
+        }
+
+        function switchGraphDesignMatrix(targetDesign) {
+            activeDesignStyle = targetDesign;
+            ['pillars', 'heart', 'mnc', 'high-tech'].forEach(b => document.getElementById(`btn-${b}`)?.classList.remove('active'));
+            document.getElementById(`btn-${targetDesign}`)?.classList.add('active');
+            updateMainOfficeVisual();
+        }
+
+        function processDirectorOverrideClearance() {
+            const pass = document.getElementById('directorOverridePass').value.trim();
+            const adminPass = localStorage.getItem('admin_key') || "111";
+            if (pass === adminPass || pass === "admin") {
+                const laserNode = document.getElementById('laserNodeTracker');
+                if (laserNode) laserNode.classList.remove('overdue-alert');
+                systemDataBus.postMessage({ type: "LASER_OVERRIDE_TRIGGER" });
+                alert("OVERRIDE SUCCESSFUL: System unlocked.");
+                closeMasterConfigurationGrid();
+            } else {
+                alert("ACCESS DENIED: Password incorrect.");
+            }
+        }
+
+        function triggerFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                document.exitFullscreen().catch(() => {});
+            }
+        }
+
+        function triggerMinimize() { alert("System Minimized."); }
+        function triggerClose() { if (confirm("Terminate Connection?")) window.close(); }
+
+        /* Clock Loop */
+        setInterval(() => {
+            const clockEl = document.getElementById('footerClockLive');
+            if (clockEl) {
+                const now = new Date();
+                clockEl.innerText = `SYSTEM GRID STATUS: ONLINE | TIME: ${now.toLocaleTimeString()} | DATE: ${now.toLocaleDateString()}`;
+            }
+        }, 1000);
     </script>
 </body>
 </html>
