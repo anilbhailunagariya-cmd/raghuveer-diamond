@@ -35,7 +35,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); user-select: none; }
         body { background: var(--bg); color: var(--text); height: 100vh; width: 100vw; overflow: hidden; display: flex; flex-direction: column; transition: all 0.3s ease; }
 
-        .header { height: 48px; background: rgba(0,0,0,0.3); display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid var(--border); }
+        .header { height: 48px; background: rgba(0,0,0,0.3); display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
         .win-actions { display: flex; align-items: center; gap: 8px; }
         .theme-select { background: var(--card); color: var(--accent); border: 1px solid var(--border); font-size: 11px; padding: 4px 8px; border-radius: 4px; outline: none; cursor: pointer; font-weight: bold; }
         .win-btn { background: #111D37; color: var(--accent); border: 1px solid var(--border); width: 28px; height: 26px; cursor: pointer; border-radius: 4px; font-weight: bold; }
@@ -67,11 +67,22 @@
         /* Sieve Intelligence Widget Layout */
         .sieve-intel { font-size: 9px; color: var(--cyan); margin-top: 2px; font-weight: 600; display: block; min-height: 12px; }
 
-        /* Data Matrix Table Frame */
-        .table-container { flex: 1; overflow-y: auto; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; padding: 6px; max-height: 180px; }
-        .table-header { display: grid; grid-template-columns: 1fr 0.8fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 1fr; gap: 5px; padding-bottom: 5px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 10; }
+        /* Data Matrix Table Frame - 🛠️ SMART MOBILE SCROLL FIX */
+        .table-container { 
+            flex: 1; 
+            overflow-y: auto !important; 
+            overflow-x: auto !important; 
+            -webkit-overflow-scrolling: touch; 
+            touch-action: pan-x pan-y;
+            background: rgba(0,0,0,0.2); 
+            border: 1px solid var(--border); 
+            border-radius: 6px; 
+            padding: 6px; 
+            max-height: 220px; 
+        }
+        .table-header { display: grid; grid-template-columns: 1fr 0.8fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 1fr; gap: 5px; padding-bottom: 5px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 10; min-width: 650px; }
         .th-text { font-size: 9px; color: #8D99AE; text-transform: uppercase; font-weight: bold; text-align: center; letter-spacing: 0.3px; }
-        .diamond-row { display: grid; grid-template-columns: 1fr 0.8fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 1fr; gap: 5px; padding: 5px 0; border-bottom: 1px dashed var(--border); align-items: center; position: relative; }
+        .diamond-row { display: grid; grid-template-columns: 1fr 0.8fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 1fr; gap: 5px; padding: 5px 0; border-bottom: 1px dashed var(--border); align-items: center; position: relative; min-width: 650px; }
         .diamond-row input, .diamond-row select { padding: 5px; font-size: 10px; text-align: center; }
         .rap-disc-box { font-size: 9px; font-weight: bold; text-align: center; padding: 5px; border-radius: 4px; background: rgba(0,0,0,0.4); color: #888; border: 1px solid var(--border); height: 26px; display: flex; align-items: center; justify-content: center; }
 
@@ -109,6 +120,21 @@
         .calc-box { width: 40%; text-align: right; }
         .calc-row { display: flex; justify-content: space-between; padding: 4px 0; }
         .qr-placeholder { width: 85px; height: 85px; border: 1px solid #CBD5E1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 6px; text-align: center; font-weight: bold; background: #fff; margin-left: auto; border-radius: 4px; padding: 4px; }
+
+        /* 📱 MOBILE RESPONSIVE CSS OVERRIDES */
+        @media (max-width: 768px) {
+            body { overflow-y: auto !important; height: auto; min-height: 100vh; }
+            .header { padding: 0 8px; }
+            .container { padding: 6px; flex: none; }
+            .top-grid { grid-template-columns: 1fr; gap: 6px; }
+            .kundli-box { grid-column: span 1; padding: 6px; }
+            .bottom-grid { grid-template-columns: 1fr; }
+            .hybrid-box { grid-column: span 1; }
+            .form-group[style*="grid-column: span 2"] { grid-column: span 1 !important; }
+            .action-block { grid-template-columns: 1fr; }
+            .print-config-row { grid-template-columns: 1fr; grid-column: span 1; }
+            .table-container { max-height: 250px; }
+        }
 
         @media print {
             body * { display: none !important; }
