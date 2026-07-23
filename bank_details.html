@@ -23,7 +23,7 @@
 body { background-color: var(--bg-primary); color: var(--text-main); width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden; } 
 
 /* Top Header Control Bar */
-.window-control-bar { height: 48px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 1px solid var(--border-color); } 
+.window-control-bar { height: 48px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 1px solid var(--border-color); flex-shrink: 0; } 
 .brand-title { font-size: 14px; font-weight: 900; letter-spacing: 1.5px; color: var(--accent-cyan); text-transform: uppercase; } 
 .control-group { display: flex; gap: 8px; }
 .btn-win { width: 32px; height: 26px; border: none; border-radius: 4px; color: white; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 14px; }
@@ -87,17 +87,17 @@ body { background-color: var(--bg-primary); color: var(--text-main); width: 100v
 .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); flex: 1; overflow: hidden; } 
 .panel-title { font-size: 13px; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 12px; font-weight: 700; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; letter-spacing: 1px; } 
 
-.table-wrapper { flex: 1; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; background: #070B19; } 
+.table-wrapper { flex: 1; overflow-y: auto; overflow-x: auto; border: 1px solid var(--border-color); border-radius: 6px; background: #070B19; } 
 table { width: 100%; border-collapse: collapse; font-size: 13px; } 
-th { background: #111D37; color: var(--accent-cyan); padding: 12px 10px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; position: sticky; top: 0; border-bottom: 1px solid var(--border-color); } 
-td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; } 
+th { background: #111D37; color: var(--accent-cyan); padding: 12px 10px; text-transform: uppercase; font-size: 11px; font-weight: 700; text-align: left; position: sticky; top: 0; border-bottom: 1px solid var(--border-color); white-space: nowrap; } 
+td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; white-space: nowrap; } 
 .tx-cr { color: var(--accent-green); font-weight: 700; } 
 .tx-dr { color: var(--accent-red); font-weight: 700; } 
 .tx-tr { color: var(--accent-purple); font-weight: 700; } 
 
 /* Popup Overlay Modals */
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(7, 11, 25, 0.88); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; } 
-.modal-box { background: #111D37; border: 1px solid var(--border-color); border-radius: 12px; width: 95%; max-width: 750px; padding: 25px; box-shadow: 0 0 35px rgba(0, 0, 0, 0.8); } 
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(7, 11, 25, 0.88); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 2000; display: none; padding: 10px; } 
+.modal-box { background: #111D37; border: 1px solid var(--border-color); border-radius: 12px; width: 95%; max-width: 750px; padding: 25px; box-shadow: 0 0 35px rgba(0, 0, 0, 0.8); max-height: 90vh; overflow-y: auto; } 
 
 .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 12px; } 
 .input-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; } 
@@ -106,6 +106,21 @@ td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); color: #F
 .input-control:focus { border-color: var(--accent-cyan); }
 .mode-btn { width: 100%; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; text-align: center; border: none; font-size: 12px; letter-spacing: 1px; color: var(--bg-primary); background: var(--accent-cyan); margin-top: 5px; transition: 0.3s; } 
 .mode-btn:hover { opacity: 0.9; box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); }
+
+/* 📱 MOBILE RESPONSIVE CSS FIXES */
+@media (max-width: 768px) {
+    body { overflow-y: auto; height: auto; min-height: 100vh; }
+    .window-control-bar { padding: 0 10px; }
+    .brand-title { font-size: 11px; letter-spacing: 0.5px; }
+    .balance-board { grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 8px; }
+    .balance-card { aspect-ratio: 1.8 / 1; }
+    .marquee-strip { font-size: 9px; letter-spacing: 0.5px; }
+    .card-val { font-size: 14px; }
+    .bank-workspace { padding: 0 8px 8px 8px; height: auto; min-height: 350px; }
+    .panel-box { padding: 10px; }
+    .form-grid-2 { grid-template-columns: 1fr; gap: 0; }
+    .modal-box { padding: 15px; width: 98%; }
+}
 </style> 
 </head> 
 <body onload="initializeTerminal()"> 
