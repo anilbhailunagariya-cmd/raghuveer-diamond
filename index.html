@@ -1,42 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="gu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAGHUVEER DIAMOND AI OS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RAGHUVEER DIAMOND AI OS [v6.0]</title>
     <style>
-        /* Deep Navy Blue Premium Matte Finish Master Theme */
+        /* ========================================================
+           MASTER GLOBAL THEME VARIABLES (CENTRALIZED STYLING)
+           ======================================================== */
+        :root {
+            --bg-primary: #0B132B;
+            --bg-secondary: #070B19;
+            --card-bg: #111D37;
+            --border-color: #1C2541;
+            --accent-cyan: #5BC0BE;
+            --accent-blue: #0072FF;
+            --glow-cyan: #00C6FF;
+            --text-main: #FFFFFF;
+            --text-muted: #8D99AE;
+            --success-color: #2ECC71;
+            --error-color: #E74C3C;
+            --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--font-family);
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: #0B132B;
-            color: #FFFFFF;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
             height: 100vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
 
-        /* 2050 Premium Control Top Bar - Single Line Layout */
+        /* Top Bar Navigation */
         .top-bar {
-            background: #070B19;
+            background: var(--bg-secondary);
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #1C2541;
+            border-bottom: 1px solid var(--border-color);
             width: 100%;
+            z-index: 10;
         }
 
         .system-title {
             font-size: 11px;
-            color: #5BC0BE;
+            color: var(--accent-cyan);
             letter-spacing: 1.5px;
             font-weight: bold;
             display: flex;
@@ -48,8 +67,14 @@
             width: 14px;
             height: 14px;
             border-radius: 50%;
-            background: linear-gradient(45deg, #00C6FF, #0072FF);
-            box-shadow: 0 0 8px #00C6FF;
+            background: linear-gradient(45deg, var(--glow-cyan), var(--accent-blue));
+            box-shadow: 0 0 8px var(--glow-cyan);
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(0.9); box-shadow: 0 0 4px var(--glow-cyan); }
+            100% { transform: scale(1.1); box-shadow: 0 0 12px var(--glow-cyan); }
         }
 
         .window-controls {
@@ -61,7 +86,7 @@
         .window-controls button {
             background: none;
             border: none;
-            color: #5BC0BE;
+            color: var(--accent-cyan);
             font-size: 16px;
             cursor: pointer;
             transition: 0.3s;
@@ -70,11 +95,11 @@
         }
 
         .window-controls button:hover {
-            color: #FFFFFF;
-            text-shadow: 0 0 8px #5BC0BE;
+            color: var(--text-main);
+            text-shadow: 0 0 8px var(--accent-cyan);
         }
 
-        /* Center Login Gateway */
+        /* Center Login Gateway Container */
         .login-container {
             flex: 1;
             display: flex;
@@ -85,22 +110,22 @@
         }
 
         .login-card {
-            background: #111D37;
+            background: var(--card-bg);
             padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             text-align: center;
-            border: 1px solid #1C2541;
-            transition: 0.3s;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
         }
 
         .company-name {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 900;
-            letter-spacing: 1px;
-            background: linear-gradient(90deg, #5BC0BE, #00C6FF, #0072FF, #5BC0BE);
+            letter-spacing: 1.5px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--glow-cyan), var(--accent-blue), var(--accent-cyan));
             background-size: 300% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -114,11 +139,12 @@
         }
 
         .system-sub {
-            font-size: 11px;
-            color: #5BC0BE;
+            font-size: 10px;
+            color: var(--accent-cyan);
             letter-spacing: 3px;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
             font-weight: 600;
+            opacity: 0.9;
         }
 
         .input-group {
@@ -129,7 +155,7 @@
         .input-group label {
             display: block;
             font-size: 11px;
-            color: #5BC0BE;
+            color: var(--accent-cyan);
             letter-spacing: 1px;
             margin-bottom: 8px;
             font-weight: bold;
@@ -137,34 +163,39 @@
 
         .input-group input {
             width: 100%;
-            background: #0B132B;
-            border: 1px solid #1C2541;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
             padding: 12px 15px;
             border-radius: 6px;
-            color: #FFFFFF;
+            color: var(--text-main);
             font-size: 14px;
             outline: none;
             transition: 0.3s;
         }
 
+        .input-group input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(91, 192, 190, 0.3);
+        }
+
         .input-group input.success-border {
-            border-color: #2ECC71 !important;
+            border-color: var(--success-color) !important;
             box-shadow: 0 0 12px rgba(46, 204, 113, 0.4) !important;
         }
 
         .input-group input.error-border {
-            border-color: #E74C3C !important;
+            border-color: var(--error-color) !important;
             box-shadow: 0 0 12px rgba(231, 76, 60, 0.4) !important;
         }
 
         .login-btn {
             width: 100%;
-            background: #5BC0BE;
-            color: #0B132B;
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
             border: none;
             padding: 14px;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             letter-spacing: 2px;
             cursor: pointer;
@@ -187,17 +218,17 @@
         .settings-icon {
             background: none;
             border: none;
-            color: #1C2541;
-            font-size: 18px;
+            color: var(--border-color);
+            font-size: 20px;
             cursor: pointer;
             transition: 0.3s;
         }
 
         .settings-icon:hover {
-            color: #5BC0BE;
+            color: var(--accent-cyan);
         }
 
-        /* Settings Panels Overlay */
+        /* Settings Overlay Panels */
         .settings-overlay {
             display: none;
             position: fixed;
@@ -205,42 +236,42 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(7, 11, 25, 0.85);
-            backdrop-filter: blur(5px);
+            background: rgba(7, 11, 25, 0.88);
+            backdrop-filter: blur(8px);
             justify-content: center;
             align-items: center;
             z-index: 100;
         }
 
         .settings-card {
-            background: #111D37;
-            border: 1px solid #1C2541;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             width: 95%;
-            max-width: 440px;
+            max-width: 460px;
             padding: 25px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
             max-height: 90vh;
             overflow-y: auto;
         }
 
         .settings-card h3 {
-            font-size: 14px;
+            font-size: 13px;
             letter-spacing: 2px;
-            color: #5BC0BE;
+            color: var(--accent-cyan);
             margin-bottom: 20px;
             text-align: center;
             font-weight: bold;
-            border-bottom: 1px solid #1C2541;
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 10px;
         }
 
         .settings-option-btn {
             width: 100%;
-            background: #0B132B;
-            border: 1px solid #1C2541;
-            color: #FFFFFF;
-            padding: 15px 14px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 14px 14px;
             margin-bottom: 10px;
             border-radius: 6px;
             text-align: left;
@@ -252,24 +283,23 @@
         }
 
         .settings-option-btn:hover {
-            border-color: #5BC0BE;
-            background: #1C2541;
+            border-color: var(--accent-cyan);
+            background: var(--border-color);
         }
 
         /* Inner Panel Controls */
         .inner-sub-panel {
             display: none;
-            background: #070B19;
-            border: 1px solid #1C2541;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 18px;
             margin-bottom: 15px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
 
         .inner-sub-panel h4 {
             font-size: 11px;
-            color: #5BC0BE;
+            color: var(--accent-cyan);
             letter-spacing: 1px;
             margin-bottom: 12px;
             font-weight: bold;
@@ -281,8 +311,8 @@
 
         .inner-sub-panel label {
             font-size: 10px;
-            color: #FFFFFF;
-            opacity: 0.7;
+            color: var(--text-main);
+            opacity: 0.8;
             display: block;
             margin-bottom: 5px;
             font-weight: 600;
@@ -290,20 +320,19 @@
 
         .inner-sub-panel input, .inner-sub-panel select {
             width: 100%;
-            background: #0B132B;
-            border: 1px solid #1C2541;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
             padding: 10px;
-            color: #FFFFFF;
+            color: var(--text-main);
             border-radius: 4px;
             font-size: 12px;
             outline: none;
         }
 
-        /* Add Department Button & Dynamic Area */
         .btn-add-dept {
             background: rgba(91, 192, 190, 0.1);
-            border: 1px dashed #5BC0BE;
-            color: #5BC0BE;
+            border: 1px dashed var(--accent-cyan);
+            color: var(--accent-cyan);
             padding: 10px;
             font-size: 10px;
             font-weight: bold;
@@ -317,14 +346,14 @@
         }
 
         .btn-add-dept:hover {
-            background: #5BC0BE;
-            color: #0B132B;
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
             border-style: solid;
         }
 
         .dept-list-container {
             margin-top: 15px;
-            border-top: 1px dashed #1C2541;
+            border-top: 1px dashed var(--border-color);
             padding-top: 10px;
         }
 
@@ -338,7 +367,7 @@
         .range-slider {
             flex: 1;
             cursor: pointer;
-            accent-color: #5BC0BE;
+            accent-color: var(--accent-cyan);
         }
 
         .fps-badge-container {
@@ -348,9 +377,9 @@
         }
 
         .fps-btn {
-            background: #0B132B;
-            border: 1px solid #1C2541;
-            color: #FFFFFF;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
             padding: 6px 12px;
             font-size: 10px;
             border-radius: 4px;
@@ -358,19 +387,19 @@
         }
 
         .fps-btn.active {
-            background: #5BC0BE;
-            color: #0B132B;
-            border-color: #5BC0BE;
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+            border-color: var(--accent-cyan);
         }
 
         .toggle-switch-container {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #0B132B;
+            background: var(--bg-primary);
             padding: 10px;
             border-radius: 4px;
-            border: 1px solid #1C2541;
+            border: 1px solid var(--border-color);
             margin-bottom: 8px;
         }
 
@@ -383,12 +412,12 @@
         .toggle-input {
             width: auto !important;
             cursor: pointer;
-            accent-color: #2ECC71;
+            accent-color: var(--success-color);
         }
 
         .inner-panel-status {
             font-size: 11px;
-            color: #2ECC71;
+            color: var(--success-color);
             font-weight: bold;
             background: rgba(46, 204, 113, 0.1);
             padding: 10px;
@@ -397,8 +426,8 @@
         }
 
         .panel-btn-save {
-            background: #5BC0BE;
-            color: #0B132B;
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
             border: none;
             padding: 10px;
             font-size: 11px;
@@ -413,8 +442,8 @@
         .close-settings-btn {
             width: 100%;
             background: transparent;
-            border: 1px solid #E74C3C;
-            color: #E74C3C;
+            border: 1px solid var(--error-color);
+            color: var(--error-color);
             padding: 12px;
             border-radius: 6px;
             font-size: 11px;
@@ -426,14 +455,14 @@
         }
 
         .close-settings-btn:hover {
-            background: #E74C3C;
-            color: #FFFFFF;
+            background: var(--error-color);
+            color: var(--text-main);
         }
 
-        /* Master Key Gateway Modals */
+        /* Master Key Gateway Card */
         .key-gateway-card {
-            background: #111D37;
-            border: 1px solid #1C2541;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             width: 90%;
             max-width: 350px;
@@ -444,7 +473,7 @@
         .key-gateway-card label {
             display: block;
             font-size: 11px;
-            color: #5BC0BE;
+            color: var(--accent-cyan);
             letter-spacing: 1px;
             margin-bottom: 15px;
             font-weight: bold;
@@ -452,11 +481,11 @@
 
         .key-gateway-card input {
             width: 100%;
-            background: #0B132B;
-            border: 1px solid #1C2541;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
             padding: 12px;
             border-radius: 6px;
-            color: #FFFFFF;
+            color: var(--text-main);
             font-size: 14px;
             outline: none;
             text-align: center;
@@ -478,58 +507,22 @@
             border: none;
         }
 
-        .btn-cancel { background: #1C2541; color: #FFFFFF; }
-        .btn-cancel:hover { background: #E74C3C; }
-        .btn-confirm { background: #5BC0BE; color: #0B132B; }
-        .btn-confirm:hover { background: #FFFFFF; }
+        .btn-cancel { background: var(--border-color); color: var(--text-main); }
+        .btn-cancel:hover { background: var(--error-color); }
+        .btn-confirm { background: var(--accent-cyan); color: var(--bg-primary); }
+        .btn-confirm:hover { background: var(--text-main); }
 
-        /* ========================================================
-           1. 📱 MULTI-DEVICE RESPONSIVE ENGINE (CSS MEDIA QUERIES)
-           ======================================================== */
+        /* Responsive Breakpoints */
         @media (max-width: 768px) {
-            body {
-                overflow-y: auto; /* Allow scrolling on smaller viewports */
-            }
-            .top-bar {
-                padding: 12px 15px;
-            }
-            .window-controls {
-                display: none; /* Hide desktop window controls on mobile gadgets */
-            }
-            .login-container {
-                padding: 10px;
-                align-items: flex-start;
-                margin-top: 40px;
-            }
-            .login-card {
-                padding: 25px 20px;
-                max-width: 100%;
-                border-radius: 8px;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-            }
-            .company-name {
-                font-size: 22px;
-            }
-            .system-sub {
-                font-size: 9px;
-                margin-bottom: 25px;
-            }
-            .input-group input {
-                padding: 14px 12px; /* Tapping space optimization for mobile thumbs */
-                font-size: 15px;
-            }
-            .login-btn {
-                padding: 16px;
-                font-size: 13px;
-            }
-            .settings-card {
-                width: 95%;
-                padding: 15px;
-            }
-            .bottom-bar {
-                bottom: 10px;
-                right: 10px;
-            }
+            body { overflow-y: auto; }
+            .top-bar { padding: 12px 15px; }
+            .window-controls { display: none; }
+            .login-container { padding: 10px; align-items: center; }
+            .login-card { padding: 30px 20px; max-width: 100%; }
+            .company-name { font-size: 22px; }
+            .system-sub { font-size: 9px; margin-bottom: 25px; }
+            .input-group input { padding: 14px 12px; font-size: 15px; }
+            .login-btn { padding: 16px; font-size: 13px; }
         }
     </style>
 </head>
@@ -542,13 +535,13 @@
             RAGHUVEER DIAMOND AI OS [v6.0]
         </div>
         <div class="window-controls">
-            <button onclick="minimizeApp()">-</button>
-            <button onclick="toggleFullScreen()">🗖</button>
-            <button onclick="closeApp()">✕</button>
+            <button onclick="minimizeApp()" title="Minimize">-</button>
+            <button onclick="toggleFullScreen()" title="Fullscreen">🗖</button>
+            <button onclick="closeApp()" title="Close">✕</button>
         </div>
     </div>
 
-    <!-- Main Entry Container -->
+    <!-- Main Entry Gateway -->
     <div class="login-container">
         <div class="login-card">
             <div class="company-name">RAGHUVEER DIAMOND</div>
@@ -556,29 +549,27 @@
 
             <div class="input-group">
                 <label>ENTER SYSTEM ID</label>
-                <input type="text" id="systemId" placeholder="Enter ID..." autocomplete="off" oninput="resetBorders()">
+                <input type="text" id="systemId" placeholder="Enter Department / System ID..." autocomplete="off" oninput="resetBorders()">
             </div>
 
             <div class="input-group">
                 <label>ENTER SECURE ACCESS KEY</label>
-                <!-- Smart Enter Key Listener added below -->
-                <input type="password" id="accessKey" placeholder="Enter Password..." autocomplete="off" oninput="resetBorders()" onkeydown="if(event.key === 'Enter') validateAccess()">
+                <input type="password" id="accessKey" placeholder="Enter Secure Password..." autocomplete="off" oninput="resetBorders()" onkeydown="if(event.key === 'Enter') validateAccess()">
             </div>
 
             <button class="login-btn" onclick="validateAccess()">INITIALIZE SYSTEM ⚡</button>
         </div>
 
-        <!-- Secret Corner Activation Node -->
+        <!-- Secret Settings Override Node -->
         <div class="bottom-bar">
-            <button class="settings-icon" onclick="openKeyGateway()">⚙️</button>
+            <button class="settings-icon" onclick="openKeyGateway()" title="System Control Matrix">⚙️</button>
         </div>
     </div>
 
-    <!-- Phase 1: Master Verification Gateway -->
+    <!-- Phase 1: Director Master Verification Gateway -->
     <div class="settings-overlay" id="keyGatewayOverlay">
         <div class="key-gateway-card">
             <label>ENTER DIRECTOR MASTER KEY</label>
-            <!-- Enter Key trigger added for direct gateway access -->
             <input type="password" id="masterGatewayKey" placeholder="••••" onkeydown="if(event.key === 'Enter') verifyMasterGatewayKey()">
             <div class="gateway-actions">
                 <button class="btn-cancel" onclick="closeKeyGateway()">CANCEL</button>
@@ -587,48 +578,46 @@
         </div>
     </div>
 
-    <!-- Phase 2: Advanced Control Panel -->
+    <!-- Phase 2: Advanced System Control Panel -->
     <div class="settings-overlay" id="settingsOverlay">
         <div class="settings-card">
             <h3>⚙️ AI OS MASTER CONTROL</h3>
             <div class="settings-grid">
                 
-                <!-- Option 1: Dynamic Credentials Tuning Area -->
-                <button class="settings-option-btn" onclick="toggleSubPanel('panelCredentials')">🔒 1. ACCESS KEYS & CREDENTIALS</button>
+                <!-- Option 1: Dynamic Credentials & Departments Matrix -->
+                <button class="settings-option-btn" onclick="toggleSubPanel('panelCredentials')">🔒 1. ACCESS KEYS & DEPARTMENTS</button>
                 <div id="panelCredentials" class="inner-sub-panel">
                     <h4>MODIFY OS ACCESS CREDENTIALS</h4>
                     <div class="mini-input-group">
-                        <label>Director ID / Key</label>
-                        <input type="text" id="cfgAdminId" style="margin-bottom:5px;">
-                        <input type="password" id="cfgAdminKey">
+                        <label>Main Office (Director) ID & Password</label>
+                        <input type="text" id="cfgAdminId" style="margin-bottom:5px;" placeholder="Director ID">
+                        <input type="password" id="cfgAdminKey" placeholder="Director Password">
                     </div>
                     <div class="mini-input-group">
-                        <label>Accountant ID / Key</label>
-                        <input type="text" id="cfgAccountId" style="margin-bottom:5px;">
-                        <input type="password" id="cfgAccountKey">
+                        <label>Accountant Department ID & Password</label>
+                        <input type="text" id="cfgAccountId" style="margin-bottom:5px;" placeholder="Accountant ID">
+                        <input type="password" id="cfgAccountKey" placeholder="Accountant Password">
                     </div>
                     
-                    <!-- Dynamic Department Creation Matrix -->
-                    <div class="dept-list-container" id="deptListContainer">
-                        <!-- Dynamic items will load here perfectly -->
-                    </div>
+                    <!-- Dynamic Factory Departments -->
+                    <div class="dept-list-container" id="deptListContainer"></div>
 
                     <button class="btn-add-dept" onclick="addNewDepartmentField()">+ ADD NEW DEPARTMENT</button>
                     <button class="panel-btn-save" style="margin-top:15px;" onclick="saveAllCredentials()">SAVE CONFIGURATION</button>
                 </div>
 
-                <!-- Option 2: GitHub Integration Panel -->
+                <!-- Option 2: Cloud Synchronization -->
                 <button class="settings-option-btn" onclick="toggleSubPanel('panelSync')">☁️ 2. GITHUB AUTO-CLOUD SYNC</button>
                 <div id="panelSync" class="inner-sub-panel">
                     <h4>CLOUD SYNC CONTROL</h4>
                     <div class="toggle-switch-container">
-                        <label class="toggle-label">Auto Backup to GitHub</label>
+                        <label class="toggle-label">Auto Backup to Cloud</label>
                         <input type="checkbox" class="toggle-input" checked id="gitAutoToggle" onchange="updateGitStatus()">
                     </div>
                     <div class="inner-panel-status" id="gitStatusText">⚡ STATUS: REPOSITORY IS SECURE & SYNCHRONIZED [MAIN].</div>
                 </div>
 
-                <!-- Option 3: Premium Theme Engine Configuration -->
+                <!-- Option 3: Theme Speed Controls -->
                 <button class="settings-option-btn" onclick="toggleSubPanel('panelTheme')">🎨 3. METALLIC METEOR THEME SPEED</button>
                 <div id="panelTheme" class="inner-sub-panel">
                     <h4>CYBER CYAN ENGINE CONTROLS</h4>
@@ -636,11 +625,11 @@
                         <label>Glow Shift Velocity (Speed)</label>
                         <div class="range-slider-container">
                             <input type="range" min="1" max="10" value="6" class="range-slider" id="glowRange" oninput="updateGlowSpeedText()">
-                            <span id="glowValText" style="font-size:11px; font-weight:bold; color:#5BC0BE;">6s</span>
+                            <span id="glowValText" style="font-size:11px; font-weight:bold; color:var(--accent-cyan);">6s</span>
                         </div>
                     </div>
                     <div class="mini-input-group">
-                        <label>Engine Rendering Mode</label>
+                        <label>Rendering Mode</label>
                         <div class="fps-badge-container">
                             <button class="fps-btn" id="fps30" onclick="setFps(30)">30 FPS ECO</button>
                             <button class="fps-btn active" id="fps60" onclick="setFps(60)">60 FPS METEOR</button>
@@ -648,7 +637,7 @@
                     </div>
                 </div>
 
-                <!-- Option 4: AI Cache & Memory Module -->
+                <!-- Option 4: AI Memory Flush -->
                 <button class="settings-option-btn" onclick="toggleSubPanel('panelFlush')">🧹 4. AI CACHE & MEMORY FLUSH</button>
                 <div id="panelFlush" class="inner-sub-panel">
                     <h4>MEMORY CONFIGURATION</h4>
@@ -664,43 +653,22 @@
                         <label class="toggle-label">Live RAM Optimizer</label>
                         <input type="checkbox" class="toggle-input" checked>
                     </div>
-                    <button class="panel-btn-save" style="background:#E74C3C; color:#FFF;" onclick="triggerDeepFlush()">TRIGGER DEEP FLUSH NOW</button>
+                    <button class="panel-btn-save" style="background:var(--error-color); color:#FFF;" onclick="triggerDeepFlush()">TRIGGER DEEP FLUSH NOW</button>
                 </div>
 
-                <!-- Option 5: Automated Factory Core Diagnostics -->
+                <!-- Option 5: Factory Automation Diagnostics -->
                 <button class="settings-option-btn" onclick="toggleSubPanel('panelDiag')">🤖 5. AUTOMATED AI CORE DIAGNOSTICS</button>
                 <div id="panelDiag" class="inner-sub-panel">
-                    <h4>SURAT AUTOMATION CORE MONITOR</h4>
+                    <h4>DIAMOND FACTORY AUTOMATION MONITOR</h4>
                     <div class="mini-input-group">
-                        <label>Robotic Arm Alignment Accuracy</label>
+                        <label>Laser / Polishing Machine Link Accuracy</label>
                         <div class="range-slider-container">
                             <input type="range" min="90" max="100" value="100" class="range-slider">
-                            <span style="font-size:11px; font-weight:bold; color:#2ECC71;">100%</span>
+                            <span style="font-size:11px; font-weight:bold; color:var(--success-color);">100%</span>
                         </div>
                     </div>
-                    <div class="mini-input-group">
-                        <label>Markless Laser Vision Lens Mode</label>
-                        <select>
-                            <option value="high">HIGH RES SENSITIVITY (UNLIMITED CAPACITY)</option>
-                            <option value="med">MEDIUM AUTO PROFILE</option>
-                        </select>
-                    </div>
-                    <div class="inner-panel-status" style="color:#5BC0BE; background:rgba(91,192,190,0.1); border-color:rgba(91,192,190,0.2);">
-                        🤖 AI VISION: 0 ERRORS DETECTED ON TOP-CROWN MACHINES.
-                    </div>
-                </div>
-
-                <!-- Option 6: Advanced Future Biometric Controls -->
-                <button class="settings-option-btn" onclick="toggleSubPanel('panelBio')">🧬 6. BIOMETRIC EMERGENCY OVERRIDE</button>
-                <div id="panelBio" class="inner-sub-panel">
-                    <h4>QUANTUM SECURITY PROTOCOLS</h4>
-                    <div class="toggle-switch-container">
-                        <label class="toggle-label">AI Face Override Lock</label>
-                        <input type="checkbox" class="toggle-input" checked>
-                    </div>
-                    <div class="toggle-switch-container">
-                        <label class="toggle-label">Retina Scanner Matrix</label>
-                        <input type="checkbox" class="toggle-input">
+                    <div class="inner-panel-status" style="color:var(--accent-cyan); background:rgba(91,192,190,0.1); border-color:rgba(91,192,190,0.2);">
+                        🤖 AI VISION: 0 ERRORS DETECTED ON TOP-CROWN & POLISHING MACHINES.
                     </div>
                 </div>
 
@@ -710,22 +678,21 @@
     </div>
 
     <script>
-        // ========================================================
-        // 2. 📡 REAL-TIME CORE INTER-FILE LINKS (BROADCAST BUS)
-        // ========================================================
+        /* ========================================================
+           REAL-TIME INTER-FILE BROADCAST CHANNEL
+           ======================================================== */
         const systemDataBus = new BroadcastChannel('raghuveer_ai_core_bus');
         
-        // Listen to active live shifts across other modules (e.g. from Dashboard or Laser sub-files)
         systemDataBus.onmessage = (event) => {
-            console.log("⚡ [AI OS BUS] Central System Synced:", event.data);
+            console.log("⚡ [AI OS BUS] Live Sync Event Received:", event.data);
             if(event.data.type === "REMOTE_CREDENTIALS_UPDATE") {
-                initDatabaseArchitecture(); // Hot reload memory layer
+                initDatabaseArchitecture();
             }
         };
 
-        // ========================================================
-        // 3. 💾 HIGH-CAPACITY LOCAL STORAGE MATRIX (INDEXEDDB INTERACTION)
-        // ========================================================
+        /* ========================================================
+           INDEXEDDB & LOCALSTORAGE ARCHITECTURE
+           ======================================================== */
         const dbName = "RaghuveerDiamondDB";
         let dbInstance = null;
 
@@ -737,38 +704,37 @@
                 if (!db.objectStoreNames.contains("system_registry")) {
                     db.createObjectStore("system_registry", { keyPath: "registry_key" });
                 }
+                if (!db.objectStoreNames.contains("audit_logs")) {
+                    db.createObjectStore("audit_logs", { keyPath: "id", autoIncrement: true });
+                }
             };
             
             request.onsuccess = (event) => {
                 dbInstance = event.target.result;
-                console.log("🧬 [INDEXEDDB] Quantum Memory Core Synchronized Successfully.");
+                console.log("🧬 [INDEXEDDB] Engine Storage Initialized.");
                 
-                // Fallback seeds to maintain standard defaults if store is freshly initialized
+                // Initialize Default Access Credentials if missing
                 if(!localStorage.getItem('admin_id')) {
                     localStorage.setItem('admin_id', 'admin');
                     localStorage.setItem('admin_key', '111');
                     localStorage.setItem('account_id', 'account');
                     localStorage.setItem('account_key', '222');
-                    localStorage.setItem('master_gateway_key', '9999'); // Separate high-security master key node
-                    localStorage.setItem('custom_departments', JSON.stringify([]));
+                    localStorage.setItem('master_gateway_key', '9999');
+                    localStorage.setItem('custom_departments', JSON.stringify([
+                        { name: "Rough", id: "rough", key: "101" },
+                        { name: "Laser", id: "laser", key: "102" },
+                        { name: "Top Crown", id: "topcrown", key: "103" },
+                        { name: "Polishing", id: "polishing", key: "104" }
+                    ]));
                 }
             };
             
             request.onerror = () => {
-                console.error("⚠️ Database Architecture initialization failure.");
+                console.error("⚠️ Database Architecture error.");
             };
         }
 
-        // Initialize DB Core immediately on script execution
         initDatabaseArchitecture();
-
-        // Automatic Full Screen Trigger on First Click anywhere on document
-        document.addEventListener('click', function autoFullScreenInit() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(() => {});
-            }
-            document.removeEventListener('click', autoFullScreenInit);
-        });
 
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
@@ -786,9 +752,9 @@
             document.getElementById('accessKey').className = '';
         }
 
-        // ========================================================
-        // 4. 🛡️ ZERO-KNOWLEDGE CRYPTO-TOKEN ACCESS VALIDATION
-        // ========================================================
+        /* ========================================================
+           SECURITY ACCESS VALIDATION & ROUTING ENGINE
+           ======================================================== */
         function validateAccess() {
             const idInput = document.getElementById('systemId');
             const keyInput = document.getElementById('accessKey');
@@ -796,26 +762,30 @@
             const key = keyInput.value.trim();
 
             if(!id || !key) {
-                alert("ACCESS FAULT: Security inputs cannot be blank.");
+                alert("ACCESS FAULT: Credentials missing.");
                 return;
             }
 
             let assignedRole = null;
+            let departmentTitle = "";
 
-            // 1. Validate Director Core
+            // 1. Verify Director (Main Office)
             if (id === localStorage.getItem('admin_id') && key === localStorage.getItem('admin_key')) {
                 assignedRole = 'director';
+                departmentTitle = 'Main Office (Director)';
             } 
-            // 2. Validate Accountant Core
+            // 2. Verify Accountant
             else if (id === localStorage.getItem('account_id') && key === localStorage.getItem('account_key')) {
                 assignedRole = 'accountant';
+                departmentTitle = 'Accounting Department';
             } 
-            // 3. Loop & Validate Dynamic Added Departments
+            // 3. Verify Dynamic Factory Departments
             else {
                 const customDepts = JSON.parse(localStorage.getItem('custom_departments') || "[]");
-                for(let i=0; i<customDepts.length; i++) {
+                for(let i = 0; i < customDepts.length; i++) {
                     if(id === customDepts[i].id && key === customDepts[i].key) {
-                        assignedRole = customDepts[i].name;
+                        assignedRole = customDepts[i].id;
+                        departmentTitle = customDepts[i].name;
                         break;
                     }
                 }
@@ -825,30 +795,35 @@
                 idInput.className = 'success-border';
                 keyInput.className = 'success-border';
 
-                // ========================================================
-                // 🧠 EDGE AI / PREDICTIVE DATA PRE-FETCH MODULE
-                // ========================================================
-                console.log(`🤖 [AI ROUTER] Role parsed: "${assignedRole}". Pre-fetching module assets...`);
-                
-                // Generate secure runtime token so other 40+ files can handshake instantly without raw text leaks
                 const cryptoSessionToken = "RD_TOK_" + btoa(assignedRole + "_" + Date.now()).substring(0, 16);
-                localStorage.setItem('sessionToken', cryptoSessionToken);
-                localStorage.setItem('userRole', assignedRole);
+                
+                // Save Session to Memory
+                sessionStorage.setItem('sessionToken', cryptoSessionToken);
+                sessionStorage.setItem('userRole', assignedRole);
+                sessionStorage.setItem('departmentTitle', departmentTitle);
 
-                // Broadcast network status before navigation
-                systemDataBus.postMessage({ type: "USER_LOGIN_EVENT", role: assignedRole, timestamp: Date.now() });
+                localStorage.setItem('lastActiveRole', assignedRole);
+
+                // Broadcast Login Event across network
+                systemDataBus.postMessage({ 
+                    type: "USER_LOGIN_EVENT", 
+                    role: assignedRole, 
+                    dept: departmentTitle,
+                    timestamp: new Date().toISOString() 
+                });
 
                 setTimeout(() => {
-                    // Redirects to Central Server / Local Dashboard Node
+                    // Central Navigation Link
                     window.location.href = "dashboard.html";
                 }, 400);
             } else {
                 idInput.className = 'error-border';
                 keyInput.className = 'error-border';
-                alert("ACCESS DENIED: INVALID SYSTEM ID OR ACCESS KEY");
+                alert("ACCESS DENIED: INVALID SYSTEM ID OR PASSWORD");
             }
         }
 
+        /* Settings Gateway Handlers */
         function openKeyGateway() {
             document.getElementById('masterGatewayKey').value = '';
             document.getElementById('keyGatewayOverlay').style.display = 'flex';
@@ -859,7 +834,6 @@
 
         function verifyMasterGatewayKey() {
             const enteredKey = document.getElementById('masterGatewayKey').value;
-            // High Security Override Verification Protocol
             if (enteredKey === localStorage.getItem('master_gateway_key') || enteredKey === localStorage.getItem('admin_key')) {
                 closeKeyGateway();
                 document.getElementById('settingsOverlay').style.display = 'flex';
@@ -895,14 +869,14 @@
             customDepts.forEach((dept, index) => {
                 const div = document.createElement('div');
                 div.className = 'mini-input-group';
-                div.style.borderTop = '1px solid #1C2541';
+                div.style.borderTop = '1px solid var(--border-color)';
                 div.style.paddingTop = '10px';
                 div.innerHTML = `
-                    <label style="color:#5BC0BE; display:flex; justify-content:space-between;">
-                        <span>${dept.name.toUpperCase()} CONFIGURATION</span>
-                        <span style="color:#E74C3C; cursor:pointer;" onclick="removeDepartmentNode(${index})">DELETE</span>
+                    <label style="color:var(--accent-cyan); display:flex; justify-content:space-between;">
+                        <span>${dept.name.toUpperCase()} DEPARTMENT</span>
+                        <span style="color:var(--error-color); cursor:pointer;" onclick="removeDepartmentNode(${index})">DELETE</span>
                     </label>
-                    <label style="font-size:9px; margin-top:5px;">Department ID</label>
+                    <label style="font-size:9px; margin-top:5px;">Department Login ID</label>
                     <input type="text" value="${dept.id}" id="customDeptId_${index}" style="margin-bottom:5px;">
                     <label style="font-size:9px;">Access Key / Password</label>
                     <input type="password" value="${dept.key}" id="customDeptKey_${index}">
@@ -912,19 +886,19 @@
         }
 
         function addNewDepartmentField() {
-            const deptName = prompt("STEP 1: ENTER NEW DEPARTMENT NAME:\n(e.g., 4P, Laser, Polishing)");
+            const deptName = prompt("STEP 1: ENTER NEW DEPARTMENT NAME:\n(e.g., 4P, Laser, Polishing, Top Crown)");
             if(!deptName) return;
             
-            const deptId = prompt(`STEP 2: ENTER SYSTEM ID FOR [${deptName}]:\n(This will be used for login)`);
+            const deptId = prompt(`STEP 2: ENTER LOGIN ID FOR [${deptName}]:`);
             if(!deptId) return;
 
-            const deptKey = prompt(`STEP 3: ENTER ACCESS KEY / PASSWORD FOR [${deptName}]:`);
+            const deptKey = prompt(`STEP 3: ENTER PASSWORD FOR [${deptName}]:`);
             if(!deptKey) return;
             
             const customDepts = JSON.parse(localStorage.getItem('custom_departments') || "[]");
             customDepts.push({
-                name: deptName,
-                id: deptId.trim(),
+                name: deptName.trim(),
+                id: deptId.trim().toLowerCase(),
                 key: deptKey.trim()
             });
             
@@ -940,23 +914,24 @@
         }
 
         function saveAllCredentials() {
-            localStorage.setItem('admin_id', document.getElementById('cfgAdminId').value);
-            localStorage.setItem('admin_key', document.getElementById('cfgAdminKey').value);
-            localStorage.setItem('account_id', document.getElementById('cfgAccountId').value);
-            localStorage.setItem('account_key', document.getElementById('cfgAccountKey').value);
+            localStorage.setItem('admin_id', document.getElementById('cfgAdminId').value.trim());
+            localStorage.setItem('admin_key', document.getElementById('cfgAdminKey').value.trim());
+            localStorage.setItem('account_id', document.getElementById('cfgAccountId').value.trim());
+            localStorage.setItem('account_key', document.getElementById('cfgAccountKey').value.trim());
             
             const customDepts = JSON.parse(localStorage.getItem('custom_departments') || "[]");
             for(let i=0; i<customDepts.length; i++) {
-                customDepts[i].id = document.getElementById(`customDeptId_${i}`).value;
-                customDepts[i].key = document.getElementById(`customDeptKey_${i}`).value;
+                const idEl = document.getElementById(`customDeptId_${i}`);
+                const keyEl = document.getElementById(`customDeptKey_${i}`);
+                if(idEl && keyEl) {
+                    customDepts[i].id = idEl.value.trim().toLowerCase();
+                    customDepts[i].key = keyEl.value.trim();
+                }
             }
             localStorage.setItem('custom_departments', JSON.stringify(customDepts));
             
-            alert("SYSTEM CONFIGURATION MATRIX SAVED INTERNALLY.");
-            
-            // Sync up broadcast architecture across active files
+            alert("SYSTEM CONFIGURATION SAVED.");
             systemDataBus.postMessage({ type: "REMOTE_CREDENTIALS_UPDATE", updatedBy: "director" });
-            
             toggleSubPanel('panelCredentials');
         }
 
@@ -965,10 +940,10 @@
             const statusText = document.getElementById('gitStatusText');
             if(checkbox.checked) {
                 statusText.innerHTML = "⚡ STATUS: REPOSITORY IS SECURE & SYNCHRONIZED [MAIN].";
-                statusText.style.color = "#2ECC71";
+                statusText.style.color = "var(--success-color)";
             } else {
                 statusText.innerHTML = "⚠️ WARNING: CLOUD SYNC PAUSED. LOCAL MEMORY ONLY.";
-                statusText.style.color = "#E74C3C";
+                statusText.style.color = "var(--error-color)";
             }
         }
 
@@ -989,17 +964,14 @@
         }
 
         function triggerDeepFlush() {
-            alert("DEEP MEMORY PURGE ENGINE COMPLETE. ALL SLOTS FREED.");
+            alert("DEEP MEMORY PURGE COMPLETE.");
             toggleSubPanel('panelFlush');
         }
 
-        // ========================================================
-        // 5. 🛠️ SMART UX TOGGLES & BUG FIXES COMPLETION
-        // ========================================================
         function closeSettingsPanel() {
             document.querySelectorAll('.inner-sub-panel').forEach(p => p.style.display = 'none');
             document.getElementById('settingsOverlay').style.display = 'none';
-        } // All tags locked and sealed perfectly.
+        }
     </script>
 </body>
 </html>
