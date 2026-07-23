@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Raghuveer Diamond - AI Polished Purchase & Repair Core</title>
+    <style>
+        :root {
+            --bg-primary: #070B19; 
+            --bg-secondary: #111D37; 
+            --top-bar-bg: #030611; 
+            --border-color: #1C2541; 
+            --accent-cyan: #5BC0BE; 
+            --accent-blue: #00C6FF; 
+            --accent-green: #2ECC71; 
+            --accent-red: #E74C3C; 
+            --accent-yellow: #F1C40F;
+            --accent-purple: #9B59B6;
+            --text-main: #FFFFFF; 
+            --text-muted: #8D99AE; 
+            --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); user-select: none; }
+        body { background-color: var(--bg-primary); color: var(--text-main); width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+        /* Window Control Bar */
+        .window-control-bar { height: 48px; background-color: var(--top-bar-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; border-bottom: 1px solid var(--border-color); flex-shrink: 0; } 
+        .brand-title { font-size: 13px; font-weight: 900; letter-spacing: 1.5px; color: var(--accent-cyan); text-transform: uppercase; } 
+        .control-group { display: flex; gap: 8px; }
+        .btn-win { width: 32px; height: 26px; border: none; border-radius: 4px; color: white; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 14px; text-decoration: none; }
+        .btn-min { background: #1C2541; }
+        .btn-max { background: #2A365C; }
+        .btn-close { background: var(--accent-red); }
+
+        /* Workspace Grid Splitter */
+        .workspace-grid { flex: 1; display: flex; flex-direction: row; gap: 15px; padding: 15px; overflow: hidden; }
+        .panel-box { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4); height: 100%; overflow: hidden; }
+        
+        .form-panel { flex: 1; max-width: 920px; overflow-y: auto !important; }
+        .log-panel { flex: 0 0 420px; max-width: 420px; }
+
+        .panel-title { font-size: 12px; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 10px; font-weight: 700; border-bottom: 1px dashed var(--border-color); padding-bottom: 6px; letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center; }
+
+        /* Form Inputs Matrix */
+        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+        .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+
+        .input-group { display: flex; flex-direction: column; gap: 3px; }
+        .input-group label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+        .input-control { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 8px; border-radius: 6px; font-size: 12px; font-weight: bold; outline: none; width: 100%; }
+        .input-control:focus { border-color: var(--accent-blue); }
+
+        .input-row { display: flex; gap: 6px; }
+        .plus-btn { background: #111D37; color: var(--accent-cyan); border: 1px solid var(--border-color); width: 32px; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 15px; display: flex; align-items: center; justify-content: center; }
+        .plus-btn:hover { background: var(--accent-cyan); color: var(--bg-primary); }
+
+        /* AI Diagnostics Widget */
+        .ai-telemetry-box { background: rgba(0, 198, 255, 0.05); border: 1px dashed var(--accent-blue); border-radius: 8px; padding: 10px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 5px; }
+        .ai-title { font-size: 11px; font-weight: bold; color: var(--accent-blue); display: flex; justify-content: space-between; align-items: center; }
+        .ai-desc { font-size: 10px; color: var(--text-muted); }
+
+        .btn-commit { width: 100%; padding: 11px; border-radius: 6px; cursor: pointer; font-weight: 800; text-transform: uppercase; border: none; font-size: 11px; letter-spacing: 1px; color: var(--bg-primary); background: var(--accent-cyan); margin-top: 8px; transition: 0.3s; }
+        .btn-commit:hover { box-shadow: 0 0 15px rgba(91, 192, 190, 0.4); }
+
+        /* Table Architecture & Mobile Scroll */
+        .table-wrapper { 
+            flex: 1; 
+            overflow-y: auto !important; 
+            overflow-x: auto !important; 
+            -webkit-overflow-scrolling: touch; 
+            touch-action: pan-x pan-y;
+            border: 1px solid var(--border-color); 
+            border-radius: 6px; 
+            background: #070B19; 
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; min-width: 500px; }
+        th { background: #111D37; color: var(--accent-cyan); padding: 10px 8px; text-transform: uppercase; font-size: 9px; font-weight: 700; text-align: left; position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--border-color); white-space: nowrap; }
+        td { padding: 10px 8px; border-bottom: 1px solid var(--border-color); color: #FFFFFF; white-space: nowrap; }
+        
+        .filter-input { background: #070B19; border: 1px solid var(--border-color); color: var(--accent-cyan); padding: 8px 10px; border-radius: 6px; font-size: 11px; outline: none; font-weight: bold; width: 100%; margin-bottom: 10px; }
+
+        .hidden { display: none !important; }
+
+        /* 📱 MOBILE RESPONSIVE OVERRIDES */
+        @media (max-width: 900px) {
+            body { overflow-y: auto !important; height: auto; min-height: 100vh; }
+            .window-control-bar { padding: 0 10px; }
+            .brand-title { font-size: 11px; }
+            .workspace-grid { flex-direction: column; height: auto; overflow: visible; padding: 10px; }
+            .panel-box { height: auto; padding: 12px; }
+            .form-panel, .log-panel { max-width: 100%; flex: 1; }
+            .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; gap: 8px; }
+            .log-panel { min-height: 380px; }
+        }
+    </style>
+</head>
+<body onload="initAdvancedPolishedCore()">
+
+    <!-- Top Navigation Bar -->
+    <div class="window-control-bar"> 
+        <div class="brand-title">RAGHUVEER DIAMOND - AI POLISHED PURCHASE & REPAIR TERMINAL</div> 
+        <div class="control-group">
+            <button class="btn-win btn-min" onclick="triggerMinimize()">-</button>
+            <button class="btn-win btn-max" onclick="toggleFullScreen()">🗖</button>
+            <a href="main_office.html" class="btn-win btn-close">✕</a>
+        </div>
+    </div>
+
+    <!-- Workspace Grid -->
+    <div class="workspace-grid">
+        
+        <!-- Entry Panel -->
+        <div class="panel-box form-panel">
+            <div class="panel-title">
+                <span>💎 Ready Diamond Intake & Pathway Engine</span>
+                <span style="font-size:10px; color:var(--accent-green);">AI Smart Sync Active</span>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="input-group">
+                    <label>Purchase Date</label>
+                    <input type="date" id="ap-date" class="input-control">
+                </div>
+                <div class="input-group">
+                    <label>Polished Lot ID</label>
+                    <input type="text" id="ap-lot" class="input-control" placeholder="e.g. RPL-501">
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="input-group">
+                    <label>Supplier / Vendor Party</label>
+                    <div class="input-row">
+                        <select id="ap-supplier" class="input-control"></select>
+                        <button class="plus-btn" onclick="addAdvancedSupplier()">+</button>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Operation Routing Mode</label>
+                    <select id="ap-mode" class="input-control" onchange="toggleRepairSection()">
+                        <option value="direct">Direct Sale Ready (No Repair Needed)</option>
+                        <option value="repair">Send to Ghat / Repair / Re-cutting First</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- AI Diagnostics & Initial Purchase Values -->
+            <div class="form-grid-3">
+                <div class="input-group">
+                    <label>Initial Carats Bought</label>
+                    <input type="number" step="0.001" id="ap-buy-carat" class="input-control" placeholder="0.000" oninput="runAiDiagnostics()">
+                </div>
+                <div class="input-group">
+                    <label>Purchase Rate / Ct (₹)</label>
+                    <input type="number" step="0.01" id="ap-buy-rate" class="input-control" placeholder="0.00" oninput="runAiDiagnostics()">
+                </div>
+                <div class="input-group">
+                    <label style="color:var(--accent-yellow);">Total Purchase Cost (₹)</label>
+                    <input type="text" id="ap-buy-total" class="input-control" readonly style="color:var(--accent-yellow); background:#070B19;" value="₹ 0.00">
+                </div>
+            </div>
+
+            <!-- REPAIR / GHAT PROCESSING BLOCK (Appears only if Repair is selected) -->
+            <div id="repair-block" class="ai-telemetry-box hidden">
+                <div class="ai-title">
+                    <span>⚙️ Ghat Repair & Re-cutting Matrix</span>
+                    <span style="color:var(--accent-yellow); font-size:9px;">Vat-Pakkho Cost Tracking</span>
+                </div>
+                <div class="form-grid-3" style="margin-top:5px;">
+                    <div class="input-group">
+                        <label>Repair Carats Output (After Polish)</label>
+                        <input type="number" step="0.001" id="ap-rep-carat" class="input-control" placeholder="0.000" oninput="runAiDiagnostics()">
+                    </div>
+                    <div class="input-group">
+                        <label>Ghat Wages / Labour Cost (₹)</label>
+                        <input type="number" step="1" id="ap-rep-wages" class="input-control" placeholder="Total Labour" value="0" oninput="runAiDiagnostics()">
+                    </div>
+                    <div class="input-group">
+                        <label style="color:var(--accent-red);">Weight Loss (Carats)</label>
+                        <input type="text" id="ap-weight-loss" class="input-control" readonly style="color:var(--accent-red); background:#070B19;" value="0.000 Cts">
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Telemetry & Final Landed Cost Output -->
+            <div class="ai-telemetry-box">
+                <div class="ai-title">
+                    <span>🤖 RA-AI Valuation & Landed Cost Intelligence</span>
+                    <span id="ai-status-pill" style="color:var(--accent-green); font-size:9px;">Optimal Margin Calculated</span>
+                </div>
+                <div class="form-grid-2">
+                    <div class="input-group">
+                        <label style="color:var(--accent-cyan);">Final Landed Cost Per Carat (₹)</label>
+                        <input type="text" id="ap-landed-rate" class="input-control" readonly style="color:var(--accent-cyan); background:#070B19;" value="₹ 0.00">
+                    </div>
+                    <div class="input-group">
+                        <label style="color:var(--accent-green);">Total Net Invested Capital (₹)</label>
+                        <input type="text" id="ap-net-capital" class="input-control" readonly style="color:var(--accent-green); background:#070B19;" value="₹ 0.00">
+                    </div>
+                </div>
+                <div class="ai-desc" id="ai-suggestion-text">Analysis: Direct ready inventory routing active. Ready for instant sales billing.</div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="input-group">
+                    <label>Payment Source Vault</label>
+                    <select id="ap-pay-source" class="input-control">
+                        <option value="BANK">CONNECTED BANK CHANNEL</option>
+                        <option value="CASH">OFFICE CASH COUNTER</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Quality & Sieve Details</label>
+                    <input type="text" id="ap-specs" class="input-control" placeholder="e.g. VVS1-D (+11 Charni)">
+                </div>
+            </div>
+
+            <button class="btn-commit" onclick="commitAdvancedPolishedRecord()">⚡ Commit Integrated Polished Record</button>
+        </div>
+
+        <!-- Ledger Panel -->
+        <div class="panel-box log-panel">
+            <div class="panel-title">
+                <span>📜 Polished & Repair Ledger</span>
+                <button class="plus-btn" style="width:auto; padding:2px 8px; font-size:9px;" onclick="exportAdvancedCSV()">📥 CSV</button>
+            </div>
+            
+            <input type="text" class="filter-input" id="search-ap" placeholder="Search Lot or Supplier..." oninput="refreshAdvancedTable()">
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Lot / Date</th>
+                            <th>Pathway</th>
+                            <th>Carats (In/Out)</th>
+                            <th>Total Invested</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ap-rows"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const systemDataBus = new BroadcastChannel('raghuveer_ai_core_bus');
+
+        const userRole = sessionStorage.getItem('userRole') || localStorage.getItem('lastActiveRate') || localStorage.getItem('lastActiveRole');
+        if(userRole !== 'director' && userRole !== 'accountant' && userRole !== 'rough') {
+            alert("ACCESS DENIED: Restricted Level.");
+            window.location.href = "index.html";
+        }
+
+        function initAdvancedPolishedCore() {
+            document.getElementById('ap-date').valueAsDate = new Date();
+
+            if(!localStorage.getItem('polished_suppliers')) {
+                localStorage.setItem('polished_suppliers', JSON.stringify(['Surat Gems Hub', 'Bhavnagar Diamond Syndicate', 'Mumbai Polished Vault']));
+            }
+            populateAdvancedSuppliers();
+            refreshAdvancedTable();
+        }
+
+        function populateAdvancedSuppliers() {
+            let list = JSON.parse(localStorage.getItem('polished_suppliers')) || [];
+            let select = document.getElementById('ap-supplier');
+            select.innerHTML = '<option value="">-- Select Supplier --</option>';
+            list.forEach(s => select.innerHTML += `<option value="${s}">${s}</option>`);
+        }
+
+        function addAdvancedSupplier() {
+            let val = prompt("Enter New Supplier Name:");
+            if(val && val.trim() !== "") {
+                let list = JSON.parse(localStorage.getItem('polished_suppliers')) || [];
+                if(!list.includes(val.trim())) {
+                    list.push(val.trim());
+                    localStorage.setItem('polished_suppliers', JSON.stringify(list));
+                    populateAdvancedSuppliers();
+                    document.getElementById('ap-supplier').value = val.trim();
+                }
+            }
+        }
+
+        function toggleRepairSection() {
+            let mode = document.getElementById('ap-mode').value;
+            let block = document.getElementById('repair-block');
+            if(mode === 'repair') {
+                block.classList.remove('hidden');
+                document.getElementById('ap-rep-carat').value = document.getElementById('ap-buy-carat').value;
+            } else {
+                block.classList.add('hidden');
+            }
+            runAiDiagnostics();
+        }
+
+        function runAiDiagnostics() {
+            let buyCts = parseFloat(document.getElementById('ap-buy-carat').value) || 0;
+            let buyRate = parseFloat(document.getElementById('ap-buy-rate').value) || 0;
+            let buyTotal = buyCts * buyRate;
+            document.getElementById('ap-buy-total').value = "₹ " + buyTotal.toLocaleString('en-IN', {minimumFractionDigits: 2});
+
+            let mode = document.getElementById('ap-mode').value;
+            let netCapital = buyTotal;
+            let effectiveCarats = buyCts;
+
+            if(mode === 'repair') {
+                let repCts = parseFloat(document.getElementById('ap-rep-carat').value) || buyCts;
+                let wages = parseFloat(document.getElementById('ap-rep-wages').value) || 0;
+                let loss = buyCts - repCts;
+                document.getElementById('ap-weight-loss').value = loss.toFixed(3) + " Cts";
+                
+                netCapital = buyTotal + wages;
+                effectiveCarats = repCts > 0 ? repCts : buyCts;
+
+                let suggestion = document.getElementById('ai-suggestion-text');
+                if(loss > 0) {
+                    suggestion.innerText = `AI Warning: Weight loss of ${loss.toFixed(3)} cts detected during repair. Landed rate adjusted to absorb loss value.`;
+                    document.getElementById('ai-status-pill').innerText = "Repair Adjusted";
+                    document.getElementById('ai-status-pill').style.color = "var(--accent-yellow)";
+                } else {
+                    suggestion.innerText = `AI Note: Repair processing completed with zero weight reduction. Labour wages integrated.`;
+                    document.getElementById('ai-status-pill').style.color = "var(--accent-green)";
+                }
+            } else {
+                let suggestion = document.getElementById('ai-suggestion-text');
+                suggestion.innerText = "Analysis: Direct ready inventory routing active. Ready for instant sales billing.";
+                document.getElementById('ai-status-pill').innerText = "Optimal Margin Calculated";
+                document.getElementById('ai-status-pill').style.color = "var(--accent-green)";
+            }
+
+            let landedPerCt = effectiveCarats > 0 ? (netCapital / effectiveCarats) : 0;
+            document.getElementById('ap-landed-rate').value = "₹ " + landedPerCt.toLocaleString('en-IN', {minimumFractionDigits: 2});
+            document.getElementById('ap-net-capital').value = "₹ " + netCapital.toLocaleString('en-IN', {minimumFractionDigits: 2});
+
+            return { netCapital, landedPerCt, effectiveCarats };
+        }
+
+        function commitAdvancedPolishedRecord() {
+            let date = document.getElementById('ap-date').value;
+            let lot = document.getElementById('ap-lot').value.trim();
+            let supplier = document.getElementById('ap-supplier').value;
+            let mode = document.getElementById('ap-mode').value;
+            let buyCts = parseFloat(document.getElementById('ap-buy-carat').value) || 0;
+            let buyRate = parseFloat(document.getElementById('ap-buy-rate').value) || 0;
+            let source = document.getElementById('ap-pay-source').value;
+            let specs = document.getElementById('ap-specs').value.trim() || "Standard Polish";
+
+            if(!date || !lot || !supplier || buyCts <= 0 || buyRate <= 0) {
+                alert("Validation Check: Please fill all required fields correctly.");
+                return;
+            }
+
+            let aiMetrics = runAiDiagnostics();
+            let netCapital = aiMetrics.netCapital;
+            let finalCarats = aiMetrics.effectiveCarats;
+
+            let dParts = date.split('-');
+            let dateFormatted = `${dParts[2]}/${dParts[1]}/${dParts[0]}`;
+
+            /* Auto Debit from Selected Payment Source */
+            if (source === 'CASH') {
+                let currentCash = parseFloat(localStorage.getItem('cash_on_hand')) || 0;
+                if(netCapital > currentCash) {
+                    if(!confirm("Warning: Amount exceeds Cash Vault. Proceed anyway?")) return;
+                }
+                currentCash -= netCapital;
+                localStorage.setItem('cash_on_hand', currentCash.toString());
+
+                let cashLogs = JSON.parse(localStorage.getItem('cash_history_log')) || [];
+                cashLogs.push({ date: dateFormatted, party: supplier, purpose: `Polished/Repair Purchase Lot: ${lot}`, amount: netCapital, type: 'javak', timestamp: new Date().toISOString() });
+                localStorage.setItem('cash_history_log', JSON.stringify(cashLogs));
+            } else {
+                let banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
+                if(banks.length > 0) {
+                    banks[0].balance -= netCapital;
+                    localStorage.setItem('factory_banks', JSON.stringify(banks));
+
+                    let bankLedger = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
+                    bankLedger.unshift({ bank: banks[0].name, method: 'DIRECT_DEBIT', purpose: `Polished Purchase Lot: ${lot}`, party: supplier, amount: netCapital, mode: 'DEBIT', timestamp: new Date().toISOString() });
+                    localStorage.setItem('bank_ledger_logs', JSON.stringify(bankLedger));
+                }
+            }
+
+            /* Save in Polished Store Database */
+            let store = JSON.parse(localStorage.getItem('polished_store')) || [];
+            store.unshift({
+                lot: lot,
+                date: dateFormatted,
+                supplier: supplier,
+                mode: mode,
+                specs: specs,
+                buyCarat: buyCts,
+                finalCarat: finalCarats,
+                landedRate: aiMetrics.landedPerCt,
+                total: netCapital,
+                timestamp: new Date().toISOString()
+            });
+            localStorage.setItem('polished_store', JSON.stringify(store));
+
+            systemDataBus.postMessage({ type: "PRODUCTION_DATA_MUTATION", module: "polished_purchase_repair" });
+
+            document.getElementById('ap-lot').value = '';
+            document.getElementById('ap-buy-carat').value = '';
+            document.getElementById('ap-buy-rate').value = '';
+            document.getElementById('ap-rep-carat').value = '';
+            document.getElementById('ap-rep-wages').value = '0';
+            document.getElementById('ap-specs').value = '';
+            runAiDiagnostics();
+
+            alert(`⚡ System Confirmed: Lot ${lot} Integrated Successfully with Complete Pukka Accounting!`);
+            refreshAdvancedTable();
+        }
+
+        function refreshAdvancedTable() {
+            let store = JSON.parse(localStorage.getItem('polished_store')) || [];
+            let tbody = document.getElementById('ap-rows');
+            tbody.innerHTML = '';
+
+            let query = document.getElementById('search-ap').value.toLowerCase().trim();
+            let filtered = store.filter(i => !query || i.supplier.toLowerCase().includes(query) || i.lot.toLowerCase().includes(query));
+
+            if(filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:20px;">No Records Found</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(item => {
+                let modeText = item.mode === 'repair' ? '<span style="color:var(--accent-yellow);">⚙️ Repair / Re-cut</span>' : '<span style="color:var(--accent-green);">🚀 Direct Sale Ready</span>';
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="color:var(--accent-blue); font-weight:bold;">${item.lot}<br><small style="color:var(--text-muted);">${item.date}</small></td>
+                        <td><strong>${item.supplier}</strong><br><small style="color:var(--text-muted);">${item.specs}</small></td>
+                        <td>${item.finalCarat} Cts <small style="color:var(--text-muted);">(In: ${item.buyCarat})</small></td>
+                        <td style="color:var(--accent-green); font-weight:bold;">₹ ${Math.round(item.total).toLocaleString('en-IN')}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function exportAdvancedCSV() {
+            let store = JSON.parse(localStorage.getItem('polished_store')) || [];
+            if(store.length === 0) { alert("No data to export!"); return; }
+
+            let csv = ['Lot No,Date,Supplier,Mode,Specs,Initial Cts,Final Cts,Landed Rate,Total Invested (INR)'];
+            store.forEach(i => csv.push(`"${i.lot}","${i.date}","${i.supplier}","${i.mode}","${i.specs}","${i.buyCarat}","${i.finalCarat}","${i.landedRate}","${i.total}"`));
+
+            let blob = new Blob([csv.join('\n')], { type: 'text/csv' });
+            let a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'Advanced_Polished_Repair_Ledger.csv';
+            a.click();
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(e=>{}); } 
+            else { document.exitFullscreen().catch(e=>{}); }
+        }
+        function triggerMinimize() { alert("Terminal Minimized."); }
+    </script>
+</body>
+</html>
