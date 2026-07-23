@@ -1,25 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="gu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Raghuveer Diamond - 2050 Quantum Billing Core</title>
     <style>
+        /* ========================================================
+           GLOBAL CENTRALIZED THEME VARIABLES (SYNCED WITH INDEX.HTML)
+           ======================================================== */
         :root {
             --bg: #070B19;
-            --card: #0B132B;
+            --card: #111D37;
             --cyan: #5BC0BE;
             --blue: #00C6FF;
             --border: #1C2541;
             --text: #FFFFFF;
             --accent: #5BC0BE;
-            --safe: #39FF14;
-            --warning: #FFB300;
-            --danger: #FF3B30;
+            --safe: #2ECC71;
+            --warning: #F39C12;
+            --danger: #E74C3C;
+            --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
         
         body.theme-cyber-dark {
-            --bg: #070B19; --card: #0B132B; --border: #1C2541; --accent: #5BC0BE; --cyan: #5BC0BE; --blue: #00C6FF;
+            --bg: #070B19; --card: #111D37; --border: #1C2541; --accent: #5BC0BE; --cyan: #5BC0BE; --blue: #00C6FF;
         }
         body.theme-future-cyan {
             --bg: #0A192F; --card: #172A45; --border: #303C55; --accent: #64FFDA; --cyan: #64FFDA; --blue: #00B4D8;
@@ -28,21 +32,21 @@
             --bg: #020C02; --card: #0D200D; --border: #1B4D1B; --accent: #00FF41; --cyan: #00FF41; --blue: #39FF14;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); user-select: none; }
         body { background: var(--bg); color: var(--text); height: 100vh; width: 100vw; overflow: hidden; display: flex; flex-direction: column; transition: all 0.3s ease; }
 
-        .header { height: 45px; background: rgba(0,0,0,0.3); display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid var(--border); }
+        .header { height: 48px; background: rgba(0,0,0,0.3); display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid var(--border); }
         .win-actions { display: flex; align-items: center; gap: 8px; }
         .theme-select { background: var(--card); color: var(--accent); border: 1px solid var(--border); font-size: 11px; padding: 4px 8px; border-radius: 4px; outline: none; cursor: pointer; font-weight: bold; }
-        .win-btn { background: #111D37; color: var(--accent); border: 1px solid var(--border); width: 25px; height: 25px; cursor: pointer; border-radius: 4px; }
+        .win-btn { background: #111D37; color: var(--accent); border: 1px solid var(--border); width: 28px; height: 26px; cursor: pointer; border-radius: 4px; font-weight: bold; }
 
         .container { padding: 10px; display: flex; flex-direction: column; gap: 8px; flex: 1; overflow: hidden; }
         
         .top-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .form-group { display: flex; flex-direction: column; position: relative; }
-        label { font-size: 9px; color: #708090; text-transform: uppercase; margin-bottom: 2px; font-weight: 600; letter-spacing: 0.5px; display: flex; justify-content: space-between; }
+        label { font-size: 10px; color: #8D99AE; text-transform: uppercase; margin-bottom: 3px; font-weight: 700; letter-spacing: 0.5px; display: flex; justify-content: space-between; }
         .label-extra { font-size: 9px; color: var(--blue); text-transform: none; }
-        input, select { background: var(--card); border: 1px solid var(--border); color: #FFF; padding: 6px; border-radius: 4px; font-size: 11px; outline: none; width: 100%; transition: border-color 0.2s; }
+        input, select { background: var(--card); border: 1px solid var(--border); color: #FFF; padding: 7px; border-radius: 4px; font-size: 11px; outline: none; width: 100%; transition: border-color 0.2s; }
         input:focus, select:focus { border-color: var(--accent); }
         .input-row { display: flex; gap: 4px; }
         .plus-btn { background: var(--card); color: var(--accent); border: 1px solid var(--border); width: 28px; cursor: pointer; border-radius: 4px; font-weight: bold; }
@@ -50,28 +54,28 @@
         .minus-btn { background: var(--card); color: var(--danger); border: 1px solid var(--border); width: 28px; cursor: pointer; border-radius: 4px; font-weight: bold; }
         .minus-btn:hover { background: var(--border); }
 
-        /* Kundli Score Terminal Grid Block */
+        /* Kundli Score Terminal Block */
         .kundli-box { grid-column: span 2; background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 6px; padding: 8px; display: flex; align-items: center; gap: 12px; transition: all 0.3s ease; }
         .kundli-shield { font-size: 22px; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); }
         .kundli-details { flex: 1; display: flex; flex-direction: column; gap: 2px; }
         .kundli-title { font-size: 11px; font-weight: bold; color: #FFF; display: flex; justify-content: space-between; }
         .kundli-status { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-        .kundli-desc { font-size: 10px; color: #708090; }
+        .kundli-desc { font-size: 10px; color: #8D99AE; }
         .kundli-bar-bg { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 3px; overflow: hidden; }
         .kundli-bar-fill { height: 100%; width: 0%; transition: all 0.5s ease; }
 
         /* Sieve Intelligence Widget Layout */
         .sieve-intel { font-size: 9px; color: var(--cyan); margin-top: 2px; font-weight: 600; display: block; min-height: 12px; }
 
-        /* Data Specification Main Matrix Engine Frame */
+        /* Data Matrix Table Frame */
         .table-container { flex: 1; overflow-y: auto; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; padding: 6px; max-height: 180px; }
         .table-header { display: grid; grid-template-columns: 1fr 0.8fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 1fr; gap: 5px; padding-bottom: 5px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 10; }
-        .th-text { font-size: 8px; color: #708090; text-transform: uppercase; font-weight: bold; text-align: center; letter-spacing: 0.3px; }
+        .th-text { font-size: 9px; color: #8D99AE; text-transform: uppercase; font-weight: bold; text-align: center; letter-spacing: 0.3px; }
         .diamond-row { display: grid; grid-template-columns: 1fr 0.8fr 1fr 0.8fr 0.8fr 1fr 1fr 1fr 1fr; gap: 5px; padding: 5px 0; border-bottom: 1px dashed var(--border); align-items: center; position: relative; }
         .diamond-row input, .diamond-row select { padding: 5px; font-size: 10px; text-align: center; }
         .rap-disc-box { font-size: 9px; font-weight: bold; text-align: center; padding: 5px; border-radius: 4px; background: rgba(0,0,0,0.4); color: #888; border: 1px solid var(--border); height: 26px; display: flex; align-items: center; justify-content: center; }
 
-        /* Mathematical Accounting Block Matrix */
+        /* Mathematical Accounting Block */
         .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: rgba(0,0,0,0.25); padding: 8px; border-radius: 6px; border: 1px solid var(--border); }
         .hybrid-box { display: flex; flex-direction: column; justify-content: center; background: rgba(0,198,255,0.04); border: 1px dashed var(--blue); padding: 5px 10px; border-radius: 4px; }
         .action-block { display: grid; grid-template-columns: 1fr 1.3fr; gap: 8px; }
@@ -81,8 +85,8 @@
         .print-btn { background: var(--blue); color: #000; padding: 11px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; text-align: center; box-shadow: 0 0 10px rgba(0,198,255,0.2); }
         .hidden { display: none !important; }
 
-        /* ================= 2050 DUAL LAYER PRINT MATRIX STATION ================= */
-        #printable-bill-zone { display: none; background: #FFF; color: #000; padding: 30px; font-family: 'Segoe UI', Arial, sans-serif; }
+        /* Print Matrix Station */
+        #printable-bill-zone { display: none; background: #FFF; color: #000; padding: 30px; font-family: var(--font-family); }
         
         #printable-bill-zone.print-cyber-premium .bill-header { border-bottom: 3px solid #00C6FF; padding-bottom: 12px; margin-bottom: 20px; }
         #printable-bill-zone.print-cyber-premium .bill-title { font-size: 26px; font-weight: 800; color: #0B132B; letter-spacing: 1px; }
@@ -117,22 +121,23 @@
 </head>
 <body class="theme-cyber-dark">
 
-    <!-- Header Terminal Configuration Module -->
+    <!-- Header Module -->
     <div class="header">
-        <div style="font-size:12px; font-weight:bold; letter-spacing:1px; color:var(--accent)">RAGHUVEER DIAMOND - QUANTUM INTEL BILLING CORE v50.4</div>
+        <div style="font-size:12px; font-weight:bold; letter-spacing:1px; color:var(--accent)">RAGHUVEER DIAMOND - QUANTUM BILLING CORE</div>
         <div class="win-actions">
             <select class="theme-select" id="global-theme-switch" onchange="changeGlobalLiveTheme()">
-                <option value="theme-cyber-dark">🌐 Global Live Theme: Cyber Dark</option>
-                <option value="theme-future-cyan">💎 Global Live Theme: Future Cyan</option>
-                <option value="theme-matrix-green">⚡ Global Live Theme: Matrix Green</option>
+                <option value="theme-cyber-dark">🌐 Theme: Cyber Dark</option>
+                <option value="theme-future-cyan">💎 Theme: Future Cyan</option>
+                <option value="theme-matrix-green">⚡ Theme: Matrix Green</option>
             </select>
-            <button class="win-btn">-</button><button class="win-btn">🗖</button>
+            <button class="win-btn" onclick="triggerMinimize()">-</button>
+            <button class="win-btn" onclick="toggleFullScreen()">🗖</button>
             <a href="main_office.html"><button class="win-btn">✕</button></a>
         </div>
     </div>
 
     <div class="container">
-        <!-- Master General Input Fields Matrix -->
+        <!-- Input Matrix -->
         <div class="top-grid">
             <div class="form-group"><label>Invoice Identity</label><input type="text" id="inv-no" placeholder="REG-2026-9482"></div>
             <div class="form-group"><label>Sales Stream Date</label><input type="date" id="sales-date"></div>
@@ -153,7 +158,7 @@
                 </div>
             </div>
 
-            <!-- Real-Time AI Kundli Dashboard Panel -->
+            <!-- AI Kundli Dashboard -->
             <div class="kundli-box" id="kundli-panel">
                 <div class="kundli-shield" id="kundli-icon">🔍</div>
                 <div class="kundli-details">
@@ -161,7 +166,7 @@
                         <span>AI PARTY KUNDLI ANALYSIS DISPATCH</span>
                         <span class="kundli-status" id="kundli-status-text">INITIALIZING...</span>
                     </div>
-                    <div class="kundli-desc" id="kundli-desc-text">Please select a customer account to trigger live network scoring scan.</div>
+                    <div class="kundli-desc" id="kundli-desc-text">Select a customer account to trigger live network scoring.</div>
                     <div class="kundli-bar-bg"><div class="kundli-bar-fill" id="kundli-bar"></div></div>
                 </div>
             </div>
@@ -170,7 +175,7 @@
                 <label>Broker Classification</label>
                 <select id="broker-switch" onchange="toggleBrokerBlock()">
                     <option value="direct">Direct Corporate Account</option>
-                    <option value="broker">Via External Broker Brokerage</option>
+                    <option value="broker">Via External Broker</option>
                 </select>
             </div>
 
@@ -190,7 +195,7 @@
             </div>
         </div>
 
-        <!-- Diamond Specifications Core Block Grid -->
+        <!-- Diamond Specifications Block -->
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 2px;">
             <label style="color:var(--accent)">Quantum Diamond Inventory Specifications Core</label>
             <button class="plus-btn" style="width:60px; font-size:10px; padding:2px 4px;" onclick="addDiamondRow()">+ Row</button>
@@ -208,19 +213,17 @@
                 <div class="th-text">Rate / Ct</div>
                 <div class="th-text">Rap Disc%</div>
             </div>
-            <div id="matrix-body">
-                <!-- Javascript maps diamond row configurations live -->
-            </div>
+            <div id="matrix-body"></div>
         </div>
 
-        <!-- Mathematical Accounting Block Matrix -->
+        <!-- Mathematical Accounting Block -->
         <div class="bottom-grid">
             <div class="form-group"><label>Payment Terms Matrix</label>
                 <select id="payment-term" onchange="executePartyKundliEngine()">
                     <option value="cash">Cash Settlement (Immediate / Spot)</option>
                     <option value="30">30 Days Standard Credit Term</option>
                     <option value="60">60 Days Extended Credit Term</option>
-                    <option value="90">90 Days Quantum Net Balance</option>
+                    <option value="90">90 Days Net Balance</option>
                 </select>
             </div>
             <div class="form-group"><label>Auto-Calculated Due Date</label><input type="date" id="due-date" readonly></div>
@@ -234,7 +237,6 @@
                 </select>
             </div>
             
-            <!-- Dual Currency Cross Synchronization Display -->
             <div class="hybrid-box" style="grid-column: span 2;">
                 <label id="hybrid-label" style="font-size: 8px; color: var(--blue);">INTELLIGENT DUAL CURRENCY CROSS-SYNC HEDGING ACTIVE</label>
                 <span id="hybrid-display-value" style="font-size: 11px; font-weight: bold; color: var(--blue);">INR Equivalent Value: ₹ 0.00</span>
@@ -246,7 +248,7 @@
             </div>
         </div>
 
-        <!-- Print Strategy Command Module -->
+        <!-- Action Module -->
         <div class="action-block">
             <div class="print-config-row">
                 <div class="form-group">
@@ -255,7 +257,7 @@
                         <option value="print-eco-classic">🖨️ Layout: Eco Classic (B&W Ink Saver)</option>
                     </select>
                 </div>
-                <div class="form-group" style="font-size: 9px; color: #708090; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.1;">
+                <div class="form-group" style="font-size: 9px; color: #8D99AE; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.1;">
                     Broker Net Profit/Yield:<br><span id="net-yield-display" style="color:#FFF; font-weight:bold; font-size: 11px;">0.00</span>
                 </div>
             </div>
@@ -264,8 +266,7 @@
         </div>
     </div>
 
-
-    <!-- ================= 2050 LAYER PRINT GENERATION HARDWARE VAULT ================= -->
+    <!-- Print Zone -->
     <div id="printable-bill-zone" class="print-cyber-premium">
         <div class="bill-header">
             <div>
@@ -290,7 +291,7 @@
                 <td style="width: 45%; text-align: right; line-height: 1.5;">
                     <strong style="color: #444; font-size: 10px; text-transform: uppercase;">Intermediary Routing:</strong><br>
                     <span id="p-broker" style="font-weight: 600; color: #222;">Direct Corporate Ledger</span><br>
-                    <span style="font-size: 9px; color: #666;">Secured via Smart Escrow Protocol 2050</span>
+                    <span style="font-size: 9px; color: #666;">Secured via Smart Escrow Protocol</span>
                 </td>
             </tr>
         </table>
@@ -309,13 +310,10 @@
                     <th>Total Valuation</th>
                 </tr>
             </thead>
-            <tbody id="p-items-body">
-                <!-- Injected via Print Hardware Execution loop -->
-            </tbody>
+            <tbody id="p-items-body"></tbody>
         </table>
 
         <div class="summary-wrapper">
-            <!-- Automated Secure Routing Bank Card Template -->
             <div class="bank-details-box">
                 <div style="font-size:10px; font-weight:bold; margin-bottom:6px; text-transform:uppercase; border-bottom:1px solid #ddd; padding-bottom: 2px; color: #333; letter-spacing: 0.3px;">Automated Settlement Escrow Routing Card</div>
                 <div style="font-size:11px; line-height: 1.6; color: #222;">
@@ -323,11 +321,10 @@
                     <strong>Beneficiary Corporate:</strong> RAGHUVEER DIAMOND OPERATIONAL VAULT<br>
                     <strong>Routing Account No:</strong> 409822314567 (Current Account)<br>
                     <strong>IFSC Settlement Code:</strong> SBIN0001928<br>
-                    <strong>Clearing Branch:</strong> Surat Diamond Exchange Core Hub
+                    <strong>Clearing Branch:</strong> Surat Diamond Exchange Hub
                 </div>
             </div>
 
-            <!-- Global Calculations Block Summary Box -->
             <div class="calc-box">
                 <div class="calc-row"><span>Gross Weight Matrix Total:</span><span id="p-gross" style="font-weight: 600;">0.00</span></div>
                 <div class="calc-row"><span>Auto-Negotiated Discount Value:</span><span id="p-discount" style="color: #2e7d32;">0.00</span></div>
@@ -348,15 +345,22 @@
         </div>
 
         <div style="margin-top:60px; display:flex; justify-content:space-between; font-size:11px;">
-            <div style="border-top: 1px solid #777; width: 160px; text-align: center; padding-top: 6px; color: #444;">Buyer Signature Ledger Token</div>
+            <div style="border-top: 1px solid #777; width: 160px; text-align: center; padding-top: 6px; color: #444;">Buyer Signature Token</div>
             <div style="text-align:right; line-height: 1.4;">For, <strong style="font-size: 12px; color: #000;">Raghuveer Diamond</strong><br><br><br><br><span style="border-top: 1px solid #777; padding-top: 4px; width: 160px; display: inline-block; text-align: center;">Authorized Signatory Executive</span></div>
         </div>
     </div>
 
     <script>
-        // Default System Seed Data Injections
+        const systemDataBus = new BroadcastChannel('raghuveer_ai_core_bus');
+
+        const userRole = sessionStorage.getItem('userRole') || localStorage.getItem('lastActiveRole');
+        if(userRole !== 'director' && userRole !== 'accountant') {
+            alert("ACCESS DENIED: Restricted to Director and Accountant levels.");
+            window.location.href = "index.html";
+        }
+
         if(!localStorage.getItem('sl_customers')) {
-            localStorage.setItem('sl_customers', JSON.stringify(['Kiran Gems Pvt Ltd', 'Hari Krishna Exports', 'Dharmanandan Diamonds', 'Rosy Blue Surat', 'Venus Jewel', 'Khushi daimond']));
+            localStorage.setItem('sl_customers', JSON.stringify(['Kiran Gems Pvt Ltd', 'Hari Krishna Exports', 'Dharmanandan Diamonds', 'Rosy Blue Surat', 'Venus Jewel', 'Khushi Diamond']));
         }
         if(!localStorage.getItem('sl_brokers')) {
             localStorage.setItem('sl_brokers', JSON.stringify(['Babubhai Kakadiya (1%)', 'Arjanbhai Savani (0.5%)', 'Pravinbhai Malaviya']));
@@ -394,7 +398,7 @@
         }
 
         function addDropdownItem(storageKey, selectId) {
-            let val = prompt("Enter New Quantum Ledger Registration Value:");
+            let val = prompt("Enter New Registration Value:");
             if(val && val.trim() !== "") {
                 let list = JSON.parse(localStorage.getItem(storageKey)) || [];
                 if(!list.includes(val.trim())) {
@@ -407,24 +411,22 @@
             }
         }
 
-        // Remove/Delete selected item from dropdown and local database securely
         function removeDropdownItem(storageKey, selectId) {
             let el = document.getElementById(selectId);
             let selectedVal = el.value;
             
             if(!selectedVal || selectedVal === "") {
-                alert("Please select a valid entry from the dropdown first to delete!");
+                alert("Please select an entry first.");
                 return;
             }
             
-            if(confirm(`Are you absolutely sure you want to completely delete "${selectedVal}" from the records?`)) {
+            if(confirm(`Are you sure you want to delete "${selectedVal}"?`)) {
                 let list = JSON.parse(localStorage.getItem(storageKey)) || [];
                 let index = list.indexOf(selectedVal);
                 if (index > -1) {
                     list.splice(index, 1);
                     localStorage.setItem(storageKey, JSON.stringify(list));
                     renderSelect(storageKey, selectId);
-                    alert("Entry deleted successfully!");
                     executePartyKundliEngine();
                 }
             }
@@ -461,7 +463,6 @@
             container.appendChild(row);
         }
 
-        // Feature: 2050 Dynamic Sieve Geometry & Flow Predictor Intel
         function runSieveIntelligence(element) {
             let row = element.closest('.diamond-row');
             let sieve = row.querySelector('.sieve').value;
@@ -488,7 +489,6 @@
             }
         }
 
-        // Feature: 2050 Quantum Network Account Risk & Cloud Registry Engine
         function executePartyKundliEngine() {
             let party = document.getElementById('customer').value;
             let term = document.getElementById('payment-term').value;
@@ -504,7 +504,7 @@
                 icon.innerText = "🔍";
                 statusText.innerText = "INITIALIZING...";
                 statusText.style.color = "#FFF";
-                descText.innerText = "Please select a customer account to trigger live network scoring scan.";
+                descText.innerText = "Select a customer account to trigger live network scoring.";
                 bar.style.width = "0%";
                 commitBtn.disabled = false;
                 commitBtn.style.opacity = "1";
@@ -512,16 +512,12 @@
                 return;
             }
 
-            // Cloud-Based AI Scoring Simulator Matching 2050 Multi-Route Logistical Layout
             let score = 95; 
             if(party.includes('Kiran') || party.includes('Krishna')) score = 98;
             if(party.includes('Dharmanandan')) score = 88;
             if(party.includes('Venus')) score = 92;
-            
-            // Fixed Anomaly: Khushi Diamond and Rosy Blue mapped dynamically to RED High Risk List
             if(party.includes('Rosy') || party.includes('Khushi') || party.includes('khushi')) score = 35;
 
-            // Term risk compounding logic
             if(term === '30') score -= 5;
             if(term === '60') score -= 15;
             if(term === '90') score -= 30;
@@ -533,7 +529,7 @@
                 icon.innerText = "🛡️";
                 statusText.innerText = `GLOBAL SAFE MATRIX APPROVED [SCORE: ${score}]`;
                 statusText.style.color = 'var(--safe)';
-                descText.innerText = "All India Registry & Cross-Border Vault Cleared. Zero delayed payouts reported globally. Multi-Lingual routing enabled.";
+                descText.innerText = "All India Registry & Cross-Border Vault Cleared. Zero delayed payouts reported globally.";
                 bar.style.backgroundColor = 'var(--safe)';
                 commitBtn.disabled = false;
                 commitBtn.style.opacity = "1";
@@ -542,7 +538,7 @@
                 icon.innerText = "⚠️";
                 statusText.innerText = `WATCHFUL / LIMITED CAP [SCORE: ${score}]`;
                 statusText.style.color = 'var(--warning)';
-                descText.innerText = "Minor payment delays detected in domestic trading desks. Currency fluctuation buffering recommended.";
+                descText.innerText = "Minor payment delays detected in domestic trading desks.";
                 bar.style.backgroundColor = 'var(--warning)';
                 commitBtn.disabled = false;
                 commitBtn.style.opacity = "1";
@@ -551,11 +547,10 @@
                 icon.innerText = "🚨";
                 statusText.innerText = `HIGH RISK BLOCK MET - LEDGER LOCKED [SCORE: ${score}]`;
                 statusText.style.color = 'var(--danger)';
-                descText.innerText = "CRITICAL WARNING: Escrow network flags critical defaults! Cross-border routing denied. Immediate cash settlement mandatory.";
+                descText.innerText = "CRITICAL WARNING: Default flags detected! Immediate cash settlement mandatory.";
                 bar.style.backgroundColor = 'var(--danger)';
                 commitBtn.disabled = true;
                 commitBtn.style.opacity = "0.3";
-                alert("🚨 QUANTUM CLOUD HEDGING LOCK: This party carries a high default index on the All India Registry. Secure Ledger Block applied.");
             }
 
             calculateFinancials();
@@ -574,7 +569,6 @@
                 
                 baseAmount += (cts * prc);
 
-                // Real-time AI Gap / Rapaport Matrix Analyzer
                 if(rap > 0 && prc > 0) {
                     let diff = ((rap - prc) / rap) * 100;
                     if(diff >= 0) {
@@ -589,7 +583,6 @@
                     discBox.style.color = '#888';
                 }
 
-                // AI Intelligent Price Protection Engine Guard
                 if(prc > 0 && rap > 0) {
                     let minimumAllowedFloor = rap * 0.45; 
                     if(prc < minimumAllowedFloor) {
@@ -637,17 +630,15 @@
             
             document.getElementById('net-payable').value = currencySymbol + total.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
-            // Dynamic Multi-Currency Hybrid Conversion & Hedging Display Node
             let hybridDisplay = document.getElementById('hybrid-display-value');
             if(type === 'export') {
                 let inrEquiv = total * conversionRate;
-                hybridDisplay.innerText = `INR Market Equivalent Valuation: ₹ ${inrEquiv.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+                hybridDisplay.innerText = `INR Market Equivalent: ₹ ${inrEquiv.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
             } else {
                 let usdEquiv = total / conversionRate;
                 hybridDisplay.innerText = `Global USD Export Value: $ ${usdEquiv.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
             }
 
-            // Broker Net Profit Analytics Stream
             let brSw = document.getElementById('broker-switch').value;
             let netYieldDisplay = document.getElementById('net-yield-display');
             if(brSw === 'broker') {
@@ -663,9 +654,10 @@
         function commitSalesLedger(shouldPrint) {
             let type = document.getElementById('sales-type').value;
             let customer = document.getElementById('customer').value;
+            let term = document.getElementById('payment-term').value;
             
             if(!customer) {
-                alert("Core Sync Error: Please select an authenticated Customer account entry before executing transaction chain!");
+                alert("Please select a valid Customer account entry!");
                 return;
             }
 
@@ -676,17 +668,65 @@
                 executePrintStation(finalValue);
             }
 
+            let finalInrValue = finalValue;
             if(type === 'export') {
                 let conversionRate = parseFloat(localStorage.getItem('usd_rate')) || 83.72;
-                finalValue = finalValue * conversionRate;
+                finalInrValue = finalValue * conversionRate;
             }
 
-            let activeSales = parseFloat(localStorage.getItem('global_sales')) || 0;
-            localStorage.setItem('global_sales', activeSales + finalValue);
+            /* Auto-Credit into Financial Ledgers */
+            if (term === 'cash') {
+                let currentCash = parseFloat(localStorage.getItem('cash_on_hand')) || 0;
+                currentCash += finalInrValue;
+                localStorage.setItem('cash_on_hand', currentCash.toString());
 
-            // Quantum Escrow & Follow-up Queue Auto Scheduler
+                let cashHistory = JSON.parse(localStorage.getItem('cash_history_log')) || [];
+                cashHistory.push({
+                    date: new Date().toLocaleDateString('en-GB'),
+                    party: customer,
+                    purpose: `Sales Revenue (Spot Settlement)`,
+                    amount: finalInrValue,
+                    type: 'jama',
+                    timestamp: new Date().toISOString()
+                });
+                localStorage.setItem('cash_history_log', JSON.stringify(cashHistory));
+            } else {
+                let banks = JSON.parse(localStorage.getItem('factory_banks')) || [];
+                if(banks.length > 0) {
+                    banks[0].balance += finalInrValue;
+                    localStorage.setItem('factory_banks', JSON.stringify(banks));
+
+                    let bankLedger = JSON.parse(localStorage.getItem('bank_ledger_logs')) || [];
+                    bankLedger.unshift({
+                        bank: banks[0].name,
+                        method: 'INVOICE_CREDIT',
+                        purpose: `Sales Revenue (${term} Days Term)`,
+                        party: customer,
+                        amount: finalInrValue,
+                        mode: 'CREDIT',
+                        timestamp: new Date().toISOString()
+                    });
+                    localStorage.setItem('bank_ledger_logs', JSON.stringify(bankLedger));
+                }
+            }
+
+            /* Save Global Sales Record */
+            let salesStore = JSON.parse(localStorage.getItem('sales_store')) || [];
+            salesStore.push({
+                invNo: document.getElementById('inv-no').value || "REG-2026-AUTO",
+                customer: customer,
+                salesType: type,
+                amount: finalInrValue,
+                dueDate: document.getElementById('due-date').value,
+                timestamp: new Date().toISOString()
+            });
+            localStorage.setItem('sales_store', JSON.stringify(salesStore));
+
+            /* Global Event Bus Dispatch */
+            systemDataBus.postMessage({ type: "PRODUCTION_DATA_MUTATION", module: "sales_details" });
+
             let dueDate = document.getElementById('due-date').value;
-            alert(`⚡ TRANSACTION LOCKED IN CLOUD VAULT!\nQuantum Escrow Contract Signed. Logistics Tracking activated. Automated multi-lingual dispatch scheduled for: ${dueDate}.`);
+            alert(`⚡ TRANSACTION COMMITTED SUCCESSFULLY!\nInvoice locked in system. Payment due date set for: ${dueDate}.`);
             
             if(!shouldPrint) window.location.href = 'main_office.html';
         }
@@ -703,7 +743,7 @@
             document.getElementById('p-date').innerText = document.getElementById('sales-date').value;
             document.getElementById('p-customer').innerText = document.getElementById('customer').value;
             document.getElementById('p-terms').innerText = document.getElementById('payment-term').options[document.getElementById('payment-term').selectedIndex].text;
-            document.getElementById('p-due-date').innerText = "Settlement Deadline Matrix: " + document.getElementById('due-date').value;
+            document.getElementById('p-due-date').innerText = "Settlement Deadline: " + document.getElementById('due-date').value;
             document.getElementById('p-qr-amount').innerText = curSymbol + finalValue.toFixed(2) + currency;
 
             let brSw = document.getElementById('broker-switch').value;
@@ -754,6 +794,12 @@
 
             window.print();
         }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(e=>{}); } 
+            else { document.exitFullscreen().catch(e=>{}); }
+        }
+        function triggerMinimize() { alert("Terminal Minimized."); }
 
         renderSelect('sl_customers', 'customer');
         renderSelect('sl_brokers', 'broker');
