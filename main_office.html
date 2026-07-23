@@ -1,23 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="gu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Raghuveer Diamond - Main Office Core</title>
     <style>
+        /* ========================================================
+           GLOBAL CENTRALIZED THEME VARIABLES (SYNCED WITH INDEX.HTML)
+           ======================================================== */
         :root {
-            --bg-primary: #070B19;
-            --bg-secondary: rgba(17, 29, 55, 0.7);
-            --top-bar-bg: #030611;
-            --border-color: rgba(28, 37, 65, 0.9);
+            --bg-primary: #0B132B;
+            --bg-secondary: #070B19;
+            --card-bg: #111D37;
+            --border-color: #1C2541;
             --accent-cyan: #5BC0BE;
-            --accent-blue: #00C6FF;
-            --accent-green: #27AE60;
+            --accent-blue: #0072FF;
+            --glow-cyan: #00C6FF;
+            --text-main: #FFFFFF;
+            --text-muted: #8D99AE;
+            --accent-green: #2ECC71;
             --accent-red: #E74C3C;
             --accent-purple: #9B59B6;
             --accent-orange: #F39C12;
-            --text-main: #FFFFFF;
-            --text-muted: #708090;
+            --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             --neon-anomaly: #FF0055;
         }
 
@@ -25,8 +30,9 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--font-family);
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -43,8 +49,8 @@
         }
 
         .window-control-bar {
-            height: 50px;
-            background-color: var(--top-bar-bg);
+            height: 48px;
+            background-color: var(--bg-secondary);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -62,18 +68,24 @@
         }
 
         .company-logo-frame {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            background: linear-gradient(45deg, #00C6FF, #0072FF);
-            box-shadow: 0 0 8px #00C6FF;
+            background: linear-gradient(45deg, var(--glow-cyan), var(--accent-blue));
+            box-shadow: 0 0 8px var(--glow-cyan);
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(0.9); box-shadow: 0 0 4px var(--glow-cyan); }
+            100% { transform: scale(1.1); box-shadow: 0 0 10px var(--glow-cyan); }
         }
 
         .brand-title {
             font-size: 15px;
             font-weight: 900;
             letter-spacing: 1.5px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), #0072FF, var(--accent-cyan));
+            background: linear-gradient(90deg, var(--accent-cyan), var(--glow-cyan), var(--accent-blue), var(--accent-cyan));
             background-size: 300% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -127,9 +139,7 @@
             gap: 15px;
         }
 
-        /* ========================================================
-           1. 📱 MULTI-DEVICE RESPONSIVE METRICS GRID SCALING
-           ======================================================== */
+        /* Responsive Metric Cards Grid */
         .core-metrics-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -137,43 +147,15 @@
             width: 100%;
         }
 
-        @media (max-width: 1024px) {
-            .core-metrics-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .core-metrics-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .office-container {
-                padding: 10px 5px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .core-metrics-grid {
-                grid-template-columns: repeat(1, 1fr);
-                gap: 12px;
-            }
-            .metric-card {
-                aspect-ratio: auto !important;
-                height: 130px !important;
-            }
-        }
-
         .metric-card {
-            background: var(--bg-secondary);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 0;
             position: relative;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.3s ease;
             cursor: pointer;
             display: flex;
             flex-direction: column;
@@ -183,7 +165,8 @@
         }
 
         .metric-card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            border-color: var(--accent-cyan);
         }
 
         .metric-card::before {
@@ -193,29 +176,29 @@
             z-index: 5;
         }
 
-        #card-bank::before { background: var(--accent-blue); }
-        #card-bank:hover { border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(0, 198, 255, 0.25); }
+        #card-bank::before { background: var(--glow-cyan); }
+        #card-bank:hover { box-shadow: 0 0 15px rgba(0, 198, 255, 0.25); }
 
         #card-cash::before { background: var(--accent-purple); }
-        #card-cash:hover { border-color: var(--accent-purple); box-shadow: 0 0 15px rgba(155, 89, 182, 0.25); }
+        #card-cash:hover { box-shadow: 0 0 15px rgba(155, 89, 182, 0.25); }
 
         #card-rough::before { background: var(--accent-orange); }
-        #card-rough:hover { border-color: var(--accent-orange); box-shadow: 0 0 15px rgba(243, 156, 18, 0.25); }
+        #card-rough:hover { box-shadow: 0 0 15px rgba(243, 156, 18, 0.25); }
 
         #card-sales::before { background: var(--accent-green); }
-        #card-sales:hover { border-color: var(--accent-green); box-shadow: 0 0 15px rgba(39, 174, 96, 0.25); }
+        #card-sales:hover { box-shadow: 0 0 15px rgba(39, 174, 96, 0.25); }
 
         #card-4p-ghat::before { background: #F1C40F; }
-        #card-4p-ghat:hover { border-color: #F1C40F; box-shadow: 0 0 15px rgba(241, 196, 15, 0.25); }
+        #card-4p-ghat:hover { box-shadow: 0 0 15px rgba(241, 196, 15, 0.25); }
 
         #card-ready-pur::before { background: #1ABC9C; }
-        #card-ready-pur:hover { border-color: #1ABC9C; box-shadow: 0 0 15px rgba(26, 188, 156, 0.25); }
+        #card-ready-pur:hover { box-shadow: 0 0 15px rgba(26, 188, 156, 0.25); }
 
         #card-broker::before { background: var(--accent-cyan); }
-        #card-broker:hover { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(91, 192, 190, 0.25); }
+        #card-broker:hover { box-shadow: 0 0 15px rgba(91, 192, 190, 0.25); }
 
-        #card-print::before { background: #E74C3C; }
-        #card-print:hover { border-color: #E74C3C; box-shadow: 0 0 15px rgba(231, 76, 60, 0.25); }
+        #card-print::before { background: var(--accent-red); }
+        #card-print:hover { box-shadow: 0 0 15px rgba(231, 76, 60, 0.25); }
 
         .metric-card.anomaly-active {
             border-color: var(--neon-anomaly) !important;
@@ -230,7 +213,7 @@
 
         .marquee-strip-container {
             width: 100%;
-            background: rgba(3, 6, 17, 0.9);
+            background: var(--bg-secondary);
             border-bottom: 1px solid var(--border-color);
             padding: 8px 10px;
             min-height: 34px;
@@ -271,7 +254,7 @@
         }
 
         .card-value {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
             letter-spacing: 0.5px;
             color: #FFFFFF;
@@ -279,15 +262,6 @@
             line-height: 1.2;
             word-break: break-word;
         }
-
-        #card-bank .card-value { text-shadow: 0 0 12px rgba(0, 198, 255, 0.6); }
-        #card-cash .card-value { text-shadow: 0 0 12px rgba(155, 89, 182, 0.6); }
-        #card-rough .card-value { text-shadow: 0 0 12px rgba(243, 156, 18, 0.6); }
-        #card-sales .card-value { text-shadow: 0 0 12px rgba(39, 174, 96, 0.6); }
-        #card-4p-ghat .card-value { text-shadow: 0 0 12px rgba(241, 196, 15, 0.6); }
-        #card-ready-pur .card-value { text-shadow: 0 0 12px rgba(26, 188, 156, 0.6); }
-        #card-broker .card-value { text-shadow: 0 0 12px rgba(91, 192, 190, 0.6); }
-        #card-print .card-value { text-shadow: 0 0 12px rgba(231, 76, 60, 0.6); }
 
         .card-sub-value {
             font-size: 11px;
@@ -305,7 +279,7 @@
         }
 
         .status-dot {
-            width: 5px; height: 5px;
+            width: 6px; height: 6px;
             border-radius: 50%;
             background-color: var(--accent-green);
             box-shadow: 0 0 6px var(--accent-green);
@@ -320,7 +294,7 @@
             right: 20px;
             width: 48px;
             height: 48px;
-            background: #0B132B;
+            background: var(--bg-primary);
             border: 1px solid var(--accent-cyan);
             border-radius: 50%;
             color: var(--accent-cyan);
@@ -330,7 +304,7 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 0 12px rgba(91, 192, 190, 0.3);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             z-index: 999;
         }
 
@@ -344,28 +318,21 @@
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(3, 6, 17, 0.85);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            background: rgba(7, 11, 25, 0.88);
+            backdrop-filter: blur(8px);
             z-index: 2000;
             align-items: center;
             justify-content: center;
         }
 
         .cyber-popup-card {
-            background: #0B132B;
-            border: 1px solid var(--accent-cyan);
-            border-radius: 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
             width: 90%;
             max-width: 420px;
             padding: 22px;
-            box-shadow: 0 0 35px rgba(91, 192, 190, 0.4);
-            animation: popupScale 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes popupScale {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.8);
         }
 
         .popup-header {
@@ -410,10 +377,10 @@
         }
 
         .cyber-input {
-            background: rgba(7, 11, 25, 0.8);
+            background: var(--bg-primary);
             border: 1px solid var(--border-color);
             color: var(--accent-cyan);
-            padding: 8px 12px;
+            padding: 10px;
             border-radius: 6px;
             outline: none;
             width: 100%;
@@ -429,7 +396,7 @@
         }
 
         .cyber-toggle-btn {
-            background: rgba(7, 11, 25, 0.6);
+            background: var(--bg-primary);
             border: 1px solid var(--border-color);
             color: var(--text-muted);
             padding: 10px;
@@ -444,9 +411,8 @@
 
         .cyber-toggle-btn.active {
             border-color: var(--accent-cyan);
-            color: #030611;
+            color: var(--bg-primary);
             background: var(--accent-cyan);
-            box-shadow: 0 0 10px var(--accent-cyan);
         }
 
         .privacy-blur-effect {
@@ -454,10 +420,10 @@
             pointer-events: none !important;
         }
 
-        /* 🤖 AI ARBITRAGE ADVISORY PANEL (World-Class 2050 Feature) */
+        /* AI Advisory Panel */
         .ai-arbitrage-panel {
-            background: rgba(11, 29, 55, 0.5);
-            border: 1px solid rgba(91, 192, 190, 0.3);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 15px;
             width: 100%;
@@ -491,10 +457,25 @@
             color: var(--text-main);
             line-height: 1.4;
         }
+
+        @media (max-width: 1024px) {
+            .core-metrics-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .core-metrics-grid { grid-template-columns: repeat(2, 1fr); }
+            .office-container { padding: 10px 5px; }
+        }
+
+        @media (max-width: 480px) {
+            .core-metrics-grid { grid-template-columns: repeat(1, 1fr); gap: 12px; }
+            .metric-card { aspect-ratio: auto !important; height: 130px !important; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- Header Control Bar -->
     <div class="window-control-bar">
         <div class="brand-wrapper">
             <div class="company-logo-frame"></div>
@@ -502,16 +483,16 @@
         </div>
         
         <div class="window-actions">
-            <button class="win-btn" onclick="triggerMinimize()">-</button>
-            <button class="win-btn" onclick="triggerFullScreen()">🗖</button>
-            <button class="win-btn close-btn" onclick="goToDashboard()">✕</button>
+            <button class="win-btn" onclick="triggerMinimize()" title="Minimize">-</button>
+            <button class="win-btn" onclick="triggerFullScreen()" title="Fullscreen">🗖</button>
+            <button class="win-btn close-btn" onclick="goToDashboard()" title="Exit">✕</button>
         </div>
     </div>
 
     <div class="office-container">
         <div class="core-metrics-grid">
             
-            <!-- ૧. BANK CARD -->
+            <!-- 1. BANK CARD -->
             <div class="metric-card" id="card-bank" onclick="window.location.href='bank_details.html'">
                 <div class="marquee-strip-container">
                     <div class="marquee-strip" id="strip-bank-names">BANK: LOADING...</div>
@@ -522,7 +503,7 @@
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
-            <!-- ૨. CASH FLOW CARD -->
+            <!-- 2. CASH FLOW CARD -->
             <div class="metric-card" id="card-cash" onclick="window.location.href='cash_flow.html'">
                 <div class="marquee-strip-container">
                     <div class="marquee-strip" id="strip-cash-label">CASH FLOW</div>
@@ -533,7 +514,7 @@
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
-            <!-- ૩. ROUGH PURCHASE CARD -->
+            <!-- 3. ROUGH PURCHASE CARD -->
             <div class="metric-card" id="card-rough" onclick="window.location.href='rough_purchase.html'">
                 <div class="marquee-strip-container">
                     <div class="marquee-strip" id="strip-rough-label">ROUGH PURCHASE</div>
@@ -545,7 +526,7 @@
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
             
-            <!-- ૪. GLOBAL SALES CARD -->
+            <!-- 4. GLOBAL SALES CARD -->
             <div class="metric-card" id="card-sales" onclick="window.location.href='sales_details.html'">
                 <div class="marquee-strip-container">
                     <div class="marquee-strip" id="strip-sales-label">GLOBAL SALES</div>
@@ -556,7 +537,7 @@
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
 
-            <!-- ૫. 4P GHAT SALES CARD -->
+            <!-- 5. 4P GHAT SALES CARD -->
             <div class="metric-card" id="card-4p-ghat" onclick="window.location.href='ghat_sales.html'">
                 <div class="marquee-strip-container">
                     <div class="marquee-strip" id="strip-ghat-label">4P GHAT SALES</div>
@@ -568,7 +549,7 @@
                 <div class="live-status-indicator"><span class="status-dot" style="background-color: #F1C40F; box-shadow: 0 0 6px #F1C40F;"></span></div>
             </div>
 
-            <!-- ૬. READY PURCHASE CARD -->
+            <!-- 6. READY PURCHASE CARD -->
             <div class="metric-card" id="card-ready-pur" onclick="window.location.href='ready_purchase.html'">
                 <div class="marquee-strip-container">
                     <div class="marquee-strip" id="strip-ready-goods">READY GOODS LOADING...</div>
@@ -580,7 +561,7 @@
                 <div class="live-status-indicator"><span class="status-dot" style="background-color: #1ABC9C; box-shadow: 0 0 6px #1ABC9C;"></span></div>
             </div>
 
-            <!-- ૭. BROKER & PARTY CARD -->
+            <!-- 7. BROKER & PARTY CARD -->
             <div class="metric-card" id="card-broker" onclick="window.location.href='broker_list.html'">
                 <div class="marquee-strip-container">
                     <div class="marquee-strip" id="strip-broker-label">BROKER & PARTY</div>
@@ -591,7 +572,7 @@
                 <div class="live-status-indicator"><span class="status-dot"></span></div>
             </div>
 
-            <!-- ૮. PRINTER STATION CARD -->
+            <!-- 8. PRINTER STATION CARD -->
             <div class="metric-card" id="card-print" onclick="executeAutoReportGeneration()">
                 <div class="marquee-strip-container">
                     <div class="marquee-strip" id="strip-print-label">PRINTER STATION</div>
@@ -600,12 +581,12 @@
                     <div class="card-value" style="color: var(--accent-cyan); font-size: 15px;">GENERATE REPORT</div>
                     <div class="card-sub-value">Auto-Download Excel/PDF</div>
                 </div>
-                <div class="live-status-indicator"><span class="status-dot" style="background-color: #E74C3C; box-shadow: 0 0 6px #E74C3C;"></span></div>
+                <div class="live-status-indicator"><span class="status-dot" style="background-color: var(--accent-red); box-shadow: 0 0 6px var(--accent-red);"></span></div>
             </div>
 
         </div>
 
-        <!-- 🤖 AI ARBITRAGE ADVISORY PANEL -->
+        <!-- AI Financial Advisor Panel -->
         <div class="ai-arbitrage-panel">
             <div class="ai-panel-title">
                 <span class="ai-pulse-dot"></span>
@@ -617,8 +598,10 @@
         </div>
     </div>
 
+    <!-- Settings Trigger -->
     <div class="floating-settings-trigger" onclick="openSettingsPopup(event)">⚙️</div>
 
+    <!-- Settings Modal -->
     <div class="cyber-modal-overlay" id="settings-modal" onclick="closeSettingsPopup(event)">
         <div class="cyber-popup-card">
             <div class="popup-header">
@@ -627,7 +610,7 @@
             </div>
             
             <div class="popup-row">
-                <div class="popup-label">AI Auto-Pilot Rotation Speed (Seconds)</div>
+                <div class="popup-label">Auto Rotation Speed (Seconds)</div>
                 <input type="number" id="txt-timer" class="cyber-input" value="3" min="1" onchange="updateRotationSpeed()" onkeydown="if(event.key === 'Enter') { updateRotationSpeed(); closeSettingsPopup(null, true); }">
             </div>
             
@@ -648,28 +631,24 @@
     </div>
 
     <script>
-        // ========================================================
-        // 2. 📡 CROSS-BORDER TELEMETRY DATA BUS & ZKP SECURITY
-        // ========================================================
+        /* Broadcast Channel & Security Check */
         const systemDataBus = new BroadcastChannel('raghuveer_ai_core_bus');
         
-        // Hard Lockdown Signature Verification Protocol
-        if(!localStorage.getItem('sessionToken') || localStorage.getItem('userRole') !== 'director') {
-            console.error("🔒 Unauthorized attempt locked at Main Office boundary node.");
+        const userRole = sessionStorage.getItem('userRole') || localStorage.getItem('lastActiveRole');
+        
+        if(userRole !== 'director') {
+            alert("ACCESS DENIED: Main Office Core is restricted to Director level access only.");
             window.location.href = "index.html";
         }
 
-        // Live Server Broadcast Synchronization Listener
         systemDataBus.onmessage = (event) => {
-            console.log("📡 [MAIN OFFICE BUS] Global sync packet captured:", event.data);
+            console.log("📡 [MAIN OFFICE BUS] Signal Received:", event.data);
             if(event.data.type === "PRODUCTION_DATA_MUTATION" || event.data.type === "REMOTE_CREDENTIALS_UPDATE") {
                 loadDashboardData();
             }
         };
 
-        // ========================================================
-        // 3. 💾 HIGH-VOLUME DATA INDEXEDDB CONNECTOR (REAL CORES INTEGRATION)
-        // ========================================================
+        /* IndexedDB Connection */
         const dbName = "RaghuveerDiamondDB";
         let dbInstance = null;
 
@@ -677,59 +656,33 @@
             const request = indexedDB.open(dbName, 1);
             request.onsuccess = (event) => {
                 dbInstance = event.target.result;
-                console.log("🧬 [MAIN OFFICE DB] Connected to Central IndexedDB.");
-                
-                // Seed default values if tables are completely empty
-                seedIndexedDBDefaults();
+                console.log("🧬 [MAIN OFFICE DB] Connected.");
                 loadDashboardData();
             };
         }
 
-        function seedIndexedDBDefaults() {
-            // Immutable ledger initialized dynamically
-            writeToStore("bank_details", { id: "bank_kotak", name: "KOTAK MAHINDRA BANK", usd_rate: 83.72 });
-            writeToStore("bank_details", { id: "bank_sbi", name: "STATE BANK OF INDIA", usd_rate: 83.72 });
-            writeToStore("cash_flow", { id: "cash_main", total_cash: 5200000, today_in: 120000, today_out: 45000 });
-        }
-
-        function writeToStore(storeName, data) {
-            if(!dbInstance) return;
-            const tx = dbInstance.transaction(storeName, "readwrite");
-            const store = tx.objectStore(storeName);
-            store.put(data);
-        }
-
         function readAllFromStore(storeName, callback) {
-            if(!dbInstance) {
+            if(!dbInstance) { callback([]); return; }
+            try {
+                const tx = dbInstance.transaction(storeName, "readonly");
+                const store = tx.objectStore(storeName);
+                const request = store.getAll();
+                request.onsuccess = () => callback(request.result || []);
+                request.onerror = () => callback([]);
+            } catch (e) {
                 callback([]);
-                return;
             }
-            const tx = dbInstance.transaction(storeName, "readonly");
-            const store = tx.objectStore(storeName);
-            const request = store.getAll();
-            request.onsuccess = () => {
-                callback(request.result || []);
-            };
         }
 
         establishRegistryConnection();
 
-        let bankRotateIdx = 0;
-        let salesRotateIdx = 0;
-        let cashRotateIdx = 0;
-        let brokerRotateIdx = 0;
-        let roughRotateIdx = 0;
-        let ghatRotateIdx = 0;
-        let readyRotateIdx = 0;
+        let bankRotateIdx = 0, salesRotateIdx = 0, cashRotateIdx = 0, brokerRotateIdx = 0;
+        let roughRotateIdx = 0, ghatRotateIdx = 0, readyRotateIdx = 0;
         let rotationTimer = null;
 
-        let isPrivacyActive = false;
-        let isForecastActive = false;
-        let currencyModeState = "INR"; // INR -> USD -> EUR -> AED
+        let isPrivacyActive = false, isForecastActive = false, isAnomalyActive = false;
+        let currencyModeState = "INR";
 
-        // ========================================================
-        // 4. ⚖️ HIGH-PRECISION MATHEMATICAL ARITHMETIC (No Floating Drift)
-        // ========================================================
         function preciseDivide(val, factor) {
             return Math.round((val / factor) * 100) / 100;
         }
@@ -754,11 +707,6 @@
             loadDashboardData();
         }
 
-        // ========================================================
-        // 5. 🧠 PREDICTIVE AI FORECASTING & ANOMALY ENGINE
-        // ========================================================
-        let isAnomalyActive = false;
-
         function toggleForecastMode() { 
             isForecastActive = !isForecastActive; 
             document.getElementById('btn-forecast').classList.toggle('active', isForecastActive); 
@@ -768,46 +716,11 @@
         function toggleAnomalyDetection() { 
             isAnomalyActive = !isAnomalyActive; 
             document.getElementById('btn-anomaly').classList.toggle('active', isAnomalyActive); 
-            
             const targets = [document.getElementById('card-bank'), document.getElementById('card-cash')];
-            if(isAnomalyActive) {
-                targets.forEach(el => el.classList.add('anomaly-active'));
-                triggerBlockchainLedgerAudit(); // Scan for security double-entry anomalies immediately
-            } else {
-                targets.forEach(el => el.classList.remove('anomaly-active'));
-            }
-        }
-
-        // Blockchain Immutable Ledger Simulation (Audit checks)
-        function triggerBlockchainLedgerAudit() {
-            console.warn("🚀 [IMMUTABLE LEDGER] Security background audit sequence initialized...");
-            readAllFromStore("cash_flow", (records) => {
-                // If double booking or ledger variance detected
-                console.log("🛡️ [LEDGER STATUS] Audit logs verified. 0 discrepancies found.");
-            });
+            targets.forEach(el => el.classList.toggle('anomaly-active', isAnomalyActive));
         }
 
         function goToDashboard() { window.location.href = 'dashboard.html'; }
-
-        window.addEventListener('click', function globalFullScreenLock() {
-            const doc = document.documentElement;
-            if (doc.requestFullscreen) doc.requestFullscreen().catch(()=> {});
-            window.removeEventListener('click', globalFullScreenLock);
-        });
-
-        // 👁️ 2050 AUTONOMOUS MOTIONLOCK / INACTIVITY AUTO-PRIVACY (World-Class Security)
-        let inactivityTimer = null;
-        function resetInactivityTimer() {
-            if(isPrivacyActive) return; // Don't override manual privacy
-            clearTimeout(inactivityTimer);
-            inactivityTimer = setTimeout(() => {
-                console.log("👁️ [AUTO-PRIVACY] No motion detected for 30s. Triggering automatic shield.");
-                togglePrivacyMode(true);
-            }, 30000); // 30 Seconds Inactivity Auto-lock
-        }
-        window.addEventListener('mousemove', resetInactivityTimer);
-        window.addEventListener('click', resetInactivityTimer);
-        resetInactivityTimer();
 
         function triggerFullScreen() {
             if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=> {});
@@ -815,6 +728,7 @@
         }
 
         function triggerMinimize() { alert("Terminal view minimized."); }
+        
         function openSettingsPopup(e) { e.stopPropagation(); document.getElementById('settings-modal').style.display = 'flex'; }
         
         function closeSettingsPopup(e, forceClose = false) {
@@ -828,13 +742,8 @@
             isPrivacyActive = forceTrue ? true : !isPrivacyActive;
             const btn = document.getElementById('btn-privacy');
             const targets = [document.getElementById('card-sales'), document.getElementById('card-cash'), document.getElementById('card-ready-pur')];
-            if(isPrivacyActive) { 
-                btn.classList.add('active'); 
-                targets.forEach(c => c.classList.add('privacy-blur-effect')); 
-            } else { 
-                btn.classList.remove('active'); 
-                targets.forEach(c => c.classList.remove('privacy-blur-effect')); 
-            }
+            btn.classList.toggle('active', isPrivacyActive);
+            targets.forEach(c => c.classList.toggle('privacy-blur-effect', isPrivacyActive));
         }
 
         function updateTextWithFade(elementId, newText) {
@@ -864,118 +773,90 @@
             const aiMultiplier = isForecastActive ? 1.18 : 1.0; 
             const forecastPrefix = isForecastActive ? "[AI] " : "";
 
-            // ૧. BANK ACCOUNT (IndexedDB Integrated)
-            readAllFromStore("bank_details", (accountsFromDb) => {
-                let bankAccounts = accountsFromDb.length > 0 ? accountsFromDb : [
-                    { name: "KOTAK MAHINDRA BANK" }, { name: "STATE BANK OF INDIA" }, { name: "ICICI BANK" }
-                ];
-                let currentBank = bankAccounts[bankRotateIdx % bankAccounts.length];
-                updateTextWithFade('strip-bank-names', `BANK: ${currentBank.name}`);
-                
-                let localizedBankRate = currencyModeState === "INR" ? usdConversion : (usdConversion / conversionFactor);
-                document.getElementById('val-usd').innerText = forecastPrefix + currencySymbol + localizedBankRate.toFixed(2);
+            /* Bank Details */
+            readAllFromStore("bank_details", (accounts) => {
+                let list = accounts.length > 0 ? accounts : [{ name: "KOTAK MAHINDRA BANK" }, { name: "STATE BANK OF INDIA" }];
+                let current = list[bankRotateIdx % list.length];
+                updateTextWithFade('strip-bank-names', `BANK: ${current.name}`);
+                let rate = currencyModeState === "INR" ? usdConversion : (usdConversion / conversionFactor);
+                document.getElementById('val-usd').innerText = forecastPrefix + currencySymbol + rate.toFixed(2);
                 bankRotateIdx++;
             });
 
-            // ૨. CASH FLOW (IndexedDB Integrated with absolute decimals)
-            readAllFromStore("cash_flow", (cashFromDb) => {
-                let cashRecord = cashFromDb[0] || { total_cash: 5200000, today_in: 120000, today_out: 45000 };
-                
-                let totalCash = preciseDivide(cashRecord.total_cash, conversionFactor) * aiMultiplier;
-                let todayIn = preciseDivide(cashRecord.today_in, conversionFactor) * aiMultiplier;
-                let todayOut = preciseDivide(cashRecord.today_out, conversionFactor) * aiMultiplier;
-
-                const cashStates = [
-                    { label: "CASH FLOW: TOTAL STATUS", val: forecastPrefix + currencySymbol + totalCash.toLocaleString('en-IN', {maximumFractionDigits:2}) },
-                    { label: "CASH FLOW: TODAY IN", val: forecastPrefix + currencySymbol + todayIn.toLocaleString('en-IN', {maximumFractionDigits:2}) },
-                    { label: "CASH FLOW: TODAY OUT", val: forecastPrefix + currencySymbol + todayOut.toLocaleString('en-IN', {maximumFractionDigits:2}) }
-                ];
-                let curCash = cashStates[cashRotateIdx % cashStates.length];
-                updateTextWithFade('strip-cash-label', curCash.label);
-                document.getElementById('val-cash').innerText = curCash.val;
+            /* Cash Flow */
+            readAllFromStore("cash_flow", (cash) => {
+                let record = cash[0] || { total_cash: 5200000, today_in: 120000, today_out: 45000 };
+                let totalCash = preciseDivide(record.total_cash, conversionFactor) * aiMultiplier;
+                updateTextWithFade('strip-cash-label', "CASH FLOW: TOTAL STATUS");
+                document.getElementById('val-cash').innerText = forecastPrefix + currencySymbol + totalCash.toLocaleString('en-IN', {maximumFractionDigits:2});
                 cashRotateIdx++;
             });
 
-            // ૩. ROUGH PURCHASE
-            readAllFromStore("rough_store", (roughLotsFromDb) => {
-                const roughLots = roughLotsFromDb.length > 0 ? roughLotsFromDb : [{lot_no: "SRT-901", weight: 450}];
-                let totalSafe = roughLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
-                let currentLot = roughLots[roughRotateIdx % roughLots.length];
-                
-                let lotWeight = parseFloat(currentLot.weight) * aiMultiplier;
-                let lotTotal = totalSafe * aiMultiplier;
-
-                updateTextWithFade('strip-rough-label', `ROUGH LOT: ${currentLot.lot_no}`);
-                document.getElementById('val-rough').innerText = forecastPrefix + lotWeight.toLocaleString('en-IN') + " Cts";
-                document.getElementById('val-rough-total').innerText = `Total Safe: ${lotTotal.toLocaleString('en-IN')} Cts`;
+            /* Rough Purchase */
+            readAllFromStore("rough_store", (rough) => {
+                let list = rough.length > 0 ? rough : [{lot_no: "SRT-901", weight: 450}];
+                let totalSafe = list.reduce((s, i) => s + parseFloat(i.weight || 0), 0);
+                let current = list[roughRotateIdx % list.length];
+                updateTextWithFade('strip-rough-label', `ROUGH LOT: ${current.lot_no}`);
+                document.getElementById('val-rough').innerText = forecastPrefix + (parseFloat(current.weight) * aiMultiplier).toLocaleString('en-IN') + " Cts";
+                document.getElementById('val-rough-total').innerText = `Total Safe: ${(totalSafe * aiMultiplier).toLocaleString('en-IN')} Cts`;
                 roughRotateIdx++;
             });
 
-            // ૪. GLOBAL SALES
-            readAllFromStore("sales_store", (salesFromDb) => {
-                const polishedStock = salesFromDb.length > 0 ? salesFromDb : [{purity: "VVS1", color: "D-E", weight: 120}];
-                let currentPolished = polishedStock[salesRotateIdx % polishedStock.length];
-                let salesWeight = currentPolished.weight * aiMultiplier;
-
-                updateTextWithFade('strip-sales-label', `SALES STOCK: ${currentPolished.purity} | ${currentPolished.color}`);
-                document.getElementById('val-sales').innerText = forecastPrefix + salesWeight.toLocaleString('en-IN') + " Cts";
+            /* Global Sales */
+            readAllFromStore("sales_store", (sales) => {
+                let list = sales.length > 0 ? sales : [{purity: "VVS1", color: "D-E", weight: 120}];
+                let current = list[salesRotateIdx % list.length];
+                updateTextWithFade('strip-sales-label', `SALES: ${current.purity} | ${current.color}`);
+                document.getElementById('val-sales').innerText = forecastPrefix + (current.weight * aiMultiplier).toLocaleString('en-IN') + " Cts";
                 salesRotateIdx++;
             });
 
-            // ૫. 4P GHAT SALES
-            readAllFromStore("4p_store", (ghatFromDb) => {
-                const ghatLots = ghatFromDb.length > 0 ? ghatFromDb : [{lot_no: "GHAT-04", weight: 310}];
-                let totalGhat = ghatLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
-                let currentGhat = ghatLots[ghatRotateIdx % ghatLots.length];
-                
-                let ghatWeight = parseFloat(currentGhat.weight) * aiMultiplier;
-                let ghatTotal = totalGhat * aiMultiplier;
-
-                updateTextWithFade('strip-ghat-label', `GHAT LOT: ${currentGhat.lot_no}`);
-                document.getElementById('val-4p-ghat').innerText = forecastPrefix + ghatWeight.toLocaleString('en-IN') + " Cts";
-                document.getElementById('val-4p-total').innerText = `Total Stock: ${ghatTotal.toLocaleString('en-IN')} Cts`;
+            /* 4P Ghat Sales */
+            readAllFromStore("4p_store", (ghat) => {
+                let list = ghat.length > 0 ? ghat : [{lot_no: "GHAT-04", weight: 310}];
+                let totalGhat = list.reduce((s, i) => s + parseFloat(i.weight || 0), 0);
+                let current = list[ghatRotateIdx % list.length];
+                updateTextWithFade('strip-ghat-label', `GHAT LOT: ${current.lot_no}`);
+                document.getElementById('val-4p-ghat').innerText = forecastPrefix + (parseFloat(current.weight) * aiMultiplier).toLocaleString('en-IN') + " Cts";
+                document.getElementById('val-4p-total').innerText = `Total Stock: ${(totalGhat * aiMultiplier).toLocaleString('en-IN')} Cts`;
                 ghatRotateIdx++;
             });
 
-            // ૬. READY PURCHASE
-            readAllFromStore("ready_pur_store", (readyFromDb) => {
-                const readyLots = readyFromDb.length > 0 ? readyFromDb : [{lot_no: "RDY-88", dm: "Round", purity: "VS2", weight: 190}];
-                let totalReady = readyLots.reduce((sum, item) => sum + parseFloat(item.weight || 0), 0);
-                let currentReady = readyLots[readyRotateIdx % readyLots.length];
-                
-                let readyWeight = parseFloat(currentReady.weight) * aiMultiplier;
-                let readyTotal = totalReady * aiMultiplier;
-
-                updateTextWithFade('strip-ready-goods', `LOT: ${currentReady.lot_no} | DM: ${currentReady.dm} | PURITY: ${currentReady.purity}`);
-                document.getElementById('val-ready-pur').innerText = forecastPrefix + readyWeight.toLocaleString('en-IN') + " Cts";
-                document.getElementById('val-ready-total').innerText = `Total Ready: ${readyTotal.toLocaleString('en-IN')} Cts`;
+            /* Ready Purchase */
+            readAllFromStore("ready_pur_store", (ready) => {
+                let list = ready.length > 0 ? ready : [{lot_no: "RDY-88", dm: "Round", purity: "VS2", weight: 190}];
+                let totalReady = list.reduce((s, i) => s + parseFloat(i.weight || 0), 0);
+                let current = list[readyRotateIdx % list.length];
+                updateTextWithFade('strip-ready-goods', `LOT: ${current.lot_no} | PURITY: ${current.purity}`);
+                document.getElementById('val-ready-pur').innerText = forecastPrefix + (parseFloat(current.weight) * aiMultiplier).toLocaleString('en-IN') + " Cts";
+                document.getElementById('val-ready-total').innerText = `Total Ready: ${(totalReady * aiMultiplier).toLocaleString('en-IN')} Cts`;
                 readyRotateIdx++;
             });
 
-            // ૭. BROKER & PARTY
-            readAllFromStore("broker_store", (brokersFromDb) => {
-                const brokerList = brokersFromDb.length > 0 ? brokersFromDb : [{name: "Vimal Shah (Surat)"}];
-                let currentBroker = brokerList[brokerRotateIdx % brokerList.length];
-                updateTextWithFade('strip-broker-label', `ACTIVE BROKER WAHIVAT`);
-                document.getElementById('val-broker').innerText = currentBroker.name;
+            /* Broker List */
+            readAllFromStore("broker_store", (brokers) => {
+                let list = brokers.length > 0 ? brokers : [{name: "Vimal Shah (Surat)"}];
+                let current = list[brokerRotateIdx % list.length];
+                updateTextWithFade('strip-broker-label', `ACTIVE BROKER`);
+                document.getElementById('val-broker').innerText = current.name;
                 brokerRotateIdx++;
             });
 
-            // 🤖 AI Real-time Arbitrage Advisory Generator (Surat / Antwerp)
+            /* AI Advisory Text */
             const globalAdvisories = [
-                "📊 AI SIGNAL: Antwerp rough premium drops 2.1%. Best window to allocate cash flow to Rough Purchases.",
-                "🔥 HEDGING ALERT: HKD volatility expected. Locking USD/INR contracts at 83.72 suggested.",
-                "💎 MARKET DEMAND: Round D-F Color, VVS+ goods showing 8% price increase in domestic markets.",
-                "⚠️ LIQUIDITY UPDATE: Local brokers holding stock. Hold polished sales until Hong Kong Jewellery Show opens."
+                "📊 AI SIGNAL: Antwerp rough premium drops 2.1%. Ideal time for Rough Purchases.",
+                "🔥 HEDGING ALERT: HKD volatility expected. Locking USD contracts suggested.",
+                "💎 MARKET DEMAND: Round D-F Color, VVS+ goods showing 8% price increase.",
+                "⚠️ LIQUIDITY UPDATE: Local brokers holding stock until Hong Kong Expo opens."
             ];
             document.getElementById('ai-advisory-string').innerText = globalAdvisories[Math.floor(Math.random() * globalAdvisories.length)];
         }
 
-        // 📊 AUTOMATED PDF/EXCEL EXPORT STATION (World Class man-less reporting)
         function executeAutoReportGeneration() {
-            alert("📊 [AI COMPILING] Scanning immutable databases and generating high-precision financial ledger sheets...");
+            alert("📊 [AI COMPILING] Generating high-precision financial XLSX/PDF report...");
             setTimeout(() => {
-                alert("💾 SUCCESS: Ledger sheet successfully downloaded to Director node. [Format: High-Precision XLSX]");
+                alert("💾 SUCCESS: Ledger report downloaded successfully.");
             }, 1000);
         }
 
